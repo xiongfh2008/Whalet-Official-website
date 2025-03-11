@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>交易查询 - Whalet</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            background-color: #f9fafb;
+            font-family: 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+        }
+        .card {
+            transition: all 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+        .chart-container {
+            height: 240px;
+            position: relative;
+        }
+        .custom-checkbox {
+            position: relative;
+            padding-left: 28px;
+            cursor: pointer;
+            user-select: none;
+        }
+        .custom-checkbox input {
+            position: absolute;
+            opacity: 0;
+            cursor: pointer;
+        }
+        .checkmark {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 18px;
+            width: 18px;
+            background-color: #eee;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+        }
+        .custom-checkbox:hover input ~ .checkmark {
+            background-color: #ccc;
+        }
+        .custom-checkbox input:checked ~ .checkmark {
+            background-color: #4f46e5;
+            border-color: #4f46e5;
+        }
+        .checkmark:after {
+            content: "";
+            position: absolute;
+            display: none;
+        }
+        .custom-checkbox input:checked ~ .checkmark:after {
+            display: block;
+        }
+        .custom-checkbox .checkmark:after {
+            left: 6px;
+            top: 2px;
+            width: 5px;
+            height: 10px;
+            border: solid white;
+            border-width: 0 2px 2px 0;
+            transform: rotate(45deg);
+        }
+        .date-range {
+            display: flex;
+            align-items: center;
+        }
+        .filter-button {
+            position: relative;
+        }
+        .filter-dropdown {
+            display: none;
+            position: absolute;
+            right: 0;
+            top: 100%;
+            margin-top: 5px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            min-width: 240px;
+            z-index: 10;
+        }
+        .filter-button:hover .filter-dropdown {
+            display: block;
+        }
+        .transaction-tag {
+            font-size: 12px;
+            padding: 2px 8px;
+            border-radius: 4px;
+            display: inline-block;
+        }
+        .tag-income {
+            background-color: #dcfce7;
+            color: #16a34a;
+        }
+        .tag-expense {
+            background-color: #fee2e2;
+            color: #dc2626;
+        }
+        .tag-exchange {
+            background-color: #e0e7ff;
+            color: #4f46e5;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mx-auto px-4 py-6">
+        <!-- 页面标题 -->
+        <div class="bg-white p-8 rounded-xl shadow-sm mb-6">
+            <div class="flex justify-between items-start">
+                <div>
+                    <h1 class="text-2xl font-bold text-gray-800 mb-2">交易查询</h1>
+                    <p class="text-gray-600">查询、过滤和分析您的所有交易记录</p>
+                </div>
+                <div class="flex space-x-3">
+                    <button class="bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2 rounded-lg text-sm font-medium flex items-center">
+                        <i class="fas fa-file-download mr-2"></i>
+                        导出交易
+                    </button>
+                    <div class="filter-button">
+                        <button class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg text-sm font-medium flex items-center">
+                            <i class="fas fa-filter mr-2"></i>
+                            筛选
+                        </button>
+                        <div class="filter-dropdown p-4">
+                            <div class="mb-3">
+                                <label class="block text-sm font-medium text-gray-700 mb-1">交易类型</label>
+                                <div class="space-y-2">
+                                    <label class="flex items-center text-sm text-gray-600">
+                                        <input type="checkbox" class="form-checkbox h-4 w-4 text-blue-600 mr-2" checked>
+                                        全部
+                                    </label>
+                                    <label class="flex items-center text-sm text-gray-600">
+                                        <input type="checkbox" class="form-checkbox h-4 w-4 text-blue-600 mr-2">
+                                        收款
+                                    </label>
+                                    <label class="flex items-center text-sm text-gray-600">
+                                        <input type="checkbox" class="form-checkbox h-4 w-4 text-blue-600 mr-2">
+                                        付款
+                                    </label>
+                                    <label class="flex items-center text-sm text-gray-600">
+                                        <input type="checkbox" class="form-checkbox h-4 w-4 text-blue-600 mr-2">
+                                        兑换
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label class="block text-sm font-medium text-gray-700 mb-1">金额范围</label>
+                                <div class="flex items-center space-x-2">
+                                    <input type="text" placeholder="最小" class="w-full px-3 py-1 border border-gray-300 rounded text-sm">
+                                    <span class="text-gray-500">至</span>
+                                    <input type="text" placeholder="最大" class="w-full px-3 py-1 border border-gray-300 rounded text-sm">
+                                </div>
+                            </div>
+                            <div>
+                                <button class="w-full bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded text-sm font-medium">
+                                    应用筛选
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 数据概览 -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+            <div class="bg-white p-6 rounded-xl shadow-sm">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-gray-500 font-medium">本月交易总量</h3>
+                    <i class="fas fa-exchange-alt text-blue-500"></i>
+                </div>
+                <p class="text-2xl font-bold text-gray-800">386</p>
+                <div class="mt-2 flex items-center text-sm">
+                    <span class="text-green-500 flex items-center">
+                        <i class="fas fa-arrow-up mr-1"></i>
+                        12.5%
+                    </span>
+                    <span class="text-gray-500 ml-2">较上月</span>
+                </div>
+            </div>
+
+            <div class="bg-white p-6 rounded-xl shadow-sm">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-gray-500 font-medium">总收入</h3>
+                    <i class="fas fa-arrow-down text-green-500"></i>
+                </div>
+                <p class="text-2xl font-bold text-gray-800">$428,967.54</p>
+                <div class="mt-2 flex items-center text-sm">
+                    <span class="text-green-500 flex items-center">
+                        <i class="fas fa-arrow-up mr-1"></i>
+                        8.3%
+                    </span>
+                    <span class="text-gray-500 ml-2">较上月</span>
+                </div>
+            </div>
+
+            <div class="bg-white p-6 rounded-xl shadow-sm">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-gray-500 font-medium">总支出</h3>
+                    <i class="fas fa-arrow-up text-red-500"></i>
+                </div>
+                <p class="text-2xl font-bold text-gray-800">$245,389.12</p>
+                <div class="mt-2 flex items-center text-sm">
+                    <span class="text-red-500 flex items-center">
+                        <i class="fas fa-arrow-up mr-1"></i>
+                        4.7%
+                    </span>
+                    <span class="text-gray-500 ml-2">较上月</span>
+                </div>
+            </div>
+
+            <div class="bg-white p-6 rounded-xl shadow-sm">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-gray-500 font-medium">总兑换金额</h3>
+                    <i class="fas fa-sync-alt text-purple-500"></i>
+                </div>
+                <p class="text-2xl font-bold text-gray-800">$132,654.87</p>
+                <div class="mt-2 flex items-center text-sm">
+                    <span class="text-green-500 flex items-center">
+                        <i class="fas fa-arrow-up mr-1"></i>
+                        15.2%
+                    </span>
+                    <span class="text-gray-500 ml-2">较上月</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 搜索和过滤区域 -->
+        <div class="bg-white rounded-xl shadow-sm mb-8">
+            <div class="p-6">
+                <div class="flex flex-wrap items-center justify-between">
+                    <h2 class="text-xl font-semibold text-gray-800 mb-4 md:mb-0">交易搜索</h2>
+                    <div class="w-full md:w-auto flex flex-wrap items-center space-y-3 md:space-y-0 md:space-x-4">
+                        <div class="w-full md:w-64">
+                            <div class="relative">
+                                <input type="text" placeholder="搜索交易..." class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
+                            </div>
+                        </div>
+                        <div class="date-range w-full md:w-auto">
+                            <div class="relative mr-2">
+                                <input type="date" class="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                <i class="fas fa-calendar-alt absolute left-3 top-3 text-gray-400"></i>
+                            </div>
+                            <span class="mx-2 text-gray-500">至</span>
+                            <div class="relative">
+                                <input type="date" class="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                <i class="fas fa-calendar-alt absolute left-3 top-3 text-gray-400"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="px-6 py-4 border-t border-gray-200 flex flex-wrap justify-between items-center">
+                <div class="flex flex-wrap items-center mb-3 md:mb-0">
+                    <button class="mr-2 px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800 mb-2 md:mb-0">
+                        全部
+                    </button>
+                    <button class="mr-2 px-3 py-1 rounded-full text-sm font-medium bg-gray-100 text-gray-800 hover:bg-blue-100 hover:text-blue-800 mb-2 md:mb-0">
+                        收款
+                    </button>
+                    <button class="mr-2 px-3 py-1 rounded-full text-sm font-medium bg-gray-100 text-gray-800 hover:bg-blue-100 hover:text-blue-800 mb-2 md:mb-0">
+                        付款
+                    </button>
+                    <button class="mr-2 px-3 py-1 rounded-full text-sm font-medium bg-gray-100 text-gray-800 hover:bg-blue-100 hover:text-blue-800 mb-2 md:mb-0">
+                        兑换
+                    </button>
+                </div>
+                <div class="flex items-center">
+                    <button class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium">
+                        查询
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 交易列表 -->
+        <div class="bg-white rounded-xl shadow-sm mb-8">
+            <div class="p-6 border-b border-gray-200">
+                <div class="flex flex-wrap justify-between items-center">
+                    <h2 class="text-xl font-semibold text-gray-800 mb-4 md:mb-0">交易列表</h2>
+                    <div class="flex items-center">
+                        <div class="mr-4 text-sm text-gray-500">
+                            显示 1-50 / 386 笔交易
+                        </div>
+                        <div class="flex border border-gray-300 rounded-lg overflow-hidden">
+                            <button class="px-3 py-1 bg-blue-600 text-white font-medium text-sm">
+                                <i class="fas fa-table mr-1"></i> 列表
+                            </button>
+                            <button class="px-3 py-1 text-gray-600 hover:bg-gray-100 font-medium text-sm">
+                                <i class="fas fa-th-large mr-1"></i> 卡片
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 列表视图 -->
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                <label class="custom-checkbox">
+                                    <input type="checkbox">
+                                    <span class="checkmark"></span>
+                                </label>
+                            </th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                交易ID
+                            </th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                日期 & 时间
+                            </th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                类型
+                            </th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                描述
+                            </th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                金额
+                            </th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                状态
+                            </th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                操作
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                        <!-- 交易1 -->
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <label class="custom-checkbox">
+                                    <input type="checkbox">
+                                    <span class="checkmark"></span>
+                                </label>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="text-sm text-gray-900">TX-38291</span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-sm text-gray-900">2023-05-20</div>
+                                <div class="text-xs text-gray-500">14:23:45</div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="transaction-tag tag-income">收款</span>
+                            </td>
+                            <td class="px-6 py-4">
+                                <div class="text-sm text-gray-900">来自 Amazon 平台的收款</div>
+                                <div class="text-xs text-gray-500">参考号: REF-28371</div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-sm font-medium text-green-600">+$12,435.78</div>
+                                <div class="text-xs text-gray-500">USD</div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                    完成
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                <button class="text-blue-600 hover:text-blue-900 mr-3">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                                <button class="text-gray-600 hover:text-gray-900">
+                                    <i class="fas fa-download"></i>
+                                </button>
+                            </td>
+                        </tr>
+
+                        <!-- 交易2 -->
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <label class="custom-checkbox">
+                                    <input type="checkbox">
+                                    <span class="checkmark"></span>
+                                </label>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="text-sm text-gray-900">TX-38290</span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-sm text-gray-900">2023-05-19</div>
+                                <div class="text-xs text-gray-500">10:15:22</div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="transaction-tag tag-expense">付款</span>
+                            </td>
+                            <td class="px-6 py-4">
+                                <div class="text-sm text-gray-900">供应商 ABC Trading Ltd. 付款</div>
+                                <div class="text-xs text-gray-500">发票号: INV-4527</div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-sm font-medium text-red-600">-$8,742.50</div>
+                                <div class="text-xs text-gray-500">USD</div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                    完成
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                <button class="text-blue-600 hover:text-blue-900 mr-3">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                                <button class="text-gray-600 hover:text-gray-900">
+                                    <i class="fas fa-download"></i>
+                                </button>
+                            </td>
+                        </tr>
+
+                        <!-- 交易3 -->
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <label class="custom-checkbox">
+                                    <input type="checkbox">
+                                    <span class="checkmark"></span>
+                                </label>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="text-sm text-gray-900">TX-38289</span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-sm text-gray-900">2023-05-18</div>
+                                <div class="text-xs text-gray-500">15:42:18</div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="transaction-tag tag-exchange">兑换</span>
+                            </td>
+                            <td class="px-6 py-4">
+                                <div class="text-sm text-gray-900">USD 兑换为 EUR</div>
+                                <div class="text-xs text-gray-500">汇率: 0.92</div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-sm font-medium text-gray-900">$10,000 → €9,200</div>
+                                <div class="text-xs text-gray-500">手续费: $25</div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                    完成
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                <button class="text-blue-600 hover:text-blue-900 mr-3">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                                <button class="text-gray-600 hover:text-gray-900">
+                                    <i class="fas fa-download"></i>
+                                </button>
+                            </td>
+                        </tr>
+
+                        <!-- 交易4 -->
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <label class="custom-checkbox">
+                                    <input type="checkbox">
+                                    <span class="checkmark"></span>
+                                </label>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="text-sm text-gray-900">TX-38288</span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-sm text-gray-900">2023-05-17</div>
+                                <div class="text-xs text-gray-500">09:30:55</div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="transaction-tag tag-income">收款</span>
+                            </td>
+                            <td class="px-6 py-4">
+                                <div class="text-sm text-gray-900">来自 eBay 平台的收款</div>
+                                <div class="text-xs text-gray-500">参考号: REF-28370</div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-sm font-medium text-green-600">+€7,853.25</div>
+                                <div class="text-xs text-gray-500">EUR</div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                    完成
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                <button class="text-blue-600 hover:text-blue-900 mr-3">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                                <button class="text-gray-600 hover:text-gray-900">
+                                    <i class="fas fa-download"></i>
+                                </button>
+                            </td>
+                        </tr>
+
+                        <!-- 交易5 -->
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <label class="custom-checkbox">
+                                    <input type="checkbox">
+                                    <span class="checkmark"></span>
+                                </label>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="text-sm text-gray-900">TX-38287</span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-sm text-gray-900">2023-05-16</div>
+                                <div class="text-xs text-gray-500">16:18:33</div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="transaction-tag tag-expense">付款</span>
+                            </td>
+                            <td class="px-6 py-4">
+                                <div class="text-sm text-gray-900">供应商 XYZ Inc. 付款</div>
+                                <div class="text-xs text-gray-500">发票号: INV-4526</div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-sm font-medium text-red-600">-£5,234.67</div>
+                                <div class="text-xs text-gray-500">GBP</div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
+                                    处理中
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                <button class="text-blue-600 hover:text-blue-900 mr-3">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                                <button class="text-gray-600 hover:text-gray-900">
+                                    <i class="fas fa-download"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <!-- 分页 -->
+            <div class="px-6 py-4 border-t border-gray-200">
+                <div class="flex flex-wrap justify-between items-center">
+                    <div class="mb-4 md:mb-0">
+                        <label class="text-sm text-gray-600 mr-2">每页显示:</label>
+                        <select class="border border-gray-300 rounded-md px-2 py-1 text-sm">
+                            <option>10</option>
+                            <option selected>20</option>
+                            <option>50</option>
+                            <option>100</option>
+                        </select>
+                    </div>
+                    <div class="flex space-x-1">
+                        <button class="px-3 py-1 border border-gray-300 rounded-md text-sm text-gray-700 hover:bg-gray-50 disabled:opacity-50" disabled>
+                            上一页
+                        </button>
+                        <button class="px-3 py-1 border border-blue-500 bg-blue-500 text-white rounded-md text-sm">
+                            1
+                        </button>
+                        <button class="px-3 py-1 border border-gray-300 rounded-md text-sm text-gray-700 hover:bg-gray-50">
+                            2
+                        </button>
+                        <button class="px-3 py-1 border border-gray-300 rounded-md text-sm text-gray-700 hover:bg-gray-50">
+                            3
+                        </button>
+                        <span class="px-2 py-1 text-gray-500">...</span>
+                        <button class="px-3 py-1 border border-gray-300 rounded-md text-sm text-gray-700 hover:bg-gray-50">
+                            20
+                        </button>
+                        <button class="px-3 py-1 border border-gray-300 rounded-md text-sm text-gray-700 hover:bg-gray-50">
+                            下一页
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 交易统计 -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <!-- 交易类型分布 -->
+            <div class="bg-white rounded-xl shadow-sm p-6">
+                <h3 class="text-lg font-medium text-gray-800 mb-4">交易类型分布</h3>
+                <div class="chart-container mb-4">
+                    <!-- 这里应该插入实际的图表，暂时使用占位图 -->
+                    <div class="h-full w-full flex items-center justify-center bg-gray-50 rounded-lg">
+                        <div class="text-center">
+                            <i class="fas fa-chart-pie text-4xl text-gray-300 mb-2"></i>
+                            <p class="text-gray-400">交易类型饼图</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="space-y-3">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center">
+                            <div class="w-3 h-3 rounded-full bg-green-500 mr-2"></div>
+                            <span class="text-sm text-gray-600">收款</span>
+                        </div>
+                        <span class="text-sm font-medium text-gray-800">45%</span>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center">
+                            <div class="w-3 h-3 rounded-full bg-red-500 mr-2"></div>
+                            <span class="text-sm text-gray-600">付款</span>
+                        </div>
+                        <span class="text-sm font-medium text-gray-800">35%</span>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center">
+                            <div class="w-3 h-3 rounded-full bg-blue-500 mr-2"></div>
+                            <span class="text-sm text-gray-600">兑换</span>
+                        </div>
+                        <span class="text-sm font-medium text-gray-800">20%</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 交易额趋势 -->
+            <div class="bg-white rounded-xl shadow-sm p-6 md:col-span-2">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-lg font-medium text-gray-800">交易额趋势</h3>
+                    <div class="flex space-x-2">
+                        <button class="px-3 py-1 text-xs font-medium rounded-full bg-blue-600 text-white">
+                            近30天
+                        </button>
+                        <button class="px-3 py-1 text-xs font-medium rounded-full bg-gray-100 text-gray-600">
+                            近3个月
+                        </button>
+                        <button class="px-3 py-1 text-xs font-medium rounded-full bg-gray-100 text-gray-600">
+                            近6个月
+                        </button>
+                    </div>
+                </div>
+                <div class="chart-container">
+                    <!-- 这里应该插入实际的图表，暂时使用占位图 -->
+                    <div class="h-full w-full flex items-center justify-center bg-gray-50 rounded-lg">
+                        <div class="text-center">
+                            <i class="fas fa-chart-line text-4xl text-gray-300 mb-2"></i>
+                            <p class="text-gray-400">交易额趋势折线图</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

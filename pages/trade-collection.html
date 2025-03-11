@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>外贸收款 - Whalet</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        .chart-container {
+            height: 300px;
+            position: relative;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <div class="container mx-auto px-4 py-6">
+        <!-- 页面顶部 -->
+        <div class="bg-white p-8 rounded-lg shadow-sm mb-6">
+            <div class="flex justify-between items-start">
+                <div>
+                    <h1 class="text-2xl font-bold text-gray-800 mb-2">外贸收款</h1>
+                    <p class="text-gray-600">专业的跨境贸易收款服务</p>
+                </div>
+                <button class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg text-sm font-medium flex items-center">
+                    <i class="fas fa-plus mr-2"></i>
+                    新建收款
+                </button>
+            </div>
+        </div>
+
+        <!-- 收款方式选择 Tabs -->
+        <div class="bg-white rounded-lg shadow-sm mb-6">
+            <div class="border-b border-gray-200">
+                <nav class="flex -mb-px">
+                    <button class="text-blue-600 border-b-2 border-blue-600 py-4 px-6 font-medium text-sm">
+                        线上收款
+                    </button>
+                    <button class="text-gray-500 hover:text-gray-700 py-4 px-6 font-medium text-sm">
+                        线下电汇
+                    </button>
+                    <button class="text-gray-500 hover:text-gray-700 py-4 px-6 font-medium text-sm">
+                        信用证
+                    </button>
+                    <button class="text-gray-500 hover:text-gray-700 py-4 px-6 font-medium text-sm">
+                        托收
+                    </button>
+                </nav>
+            </div>
+        </div>
+
+        <!-- 收款统计区域 -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+            <!-- 收款总览图表 -->
+            <div class="bg-white p-6 rounded-lg shadow-sm col-span-2">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">收款总览</h3>
+                <div class="chart-container">
+                    <!-- 这里应该插入实际的图表，这里用占位符代替 -->
+                    <div class="w-full h-full bg-gray-50 rounded flex items-center justify-center">
+                        <span class="text-gray-400">收款趋势图表</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 币种占比 -->
+            <div class="bg-white p-6 rounded-lg shadow-sm">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">收款币种占比</h3>
+                <div class="space-y-4">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center">
+                            <div class="w-3 h-3 rounded-full bg-blue-500 mr-2"></div>
+                            <span class="text-sm text-gray-600">USD</span>
+                        </div>
+                        <span class="text-sm font-medium text-gray-800">45%</span>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center">
+                            <div class="w-3 h-3 rounded-full bg-green-500 mr-2"></div>
+                            <span class="text-sm text-gray-600">EUR</span>
+                        </div>
+                        <span class="text-sm font-medium text-gray-800">30%</span>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center">
+                            <div class="w-3 h-3 rounded-full bg-yellow-500 mr-2"></div>
+                            <span class="text-sm text-gray-600">GBP</span>
+                        </div>
+                        <span class="text-sm font-medium text-gray-800">15%</span>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center">
+                            <div class="w-3 h-3 rounded-full bg-purple-500 mr-2"></div>
+                            <span class="text-sm text-gray-600">其他</span>
+                        </div>
+                        <span class="text-sm font-medium text-gray-800">10%</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 收款管理区域 -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+            <!-- 收款账户管理 -->
+            <div class="bg-white rounded-lg shadow-sm">
+                <div class="p-6 border-b border-gray-200">
+                    <div class="flex justify-between items-center">
+                        <h3 class="text-lg font-semibold text-gray-800">收款账户管理</h3>
+                        <button class="text-blue-600 hover:text-blue-700 text-sm font-medium">
+                            <i class="fas fa-plus mr-1"></i>
+                            添加账户
+                        </button>
+                    </div>
+                </div>
+                <div class="p-6">
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
+                            <div class="flex items-center">
+                                <img src="https://logo.clearbit.com/bankofamerica.com" alt="Bank" class="w-10 h-10 rounded">
+                                <div class="ml-4">
+                                    <h4 class="font-medium text-gray-800">美国账户</h4>
+                                    <p class="text-sm text-gray-500">Bank of America - USD</p>
+                                </div>
+                            </div>
+                            <button class="text-gray-400 hover:text-gray-600">
+                                <i class="fas fa-ellipsis-v"></i>
+                            </button>
+                        </div>
+                        <div class="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
+                            <div class="flex items-center">
+                                <img src="https://logo.clearbit.com/hsbc.com" alt="Bank" class="w-10 h-10 rounded">
+                                <div class="ml-4">
+                                    <h4 class="font-medium text-gray-800">欧洲账户</h4>
+                                    <p class="text-sm text-gray-500">HSBC - EUR</p>
+                                </div>
+                            </div>
+                            <button class="text-gray-400 hover:text-gray-600">
+                                <i class="fas fa-ellipsis-v"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 收款单管理 -->
+            <div class="bg-white rounded-lg shadow-sm">
+                <div class="p-6 border-b border-gray-200">
+                    <div class="flex justify-between items-center">
+                        <h3 class="text-lg font-semibold text-gray-800">收款单管理</h3>
+                        <button class="text-blue-600 hover:text-blue-700 text-sm font-medium">
+                            <i class="fas fa-plus mr-1"></i>
+                            创建收款单
+                        </button>
+                    </div>
+                </div>
+                <div class="p-6">
+                    <div class="space-y-4">
+                        <div class="p-4 border border-gray-200 rounded-lg">
+                            <div class="flex justify-between items-start mb-3">
+                                <div>
+                                    <h4 class="font-medium text-gray-800">收款单 #INV2023001</h4>
+                                    <p class="text-sm text-gray-500">客户: ABC Trading Co., Ltd</p>
+                                </div>
+                                <span class="px-2 py-1 text-xs font-medium rounded-full bg-yellow-100 text-yellow-800">
+                                    处理中
+                                </span>
+                            </div>
+                            <div class="flex justify-between text-sm">
+                                <span class="text-gray-500">金额: $50,000.00</span>
+                                <span class="text-gray-500">预计到账: 2023-05-15</span>
+                            </div>
+                        </div>
+                        <div class="p-4 border border-gray-200 rounded-lg">
+                            <div class="flex justify-between items-start mb-3">
+                                <div>
+                                    <h4 class="font-medium text-gray-800">收款单 #INV2023002</h4>
+                                    <p class="text-sm text-gray-500">客户: XYZ International</p>
+                                </div>
+                                <span class="px-2 py-1 text-xs font-medium rounded-full bg-green-100 text-green-800">
+                                    已完成
+                                </span>
+                            </div>
+                            <div class="flex justify-between text-sm">
+                                <span class="text-gray-500">金额: €35,000.00</span>
+                                <span class="text-gray-500">已到账: 2023-05-10</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 交易记录 -->
+        <div class="bg-white rounded-lg shadow-sm">
+            <div class="p-6 border-b border-gray-200">
+                <div class="flex justify-between items-center">
+                    <h3 class="text-lg font-semibold text-gray-800">交易记录</h3>
+                    <div class="flex space-x-4">
+                        <button class="text-gray-600 hover:text-gray-800">
+                            <i class="fas fa-filter mr-2"></i>
+                            筛选
+                        </button>
+                        <button class="text-gray-600 hover:text-gray-800">
+                            <i class="fas fa-download mr-2"></i>
+                            导出
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                交易编号
+                            </th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                客户信息
+                            </th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                收款金额
+                            </th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                收款方式
+                            </th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                状态
+                            </th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                创建时间
+                            </th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                操作
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                TRX20230512001
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="flex items-center">
+                                    <div class="flex-shrink-0 h-10 w-10 bg-gray-100 rounded-full flex items-center justify-center">
+                                        <span class="text-sm font-medium text-gray-600">AT</span>
+                                    </div>
+                                    <div class="ml-4">
+                                        <div class="text-sm font-medium text-gray-900">ABC Trading Co., Ltd</div>
+                                        <div class="text-sm text-gray-500">美国</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                $50,000.00
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                线上收款
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
+                                    处理中
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                2023-05-12 14:30
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                <a href="#" class="text-blue-600 hover:text-blue-900">详情</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="px-6 py-4 border-t border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div class="text-sm text-gray-500">
+                        显示 1 至 10 条，共 50 条
+                    </div>
+                    <div class="flex space-x-2">
+                        <button class="px-3 py-1 border border-gray-300 rounded-md text-sm text-gray-700 hover:bg-gray-50">
+                            上一页
+                        </button>
+                        <button class="px-3 py-1 border border-gray-300 rounded-md text-sm text-gray-700 hover:bg-gray-50">
+                            下一页
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html> 

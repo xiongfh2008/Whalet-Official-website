@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Whalet - 卡</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f9fafb;
+        }
+        .card {
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        .credit-card {
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            color: white;
+            border-radius: 16px;
+            padding: 20px;
+            position: relative;
+            overflow: hidden;
+            height: 220px;
+        }
+        .credit-card::before {
+            content: '';
+            position: absolute;
+            top: -50px;
+            right: -50px;
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+        }
+        .credit-card::after {
+            content: '';
+            position: absolute;
+            bottom: -80px;
+            left: -80px;
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+        }
+        .virtual-card {
+            background: linear-gradient(135deg, #4c1d95 0%, #8b5cf6 100%);
+        }
+        .debit-card {
+            background: linear-gradient(135deg, #065f46 0%, #10b981 100%);
+        }
+        .card-chip {
+            width: 50px;
+            height: 40px;
+            background: linear-gradient(135deg, #fbbf24 0%, #d97706 100%);
+            border-radius: 8px;
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 1;
+        }
+        .card-chip::before {
+            content: '';
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            width: 30px;
+            height: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 4px;
+        }
+        .card-number {
+            font-size: 1.25rem;
+            letter-spacing: 2px;
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 1;
+        }
+        .card-details {
+            display: flex;
+            justify-content: space-between;
+            position: relative;
+            z-index: 1;
+        }
+        .card-logo {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 60px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            z-index: 1;
+        }
+        .transaction-icon {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <div class="container mx-auto px-4 py-6">
+        <!-- Page Header -->
+        <div class="mb-6">
+            <h1 class="text-2xl font-bold text-gray-800">卡管理</h1>
+            <p class="text-gray-600">管理您的虚拟卡和实体卡</p>
+        </div>
+
+        <!-- Stats Overview -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+            <div class="bg-white rounded-xl shadow-md p-5 card">
+                <div class="flex justify-between items-center mb-2">
+                    <h3 class="text-gray-500 font-medium">总卡数</h3>
+                    <i class="fas fa-credit-card text-blue-500"></i>
+                </div>
+                <p class="text-3xl font-bold text-gray-800">3</p>
+                <div class="flex items-center mt-2 text-sm">
+                    <span class="text-gray-500">2 虚拟卡, 1 实体卡</span>
+                </div>
+            </div>
+            <div class="bg-white rounded-xl shadow-md p-5 card">
+                <div class="flex justify-between items-center mb-2">
+                    <h3 class="text-gray-500 font-medium">本月消费</h3>
+                    <i class="fas fa-shopping-cart text-purple-500"></i>
+                </div>
+                <p class="text-3xl font-bold text-gray-800">$4,320.50</p>
+                <div class="flex items-center mt-2 text-sm">
+                    <span class="text-green-500 flex items-center">
+                        <i class="fas fa-arrow-down mr-1"></i> 12.3%
+                    </span>
+                    <span class="text-gray-500 ml-2">相比上月</span>
+                </div>
+            </div>
+            <div class="bg-white rounded-xl shadow-md p-5 card">
+                <div class="flex justify-between items-center mb-2">
+                    <h3 class="text-gray-500 font-medium">可用额度</h3>
+                    <i class="fas fa-wallet text-green-500"></i>
+                </div>
+                <p class="text-3xl font-bold text-gray-800">$15,680</p>
+                <div class="flex items-center mt-2 text-sm">
+                    <span class="text-gray-500">总额度: $20,000</span>
+                </div>
+            </div>
+            <div class="bg-white rounded-xl shadow-md p-5 card">
+                <div class="flex justify-between items-center mb-2">
+                    <h3 class="text-gray-500 font-medium">待还款</h3>
+                    <i class="fas fa-calendar-alt text-red-500"></i>
+                </div>
+                <p class="text-3xl font-bold text-gray-800">$1,250.80</p>
+                <div class="flex items-center mt-2 text-sm">
+                    <span class="text-gray-500">还款日: 05/25/2023</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Your Cards -->
+        <div class="mb-8">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-xl font-semibold text-gray-800">您的卡</h2>
+                <button class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium flex items-center">
+                    <i class="fas fa-plus mr-2"></i> 申请新卡
+                </button>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Credit Card -->
+                <div class="card">
+                    <div class="credit-card">
+                        <div class="card-logo">VISA</div>
+                        <div class="card-chip"></div>
+                        <div class="card-number">**** **** **** 4589</div>
+                        <div class="card-details">
+                            <div>
+                                <div class="text-xs text-gray-300 mb-1">持卡人</div>
+                                <div>张三</div>
+                            </div>
+                            <div>
+                                <div class="text-xs text-gray-300 mb-1">有效期</div>
+                                <div>05/25</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-white p-4 rounded-b-xl shadow-md">
+                        <div class="flex justify-between items-center mb-2">
+                            <h3 class="font-medium text-gray-800">商务信用卡</h3>
+                            <span class="px-2 py-1 bg-green-100 text-green-800 rounded-full text-xs">活跃</span>
+                        </div>
+                        <div class="flex justify-between text-sm mb-2">
+                            <span class="text-gray-500">可用额度</span>
+                            <span class="font-medium text-gray-800">$8,450 / $10,000</span>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-500">账单日</span>
+                            <span class="font-medium text-gray-800">每月20日</span>
+                        </div>
+                        <div class="mt-4 flex space-x-2">
+                            <button class="flex-1 bg-blue-100 hover:bg-blue-200 text-blue-600 px-3 py-2 rounded text-sm font-medium">管理</button>
+                            <button class="flex-1 bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-2 rounded text-sm font-medium">冻结</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Virtual Card -->
+                <div class="card">
+                    <div class="credit-card virtual-card">
+                        <div class="card-logo">MC</div>
+                        <div class="card-chip"></div>
+                        <div class="card-number">**** **** **** 7821</div>
+                        <div class="card-details">
+                            <div>
+                                <div class="text-xs text-gray-300 mb-1">持卡人</div>
+                                <div>张三</div>
+                            </div>
+                            <div>
+                                <div class="text-xs text-gray-300 mb-1">有效期</div>
+                                <div>09/24</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-white p-4 rounded-b-xl shadow-md">
+                        <div class="flex justify-between items-center mb-2">
+                            <h3 class="font-medium text-gray-800">虚拟信用卡</h3>
+                            <span class="px-2 py-1 bg-green-100 text-green-800 rounded-full text-xs">活跃</span>
+                        </div>
+                        <div class="flex justify-between text-sm mb-2">
+                            <span class="text-gray-500">可用额度</span>
+                            <span class="font-medium text-gray-800">$4,230 / $5,000</span>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-500">用途</span>
+                            <span class="font-medium text-gray-800">在线购物</span>
+                        </div>
+                        <div class="mt-4 flex space-x-2">
+                            <button class="flex-1 bg-blue-100 hover:bg-blue-200 text-blue-600 px-3 py-2 rounded text-sm font-medium">管理</button>
+                            <button class="flex-1 bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-2 rounded text-sm font-medium">冻结</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Debit Card -->
+                <div class="card">
+                    <div class="credit-card debit-card">
+                        <div class="card-logo">UnionPay</div>
+                        <div class="card-chip"></div>
+                        <div class="card-number">**** **** **** 2356</div>
+                        <div class="card-details">
+                            <div>
+                                <div class="text-xs text-gray-300 mb-1">持卡人</div>
+                                <div>张三</div>
+                            </div>
+                            <div>
+                                <div class="text-xs text-gray-300 mb-1">有效期</div>
+                                <div>11/26</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-white p-4 rounded-b-xl shadow-md">
+                        <div class="flex justify-between items-center mb-2">
+                            <h3 class="font-medium text-gray-800">商务借记卡</h3>
+                            <span class="px-2 py-1 bg-green-100 text-green-800 rounded-full text-xs">活跃</span>
+                        </div>
+                        <div class="flex justify-between text-sm mb-2">
+                            <span class="text-gray-500">余额</span>
+                            <span class="font-medium text-gray-800">$3,000</span>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-500">日限额</span>
+                            <span class="font-medium text-gray-800">$5,000</span>
+                        </div>
+                        <div class="mt-4 flex space-x-2">
+                            <button class="flex-1 bg-blue-100 hover:bg-blue-200 text-blue-600 px-3 py-2 rounded text-sm font-medium">管理</button>
+                            <button class="flex-1 bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-2 rounded text-sm font-medium">冻结</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Transactions -->
+        <div class="mb-8">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-xl font-semibold text-gray-800">近期交易</h2>
+                <a href="#" class="text-blue-600 hover:text-blue-800 text-sm font-medium">查看全部</a>
+            </div>
+            <div class="bg-white rounded-xl shadow-md overflow-hidden">
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">交易</th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">卡</th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">日期</th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">金额</th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">状态</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="flex items-center">
+                                        <div class="transaction-icon bg-blue-100 text-blue-600 mr-3">
+                                            <i class="fas fa-shopping-bag"></i>
+                                        </div>
+                                        <div>
+                                            <div class="text-sm font-medium text-gray-900">亚马逊购物</div>
+                                            <div class="text-xs text-gray-500">电子产品</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="text-sm text-gray-900">虚拟信用卡</div>
+                                    <div class="text-xs text-gray-500">**** 7821</div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">2023年5月12日</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-red-600">-$250.00</td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">已完成</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="flex items-center">
+                                        <div class="transaction-icon bg-purple-100 text-purple-600 mr-3">
+                                            <i class="fas fa-plane"></i>
+                                        </div>
+                                        <div>
+                                            <div class="text-sm font-medium text-gray-900">航空公司</div>
+                                            <div class="text-xs text-gray-500">机票</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="text-sm text-gray-900">商务信用卡</div>
+                                    <div class="text-xs text-gray-500">**** 4589</div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">2023年5月10日</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-red-600">-$850.00</td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">已完成</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="flex items-center">
+                                        <div class="transaction-icon bg-green-100 text-green-600 mr-3">
+                                            <i class="fas fa-utensils"></i>
+                                        </div>
+                                        <div>
+                                            <div class="text-sm font-medium text-gray-900">餐厅</div>
+                                            <div class="text-xs text-gray-500">商务餐饮</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="text-sm text-gray-900">商务信用卡</div>
+                                    <div class="text-xs text-gray-500">**** 4589</div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">2023年5月8日</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-red-600">-$120.50</td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">已完成</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="flex items-center">
+                                        <div class="transaction-icon bg-yellow-100 text-yellow-600 mr-3">
+                                            <i class="fas fa-hotel"></i>
+                                        </div>
+                                        <div>
+                                            <div class="text-sm font-medium text-gray-900">酒店</div>
+                                            <div class="text-xs text-gray-500">住宿</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="text-sm text-gray-900">商务信用卡</div>
+                                    <div class="text-xs text-gray-500">**** 4589</div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">2023年5月5日</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-red-600">-$540.00</td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">已完成</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card Services -->
+        <div>
+            <h2 class="text-xl font-semibold text-gray-800 mb-4">卡服务</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div class="bg-white rounded-xl shadow-md p-5 card">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-blue-100 text-blue-600 rounded-full w-10 h-10 flex items-center justify-center mr-3">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <h3 class="font-medium text-gray-800">安全设置</h3>
+                    </div>
+                    <p class="text-sm text-gray-600 mb-4">管理您的卡片安全设置，包括交易限额、地区限制和通知设置。</p>
+                    <button class="w-full bg-gray-100 hover:bg-gray-200 text-gray-800 py-2 rounded text-sm font-medium">设置</button>
+                </div>
+                <div class="bg-white rounded-xl shadow-md p-5 card">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-purple-100 text-purple-600 rounded-full w-10 h-10 flex items-center justify-center mr-3">
+                            <i class="fas fa-gift"></i>
+                        </div>
+                        <h3 class="font-medium text-gray-800">卡片权益</h3>
+                    </div>
+                    <p class="text-sm text-gray-600 mb-4">查看您的卡片专属权益，包括旅行保险、购物保障和积分兑换。</p>
+                    <button class="w-full bg-gray-100 hover:bg-gray-200 text-gray-800 py-2 rounded text-sm font-medium">查看权益</button>
+                </div>
+                <div class="bg-white rounded-xl shadow-md p-5 card">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-green-100 text-green-600 rounded-full w-10 h-10 flex items-center justify-center mr-3">
+                            <i class="fas fa-headset"></i>
+                        </div>
+                        <h3 class="font-medium text-gray-800">客户服务</h3>
+                    </div>
+                    <p class="text-sm text-gray-600 mb-4">联系我们的客户服务团队，获取卡片相关帮助和支持。</p>
+                    <button class="w-full bg-gray-100 hover:bg-gray-200 text-gray-800 py-2 rounded text-sm font-medium">联系我们</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html> 

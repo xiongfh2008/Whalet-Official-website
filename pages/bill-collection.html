@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>账单收款 - Whalet</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            background-color: #f9fafb;
+            font-family: 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+        }
+        .card {
+            transition: all 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+        .bill-card {
+            transition: all 0.2s ease-in-out;
+        }
+        .bill-card:hover {
+            border-color: #4f46e5;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mx-auto px-4 py-6">
+        <!-- 页面标题 -->
+        <div class="bg-white p-8 rounded-xl shadow-sm mb-6">
+            <div class="flex justify-between items-start">
+                <div>
+                    <h1 class="text-2xl font-bold text-gray-800 mb-2">账单收款</h1>
+                    <p class="text-gray-600">便捷的账单管理与收款服务</p>
+                </div>
+                <button class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg text-sm font-medium flex items-center">
+                    <i class="fas fa-plus mr-2"></i>
+                    创建账单
+                </button>
+            </div>
+        </div>
+
+        <!-- 账单概览 -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+            <div class="bg-white p-6 rounded-xl shadow-sm">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-gray-500 font-medium">待收款总额</h3>
+                    <i class="fas fa-money-bill-wave text-blue-500"></i>
+                </div>
+                <p class="text-2xl font-bold text-gray-800">¥253,640.00</p>
+                <div class="mt-2 flex items-center">
+                    <span class="text-gray-500 text-sm">12笔未收款账单</span>
+                </div>
+            </div>
+
+            <div class="bg-white p-6 rounded-xl shadow-sm">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-gray-500 font-medium">已逾期金额</h3>
+                    <i class="fas fa-exclamation-circle text-red-500"></i>
+                </div>
+                <p class="text-2xl font-bold text-red-500">¥85,450.00</p>
+                <div class="mt-2 flex items-center">
+                    <span class="text-red-400 text-sm">3笔已逾期账单</span>
+                </div>
+            </div>
+
+            <div class="bg-white p-6 rounded-xl shadow-sm">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-gray-500 font-medium">本月收款额</h3>
+                    <i class="fas fa-chart-line text-green-500"></i>
+                </div>
+                <p class="text-2xl font-bold text-gray-800">¥342,780.00</p>
+                <div class="mt-2 flex items-center text-sm">
+                    <span class="text-green-500 flex items-center">
+                        <i class="fas fa-arrow-up mr-1"></i>
+                        15.2%
+                    </span>
+                    <span class="text-gray-500 ml-2">较上月</span>
+                </div>
+            </div>
+
+            <div class="bg-white p-6 rounded-xl shadow-sm">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-gray-500 font-medium">账单总数</h3>
+                    <i class="fas fa-file-invoice-dollar text-purple-500"></i>
+                </div>
+                <p class="text-2xl font-bold text-gray-800">68</p>
+                <div class="mt-2 flex items-center text-sm">
+                    <span class="text-gray-500">近30天内</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 账单管理 -->
+        <div class="bg-white rounded-xl shadow-sm mb-8">
+            <div class="p-6 border-b border-gray-200">
+                <div class="flex flex-wrap justify-between items-center">
+                    <h2 class="text-xl font-semibold text-gray-800 mb-4 md:mb-0">账单管理</h2>
+                    <div class="flex flex-wrap gap-4">
+                        <div class="relative">
+                            <input type="text" placeholder="搜索账单..." class="w-64 pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                            <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
+                        </div>
+                        <div class="flex space-x-2">
+                            <button class="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg text-sm font-medium flex items-center">
+                                <i class="fas fa-filter mr-2"></i>
+                                筛选
+                            </button>
+                            <button class="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg text-sm font-medium flex items-center">
+                                <i class="fas fa-sort-amount-down mr-2"></i>
+                                排序
+                            </button>
+                            <button class="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg text-sm font-medium flex items-center">
+                                <i class="fas fa-download mr-2"></i>
+                                导出
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 批量操作工具栏 -->
+            <div class="p-4 bg-gray-50 border-b border-gray-200">
+                <div class="flex items-center space-x-4">
+                    <label class="inline-flex items-center">
+                        <input type="checkbox" class="form-checkbox h-5 w-5 text-blue-600">
+                        <span class="ml-2 text-sm text-gray-700">全选</span>
+                    </label>
+                    <button class="text-gray-700 hover:text-gray-900 text-sm font-medium disabled:opacity-50 disabled:cursor-not-allowed" disabled>
+                        <i class="fas fa-envelope mr-1"></i>
+                        发送提醒
+                    </button>
+                    <button class="text-gray-700 hover:text-gray-900 text-sm font-medium disabled:opacity-50 disabled:cursor-not-allowed" disabled>
+                        <i class="fas fa-check-circle mr-1"></i>
+                        标记为已付
+                    </button>
+                    <button class="text-gray-700 hover:text-gray-900 text-sm font-medium disabled:opacity-50 disabled:cursor-not-allowed" disabled>
+                        <i class="fas fa-trash-alt mr-1"></i>
+                        删除
+                    </button>
+                </div>
+            </div>
+            
+            <!-- 账单列表 -->
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                <span class="sr-only">选择</span>
+                            </th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                账单编号
+                            </th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                客户信息
+                            </th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                金额
+                            </th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                发布日期
+                            </th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                到期日
+                            </th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                状态
+                            </th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                操作
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                        <!-- 账单 1 -->
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <input type="checkbox" class="form-checkbox h-5 w-5 text-blue-600">
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                INV-2023-0015
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="flex items-center">
+                                    <div class="flex-shrink-0 h-10 w-10 bg-blue-100 rounded-full flex items-center justify-center text-blue-700 font-bold">
+                                        AC
+                                    </div>
+                                    <div class="ml-4">
+                                        <div class="text-sm font-medium text-gray-900">美国客户 A</div>
+                                        <div class="text-sm text-gray-500">customer.a@example.com</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                $12,500.00
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                2023-05-15
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                2023-06-15
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
+                                    未支付
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                <div class="flex space-x-2">
+                                    <button class="text-blue-600 hover:text-blue-900">
+                                        <i class="fas fa-share-alt"></i>
+                                    </button>
+                                    <button class="text-gray-600 hover:text-gray-900">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <button class="text-gray-600 hover:text-gray-900">
+                                        <i class="fas fa-ellipsis-v"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        <!-- 账单 2 -->
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <input type="checkbox" class="form-checkbox h-5 w-5 text-blue-600">
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                INV-2023-0014
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="flex items-center">
+                                    <div class="flex-shrink-0 h-10 w-10 bg-green-100 rounded-full flex items-center justify-center text-green-700 font-bold">
+                                        BC
+                                    </div>
+                                    <div class="ml-4">
+                                        <div class="text-sm font-medium text-gray-900">英国客户 B</div>
+                                        <div class="text-sm text-gray-500">customer.b@example.com</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                £8,750.00
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                2023-05-10
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                2023-06-10
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                    已支付
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                <div class="flex space-x-2">
+                                    <button class="text-blue-600 hover:text-blue-900">
+                                        <i class="fas fa-share-alt"></i>
+                                    </button>
+                                    <button class="text-gray-600 hover:text-gray-900">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <button class="text-gray-600 hover:text-gray-900">
+                                        <i class="fas fa-ellipsis-v"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        <!-- 账单 3 -->
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <input type="checkbox" class="form-checkbox h-5 w-5 text-blue-600">
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                INV-2023-0013
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="flex items-center">
+                                    <div class="flex-shrink-0 h-10 w-10 bg-purple-100 rounded-full flex items-center justify-center text-purple-700 font-bold">
+                                        CD
+                                    </div>
+                                    <div class="ml-4">
+                                        <div class="text-sm font-medium text-gray-900">欧洲客户 C</div>
+                                        <div class="text-sm text-gray-500">customer.c@example.com</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                €15,200.00
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                2023-05-01
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                2023-06-01
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
+                                    已逾期
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                <div class="flex space-x-2">
+                                    <button class="text-blue-600 hover:text-blue-900">
+                                        <i class="fas fa-share-alt"></i>
+                                    </button>
+                                    <button class="text-gray-600 hover:text-gray-900">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <button class="text-gray-600 hover:text-gray-900">
+                                        <i class="fas fa-ellipsis-v"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <!-- 分页 -->
+            <div class="px-6 py-4 border-t border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div class="text-sm text-gray-500">
+                        显示 1 至 3 条，共 68 条
+                    </div>
+                    <div class="flex space-x-1">
+                        <button class="px-3 py-1 border border-gray-300 rounded-md text-sm text-gray-700 hover:bg-gray-50 disabled:opacity-50" disabled>
+                            上一页
+                        </button>
+                        <button class="px-3 py-1 border border-blue-500 bg-blue-500 text-white rounded-md text-sm">
+                            1
+                        </button>
+                        <button class="px-3 py-1 border border-gray-300 rounded-md text-sm text-gray-700 hover:bg-gray-50">
+                            2
+                        </button>
+                        <button class="px-3 py-1 border border-gray-300 rounded-md text-sm text-gray-700 hover:bg-gray-50">
+                            3
+                        </button>
+                        <span class="px-2 py-1 text-gray-500">...</span>
+                        <button class="px-3 py-1 border border-gray-300 rounded-md text-sm text-gray-700 hover:bg-gray-50">
+                            23
+                        </button>
+                        <button class="px-3 py-1 border border-gray-300 rounded-md text-sm text-gray-700 hover:bg-gray-50">
+                            下一页
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 客户管理区域 -->
+        <div class="bg-white rounded-xl shadow-sm">
+            <div class="p-6 border-b border-gray-200">
+                <div class="flex justify-between items-center">
+                    <h2 class="text-xl font-semibold text-gray-800">客户管理</h2>
+                    <button class="text-blue-600 hover:text-blue-800 text-sm font-medium flex items-center">
+                        <i class="fas fa-plus mr-1"></i>
+                        添加客户
+                    </button>
+                </div>
+            </div>
+            <div class="p-6 grid grid-cols-1 md:grid-cols-3 gap-4">
+                <!-- 客户卡片 1 -->
+                <div class="bill-card border border-gray-200 rounded-lg p-5 hover:shadow-md">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="flex items-center">
+                            <div class="h-12 w-12 rounded-full bg-blue-100 flex items-center justify-center text-blue-700 font-bold text-xl">
+                                AC
+                            </div>
+                            <div class="ml-3">
+                                <h3 class="font-medium text-gray-900">美国客户 A</h3>
+                                <p class="text-sm text-gray-500">已建立合作关系：2年</p>
+                            </div>
+                        </div>
+                        <div class="text-gray-400">
+                            <i class="fas fa-ellipsis-h"></i>
+                        </div>
+                    </div>
+                    <div class="space-y-2 mb-4">
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-500">未结账单</span>
+                            <span class="font-medium text-gray-800">3笔</span>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-500">待收款金额</span>
+                            <span class="font-medium text-gray-800">$42,500.00</span>
+                        </div>
+                    </div>
+                    <div class="flex space-x-2 pt-3 border-t border-gray-100">
+                        <button class="text-blue-600 hover:text-blue-900 text-sm">发送账单</button>
+                        <span class="text-gray-300">|</span>
+                        <button class="text-gray-600 hover:text-gray-900 text-sm">查看详情</button>
+                    </div>
+                </div>
+                
+                <!-- 客户卡片 2 -->
+                <div class="bill-card border border-gray-200 rounded-lg p-5 hover:shadow-md">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="flex items-center">
+                            <div class="h-12 w-12 rounded-full bg-green-100 flex items-center justify-center text-green-700 font-bold text-xl">
+                                BC
+                            </div>
+                            <div class="ml-3">
+                                <h3 class="font-medium text-gray-900">英国客户 B</h3>
+                                <p class="text-sm text-gray-500">已建立合作关系：1年</p>
+                            </div>
+                        </div>
+                        <div class="text-gray-400">
+                            <i class="fas fa-ellipsis-h"></i>
+                        </div>
+                    </div>
+                    <div class="space-y-2 mb-4">
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-500">未结账单</span>
+                            <span class="font-medium text-gray-800">1笔</span>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-500">待收款金额</span>
+                            <span class="font-medium text-gray-800">£8,750.00</span>
+                        </div>
+                    </div>
+                    <div class="flex space-x-2 pt-3 border-t border-gray-100">
+                        <button class="text-blue-600 hover:text-blue-900 text-sm">发送账单</button>
+                        <span class="text-gray-300">|</span>
+                        <button class="text-gray-600 hover:text-gray-900 text-sm">查看详情</button>
+                    </div>
+                </div>
+                
+                <!-- 客户卡片 3 -->
+                <div class="bill-card border border-gray-200 rounded-lg p-5 hover:shadow-md">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="flex items-center">
+                            <div class="h-12 w-12 rounded-full bg-purple-100 flex items-center justify-center text-purple-700 font-bold text-xl">
+                                CD
+                            </div>
+                            <div class="ml-3">
+                                <h3 class="font-medium text-gray-900">欧洲客户 C</h3>
+                                <p class="text-sm text-gray-500">已建立合作关系：3年</p>
+                            </div>
+                        </div>
+                        <div class="text-gray-400">
+                            <i class="fas fa-ellipsis-h"></i>
+                        </div>
+                    </div>
+                    <div class="space-y-2 mb-4">
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-500">未结账单</span>
+                            <span class="font-medium text-red-600">2笔 (已逾期)</span>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-500">待收款金额</span>
+                            <span class="font-medium text-gray-800">€25,350.00</span>
+                        </div>
+                    </div>
+                    <div class="flex space-x-2 pt-3 border-t border-gray-100">
+                        <button class="text-blue-600 hover:text-blue-900 text-sm">发送提醒</button>
+                        <span class="text-gray-300">|</span>
+                        <button class="text-gray-600 hover:text-gray-900 text-sm">查看详情</button>
+                    </div>
+                </div>
+            </div>
+            <div class="px-6 py-4 border-t border-gray-200 text-center">
+                <button class="text-blue-600 hover:text-blue-800 text-sm font-medium">
+                    查看全部客户 (28)
+                </button>
+            </div>
+        </div>
+    </div>
+</body>
+</html> 
