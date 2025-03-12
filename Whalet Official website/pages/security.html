@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>安全设置 - Whalet</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            background-color: #f9fafb;
+            font-family: 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+        }
+        .card {
+            transition: all 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+        .security-item {
+            transition: all 0.2s ease-in-out;
+            border: 1px solid #e5e7eb;
+        }
+        .security-item:hover {
+            border-color: #4f46e5;
+            background-color: #f9fafb;
+        }
+        .device-item {
+            transition: all 0.2s ease;
+        }
+        .device-item:hover {
+            background-color: #f9fafb;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mx-auto px-4 py-4">
+        <!-- 页面标题 -->
+        <div class="bg-white p-6 rounded-xl shadow-sm mb-4">
+            <div class="flex justify-between items-start">
+                <div class="flex items-center">
+                    <div class="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center mr-4">
+                        <i class="fas fa-building text-white text-2xl"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-2xl font-bold text-gray-800 mb-1">重庆测试有限公司</h1>
+                        <p class="text-gray-600">企业安全中心</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 基本信息 -->
+        <div class="bg-white rounded-xl shadow-sm mb-4">
+            <div class="grid grid-cols-3 divide-x divide-gray-100">
+                <div class="p-4">
+                    <h3 class="text-sm font-medium text-gray-500 mb-1">账户名称</h3>
+                    <p class="text-base text-gray-900">13888888888</p>
+                </div>
+                <div class="p-4">
+                    <h3 class="text-sm font-medium text-gray-500 mb-1">用户编号</h3>
+                    <p class="text-base text-gray-900">202208231752558868160001</p>
+                </div>
+                <div class="p-4">
+                    <h3 class="text-sm font-medium text-gray-500 mb-1">上次访问</h3>
+                    <p class="text-base text-gray-900">2025-03-12 00:10:25</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 安全设置项 -->
+        <div class="grid grid-cols-1 gap-4 mb-4">
+            <!-- 英文名称 -->
+            <div class="security-item bg-white rounded-xl p-4">
+                <div class="flex justify-between items-center">
+                    <div class="flex items-start">
+                        <div class="rounded-lg bg-blue-100 p-3 mr-4">
+                            <i class="fas fa-globe text-blue-600 text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-medium text-gray-800 mb-1">英文名称</h3>
+                            <p class="text-sm text-gray-600">Whale Testing Co., Ltd</p>
+                        </div>
+                    </div>
+                    <button class="px-4 py-2 text-blue-600 hover:text-blue-700 text-sm font-medium">
+                        修改
+                    </button>
+                </div>
+            </div>
+
+            <!-- 登录密码 -->
+            <div class="security-item bg-white rounded-xl p-4">
+                <div class="flex justify-between items-center">
+                    <div class="flex items-start">
+                        <div class="rounded-lg bg-yellow-100 p-3 mr-4">
+                            <i class="fas fa-key text-yellow-600 text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-medium text-gray-800 mb-1">登录密码</h3>
+                            <p class="text-sm text-gray-500">最后修改：2023-09-04 12:04:58</p>
+                        </div>
+                    </div>
+                    <button class="px-4 py-2 text-blue-600 hover:text-blue-700 text-sm font-medium">
+                        更新
+                    </button>
+                </div>
+            </div>
+
+            <!-- 交易密码 -->
+            <div class="security-item bg-white rounded-xl p-4">
+                <div class="flex justify-between items-center">
+                    <div class="flex items-start">
+                        <div class="rounded-lg bg-green-100 p-3 mr-4">
+                            <i class="fas fa-lock text-green-600 text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-medium text-gray-800 mb-1">交易密码</h3>
+                            <p class="text-sm text-gray-500">最后修改：2024-11-13 10:08:25</p>
+                        </div>
+                    </div>
+                    <button class="px-4 py-2 text-blue-600 hover:text-blue-700 text-sm font-medium">
+                        更新
+                    </button>
+                </div>
+            </div>
+
+            <!-- 手机绑定 -->
+            <div class="security-item bg-white rounded-xl p-4">
+                <div class="flex justify-between items-center">
+                    <div class="flex items-start">
+                        <div class="rounded-lg bg-purple-100 p-3 mr-4">
+                            <i class="fas fa-mobile-alt text-purple-600 text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-medium text-gray-800 mb-1">手机绑定</h3>
+                            <p class="text-sm text-gray-600">86-132 **** 2514</p>
+                        </div>
+                    </div>
+                    <button class="px-4 py-2 text-blue-600 hover:text-blue-700 text-sm font-medium">
+                        更新
+                    </button>
+                </div>
+            </div>
+
+            <!-- 邮箱绑定 -->
+            <div class="security-item bg-white rounded-xl p-4">
+                <div class="flex justify-between items-center">
+                    <div class="flex items-start">
+                        <div class="rounded-lg bg-orange-100 p-3 mr-4">
+                            <i class="fas fa-envelope text-orange-600 text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-medium text-gray-800 mb-1">邮箱绑定</h3>
+                            <p class="text-sm text-gray-600">daniel **** halet.com</p>
+                        </div>
+                    </div>
+                    <button class="px-4 py-2 text-blue-600 hover:text-blue-700 text-sm font-medium">
+                        更新
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 安全提示 -->
+        <div class="bg-white rounded-xl shadow-sm p-6">
+            <h2 class="text-lg font-medium text-gray-800 mb-4">安全提示</h2>
+            <div class="space-y-4">
+                <div class="flex items-start">
+                    <div class="text-yellow-500 mr-3">
+                        <i class="fas fa-exclamation-triangle"></i>
+                    </div>
+                    <p class="text-sm text-gray-700">
+                        请勿将您的账户密码告知任何人。
+                    </p>
+                </div>
+                <div class="flex items-start">
+                    <div class="text-yellow-500 mr-3">
+                        <i class="fas fa-exclamation-triangle"></i>
+                    </div>
+                    <p class="text-sm text-gray-700">
+                        定期更改您的密码，并确保使用复杂密码，包含大小写字母、数字和特殊符号。
+                    </p>
+                </div>
+                <div class="flex items-start">
+                    <div class="text-yellow-500 mr-3">
+                        <i class="fas fa-exclamation-triangle"></i>
+                    </div>
+                    <p class="text-sm text-gray-700">
+                        如果您发现任何可疑活动，请立即联系我们的客户支持。
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html> 

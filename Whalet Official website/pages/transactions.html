@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>交易查询 - Whalet</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            background-color: #f9fafb;
+            font-family: 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+        }
+        .card {
+            transition: all 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+        .chart-container {
+            height: 240px;
+            position: relative;
+        }
+        .custom-checkbox {
+            position: relative;
+            padding-left: 28px;
+            cursor: pointer;
+            user-select: none;
+        }
+        .custom-checkbox input {
+            position: absolute;
+            opacity: 0;
+            cursor: pointer;
+        }
+        .checkmark {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 18px;
+            width: 18px;
+            background-color: #eee;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+        }
+        .custom-checkbox:hover input ~ .checkmark {
+            background-color: #ccc;
+        }
+        .custom-checkbox input:checked ~ .checkmark {
+            background-color: #4f46e5;
+            border-color: #4f46e5;
+        }
+        .checkmark:after {
+            content: "";
+            position: absolute;
+            display: none;
+        }
+        .custom-checkbox input:checked ~ .checkmark:after {
+            display: block;
+        }
+        .custom-checkbox .checkmark:after {
+            left: 6px;
+            top: 2px;
+            width: 5px;
+            height: 10px;
+            border: solid white;
+            border-width: 0 2px 2px 0;
+            transform: rotate(45deg);
+        }
+        .date-range {
+            display: flex;
+            align-items: center;
+        }
+        .filter-button {
+            position: relative;
+        }
+        .filter-dropdown {
+            display: none;
+            position: absolute;
+            right: 0;
+            top: 100%;
+            margin-top: 5px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            min-width: 240px;
+            z-index: 10;
+        }
+        .filter-button:hover .filter-dropdown {
+            display: block;
+        }
+        .transaction-tag {
+            font-size: 12px;
+            padding: 2px 8px;
+            border-radius: 4px;
+            display: inline-block;
+        }
+        .tag-income {
+            background-color: #dcfce7;
+            color: #16a34a;
+        }
+        .tag-expense {
+            background-color: #fee2e2;
+            color: #dc2626;
+        }
+        .tag-exchange {
+            background-color: #e0e7ff;
+            color: #4f46e5;
+        }
+        .tab-button {
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        .tab-button.active {
+            color: #2563eb;
+            border-bottom: 2px solid #2563eb;
+        }
+        .tag-success {
+            background-color: #dcfce7;
+            color: #166534;
+        }
+        .tag-pending {
+            background-color: #fef9c3;
+            color: #854d0e;
+        }
+        .tag-failed {
+            background-color: #fee2e2;
+            color: #991b1b;
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-gray-50">
+    <div class="container mx-auto px-4 py-6">
+       
+
+        <!-- 交易记录主体内容 -->
+        <div class="bg-white rounded-xl shadow-sm">
+            <!-- 标签页导航 -->
+            <div class="border-b border-gray-200">
+                <div class="flex justify-between items-center p-4">
+                    <div class="flex overflow-x-auto space-x-4">
+                        <button id="tab-collection" class="tab-button active px-4 py-2 text-sm font-medium whitespace-nowrap">
+                            收款记录
+                        </button>
+                        <button id="tab-withdrawal" class="tab-button px-4 py-2 text-sm font-medium text-gray-500 hover:text-gray-700 whitespace-nowrap">
+                            提现记录
+                        </button>
+                        <button id="tab-payment" class="tab-button px-4 py-2 text-sm font-medium text-gray-500 hover:text-gray-700 whitespace-nowrap">
+                            付款记录
+                        </button>
+                        <button id="tab-exchange" class="tab-button px-4 py-2 text-sm font-medium text-gray-500 hover:text-gray-700 whitespace-nowrap">
+                            换汇记录
+                        </button>
+                        <button id="tab-acquiring" class="tab-button px-4 py-2 text-sm font-medium text-gray-500 hover:text-gray-700 whitespace-nowrap">
+                            收单结算
+                        </button>
+                        <button id="tab-other" class="tab-button px-4 py-2 text-sm font-medium text-gray-500 hover:text-gray-700 whitespace-nowrap">
+                            其他记录
+                        </button>
+                        <button id="tab-voucher" class="tab-button px-4 py-2 text-sm font-medium text-gray-500 hover:text-gray-700 whitespace-nowrap">
+                            <i class="fas fa-download mr-1"></i>下载凭证
+                        </button>
+                    </div>
+                    <div class="flex items-center space-x-6">
+                        <!-- 公告图标 -->
+                        <div class="relative">
+                            <a href="#" class="text-gray-600 hover:text-blue-600">
+                                <span class="relative">
+                                    <i class="fas fa-bell text-lg"></i>
+                                    <span class="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full"></span>
+                                </span>
+                            </a>
+                        </div>
+                        
+                        <!-- 帮助中心 -->
+                        <a href="#" class="text-gray-600 hover:text-blue-600 text-sm">帮助中心</a>
+                        
+                        <!-- 用户中心 -->
+                        <div class="relative">
+                            <button id="userCenterBtn" class="text-gray-600 hover:text-blue-600">
+                                <i class="fas fa-user-circle text-lg"></i>
+                            </button>
+                            <div id="userCenterDropdown" class="absolute right-0 top-full mt-1 w-32 bg-white rounded-lg shadow-lg py-2 hidden z-10">
+                                <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">安全设置</a>
+                                <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">费率查询</a>
+                                <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">优惠券</a>
+                                <div class="border-t border-gray-100 my-1"></div>
+                                <a href="#" class="block px-4 py-2 text-sm text-red-600 hover:bg-gray-100">退出</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 搜索和过滤区域 -->
+            <div class="p-6 border-b border-gray-200">
+                <div class="flex flex-wrap items-center gap-4">
+                    <div class="date-range flex items-center space-x-2">
+                        <div class="relative">
+                            <input type="text" placeholder="开始日期" class="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                            <i class="fas fa-calendar-alt absolute left-3 top-3 text-gray-400"></i>
+                        </div>
+                        <span class="text-gray-500">~</span>
+                        <div class="relative">
+                            <input type="text" placeholder="结束日期" class="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                            <i class="fas fa-calendar-alt absolute left-3 top-3 text-gray-400"></i>
+                        </div>
+                    </div>
+                    <select class="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                        <option>全部平台</option>
+                    </select>
+                    <select class="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                        <option>全部状态</option>
+                    </select>
+                    <div class="relative">
+                        <input type="text" placeholder="卡号后四位" class="pl-3 pr-4 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" maxlength="4">
+                    </div>
+                    <button class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium">
+                        查询
+                    </button>
+                </div>
+            </div>
+
+            <!-- 标签页内容区域 -->
+            <div class="tab-content">
+                <!-- 收款记录 -->
+                <div id="content-collection" class="tab-pane">
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        收款时间
+                                    </th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        平台名称
+                                    </th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        店铺名/账号/别名
+                                    </th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        银行账号
+                                    </th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        银行账户状态
+                                    </th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        收款金额 | 币种
+                                    </th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        到账金额 | 币种
+                                    </th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        状态
+                                    </th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        操作
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-200">
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">2024-10-21 16:53:59</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">Mercari</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">M1</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">6838</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">使用中</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">100.00 USD</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900"></td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span class="transaction-tag tag-pending">退款中</span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm">
+                                        <a href="#" class="text-blue-600 hover:text-blue-900">详情</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">2024-03-27 00:16:26</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">Amazon 北美站</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">Crtstars</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">1367</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">未激活</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">100.00 USD</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">100.00 USD</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span class="transaction-tag tag-success">已入账</span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm">
+                                        <a href="#" class="text-blue-600 hover:text-blue-900 mr-2">激活</a>
+                                        <a href="#" class="text-blue-600 hover:text-blue-900">详情</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">2020-03-12 10:06:29</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">速卖通</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">cn1524290498nbyd</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">0001</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">已停用</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">10.00 USD</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">10.00 USD</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span class="transaction-tag tag-success">已入账</span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm">
+                                        <a href="#" class="text-blue-600 hover:text-blue-900">详情</a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- 其他标签页内容 -->
+                <div id="content-withdrawal" class="tab-pane hidden">
+                    <!-- 提现记录内容 -->
+                    <div class="p-6 text-center text-gray-500">
+                        提现记录内容
+                    </div>
+                </div>
+                <div id="content-payment" class="tab-pane hidden">
+                    <!-- 付款记录内容 -->
+                    <div class="p-6 text-center text-gray-500">
+                        付款记录内容
+                    </div>
+                </div>
+                <div id="content-exchange" class="tab-pane hidden">
+                    <!-- 换汇记录内容 -->
+                    <div class="p-6 text-center text-gray-500">
+                        换汇记录内容
+                    </div>
+                </div>
+                <div id="content-acquiring" class="tab-pane hidden">
+                    <!-- 收单结算内容 -->
+                    <div class="p-6 text-center text-gray-500">
+                        收单结算内容
+                    </div>
+                </div>
+                <div id="content-other" class="tab-pane hidden">
+                    <!-- 其他记录内容 -->
+                    <div class="p-6 text-center text-gray-500">
+                        其他记录内容
+                    </div>
+                </div>
+                <div id="content-voucher" class="tab-pane hidden">
+                    <!-- 下载凭证内容 -->
+                    <div class="p-6 text-center text-gray-500">
+                        下载凭证内容
+                    </div>
+                </div>
+            </div>
+
+            <!-- 分页 -->
+            <div class="px-6 py-4 border-t border-gray-200">
+                <div class="flex flex-wrap justify-between items-center">
+                    <div class="mb-4 md:mb-0">
+                        <label class="text-sm text-gray-600 mr-2">每页显示:</label>
+                        <select class="border border-gray-300 rounded-md px-2 py-1 text-sm">
+                            <option>10</option>
+                            <option selected>20</option>
+                            <option>50</option>
+                            <option>100</option>
+                        </select>
+                    </div>
+                    <div class="flex space-x-1">
+                        <button class="px-3 py-1 border border-gray-300 rounded-md text-sm text-gray-700 hover:bg-gray-50 disabled:opacity-50" disabled>
+                            上一页
+                        </button>
+                        <button class="px-3 py-1 border border-blue-500 bg-blue-500 text-white rounded-md text-sm">
+                            1
+                        </button>
+                        <button class="px-3 py-1 border border-gray-300 rounded-md text-sm text-gray-700 hover:bg-gray-50">
+                            2
+                        </button>
+                        <button class="px-3 py-1 border border-gray-300 rounded-md text-sm text-gray-700 hover:bg-gray-50">
+                            3
+                        </button>
+                        <span class="px-2 py-1 text-gray-500">...</span>
+                        <button class="px-3 py-1 border border-gray-300 rounded-md text-sm text-gray-700 hover:bg-gray-50">
+                            20
+                        </button>
+                        <button class="px-3 py-1 border border-gray-300 rounded-md text-sm text-gray-700 hover:bg-gray-50">
+                            下一页
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 标签页切换逻辑
+        const tabs = ['collection', 'withdrawal', 'payment', 'exchange', 'acquiring', 'other', 'voucher'];
+        
+        tabs.forEach(tab => {
+            const button = document.getElementById(`tab-${tab}`);
+            const content = document.getElementById(`content-${tab}`);
+            
+            button.addEventListener('click', () => {
+                // 移除所有标签页的激活状态
+                tabs.forEach(t => {
+                    document.getElementById(`tab-${t}`).classList.remove('active');
+                    document.getElementById(`content-${t}`).classList.add('hidden');
+                });
+                
+                // 激活当前标签页
+                button.classList.add('active');
+                content.classList.remove('hidden');
+            });
+        });
+
+        // 用户中心下拉菜单逻辑
+        const userCenterBtn = document.getElementById('userCenterBtn');
+        const userCenterDropdown = document.getElementById('userCenterDropdown');
+
+        userCenterBtn.addEventListener('click', () => {
+            userCenterDropdown.classList.toggle('hidden');
+        });
+
+        // 点击其他地方关闭下拉菜单
+        document.addEventListener('click', (event) => {
+            if (!userCenterBtn.contains(event.target)) {
+                userCenterDropdown.classList.add('hidden');
+            }
+        });
+    </script>
+</body>
+</html>
