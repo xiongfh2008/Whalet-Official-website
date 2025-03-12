@@ -115,6 +115,10 @@
             height: 100%;
             border: none;
         }
+        #logo {
+            width: 100%;
+            height: 100%;
+        }
     </style>
 </head>
 <body class="bg-gray-50 text-gray-800">
@@ -123,10 +127,9 @@
         <div class="relative py-6">
             <!-- Logo -->
             <div class="flex items-center px-4 mb-8">
-                <div class="w-5 text-center">
-                    <img src="assets/images/logo.svg" alt="Whalet Logo" class="h-8 w-8">
+                <div class="text-center">
+                    <img src="assets/images/whaletlogo2.png" id="logo" alt="Whalet Logo" >
                 </div>
-                <span class="ml-3 text-xl font-bold menu-text">Whalet</span>
             </div>
             
             <!-- 侧边栏折叠按钮 -->
@@ -206,7 +209,7 @@
                 <li>
                     <div class="menu-item" data-toggle="submenu-payment">
                         <i class="fas fa-wallet w-5 text-center"></i>
-                        <span class="ml-3 menu-text">提现 & 付款</span>
+                        <span class="ml-3 menu-text">提现付款</span>
                         <i class="fas fa-chevron-down ml-auto text-xs submenu-toggle"></i>
                     </div>
                     <ul class="submenu" id="submenu-payment">

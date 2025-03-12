@@ -68,31 +68,64 @@
         .filter-dropdown {
             min-width: 200px;
         }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        .tab-button.active {
+            color: #4f46e5;
+            border-bottom: 2px solid #4f46e5;
+        }
     </style>
 </head>
 <body>
     <div class="container mx-auto px-4 py-6">
-        <!-- 页面标题 -->
-        <div class="bg-white p-8 rounded-xl shadow-sm mb-6">
-            <div class="flex justify-between items-start">
-                <div>
-                    <h1 class="text-2xl font-bold text-gray-800 mb-2">交易清单</h1>
-                    <p class="text-gray-600">全面的交易记录管理</p>
-                </div>
-                <div class="flex space-x-3">
-                    <button class="bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2 rounded-lg text-sm font-medium flex items-center">
-                        <i class="fas fa-file-download mr-2"></i>
-                        导出报表
+        <!-- Tab Navigation -->
+        <div class="mb-6 border-b border-gray-200">
+            <div class="flex justify-between items-center">
+                <div class="flex space-x-8">
+                    <button class="tab-button active px-1 py-4 text-sm font-medium text-gray-700 hover:text-gray-900 border-b-2 border-transparent hover:border-gray-300" data-tab="payment-records">
+                        支付记录
                     </button>
-                    <div class="relative" x-data="{ open: false }">
-                        <button @click="open = !open" class="bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2 rounded-lg text-sm font-medium flex items-center">
-                            <i class="fas fa-ellipsis-h"></i>
+                    <button class="tab-button px-1 py-4 text-sm font-medium text-gray-700 hover:text-gray-900 border-b-2 border-transparent hover:border-gray-300" data-tab="refund-records">
+                        退款记录
+                    </button>
+                </div>
+                <div class="flex items-center space-x-6 pr-6">
+                    <!-- 公告图标 -->
+                    <div class="relative">
+                        <a href="#" class="text-gray-600 hover:text-blue-600">
+                            <span class="relative">
+                                <i class="fas fa-bell text-lg"></i>
+                                <span class="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full"></span>
+                            </span>
+                        </a>
+                    </div>
+                    
+                    <!-- 帮助中心 -->
+                    <a href="#" class="text-gray-600 hover:text-blue-600 text-sm">帮助中心</a>
+                    
+                    <!-- 用户中心 -->
+                    <div class="relative">
+                        <button id="userCenterBtn" class="text-gray-600 hover:text-blue-600">
+                            <i class="fas fa-user-circle text-lg"></i>
                         </button>
+                        <div id="userCenterDropdown" class="absolute right-0 top-full mt-1 w-32 bg-white rounded-lg shadow-lg py-2 hidden z-10">
+                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">安全设置</a>
+                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">费率查询</a>
+                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">优惠券</a>
+                            <div class="border-t border-gray-100 my-1"></div>
+                            <a href="#" class="block px-4 py-2 text-sm text-red-600 hover:bg-gray-100">退出</a>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
 
+        <!-- 交易概况 Tab -->
+        <div id="overview" class="tab-content">
         <!-- 交易统计 -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
             <!-- 交易趋势图 -->
@@ -559,10 +592,342 @@
                         <button class="px-3 py-1 border border-gray-300 rounded-md text-sm text-gray-700 hover:bg-gray-50">
                             下一页
                         </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 支付记录 Tab -->
+        <div id="payment-records" class="tab-content active bg-white rounded-lg shadow-sm">
+            <!-- 查询条件 -->
+            <div class="p-6 border-b border-gray-200">
+                <div class="flex flex-wrap gap-4">
+                    <div class="flex items-center">
+                        <span class="mr-2 text-sm font-medium text-gray-700">日期:</span>
+                        <input type="date" class="p-2 text-sm border border-gray-300 rounded-md" />
+                        <span class="mx-2">至</span>
+                        <input type="date" class="p-2 text-sm border border-gray-300 rounded-md" />
+                    </div>
+                    <div class="flex items-center">
+                        <span class="mr-2 text-sm font-medium text-gray-700">状态:</span>
+                        <select class="p-2 text-sm border border-gray-300 rounded-md">
+                            <option value="">全部</option>
+                            <option value="payment_failed">付款失败</option>
+                            <option value="pending">待支付</option>
+                            <option value="expired">已过期</option>
+                        </select>
+                    </div>
+                    <div class="flex items-center">
+                        <input type="text" placeholder="交易号" class="p-2 text-sm border border-gray-300 rounded-md w-48" />
+                    </div>
+                    <div class="flex items-center">
+                        <input type="text" placeholder="商户订单号" class="p-2 text-sm border border-gray-300 rounded-md w-48" />
+                    </div>
+                    <div class="flex items-center">
+                        <button class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded text-sm font-medium">
+                            查询
+                        </button>
+                        <button class="ml-2 bg-white border border-gray-300 text-gray-700 px-4 py-2 rounded text-sm font-medium hover:bg-gray-50">
+                            重置
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 数据表格 -->
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
+                            <tr>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    交易时间
+                                </th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    交易号
+                                </th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    商户订单号
+                                </th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    客户邮箱
+                                </th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    交易金额
+                                </th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    退款金额
+                                </th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    结算金额
+                                </th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    手续费
+                                </th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    方式
+                                </th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    状态
+                                </th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    操作
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">2025-01-17 10:08</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">20250117...</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">20250117...</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">yuanyuan...</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">15.00 EUR</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">-</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">15.00 EUR</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">-</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">支付链接</td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">付款失败</span>
+                                </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                    <a href="#" class="text-blue-600 hover:text-blue-900">详情</a>
+                                </td>
+                            </tr>
+                        <!-- More rows... -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- 分页 -->
+            <div class="px-6 py-4 border-t border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div class="text-sm text-gray-500">
+                        共16页/80条数据
+                    </div>
+                    <div class="flex items-center space-x-1">
+                        <button class="px-3 py-1 border border-gray-300 rounded text-sm text-gray-700 hover:bg-gray-50 disabled:opacity-50" disabled>
+                            上一页
+                        </button>
+                        <button class="px-3 py-1 border border-blue-600 bg-blue-600 text-white rounded text-sm">1</button>
+                        <button class="px-3 py-1 border border-gray-300 rounded text-sm text-gray-700 hover:bg-gray-50">2</button>
+                        <button class="px-3 py-1 border border-gray-300 rounded text-sm text-gray-700 hover:bg-gray-50">3</button>
+                        <button class="px-3 py-1 border border-gray-300 rounded text-sm text-gray-700 hover:bg-gray-50">4</button>
+                        <button class="px-3 py-1 border border-gray-300 rounded text-sm text-gray-700 hover:bg-gray-50">5</button>
+                        <span class="px-2 py-1 text-sm text-gray-500">...</span>
+                        <button class="px-3 py-1 border border-gray-300 rounded text-sm text-gray-700 hover:bg-gray-50">16</button>
+                        <button class="px-3 py-1 border border-gray-300 rounded text-sm text-gray-700 hover:bg-gray-50">
+                            下一页
+                        </button>
+                        <div class="flex items-center ml-4">
+                            <span class="text-sm text-gray-700">跳至</span>
+                            <input type="text" class="w-12 h-7 mx-1 text-center text-sm border border-gray-300 rounded">
+                            <span class="text-sm text-gray-700">页</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 退款记录 Tab -->
+        <div id="refund-records" class="tab-content bg-white rounded-lg shadow-sm">
+            <!-- 查询条件 -->
+            <div class="p-6 border-b border-gray-200">
+                <div class="flex flex-wrap gap-4">
+                    <div class="flex items-center">
+                        <span class="mr-2 text-sm font-medium text-gray-700">日期:</span>
+                        <input type="date" class="p-2 text-sm border border-gray-300 rounded-md" />
+                        <span class="mx-2">至</span>
+                        <input type="date" class="p-2 text-sm border border-gray-300 rounded-md" />
+                    </div>
+                    <div class="flex items-center">
+                        <span class="mr-2 text-sm font-medium text-gray-700">状态:</span>
+                        <select class="p-2 text-sm border border-gray-300 rounded-md">
+                            <option value="">选择状态</option>
+                            <option value="success">退款成功</option>
+                            <option value="processing">退款中</option>
+                            <option value="failed">退款失败</option>
+                        </select>
+                    </div>
+                    <div class="flex items-center">
+                        <input type="text" placeholder="交易号" class="p-2 text-sm border border-gray-300 rounded-md w-48" />
+                    </div>
+                    <div class="flex items-center">
+                        <input type="text" placeholder="订单号" class="p-2 text-sm border border-gray-300 rounded-md w-48" />
+                    </div>
+                    <div class="flex items-center">
+                        <button class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded text-sm font-medium">
+                            查询
+                        </button>
+                        <button class="ml-2 bg-white border border-gray-300 text-gray-700 px-4 py-2 rounded text-sm font-medium hover:bg-gray-50">
+                            重置
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 数据表格 -->
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                申请时间
+                            </th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                交易号
+                            </th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                客户邮箱
+                            </th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                交易金额
+                            </th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                退款类型
+                            </th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                退款金额
+                            </th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                退款手续费
+                            </th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                退款原因
+                            </th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                状态
+                            </th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                操作
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">2023-07-30 21:33:54</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">123456789</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">xxx123@gmail.com</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">421,791.97 NGN</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">部分退款</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">1000 NGN</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">0.3 USD</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">退款</td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                    退款成功
+                                </span>
+                                </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                    <a href="#" class="text-blue-600 hover:text-blue-900">详情</a>
+                                </td>
+                            </tr>
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">2023-07-30 21:33:54</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">123456789</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900"></td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900"></td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">退款</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900"></td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900"></td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900"></td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
+                                    退款中
+                                </span>
+                                </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                    <a href="#" class="text-blue-600 hover:text-blue-900">详情</a>
+                                </td>
+                            </tr>
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">2023-07-30 21:33:54</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">123456789</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900"></td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900"></td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900"></td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900"></td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900"></td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900"></td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
+                                    退款失败
+                                </span>
+                                </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                    <a href="#" class="text-blue-600 hover:text-blue-900">详情</a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+            <!-- 分页 -->
+                <div class="px-6 py-4 border-t border-gray-200">
+                    <div class="flex items-center justify-between">
+                        <div class="text-sm text-gray-500">
+                            共16页/80条数据
+                        </div>
+                        <div class="flex items-center space-x-1">
+                        <button class="px-3 py-1 border border-gray-300 rounded text-sm text-gray-700 hover:bg-gray-50 disabled:opacity-50" disabled>
+                            上一页
+                            </button>
+                        <button class="px-3 py-1 border border-blue-600 bg-blue-600 text-white rounded text-sm">1</button>
+                        <button class="px-3 py-1 border border-gray-300 rounded text-sm text-gray-700 hover:bg-gray-50">2</button>
+                        <button class="px-3 py-1 border border-gray-300 rounded text-sm text-gray-700 hover:bg-gray-50">3</button>
+                        <button class="px-3 py-1 border border-gray-300 rounded text-sm text-gray-700 hover:bg-gray-50">4</button>
+                        <button class="px-3 py-1 border border-gray-300 rounded text-sm text-gray-700 hover:bg-gray-50">5</button>
+                        <span class="px-2 py-1 text-sm text-gray-500">...</span>
+                        <button class="px-3 py-1 border border-gray-300 rounded text-sm text-gray-700 hover:bg-gray-50">16</button>
+                        <button class="px-3 py-1 border border-gray-300 rounded text-sm text-gray-700 hover:bg-gray-50">
+                            下一页
+                            </button>
+                        <div class="flex items-center ml-4">
+                            <span class="text-sm text-gray-700">跳至</span>
+                            <input type="text" class="w-12 h-7 mx-1 text-center text-sm border border-gray-300 rounded">
+                            <span class="text-sm text-gray-700">页</span>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
+    <!-- Tab Switching Script -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const tabButtons = document.querySelectorAll('.tab-button');
+            const tabContents = document.querySelectorAll('.tab-content');
+
+            tabButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    // Remove active class from all buttons and contents
+                    tabButtons.forEach(btn => btn.classList.remove('active'));
+                    tabContents.forEach(content => content.classList.remove('active'));
+
+                    // Add active class to clicked button and corresponding content
+                    button.classList.add('active');
+                    const tabId = button.getAttribute('data-tab');
+                    document.getElementById(tabId).classList.add('active');
+                });
+            });
+
+            // 用户中心下拉菜单
+            const userCenterBtn = document.getElementById('userCenterBtn');
+            const userCenterDropdown = document.getElementById('userCenterDropdown');
+            
+            if (userCenterBtn && userCenterDropdown) {
+                userCenterBtn.addEventListener('click', function() {
+                    userCenterDropdown.classList.toggle('hidden');
+                });
+                
+                // 点击其他地方关闭下拉菜单
+                document.addEventListener('click', function(event) {
+                    if (!userCenterBtn.contains(event.target) && !userCenterDropdown.contains(event.target)) {
+                        userCenterDropdown.classList.add('hidden');
+                    }
+                });
+            }
+        });
+    </script>
 </body>
 </html> 

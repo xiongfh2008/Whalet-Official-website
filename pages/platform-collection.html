@@ -28,111 +28,53 @@
 </head>
 <body class="bg-gray-50">
     <div class="container mx-auto px-4 py-6">
-        <!-- 顶部导航 - 与首页相同 -->
-        <div class="flex justify-end mb-6">
-            <div class="flex items-center space-x-6">
-                <!-- 公告图标 -->
-                <div class="relative">
-                    <a href="#" class="text-gray-600 hover:text-blue-600">
-                        <span class="relative">
-                            <i class="fas fa-bell text-lg"></i>
-                            <span class="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full"></span>
-                        </span>
-                    </a>
-                </div>
-                
-                <!-- 帮助中心 -->
-                <a href="#" class="text-gray-600 hover:text-blue-600 text-sm">帮助中心</a>
-                
-                <!-- 用户中心 -->
-                <div class="relative">
-                    <button id="userCenterBtn" class="text-gray-600 hover:text-blue-600">
-                        <i class="fas fa-user-circle text-lg"></i>
-                </button>
-                    <div id="userCenterDropdown" class="absolute right-0 top-full mt-1 w-32 bg-white rounded-lg shadow-lg py-2 hidden z-10">
-                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">安全设置</a>
-                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">费率查询</a>
-                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">优惠券</a>
-                        <div class="border-t border-gray-100 my-1"></div>
-                        <a href="#" class="block px-4 py-2 text-sm text-red-600 hover:bg-gray-100">退出</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- 收款概览区域 -->
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-            <div class="bg-white p-4 rounded-lg shadow-sm">
-                <div class="flex items-center justify-between mb-2">
-                    <h3 class="text-gray-600 text-sm">今日收款总额</h3>
-                    <i class="fas fa-dollar-sign text-blue-500"></i>
-                </div>
-                <p class="text-xl font-bold text-gray-800">¥128,750.00</p>
-                <div class="mt-1 flex items-center text-xs">
-                    <span class="text-green-500 flex items-center">
-                        <i class="fas fa-arrow-up mr-1"></i>
-                        12.5%
-                    </span>
-                    <span class="text-gray-500 ml-2">较昨日</span>
-                </div>
-            </div>
-
-            <div class="bg-white p-4 rounded-lg shadow-sm">
-                <div class="flex items-center justify-between mb-2">
-                    <h3 class="text-gray-600 text-sm">本月收款总额</h3>
-                    <i class="fas fa-chart-line text-green-500"></i>
-                </div>
-                <p class="text-xl font-bold text-gray-800">¥3,856,420.00</p>
-                <div class="mt-1 flex items-center text-xs">
-                    <span class="text-green-500 flex items-center">
-                        <i class="fas fa-arrow-up mr-1"></i>
-                        8.3%
-                    </span>
-                    <span class="text-gray-500 ml-2">较上月</span>
-                </div>
-            </div>
-
-            <div class="bg-white p-4 rounded-lg shadow-sm">
-                <div class="flex items-center justify-between mb-2">
-                    <h3 class="text-gray-600 text-sm">待处理订单数</h3>
-                    <i class="fas fa-clock text-yellow-500"></i>
-                </div>
-                <p class="text-xl font-bold text-gray-800">156</p>
-                <div class="mt-1 flex items-center text-xs">
-                    <span class="text-yellow-500">预计2小时内处理完成</span>
-                </div>
-            </div>
-
-            <div class="bg-white p-4 rounded-lg shadow-sm">
-                <div class="flex items-center justify-between mb-2">
-                    <h3 class="text-gray-600 text-sm">成功率统计</h3>
-                    <i class="fas fa-check-circle text-green-500"></i>
-                </div>
-                <p class="text-xl font-bold text-gray-800">99.8%</p>
-                <div class="mt-1 flex items-center text-xs">
-                    <span class="text-green-500">优秀</span>
-                    <span class="text-gray-500 ml-2">近7天平均</span>
-                </div>
-            </div>
-        </div>
-
-        <!-- 选项卡导航 -->
+        <!-- 将顶部导航和tab选项卡放在同一行 -->
         <div class="bg-white rounded-lg shadow-sm mb-6">
             <div class="border-b border-gray-200">
-                <nav class="flex justify-start -mb-px pl-6">
-                    <button class="tab-btn active whitespace-nowrap py-4 px-8 border-b-2 text-center text-sm font-medium mr-2" data-tab="collection-account">
-                        收款账户
-                    </button>
-                    <button class="tab-btn whitespace-nowrap py-4 px-8 border-b-2 border-transparent text-center text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300 mr-2" data-tab="shop-management">
-                        店铺管理
-                    </button>
-                    <button class="tab-btn whitespace-nowrap py-4 px-8 border-b-2 border-transparent text-center text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300 mr-2" data-tab="holder-management">
-                        持有人管理
-                    </button>
-                    <button class="tab-btn whitespace-nowrap py-4 px-8 border-b-2 border-transparent text-center text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300 mr-2" data-tab="order-management">
-                        订单管理
-                    </button>
-                </nav>
+                <div class="flex justify-between items-center">
+                    <nav class="flex justify-start -mb-px pl-6">
+                        <button class="tab-btn active whitespace-nowrap py-4 px-8 border-b-2 text-center text-sm font-medium mr-2" data-tab="collection-account">
+                            收款账户
+                        </button>
+                        <button class="tab-btn whitespace-nowrap py-4 px-8 border-b-2 border-transparent text-center text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300 mr-2" data-tab="shop-management">
+                            店铺管理
+                        </button>
+                        <button class="tab-btn whitespace-nowrap py-4 px-8 border-b-2 border-transparent text-center text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300 mr-2" data-tab="holder-management">
+                            持有人管理
+                        </button>
+                        <button class="tab-btn whitespace-nowrap py-4 px-8 border-b-2 border-transparent text-center text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300 mr-2" data-tab="order-management">
+                            订单管理
+                        </button>
+                    </nav>
+                    <div class="flex items-center space-x-6 pr-6">
+                        <!-- 公告图标 -->
+                        <div class="relative">
+                            <a href="#" class="text-gray-600 hover:text-blue-600">
+                                <span class="relative">
+                                    <i class="fas fa-bell text-lg"></i>
+                                    <span class="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full"></span>
+                                </span>
+                            </a>
+                        </div>
+                        
+                        <!-- 帮助中心 -->
+                        <a href="#" class="text-gray-600 hover:text-blue-600 text-sm">帮助中心</a>
+                        
+                        <!-- 用户中心 -->
+                        <div class="relative">
+                            <button id="userCenterBtn" class="text-gray-600 hover:text-blue-600">
+                                <i class="fas fa-user-circle text-lg"></i>
+                            </button>
+                            <div id="userCenterDropdown" class="absolute right-0 top-full mt-1 w-32 bg-white rounded-lg shadow-lg py-2 hidden z-10">
+                                <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">安全设置</a>
+                                <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">费率查询</a>
+                                <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">优惠券</a>
+                                <div class="border-t border-gray-100 my-1"></div>
+                                <a href="#" class="block px-4 py-2 text-sm text-red-600 hover:bg-gray-100">退出</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -141,14 +83,20 @@
             <div class="p-6 border-b border-gray-200">
                 <div class="flex justify-between items-center">
                     <h2 class="text-xl font-semibold text-gray-800">收款账户</h2>
-                    <div class="flex space-x-4">
+                    <div class="flex space-x-3">
                         <button class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded text-sm font-medium">
                             申请收款账户
                         </button>
-                    </div>
+                        <button class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded text-sm font-medium opacity-50 cursor-not-allowed" disabled>
+                            批量延长
+                        </button>
+                        <button class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded text-sm font-medium opacity-50 cursor-not-allowed" disabled>
+                            批量注销
+                        </button>
+                </div>
                 </div>
             </div>
-            
+
             <!-- 查询条件 -->
             <div class="p-6 border-b border-gray-200">
                 <div class="flex flex-wrap gap-4">
@@ -192,7 +140,7 @@
                             <option value="yes">是</option>
                             <option value="no">否</option>
                         </select>
-                    </div>
+                        </div>
                     <div class="flex items-center">
                         <input type="text" placeholder="银行卡号/支持模糊查询" class="p-2 text-sm border border-gray-300 rounded-md w-64" />
                         <button class="ml-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded text-sm font-medium">
@@ -201,7 +149,7 @@
                         <button class="ml-2 bg-white border border-gray-300 text-gray-700 px-4 py-2 rounded text-sm font-medium hover:bg-gray-50">
                             重置
                         </button>
-                    </div>
+                </div>
                 </div>
             </div>
 
@@ -209,6 +157,9 @@
                 <table class="min-w-full divide-y divide-gray-200">
                     <thead class="bg-gray-50">
                         <tr>
+                            <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                <input type="checkbox" class="form-checkbox h-4 w-4 text-blue-600 rounded border-gray-300" id="select-all">
+                            </th>
                             <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                 创建时间
                             </th>
@@ -240,6 +191,9 @@
                     </thead>
                     <tbody class="bg-white divide-y divide-gray-200">
                         <tr>
+                            <td class="px-4 py-4 whitespace-nowrap">
+                                <input type="checkbox" class="form-checkbox h-4 w-4 text-blue-600 rounded border-gray-300">
+                            </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">2023-06-20</td>
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <div class="flex items-center">
@@ -271,6 +225,9 @@
                             </td>
                         </tr>
                         <tr>
+                            <td class="px-4 py-4 whitespace-nowrap">
+                                <input type="checkbox" class="form-checkbox h-4 w-4 text-blue-600 rounded border-gray-300">
+                            </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">2023-07-15</td>
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <div class="flex items-center">
@@ -302,6 +259,9 @@
                             </td>
                         </tr>
                         <tr>
+                            <td class="px-4 py-4 whitespace-nowrap">
+                                <input type="checkbox" class="form-checkbox h-4 w-4 text-blue-600 rounded border-gray-300">
+                            </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">2023-08-05</td>
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <div class="flex items-center">
@@ -333,6 +293,9 @@
                             </td>
                         </tr>
                         <tr>
+                            <td class="px-4 py-4 whitespace-nowrap">
+                                <input type="checkbox" class="form-checkbox h-4 w-4 text-blue-600 rounded border-gray-300">
+                            </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">2023-09-18</td>
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <div class="flex items-center">
@@ -363,6 +326,9 @@
                             </td>
                         </tr>
                         <tr>
+                            <td class="px-4 py-4 whitespace-nowrap">
+                                <input type="checkbox" class="form-checkbox h-4 w-4 text-blue-600 rounded border-gray-300">
+                            </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">2023-10-01</td>
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <div class="flex items-center">
@@ -394,6 +360,9 @@
                             </td>
                         </tr>
                         <tr>
+                            <td class="px-4 py-4 whitespace-nowrap">
+                                <input type="checkbox" class="form-checkbox h-4 w-4 text-blue-600 rounded border-gray-300">
+                            </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">2023-10-25</td>
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <div class="flex items-center">
@@ -425,6 +394,9 @@
                             </td>
                         </tr>
                         <tr>
+                            <td class="px-4 py-4 whitespace-nowrap">
+                                <input type="checkbox" class="form-checkbox h-4 w-4 text-blue-600 rounded border-gray-300">
+                            </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">2023-11-12</td>
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <div class="flex items-center">
@@ -456,6 +428,9 @@
                             </td>
                         </tr>
                         <tr>
+                            <td class="px-4 py-4 whitespace-nowrap">
+                                <input type="checkbox" class="form-checkbox h-4 w-4 text-blue-600 rounded border-gray-300">
+                            </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">2023-12-30</td>
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <div class="flex items-center">
@@ -482,11 +457,14 @@
                                             <a href="#" class="block px-4 py-2 text-sm text-red-600 hover:bg-gray-100">注销</a>
                                             <a href="#" class="block px-4 py-2 text-sm text-blue-600 hover:bg-gray-100">延长注销日期</a>
                                         </div>
-                                    </div>
-                                </div>
+                </div>
+                </div>
                             </td>
                         </tr>
                         <tr>
+                            <td class="px-4 py-4 whitespace-nowrap">
+                                <input type="checkbox" class="form-checkbox h-4 w-4 text-blue-600 rounded border-gray-300">
+                            </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">2024-01-15</td>
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <div class="flex items-center">
@@ -513,8 +491,8 @@
                                             <a href="#" class="block px-4 py-2 text-sm text-red-600 hover:bg-gray-100">注销</a>
                                             <a href="#" class="block px-4 py-2 text-sm text-blue-600 hover:bg-gray-100">延长注销日期</a>
                                         </div>
-                                    </div>
-                                </div>
+                </div>
+                </div>
                             </td>
                         </tr>
                     </tbody>
@@ -524,7 +502,7 @@
                 <div class="flex items-center justify-between">
                     <div class="text-sm text-gray-500">
                         显示 1 至 10 条，共 35 条
-                        </div>
+                    </div>
                     <div class="flex space-x-2">
                         <button class="px-3 py-1 border border-gray-300 rounded-md text-sm text-gray-700 hover:bg-gray-50">
                             上一页
@@ -532,7 +510,7 @@
                         <button class="px-3 py-1 border border-gray-300 rounded-md text-sm text-gray-700 hover:bg-gray-50">
                             下一页
                         </button>
-                    </div>
+                </div>
                 </div>
             </div>
         </div>
@@ -544,7 +522,7 @@
                     <h2 class="text-xl font-semibold text-gray-800">店铺管理</h2>
                 </div>
             </div>
-            
+
             <!-- 查询条件 -->
             <div class="p-6 border-b border-gray-200">
                 <div class="flex flex-wrap gap-4">
@@ -567,7 +545,7 @@
                             <option value="suspended">已暂停</option>
                             <option value="closed">已关闭</option>
                         </select>
-                    </div>
+                        </div>
                     <div class="flex items-center">
                         <input type="text" placeholder="店铺名称/支持模糊查询" class="p-2 text-sm border border-gray-300 rounded-md w-64" />
                         <button class="ml-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded text-sm font-medium">
@@ -625,7 +603,6 @@
                                 <a href="#" class="text-gray-600 hover:text-gray-900">编辑</a>
                             </td>
                         </tr>
-                        <!-- 更多数据行... -->
                     </tbody>
                 </table>
                         </div>
@@ -655,8 +632,8 @@
                         添加持有人
                     </button>
                 </div>
-            </div>
-            
+                        </div>
+
             <!-- 查询条件 -->
             <div class="p-6 border-b border-gray-200">
                 <div class="flex flex-wrap gap-4">
@@ -673,7 +650,7 @@
                             <option value="personal">个人</option>
                             <option value="enterprise">企业</option>
                         </select>
-                    </div>
+                        </div>
                     <div class="flex items-center">
                         <span class="mr-2 text-sm font-medium text-gray-700">地区:</span>
                         <select class="p-2 text-sm border border-gray-300 rounded-md">
@@ -685,7 +662,7 @@
                             <option value="uk">英国</option>
                             <option value="other">其他</option>
                         </select>
-                    </div>
+                        </div>
                     <div class="flex items-center">
                         <input type="text" placeholder="持有人名称/支持模糊查询" class="p-2 text-sm border border-gray-300 rounded-md w-64" />
                         <button class="ml-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded text-sm font-medium">
@@ -696,7 +673,7 @@
                         </button>
                     </div>
                 </div>
-            </div>
+                </div>
 
             <div class="overflow-x-auto">
                 <table class="min-w-full divide-y divide-gray-200">
@@ -752,7 +729,6 @@
                                 <a href="#" class="text-green-600 hover:text-green-900">补充资料</a>
                             </td>
                         </tr>
-                        <!-- 更多数据行... -->
                     </tbody>
                 </table>
                         </div>
@@ -877,7 +853,6 @@
                                 <a href="#" class="text-blue-600 hover:text-blue-900">详情</a>
                             </td>
                         </tr>
-                        <!-- 更多数据行... -->
                     </tbody>
                 </table>
             </div>
@@ -1063,6 +1038,45 @@
                     dropdown.classList.add('hidden');
                 });
             });
+
+            // 批量操作相关功能
+            const selectAllCheckbox = document.getElementById('select-all');
+            const rowCheckboxes = document.querySelectorAll('#collection-account tbody input[type="checkbox"]');
+            const batchExtendBtn = document.querySelector('button.bg-green-600');
+            const batchCancelBtn = document.querySelector('button.bg-red-600');
+
+            // 全选/取消全选功能
+            selectAllCheckbox.addEventListener('change', function() {
+                rowCheckboxes.forEach(checkbox => {
+                    checkbox.checked = selectAllCheckbox.checked;
+                });
+                updateBatchButtonsState();
+            });
+
+            // 单个复选框变更时更新批量按钮状态
+            rowCheckboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', updateBatchButtonsState);
+            });
+
+            // 更新批量按钮状态（禁用/启用）
+            function updateBatchButtonsState() {
+                const hasChecked = Array.from(rowCheckboxes).some(checkbox => checkbox.checked);
+                
+                if (hasChecked) {
+                    batchExtendBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+                    batchCancelBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+                    batchExtendBtn.disabled = false;
+                    batchCancelBtn.disabled = false;
+                } else {
+                    batchExtendBtn.classList.add('opacity-50', 'cursor-not-allowed');
+                    batchCancelBtn.classList.add('opacity-50', 'cursor-not-allowed');
+                    batchExtendBtn.disabled = true;
+                    batchCancelBtn.disabled = true;
+                }
+            }
+
+            // 初始化批量按钮状态
+            updateBatchButtonsState();
         });
     </script>
 </body>

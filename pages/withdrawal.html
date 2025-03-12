@@ -31,22 +31,39 @@
 </head>
 <body>
     <div class="container mx-auto px-4 py-6">
-        <!-- 页面标题 -->
-        <div class="bg-white p-8 rounded-xl shadow-sm mb-6">
-            <div class="flex justify-between items-start">
-                <div>
-                    <h1 class="text-2xl font-bold text-gray-800 mb-2">提现</h1>
-                    <p class="text-gray-600">安全快速的资金提现服务</p>
+        <!-- 顶部导航 - 与首页相同 -->
+        <div class="flex justify-end mb-6">
+            <div class="flex items-center space-x-6">
+                <!-- 公告图标 -->
+                <div class="relative">
+                    <a href="#" class="text-gray-600 hover:text-blue-600">
+                        <span class="relative">
+                            <i class="fas fa-bell text-lg"></i>
+                            <span class="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full"></span>
+                        </span>
+                    </a>
                 </div>
-                <div class="flex space-x-3">
-                    <button class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg text-sm font-medium flex items-center">
-                        <i class="fas fa-plus mr-2"></i>
-                        发起提现
+                
+                <!-- 帮助中心 -->
+                <a href="#" class="text-gray-600 hover:text-blue-600 text-sm">帮助中心</a>
+                
+                <!-- 用户中心 -->
+                <div class="relative">
+                    <button id="userCenterBtn" class="text-gray-600 hover:text-blue-600">
+                        <i class="fas fa-user-circle text-lg"></i>
                     </button>
+                    <div id="userCenterDropdown" class="absolute right-0 top-full mt-1 w-32 bg-white rounded-lg shadow-lg py-2 hidden z-10">
+                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">安全设置</a>
+                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">费率查询</a>
+                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">优惠券</a>
+                        <div class="border-t border-gray-100 my-1"></div>
+                        <a href="#" class="block px-4 py-2 text-sm text-red-600 hover:bg-gray-100">退出</a>
+                    </div>
                 </div>
             </div>
         </div>
 
+        
         <!-- 账户余额展示 -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
             <div class="bg-white p-6 rounded-xl shadow-sm">

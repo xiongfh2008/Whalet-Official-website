@@ -17,177 +17,54 @@
             height: 300px;
             position: relative;
         }
+        .tab-btn.active {
+            border-bottom: 2px solid #4f46e5;
+            color: #4f46e5;
+        }
     </style>
 </head>
 <body class="bg-gray-50">
     <div class="container mx-auto px-4 py-6">
-        <!-- 页面顶部 -->
-        <div class="bg-white p-8 rounded-lg shadow-sm mb-6">
-            <div class="flex justify-between items-start">
-                <div>
-                    <h1 class="text-2xl font-bold text-gray-800 mb-2">外贸收款</h1>
-                    <p class="text-gray-600">专业的跨境贸易收款服务</p>
-                </div>
-                <button class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg text-sm font-medium flex items-center">
-                    <i class="fas fa-plus mr-2"></i>
-                    新建收款
-                </button>
-            </div>
-        </div>
-
-        <!-- 收款方式选择 Tabs -->
+        <!-- 整合顶部导航和tabs成一行 -->
         <div class="bg-white rounded-lg shadow-sm mb-6">
             <div class="border-b border-gray-200">
-                <nav class="flex -mb-px">
-                    <button class="text-blue-600 border-b-2 border-blue-600 py-4 px-6 font-medium text-sm">
-                        线上收款
-                    </button>
-                    <button class="text-gray-500 hover:text-gray-700 py-4 px-6 font-medium text-sm">
-                        线下电汇
-                    </button>
-                    <button class="text-gray-500 hover:text-gray-700 py-4 px-6 font-medium text-sm">
-                        信用证
-                    </button>
-                    <button class="text-gray-500 hover:text-gray-700 py-4 px-6 font-medium text-sm">
-                        托收
-                    </button>
-                </nav>
-            </div>
-        </div>
-
-        <!-- 收款统计区域 -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-            <!-- 收款总览图表 -->
-            <div class="bg-white p-6 rounded-lg shadow-sm col-span-2">
-                <h3 class="text-lg font-semibold text-gray-800 mb-4">收款总览</h3>
-                <div class="chart-container">
-                    <!-- 这里应该插入实际的图表，这里用占位符代替 -->
-                    <div class="w-full h-full bg-gray-50 rounded flex items-center justify-center">
-                        <span class="text-gray-400">收款趋势图表</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 币种占比 -->
-            <div class="bg-white p-6 rounded-lg shadow-sm">
-                <h3 class="text-lg font-semibold text-gray-800 mb-4">收款币种占比</h3>
-                <div class="space-y-4">
-                    <div class="flex items-center justify-between">
-                        <div class="flex items-center">
-                            <div class="w-3 h-3 rounded-full bg-blue-500 mr-2"></div>
-                            <span class="text-sm text-gray-600">USD</span>
-                        </div>
-                        <span class="text-sm font-medium text-gray-800">45%</span>
-                    </div>
-                    <div class="flex items-center justify-between">
-                        <div class="flex items-center">
-                            <div class="w-3 h-3 rounded-full bg-green-500 mr-2"></div>
-                            <span class="text-sm text-gray-600">EUR</span>
-                        </div>
-                        <span class="text-sm font-medium text-gray-800">30%</span>
-                    </div>
-                    <div class="flex items-center justify-between">
-                        <div class="flex items-center">
-                            <div class="w-3 h-3 rounded-full bg-yellow-500 mr-2"></div>
-                            <span class="text-sm text-gray-600">GBP</span>
-                        </div>
-                        <span class="text-sm font-medium text-gray-800">15%</span>
-                    </div>
-                    <div class="flex items-center justify-between">
-                        <div class="flex items-center">
-                            <div class="w-3 h-3 rounded-full bg-purple-500 mr-2"></div>
-                            <span class="text-sm text-gray-600">其他</span>
-                        </div>
-                        <span class="text-sm font-medium text-gray-800">10%</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- 收款管理区域 -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-            <!-- 收款账户管理 -->
-            <div class="bg-white rounded-lg shadow-sm">
-                <div class="p-6 border-b border-gray-200">
-                    <div class="flex justify-between items-center">
-                        <h3 class="text-lg font-semibold text-gray-800">收款账户管理</h3>
-                        <button class="text-blue-600 hover:text-blue-700 text-sm font-medium">
-                            <i class="fas fa-plus mr-1"></i>
-                            添加账户
+                <div class="flex justify-between items-center">
+                    <nav class="flex justify-start -mb-px pl-6">
+                        <button class="tab-btn active whitespace-nowrap py-4 px-8 border-b-2 text-center text-sm font-medium mr-2" data-tab="collection-records">
+                            外贸收款记录
                         </button>
-                    </div>
-                </div>
-                <div class="p-6">
-                    <div class="space-y-4">
-                        <div class="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
-                            <div class="flex items-center">
-                                <img src="https://logo.clearbit.com/bankofamerica.com" alt="Bank" class="w-10 h-10 rounded">
-                                <div class="ml-4">
-                                    <h4 class="font-medium text-gray-800">美国账户</h4>
-                                    <p class="text-sm text-gray-500">Bank of America - USD</p>
-                                </div>
-                            </div>
-                            <button class="text-gray-400 hover:text-gray-600">
-                                <i class="fas fa-ellipsis-v"></i>
-                            </button>
-                        </div>
-                        <div class="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
-                            <div class="flex items-center">
-                                <img src="https://logo.clearbit.com/hsbc.com" alt="Bank" class="w-10 h-10 rounded">
-                                <div class="ml-4">
-                                    <h4 class="font-medium text-gray-800">欧洲账户</h4>
-                                    <p class="text-sm text-gray-500">HSBC - EUR</p>
-                                </div>
-                            </div>
-                            <button class="text-gray-400 hover:text-gray-600">
-                                <i class="fas fa-ellipsis-v"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 收款单管理 -->
-            <div class="bg-white rounded-lg shadow-sm">
-                <div class="p-6 border-b border-gray-200">
-                    <div class="flex justify-between items-center">
-                        <h3 class="text-lg font-semibold text-gray-800">收款单管理</h3>
-                        <button class="text-blue-600 hover:text-blue-700 text-sm font-medium">
-                            <i class="fas fa-plus mr-1"></i>
-                            创建收款单
+                        <button class="tab-btn whitespace-nowrap py-4 px-8 border-b-2 border-transparent text-center text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300 mr-2" data-tab="collection-accounts">
+                            外贸收款账户
                         </button>
-                    </div>
-                </div>
-                <div class="p-6">
-                    <div class="space-y-4">
-                        <div class="p-4 border border-gray-200 rounded-lg">
-                            <div class="flex justify-between items-start mb-3">
-                                <div>
-                                    <h4 class="font-medium text-gray-800">收款单 #INV2023001</h4>
-                                    <p class="text-sm text-gray-500">客户: ABC Trading Co., Ltd</p>
-                                </div>
-                                <span class="px-2 py-1 text-xs font-medium rounded-full bg-yellow-100 text-yellow-800">
-                                    处理中
+                        <button class="tab-btn whitespace-nowrap py-4 px-8 border-b-2 border-transparent text-center text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300 mr-2" data-tab="trade-orders">
+                            外贸订单
+                        </button>
+                    </nav>
+                    <div class="flex items-center space-x-6 pr-6">
+                        <!-- 公告图标 -->
+                        <div class="relative">
+                            <a href="#" class="text-gray-600 hover:text-blue-600">
+                                <span class="relative">
+                                    <i class="fas fa-bell text-lg"></i>
+                                    <span class="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full"></span>
                                 </span>
-                            </div>
-                            <div class="flex justify-between text-sm">
-                                <span class="text-gray-500">金额: $50,000.00</span>
-                                <span class="text-gray-500">预计到账: 2023-05-15</span>
-                            </div>
+                            </a>
                         </div>
-                        <div class="p-4 border border-gray-200 rounded-lg">
-                            <div class="flex justify-between items-start mb-3">
-                                <div>
-                                    <h4 class="font-medium text-gray-800">收款单 #INV2023002</h4>
-                                    <p class="text-sm text-gray-500">客户: XYZ International</p>
-                                </div>
-                                <span class="px-2 py-1 text-xs font-medium rounded-full bg-green-100 text-green-800">
-                                    已完成
-                                </span>
-                            </div>
-                            <div class="flex justify-between text-sm">
-                                <span class="text-gray-500">金额: €35,000.00</span>
-                                <span class="text-gray-500">已到账: 2023-05-10</span>
+                        
+                        <!-- 帮助中心 -->
+                        <a href="#" class="text-gray-600 hover:text-blue-600 text-sm">帮助中心</a>
+                        
+                        <!-- 用户中心 -->
+                        <div class="relative">
+                            <button id="userCenterBtn" class="text-gray-600 hover:text-blue-600">
+                                <i class="fas fa-user-circle text-lg"></i>
+                            </button>
+                            <div id="userCenterDropdown" class="absolute right-0 top-full mt-1 w-32 bg-white rounded-lg shadow-lg py-2 hidden z-10">
+                                <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">安全设置</a>
+                                <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">费率查询</a>
+                                <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">优惠券</a>
+                                <div class="border-t border-gray-100 my-1"></div>
+                                <a href="#" class="block px-4 py-2 text-sm text-red-600 hover:bg-gray-100">退出</a>
                             </div>
                         </div>
                     </div>
@@ -195,44 +72,84 @@
             </div>
         </div>
 
-        <!-- 交易记录 -->
-        <div class="bg-white rounded-lg shadow-sm">
+        <!-- 外贸收款记录 Tab 内容 -->
+        <div id="collection-records" class="tab-content active bg-white rounded-lg shadow-sm">
             <div class="p-6 border-b border-gray-200">
                 <div class="flex justify-between items-center">
-                    <h3 class="text-lg font-semibold text-gray-800">交易记录</h3>
-                    <div class="flex space-x-4">
-                        <button class="text-gray-600 hover:text-gray-800">
-                            <i class="fas fa-filter mr-2"></i>
-                            筛选
+                    <h2 class="text-xl font-semibold text-gray-800">外贸收款记录</h2>
+                    <div class="flex space-x-3">
+                        <button class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded text-sm font-medium">
+                            新建收款单
                         </button>
-                        <button class="text-gray-600 hover:text-gray-800">
-                            <i class="fas fa-download mr-2"></i>
-                            导出
+                        <button class="bg-white border border-gray-300 text-gray-700 px-4 py-2 rounded text-sm font-medium hover:bg-gray-50">
+                            <i class="fas fa-download mr-2"></i>导出
                         </button>
                     </div>
                 </div>
             </div>
+
+            <!-- 查询条件 -->
+            <div class="p-6 border-b border-gray-200">
+                <div class="flex flex-wrap gap-4">
+                    <div class="flex items-center">
+                        <span class="mr-2 text-sm font-medium text-gray-700">日期:</span>
+                        <input type="date" class="p-2 text-sm border border-gray-300 rounded-md" />
+                        <span class="mx-2">至</span>
+                        <input type="date" class="p-2 text-sm border border-gray-300 rounded-md" />
+                    </div>
+                    <div class="flex items-center">
+                        <span class="mr-2 text-sm font-medium text-gray-700">付款方:</span>
+                        <input type="text" placeholder="请输入付款方名称" class="p-2 text-sm border border-gray-300 rounded-md w-48" />
+                    </div>
+                    <div class="flex items-center">
+                        <span class="mr-2 text-sm font-medium text-gray-700">币种:</span>
+                        <select class="p-2 text-sm border border-gray-300 rounded-md">
+                            <option value="">全部</option>
+                            <option value="USD">USD</option>
+                            <option value="EUR">EUR</option>
+                            <option value="GBP">GBP</option>
+                            <option value="CNY">CNY</option>
+                        </select>
+                    </div>
+                    <div class="flex items-center">
+                        <span class="mr-2 text-sm font-medium text-gray-700">状态:</span>
+                        <select class="p-2 text-sm border border-gray-300 rounded-md">
+                            <option value="">全部</option>
+                            <option value="completed">已完成</option>
+                            <option value="processing">处理中</option>
+                            <option value="failed">失败</option>
+                        </select>
+                    </div>
+                    <div class="flex items-center">
+                        <input type="text" placeholder="收款账户/支持模糊查询" class="p-2 text-sm border border-gray-300 rounded-md w-64" />
+                        <button class="ml-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded text-sm font-medium">
+                            查询
+                        </button>
+                        <button class="ml-2 bg-white border border-gray-300 text-gray-700 px-4 py-2 rounded text-sm font-medium hover:bg-gray-50">
+                            重置
+                        </button>
+                    </div>
+                </div>
+            </div>
+
             <div class="overflow-x-auto">
                 <table class="min-w-full divide-y divide-gray-200">
                     <thead class="bg-gray-50">
                         <tr>
                             <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                交易编号
+                                收款时间
                             </th>
                             <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                客户信息
+                                付款方收款金额|币种
                             </th>
                             <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                收款金额
+                                到账金额|币种
                             </th>
                             <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                收款方式
+                                收款账户
                             </th>
                             <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                 状态
-                            </th>
-                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                创建时间
                             </th>
                             <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                 操作
@@ -242,35 +159,377 @@
                     <tbody class="bg-white divide-y divide-gray-200">
                         <tr>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                TRX20230512001
+                                2023-05-12 14:30
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="flex items-center">
-                                    <div class="flex-shrink-0 h-10 w-10 bg-gray-100 rounded-full flex items-center justify-center">
-                                        <span class="text-sm font-medium text-gray-600">AT</span>
-                                    </div>
-                                    <div class="ml-4">
-                                        <div class="text-sm font-medium text-gray-900">ABC Trading Co., Ltd</div>
-                                        <div class="text-sm text-gray-500">美国</div>
-                                    </div>
-                                </div>
+                                <div class="text-sm text-gray-900">$50,000.00 USD</div>
+                                <div class="text-sm text-gray-500">ABC Trading Co., Ltd</div>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                $50,000.00
+                                ¥320,000.00 CNY
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                线上收款
+                                Bank of America **** 5678
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
                                     处理中
                                 </span>
                             </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                2023-05-12 14:30
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                <a href="#" class="text-blue-600 hover:text-blue-900 mr-3">详情</a>
+                                <div class="relative inline-block text-left">
+                                    <button type="button" class="more-actions-btn text-gray-600 hover:text-gray-900">更多</button>
+                                    <div class="more-actions-dropdown origin-top-right absolute right-0 mt-2 w-40 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none hidden z-20" style="overflow: visible; white-space: nowrap;">
+                                        <div>
+                                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">导出收款凭证</a>
+                                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">关联订单</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                2023-05-10 09:15
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-sm text-gray-900">€35,000.00 EUR</div>
+                                <div class="text-sm text-gray-500">XYZ International</div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                ¥260,000.00 CNY
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                HSBC **** 3456
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                    已完成
+                                </span>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                <a href="#" class="text-blue-600 hover:text-blue-900">详情</a>
+                                <a href="#" class="text-blue-600 hover:text-blue-900 mr-3">详情</a>
+                                <div class="relative inline-block text-left">
+                                    <button type="button" class="more-actions-btn text-gray-600 hover:text-gray-900">更多</button>
+                                    <div class="more-actions-dropdown origin-top-right absolute right-0 mt-2 w-40 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none hidden z-20" style="overflow: visible; white-space: nowrap;">
+                                        <div>
+                                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">导出收款凭证</a>
+                                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">关联订单</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="px-6 py-4 border-t border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div class="text-sm text-gray-500">
+                        显示 1 至 10 条，共 50 条
+                    </div>
+                    <div class="flex space-x-2">
+                        <button class="px-3 py-1 border border-gray-300 rounded-md text-sm text-gray-700 hover:bg-gray-50">
+                            上一页
+                        </button>
+                        <button class="px-3 py-1 border border-gray-300 rounded-md text-sm text-gray-700 hover:bg-gray-50">
+                            下一页
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 外贸收款账户 Tab 内容 -->
+        <div id="collection-accounts" class="tab-content bg-white rounded-lg shadow-sm">
+            <!-- 收款账户管理 -->
+            <div class="p-6 border-b border-gray-200">
+                <div class="flex justify-between items-center">
+                    <h2 class="text-xl font-semibold text-gray-800">收款账户管理</h2>
+                    <button class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded text-sm font-medium flex items-center">
+                        <i class="fas fa-plus mr-2"></i>
+                        申请收款账户
+                    </button>
+                </div>
+            </div>
+            <div class="p-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- 美国账户 -->
+                    <div class="border border-gray-200 rounded-lg p-5 hover:shadow-md transition-shadow">
+                        <div class="flex justify-between items-start mb-4">
+                            <h4 class="font-medium text-gray-800 text-lg">美国账户</h4>
+                            <span class="px-2 py-1 text-xs font-medium rounded-full bg-green-100 text-green-800">
+                                正常
+                            </span>
+                        </div>
+                        <div class="space-y-2 mb-4">
+                            <div class="flex items-center">
+                                <span class="text-gray-500 text-sm w-20">卡号:</span>
+                                <span class="text-gray-900 text-sm font-medium">**** **** **** 5678</span>
+                            </div>
+                            <div class="flex items-center">
+                                <span class="text-gray-500 text-sm w-20">账户名:</span>
+                                <span class="text-gray-900 text-sm">Whalet Inc.</span>
+                            </div>
+                            <div class="flex items-center">
+                                <span class="text-gray-500 text-sm w-20">银行:</span>
+                                <span class="text-gray-900 text-sm">Bank of America</span>
+                            </div>
+                            <div class="flex items-center">
+                                <span class="text-gray-500 text-sm w-20">类型:</span>
+                                <span class="text-gray-900 text-sm">全球账户</span>
+                            </div>
+                        </div>
+                        <div class="flex justify-end">
+                            <button class="text-blue-600 hover:text-blue-800 text-sm font-medium">
+                                <i class="fas fa-eye mr-1"></i>
+                                查看详情
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- 欧洲账户 -->
+                    <div class="border border-gray-200 rounded-lg p-5 hover:shadow-md transition-shadow">
+                        <div class="flex justify-between items-start mb-4">
+                            <h4 class="font-medium text-gray-800 text-lg">欧洲账户</h4>
+                            <span class="px-2 py-1 text-xs font-medium rounded-full bg-green-100 text-green-800">
+                                正常
+                            </span>
+                        </div>
+                        <div class="space-y-2 mb-4">
+                            <div class="flex items-center">
+                                <span class="text-gray-500 text-sm w-20">卡号:</span>
+                                <span class="text-gray-900 text-sm font-medium">**** **** **** 3456</span>
+                            </div>
+                            <div class="flex items-center">
+                                <span class="text-gray-500 text-sm w-20">账户名:</span>
+                                <span class="text-gray-900 text-sm">Whalet Europe Ltd.</span>
+                            </div>
+                            <div class="flex items-center">
+                                <span class="text-gray-500 text-sm w-20">银行:</span>
+                                <span class="text-gray-900 text-sm">HSBC</span>
+                            </div>
+                            <div class="flex items-center">
+                                <span class="text-gray-500 text-sm w-20">类型:</span>
+                                <span class="text-gray-900 text-sm">全球账户</span>
+                            </div>
+                        </div>
+                        <div class="flex justify-end">
+                            <button class="text-blue-600 hover:text-blue-800 text-sm font-medium">
+                                <i class="fas fa-eye mr-1"></i>
+                                查看详情
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- 国内账户 -->
+                    <div class="border border-gray-200 rounded-lg p-5 hover:shadow-md transition-shadow">
+                        <div class="flex justify-between items-start mb-4">
+                            <h4 class="font-medium text-gray-800 text-lg">国内账户</h4>
+                            <span class="px-2 py-1 text-xs font-medium rounded-full bg-green-100 text-green-800">
+                                正常
+                            </span>
+                        </div>
+                        <div class="space-y-2 mb-4">
+                            <div class="flex items-center">
+                                <span class="text-gray-500 text-sm w-20">卡号:</span>
+                                <span class="text-gray-900 text-sm font-medium">**** **** **** 9012</span>
+                            </div>
+                            <div class="flex items-center">
+                                <span class="text-gray-500 text-sm w-20">账户名:</span>
+                                <span class="text-gray-900 text-sm">上海威来贸易有限公司</span>
+                            </div>
+                            <div class="flex items-center">
+                                <span class="text-gray-500 text-sm w-20">银行:</span>
+                                <span class="text-gray-900 text-sm">中国银行</span>
+                            </div>
+                            <div class="flex items-center">
+                                <span class="text-gray-500 text-sm w-20">类型:</span>
+                                <span class="text-gray-900 text-sm">本地账户</span>
+                            </div>
+                        </div>
+                        <div class="flex justify-end">
+                            <button class="text-blue-600 hover:text-blue-800 text-sm font-medium">
+                                <i class="fas fa-eye mr-1"></i>
+                                查看详情
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 外贸订单 Tab 内容 -->
+        <div id="trade-orders" class="tab-content bg-white rounded-lg shadow-sm">
+            <div class="p-6 border-b border-gray-200">
+                <div class="flex justify-between items-center">
+                    <h2 class="text-xl font-semibold text-gray-800">订单管理</h2>
+                    <button class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded text-sm font-medium flex items-center">
+                        <i class="fas fa-plus mr-2"></i>
+                        创建订单
+                    </button>
+                </div>
+            </div>
+            <!-- 查询条件 -->
+            <div class="p-6 border-b border-gray-200">
+                <div class="flex flex-wrap gap-4">
+                    <div class="flex items-center">
+                        <span class="mr-2 text-sm font-medium text-gray-700">订单号/买家名称:</span>
+                        <input type="text" placeholder="请输入订单号或买家名称" class="p-2 text-sm border border-gray-300 rounded-md w-56" />
+                    </div>
+                    <div class="flex items-center">
+                        <span class="mr-2 text-sm font-medium text-gray-700">发货状态:</span>
+                        <select class="p-2 text-sm border border-gray-300 rounded-md">
+                            <option value="">全部</option>
+                            <option value="shipped">已发货</option>
+                            <option value="not_shipped">未发货</option>
+                        </select>
+                    </div>
+                    <div class="flex items-center">
+                        <span class="mr-2 text-sm font-medium text-gray-700">订单状态:</span>
+                        <select class="p-2 text-sm border border-gray-300 rounded-md">
+                            <option value="">全部</option>
+                            <option value="pending">待处理</option>
+                            <option value="processing">处理中</option>
+                            <option value="completed">已完成</option>
+                            <option value="cancelled">已取消</option>
+                        </select>
+                    </div>
+                    <div class="flex items-center">
+                        <span class="mr-2 text-sm font-medium text-gray-700">时间:</span>
+                        <input type="date" class="p-2 text-sm border border-gray-300 rounded-md" />
+                        <span class="mx-2">至</span>
+                        <input type="date" class="p-2 text-sm border border-gray-300 rounded-md" />
+                    </div>
+                    <div class="flex items-center">
+                        <input type="text" placeholder="商品名称/支持模糊查询" class="p-2 text-sm border border-gray-300 rounded-md w-64" />
+                        <button class="ml-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded text-sm font-medium">
+                            查询
+                        </button>
+                        <button class="ml-2 bg-white border border-gray-300 text-gray-700 px-4 py-2 rounded text-sm font-medium hover:bg-gray-50">
+                            重置
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                创建时间
+                            </th>
+                            <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                订单编号
+                            </th>
+                            <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                买家名称
+                            </th>
+                            <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                商品名称
+                            </th>
+                            <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                是否发货
+                            </th>
+                            <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                订单金额
+                            </th>
+                            <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                剩余待收款金额
+                            </th>
+                            <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                状态
+                            </th>
+                            <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                操作
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                        <tr>
+                            <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-900">
+                                2023-05-15
+                            </td>
+                            <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-900">
+                                ORD20230515001
+                            </td>
+                            <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-900">
+                                ABC Trading Co., Ltd
+                            </td>
+                            <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-900">
+                                电子产品配件套装
+                            </td>
+                            <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-900">
+                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                    已发货
+                                </span>
+                            </td>
+                            <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-900">
+                                $50,000.00
+                            </td>
+                            <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-900">
+                                $0.00
+                            </td>
+                            <td class="px-4 py-4 whitespace-nowrap">
+                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                    已完成
+                                </span>
+                            </td>
+                            <td class="px-4 py-4 whitespace-nowrap text-sm font-medium">
+                                <a href="#" class="text-blue-600 hover:text-blue-900 mr-3">查看</a>
+                                <div class="relative inline-block text-left">
+                                    <button type="button" class="more-actions-btn text-gray-600 hover:text-gray-900">更多</button>
+                                    <div class="more-actions-dropdown origin-top-right absolute right-0 mt-2 w-40 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none hidden z-20" style="overflow: visible; white-space: nowrap;">
+                                        <div>
+                                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">编辑</a>
+                                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">复制创建新订单</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-900">
+                                2023-05-12
+                            </td>
+                            <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-900">
+                                ORD20230512002
+                            </td>
+                            <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-900">
+                                XYZ International
+                            </td>
+                            <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-900">
+                                智能家居设备
+                            </td>
+                            <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-900">
+                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
+                                    未发货
+                                </span>
+                            </td>
+                            <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-900">
+                                €35,000.00
+                            </td>
+                            <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-900">
+                                €17,500.00
+                            </td>
+                            <td class="px-4 py-4 whitespace-nowrap">
+                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
+                                    处理中
+                                </span>
+                            </td>
+                            <td class="px-4 py-4 whitespace-nowrap text-sm font-medium">
+                                <a href="#" class="text-blue-600 hover:text-blue-900 mr-3">查看</a>
+                                <div class="relative inline-block text-left">
+                                    <button type="button" class="more-actions-btn text-gray-600 hover:text-gray-900">更多</button>
+                                    <div class="more-actions-dropdown origin-top-right absolute right-0 mt-2 w-40 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none hidden z-20" style="overflow: visible; white-space: nowrap;">
+                                        <div>
+                                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">编辑</a>
+                                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">复制创建新订单</a>
+                                        </div>
+                                    </div>
+                                </div>
                             </td>
                         </tr>
                     </tbody>
@@ -293,5 +552,103 @@
             </div>
         </div>
     </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // ----------------------------------------
+            // 用户中心下拉菜单功能
+            // 功能说明：实现用户中心图标点击后显示下拉菜单
+            // 下拉菜单包含：安全设置、费率查询、优惠券、退出 选项
+            // ----------------------------------------
+            const userCenterBtn = document.getElementById('userCenterBtn');          // 获取用户中心按钮元素
+            const userCenterDropdown = document.getElementById('userCenterDropdown'); // 获取下拉菜单元素
+            
+            if (userCenterBtn) {
+                // 用户点击用户中心图标时触发
+                userCenterBtn.addEventListener('click', function(e) {
+                    e.preventDefault(); // 阻止默认点击行为
+                    userCenterDropdown.classList.toggle('hidden'); // 切换下拉菜单的显示/隐藏状态
+                });
+                
+                // 当用户点击页面其他区域时，关闭下拉菜单
+                document.addEventListener('click', function(e) {
+                    // 判断点击的区域是否在用户中心按钮或下拉菜单之外
+                    if (userCenterBtn && userCenterDropdown &&
+                        !userCenterBtn.contains(e.target) && 
+                        !userCenterDropdown.contains(e.target)) {
+                        userCenterDropdown.classList.add('hidden'); // 隐藏下拉菜单
+                    }
+                });
+            }
+
+            // ----------------------------------------
+            // 选项卡切换功能
+            // 功能说明：点击选项卡按钮时切换显示对应的内容区域
+            // ----------------------------------------
+            const tabBtns = document.querySelectorAll('.tab-btn');
+            const tabContents = document.querySelectorAll('.tab-content');
+            
+            if (tabBtns.length > 0) {
+                tabBtns.forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        // 移除所有按钮的活动状态
+                        tabBtns.forEach(b => b.classList.remove('active'));
+                        // 添加当前按钮的活动状态
+                        this.classList.add('active');
+                        
+                        // 隐藏所有内容区域
+                        tabContents.forEach(content => content.classList.remove('active'));
+                        
+                        // 显示当前选中的内容区域
+                        const tabId = this.getAttribute('data-tab');
+                        const activeContent = document.getElementById(tabId);
+                        if (activeContent) {
+                            activeContent.classList.add('active');
+                        }
+                    });
+                });
+            }
+
+            // ----------------------------------------
+            // 订单表格"更多"下拉菜单功能
+            // 功能说明：点击"更多"按钮时显示下拉选项菜单
+            // ----------------------------------------
+            const moreBtns = document.querySelectorAll('.more-actions-btn');
+            const moreDropdowns = document.querySelectorAll('.more-actions-dropdown');
+            
+            if (moreBtns.length > 0) {
+                moreBtns.forEach((btn, index) => {
+                    btn.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        // 关闭所有其他打开的下拉菜单
+                        moreDropdowns.forEach((dropdown, i) => {
+                            if (i !== index) {
+                                dropdown.classList.add('hidden');
+                            }
+                        });
+                        // 切换当前下拉菜单的显示状态
+                        moreDropdowns[index].classList.toggle('hidden');
+                    });
+                });
+                
+                // 点击页面其他区域关闭所有下拉菜单
+                document.addEventListener('click', function(e) {
+                    let isClickInside = false;
+                    
+                    moreBtns.forEach((btn, index) => {
+                        if (btn.contains(e.target) || moreDropdowns[index].contains(e.target)) {
+                            isClickInside = true;
+                        }
+                    });
+                    
+                    if (!isClickInside) {
+                        moreDropdowns.forEach(dropdown => {
+                            dropdown.classList.add('hidden');
+                        });
+                    }
+                });
+            }
+        });
+    </script>
 </body>
 </html> 

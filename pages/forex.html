@@ -1,22 +1,23 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Whalet - Forex Exchange</title>
+    <title>Whalet - 货币兑换</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         body {
-            font-family: 'Inter', sans-serif;
-            background-color: #f9fafb;
+            font-family: 'Inter', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            background-color: #f8fafc;
         }
         .card {
-            transition: transform 0.3s, box-shadow 0.3s;
+            transition: transform 0.2s, box-shadow 0.2s;
+            border: 1px solid rgba(226, 232, 240, 0.8);
         }
         .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px -4px rgba(0, 0, 0, 0.06);
         }
         .currency-flag {
             width: 24px;
@@ -24,392 +25,668 @@
             object-fit: cover;
             border-radius: 2px;
         }
+        .step-indicator {
+            display: flex;
+            justify-content: space-between;
+            position: relative;
+            margin: 1.5rem 0 1rem;
+            padding: 0 1rem;
+        }
+        .step-indicator::before {
+            content: '';
+            position: absolute;
+            top: 24px;
+            left: 2rem;
+            right: 2rem;
+            height: 2px;
+            background: linear-gradient(to right, #3b82f6 33%, #e5e7eb 33%);
+            z-index: 0;
+        }
+        .step {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex: 1;
+        }
+        .step-circle {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(145deg, #ffffff, #f3f4f6);
+            border: 2px solid #e5e7eb;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+        .step-circle.active {
+            background: linear-gradient(145deg, #3b82f6, #2563eb);
+            border-color: #2563eb;
+            color: white;
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+        }
+        .step-text {
+            font-size: 0.875rem;
+            color: #6b7280;
+        }
+        .step-text.active {
+            color: #3b82f6;
+            font-weight: 500;
+        }
+        .warning-box {
+            background: linear-gradient(145deg, #fffbeb, #fef3c7);
+            border: 1px solid rgba(251, 191, 36, 0.2);
+            border-radius: 0.75rem;
+            padding: 1.25rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 2px 4px rgba(251, 191, 36, 0.05);
+        }
+        .exchange-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+        .exchange-arrow {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(145deg, #f8fafc, #f1f5f9);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 1rem auto;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+        .currency-input {
+            position: relative;
+        }
+        .currency-input input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid #d1d5db;
+            border-radius: 0.375rem;
+            font-size: 1rem;
+        }
+        .currency-input input:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+        .currency-selector {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+        .currency-flag-large {
+            width: 32px;
+            height: 20px;
+            object-fit: cover;
+            border-radius: 2px;
+            margin-right: 0.5rem;
+        }
+        .refresh-button {
+            background: linear-gradient(145deg, #f8fafc, #f1f5f9);
+            border: 1px solid #e2e8f0;
+            border-radius: 0.5rem;
+            padding: 0.375rem 0.75rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.375rem;
+            transition: all 0.2s ease;
+        }
+        .refresh-button:hover {
+            background: linear-gradient(145deg, #f1f5f9, #e2e8f0);
+            border-color: #cbd5e1;
+        }
+        .rate-info {
+            display: flex;
+            align-items: center;
+            font-size: 0.875rem;
+            color: #6b7280;
+            margin-top: 0.5rem;
+        }
+        .countdown-badge {
+            background: linear-gradient(145deg, #f1f5f9, #e2e8f0);
+            border-radius: 1rem;
+            padding: 0.25rem 0.75rem;
+            font-size: 0.75rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+        .fee-info {
+            font-size: 0.875rem;
+            color: #6b7280;
+            margin-top: 0.5rem;
+            display: flex;
+            align-items: center;
+        }
+        .info-icon {
+            color: #9ca3af;
+            margin-left: 0.25rem;
+            cursor: pointer;
+        }
+        .next-button {
+            background: linear-gradient(145deg, #3b82f6, #2563eb);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 0.75rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2);
+        }
+        .next-button:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 16px rgba(59, 130, 246, 0.3);
+        }
+        .operation-time {
+            font-size: 0.75rem;
+            color: #6b7280;
+            margin-top: 1rem;
+        }
+        .vertical-line {
+            position: relative;
+        }
+        .vertical-line::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            width: 1px;
+            background-color: #e5e7eb;
+        }
+        .history-item {
+            padding: 1.25rem;
+            border-bottom: 1px solid #f1f5f9;
+            transition: all 0.2s ease;
+        }
+        .history-item:hover {
+            background: linear-gradient(145deg, #f8fafc, #f1f5f9);
+        }
+        .history-header {
+            position: sticky;
+            top: 0;
+            background-color: #f9fafb;
+            z-index: 10;
+        }
+        .section-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        .exchange-card {
+            background: white;
+            border-radius: 1rem;
+            border: 1px solid rgba(226, 232, 240, 0.8);
+            padding: 1.5rem;
+            margin-bottom: 0.75rem;
+            box-shadow: 0 4px 6px -2px rgba(0, 0, 0, 0.03);
+            transition: all 0.2s ease;
+        }
+        .exchange-card:hover {
+            box-shadow: 0 8px 16px -4px rgba(0, 0, 0, 0.06);
+        }
+        .exchange-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        .currency-amount-input {
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            border-radius: 0.75rem;
+            padding: 0.875rem 1.25rem;
+            width: 100%;
+            font-size: 1rem;
+            transition: all 0.2s ease;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
+        }
+        .currency-amount-input:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+        .currency-dropdown {
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            border-radius: 0.75rem;
+            padding: 0.75rem 1rem;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
+        }
+        .currency-dropdown:hover {
+            border-color: #3b82f6;
+            box-shadow: 0 2px 4px rgba(59, 130, 246, 0.1);
+        }
+        .info-badge {
+            background: linear-gradient(145deg, #f1f5f9, #e2e8f0);
+            padding: 0.5rem 1rem;
+            border-radius: 0.75rem;
+            font-size: 0.875rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
+        }
+        .info-badge.warning {
+            background: linear-gradient(145deg, #fee2e2, #fecaca);
+            color: #b91c1c;
+        }
+        .info-badge.success {
+            background: linear-gradient(145deg, #dcfce7, #bbf7d0);
+            color: #15803d;
+        }
+        .exchange-rate-box {
+            background: linear-gradient(145deg, #f8fafc, #f1f5f9);
+            border-radius: 0.75rem;
+            padding: 1.25rem;
+            margin: 0.75rem 0;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.03);
+        }
+        .status-badge {
+            padding: 0.375rem 0.75rem;
+            border-radius: 1rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.375rem;
+        }
+        .status-badge.success {
+            background: linear-gradient(145deg, #dcfce7, #bbf7d0);
+            color: #15803d;
+        }
     </style>
 </head>
 <body class="bg-gray-50">
     <div class="container mx-auto px-4 py-6">
-        <!-- Page Header -->
+        <!-- 顶部导航 - 与首页相同 -->
+        <div class="flex justify-end mb-6">
+            <div class="flex items-center space-x-6">
+                <!-- 公告图标 -->
+                <div class="relative">
+                    <a href="#" class="text-gray-600 hover:text-blue-600">
+                        <span class="relative">
+                            <i class="fas fa-bell text-lg"></i>
+                            <span class="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full"></span>
+                        </span>
+                    </a>
+                </div>
+                
+                <!-- 帮助中心 -->
+                <a href="#" class="text-gray-600 hover:text-blue-600 text-sm">帮助中心</a>
+                
+                <!-- 用户中心 -->
+                <div class="relative">
+                    <button id="userCenterBtn" class="text-gray-600 hover:text-blue-600">
+                        <i class="fas fa-user-circle text-lg"></i>
+                    </button>
+                    <div id="userCenterDropdown" class="absolute right-0 top-full mt-1 w-32 bg-white rounded-lg shadow-lg py-2 hidden z-10">
+                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">安全设置</a>
+                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">费率查询</a>
+                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">优惠券</a>
+                        <div class="border-t border-gray-100 my-1"></div>
+                        <a href="#" class="block px-4 py-2 text-sm text-red-600 hover:bg-gray-100">退出</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 主要内容区域 - 左右两栏布局 -->
+        <div class="flex flex-col lg:flex-row gap-8">
+            <!-- 左侧：货币兑换流程 -->
+            <div class="lg:w-2/3">
+                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
+        <!-- 页面标题 -->
         <div class="mb-6">
-            <h1 class="text-2xl font-bold text-gray-800">Forex Exchange</h1>
-            <p class="text-gray-600">Exchange currencies at competitive rates</p>
+                        <h1 class="text-2xl font-bold text-gray-800">货币兑换</h1>
         </div>
 
-        <!-- Exchange Rates Overview -->
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-            <div class="bg-white rounded-xl shadow-md p-5 card">
-                <div class="flex justify-between items-center mb-2">
-                    <div class="flex items-center">
-                        <img src="https://flagcdn.com/w40/eu.png" alt="EUR" class="currency-flag mr-2">
-                        <h3 class="text-gray-800 font-medium">EUR/USD</h3>
-                    </div>
-                    <i class="fas fa-euro-sign text-blue-500"></i>
-                </div>
-                <p class="text-3xl font-bold text-gray-800">1.0865</p>
-                <div class="flex items-center mt-2 text-sm">
-                    <span class="text-green-500 flex items-center">
-                        <i class="fas fa-arrow-up mr-1"></i> 0.15%
-                    </span>
-                    <span class="text-gray-500 ml-2">today</span>
-                </div>
-            </div>
-            <div class="bg-white rounded-xl shadow-md p-5 card">
-                <div class="flex justify-between items-center mb-2">
-                    <div class="flex items-center">
-                        <img src="https://flagcdn.com/w40/gb.png" alt="GBP" class="currency-flag mr-2">
-                        <h3 class="text-gray-800 font-medium">GBP/USD</h3>
-                    </div>
-                    <i class="fas fa-pound-sign text-purple-500"></i>
-                </div>
-                <p class="text-3xl font-bold text-gray-800">1.2540</p>
-                <div class="flex items-center mt-2 text-sm">
-                    <span class="text-red-500 flex items-center">
-                        <i class="fas fa-arrow-down mr-1"></i> 0.08%
-                    </span>
-                    <span class="text-gray-500 ml-2">today</span>
-                </div>
-            </div>
-            <div class="bg-white rounded-xl shadow-md p-5 card">
-                <div class="flex justify-between items-center mb-2">
-                    <div class="flex items-center">
-                        <img src="https://flagcdn.com/w40/jp.png" alt="JPY" class="currency-flag mr-2">
-                        <h3 class="text-gray-800 font-medium">USD/JPY</h3>
-                    </div>
-                    <i class="fas fa-yen-sign text-yellow-500"></i>
-                </div>
-                <p class="text-3xl font-bold text-gray-800">149.85</p>
-                <div class="flex items-center mt-2 text-sm">
-                    <span class="text-green-500 flex items-center">
-                        <i class="fas fa-arrow-up mr-1"></i> 0.22%
-                    </span>
-                    <span class="text-gray-500 ml-2">today</span>
-                </div>
-            </div>
-            <div class="bg-white rounded-xl shadow-md p-5 card">
-                <div class="flex justify-between items-center mb-2">
-                    <div class="flex items-center">
-                        <img src="https://flagcdn.com/w40/cn.png" alt="CNY" class="currency-flag mr-2">
-                        <h3 class="text-gray-800 font-medium">USD/CNY</h3>
-                    </div>
-                    <i class="fas fa-yen-sign text-green-500"></i>
-                </div>
-                <p class="text-3xl font-bold text-gray-800">7.2430</p>
-                <div class="flex items-center mt-2 text-sm">
-                    <span class="text-red-500 flex items-center">
-                        <i class="fas fa-arrow-down mr-1"></i> 0.05%
-                    </span>
-                    <span class="text-gray-500 ml-2">today</span>
-                </div>
-            </div>
-        </div>
-
-        <!-- Currency Exchange Widget -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-            <div class="md:col-span-2">
-                <div class="bg-white rounded-xl shadow-md p-6">
-                    <h2 class="text-xl font-semibold text-gray-800 mb-4">Exchange Currency</h2>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <!-- From Currency -->
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">From</label>
-                            <div class="relative">
-                                <div class="flex">
-                                    <div class="w-1/3">
-                                        <select class="w-full border border-gray-300 rounded-l-lg px-3 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-                                            <option>USD</option>
-                                            <option>EUR</option>
-                                            <option>GBP</option>
-                                            <option>JPY</option>
-                                            <option>CNY</option>
-                                            <option>AUD</option>
-                                            <option>CAD</option>
-                                        </select>
+                    <!-- 步骤指示器 -->
+                    <div class="step-indicator">
+                        <div class="step">
+                            <div class="step-circle active">
+                                <i class="fas fa-pen-to-square"></i>
                                     </div>
-                                    <input type="text" value="1,000.00" class="w-2/3 border border-gray-300 border-l-0 rounded-r-lg px-3 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                            <div class="step-text active font-medium">填写兑换信息</div>
                                 </div>
-                                <div class="mt-2 text-sm text-gray-500">
-                                    Balance: $24,568.80
+                        <div class="step">
+                            <div class="step-circle">
+                                <i class="fas fa-check"></i>
+                            </div>
+                            <div class="step-text font-medium">确认兑换信息</div>
+                        </div>
+                        <div class="step">
+                            <div class="step-circle">
+                                <i class="fas fa-flag-checkered"></i>
+                            </div>
+                            <div class="step-text font-medium">兑换结果</div>
+                        </div>
+                    </div>
+                    
+                    <!-- 温馨提示 -->
+                    <div class="warning-box mb-3">
+                        <div class="flex items-start">
+                            <i class="fas fa-exclamation-circle text-amber-500 mt-0.5 mr-2"></i>
+                            <p class="text-xs text-gray-700">温馨提醒：货币兑换显示的汇率仅不是"实入"或"实出"汇率，而是银行间汇率，即银行间交易的批发汇率。银行向个人收取的汇率不包括外汇可能详细的成本、手续费与其他费用，请注意，由于交易规则和本地的不同，这些汇率仅供参考。</p>
+                        </div>
+                    </div>
+                    
+                    <!-- 卖出/买入表单 -->
+                    <div class="mb-6">
+                        <!-- 卖出部分 -->
+                        <div class="exchange-card">
+                            <div class="exchange-card-header">
+                                <h3 class="font-medium text-gray-800">卖出</h3>
+                                <div class="text-sm text-blue-600 flex items-center">
+                                    <span>可卖出金额</span>
+                                    <span class="font-medium ml-1">1000.99 USD</span>
+                                    <i class="fas fa-info-circle text-gray-400 ml-1 cursor-help" title="您账户中可用于兑换的美元金额"></i>
+                </div>
+            </div>
+            
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                <div class="md:col-span-2">
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">金额</label>
+                                    <input type="text" placeholder="输入卖出金额" class="currency-amount-input" value="1000.99">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">货币</label>
+                                    <div class="currency-dropdown">
+                                        <img src="https://flagcdn.com/w40/us.png" alt="USD" class="currency-flag-large">
+                                        <span class="ml-2 text-gray-800">美元</span>
+                                        <i class="fas fa-chevron-down ml-auto text-gray-400"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="mt-3">
+                                <div class="info-badge warning">
+                                    <i class="fas fa-exclamation-circle mr-1"></i>
+                                    <span>金额不足，当前最多可卖出 1000.99 USD</span>
                                 </div>
                             </div>
                         </div>
                         
-                        <!-- To Currency -->
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">To</label>
-                            <div class="relative">
-                                <div class="flex">
-                                    <div class="w-1/3">
-                                        <select class="w-full border border-gray-300 rounded-l-lg px-3 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-                                            <option>EUR</option>
-                                            <option>USD</option>
-                                            <option>GBP</option>
-                                            <option>JPY</option>
-                                            <option>CNY</option>
-                                            <option>AUD</option>
-                                            <option>CAD</option>
-                                        </select>
+                        <!-- 兑换箭头和汇率信息 -->
+                        <div class="flex items-center my-2">
+                            <!-- 兑换箭头和汇率信息在同一行 -->
+                            <div class="exchange-rate-box flex items-center w-full py-3 px-4">
+                                <!-- 新的兑换图标 -->
+                                <div class="w-10 h-10 rounded-full bg-gradient-to-r from-blue-400 to-blue-500 flex items-center justify-center mr-4 flex-shrink-0">
+                                    <i class="fas fa-money-bill-wave text-white"></i>
+                                </div>
+                                
+                                <!-- 汇率和手续费信息 -->
+                                <div class="flex-grow">
+                                    <div class="flex flex-wrap items-center gap-2 mb-2">
+                            <div class="flex items-center">
+                                            <span class="text-sm text-gray-600 mr-2">参考汇率</span>
+                                            <span class="text-sm font-medium">1 USD = 0.8900 EUR</span>
+                                        </div>
+                                        <div class="flex items-center ml-auto">
+                                            <div class="text-xs bg-gray-200 text-gray-600 px-2 py-1 rounded-full flex items-center">
+                                                <span class="countdown-badge">15</span>
+                                                <span class="ml-1">秒</span>
+                                            </div>
+                                            <span id="rate-expired" class="ml-2 text-red-500 text-sm hidden">汇率已失效</span>
+                                            <button id="refresh-button" class="ml-2 text-blue-600 text-sm hover:text-blue-800 flex items-center hidden">
+                                                <i class="fas fa-sync-alt mr-1"></i>
+                                                刷新
+                                            </button>
+                                        </div>
                                     </div>
-                                    <input type="text" value="920.53" class="w-2/3 border border-gray-300 border-l-0 rounded-r-lg px-3 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500" readonly>
-                                </div>
-                                <div class="mt-2 text-sm text-gray-500">
-                                    Balance: €8,320.00
+                                    <div class="text-sm text-gray-600 flex items-center">
+                                        <span>手续费</span>
+                                        <span class="ml-2 font-medium">0.00 USD</span>
+                                        <button class="ml-1 text-blue-600 text-xs hover:underline">查看明细</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    
-                    <!-- Exchange Rate Info -->
-                    <div class="mt-6 p-4 bg-gray-50 rounded-lg">
-                        <div class="flex justify-between items-center">
-                            <div>
-                                <p class="text-sm text-gray-500">Exchange Rate</p>
-                                <p class="text-lg font-medium text-gray-800">1 USD = 0.9205 EUR</p>
+                        
+                        <!-- 买入部分 -->
+                        <div class="exchange-card">
+                            <div class="exchange-card-header">
+                                <h3 class="font-medium text-gray-800">买入</h3>
+                                <div class="text-sm text-gray-600 flex items-center">
+                                    <span>可用金额</span>
+                                    <span class="font-medium ml-1">9999.99 EUR</span>
+                                    <i class="fas fa-info-circle text-gray-400 ml-1 cursor-help" title="您账户中的欧元余额"></i>
+                                </div>
                             </div>
-                            <div>
-                                <p class="text-sm text-gray-500">Fee</p>
-                                <p class="text-lg font-medium text-gray-800">$2.50 (0.25%)</p>
-                            </div>
-                            <div>
-                                <p class="text-sm text-gray-500">Delivery</p>
-                                <p class="text-lg font-medium text-gray-800">Instant</p>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                <div class="md:col-span-2">
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">预计到账金额</label>
+                                    <input type="text" placeholder="预计到账金额" class="currency-amount-input bg-gray-50" readonly value="890.88" disabled>
+                        </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">货币</label>
+                                    <div class="currency-dropdown">
+                                        <img src="https://flagcdn.com/w40/eu.png" alt="EUR" class="currency-flag-large">
+                                        <span class="ml-2 text-gray-800">欧元</span>
+                                        <i class="fas fa-chevron-down ml-auto text-gray-400"></i>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    
-                    <!-- Action Buttons -->
-                    <div class="mt-6 flex space-x-4">
-                        <button class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg text-sm font-medium flex-grow">Exchange Now</button>
-                        <button class="bg-gray-200 hover:bg-gray-300 text-gray-700 px-6 py-3 rounded-lg text-sm font-medium">Save Quote</button>
+                        
+                        <!-- 下一步按钮 -->
+                        <div class="flex justify-center mt-6">
+                            <button class="next-button w-full md:w-1/2">
+                                下一步
+                            </button>
+                            </div>
+
+                        <!-- 操作时间 -->
+                        <div class="operation-time text-center mt-4">
+                            <i class="far fa-clock mr-1"></i>
+                            操作时间: 北京时间工作日"09:00-16:00"
+                        </div>
                     </div>
                 </div>
             </div>
             
-            <!-- Your Currencies -->
-            <div>
-                <div class="bg-white rounded-xl shadow-md p-6">
-                    <h2 class="text-xl font-semibold text-gray-800 mb-4">Your Currencies</h2>
-                    <div class="space-y-4">
-                        <div class="flex justify-between items-center p-3 border border-gray-100 rounded-lg hover:bg-gray-50">
-                            <div class="flex items-center">
-                                <img src="https://flagcdn.com/w40/us.png" alt="USD" class="currency-flag mr-3">
-                                <div>
-                                    <p class="font-medium text-gray-800">USD</p>
-                                    <p class="text-sm text-gray-500">US Dollar</p>
+            <!-- 右侧：兑换历史 -->
+            <div class="lg:w-1/3">
+                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+                    <div class="p-6 border-b border-gray-100">
+                        <h2 class="text-xl font-semibold text-gray-800">兑换历史</h2>
+        </div>
+
+                    <div class="overflow-y-auto max-h-[600px] px-2">
+                        <!-- 历史记录项 -->
+                        <div class="history-item rounded-xl">
+                            <div class="flex justify-between items-center mb-3">
+                                <div class="text-sm font-medium text-gray-900">2023年5月10日</div>
+                                <span class="status-badge success">
+                                    <i class="fas fa-check-circle"></i>
+                                    已完成
+                                </span>
+            </div>
+                            <div class="flex items-center mb-2">
+                                <div class="flex items-center">
+                                    <img src="https://flagcdn.com/w40/us.png" alt="USD" class="currency-flag mr-2">
+                                    <div class="text-sm font-medium text-gray-900">$2,000.00</div>
+                                </div>
+                                <i class="fas fa-arrow-right mx-2 text-gray-400"></i>
+                                <div class="flex items-center">
+                                    <img src="https://flagcdn.com/w40/eu.png" alt="EUR" class="currency-flag mr-2">
+                                    <div class="text-sm font-medium text-gray-900">€1,860.00</div>
                                 </div>
                             </div>
-                            <div class="text-right">
-                                <p class="font-medium text-gray-800">$24,568.80</p>
-                                <p class="text-sm text-gray-500">Primary</p>
+                            <div class="flex justify-between text-xs text-gray-500">
+                                <div>汇率: 1 美元 = 0.9300 欧元</div>
+                                <div>手续费: $5.00</div>
                             </div>
                         </div>
-                        <div class="flex justify-between items-center p-3 border border-gray-100 rounded-lg hover:bg-gray-50">
-                            <div class="flex items-center">
-                                <img src="https://flagcdn.com/w40/eu.png" alt="EUR" class="currency-flag mr-3">
-                                <div>
-                                    <p class="font-medium text-gray-800">EUR</p>
-                                    <p class="text-sm text-gray-500">Euro</p>
+                        
+                        <div class="history-item rounded-xl">
+                            <div class="flex justify-between items-center mb-3">
+                                <div class="text-sm font-medium text-gray-900">2023年5月5日</div>
+                                <span class="status-badge success">
+                                    <i class="fas fa-check-circle"></i>
+                                    已完成
+                                </span>
+                            </div>
+                            <div class="flex items-center mb-2">
+                                <div class="flex items-center">
+                                    <img src="https://flagcdn.com/w40/gb.png" alt="GBP" class="currency-flag mr-2">
+                                    <div class="text-sm font-medium text-gray-900">£1,500.00</div>
+                                </div>
+                                <i class="fas fa-arrow-right mx-2 text-gray-400"></i>
+                                <div class="flex items-center">
+                                    <img src="https://flagcdn.com/w40/us.png" alt="USD" class="currency-flag mr-2">
+                                    <div class="text-sm font-medium text-gray-900">$1,878.00</div>
                                 </div>
                             </div>
-                            <div class="text-right">
-                                <p class="font-medium text-gray-800">€8,320.00</p>
-                                <p class="text-sm text-green-500">+2.3%</p>
+                            <div class="flex justify-between text-xs text-gray-500">
+                                <div>汇率: 1 英镑 = 1.2520 美元</div>
+                                <div>手续费: £3.75</div>
                             </div>
                         </div>
-                        <div class="flex justify-between items-center p-3 border border-gray-100 rounded-lg hover:bg-gray-50">
-                            <div class="flex items-center">
-                                <img src="https://flagcdn.com/w40/gb.png" alt="GBP" class="currency-flag mr-3">
-                                <div>
-                                    <p class="font-medium text-gray-800">GBP</p>
-                                    <p class="text-sm text-gray-500">British Pound</p>
+                        
+                        <div class="history-item rounded-xl">
+                            <div class="flex justify-between items-center mb-3">
+                                <div class="text-sm font-medium text-gray-900">2023年4月28日</div>
+                                <span class="status-badge success">
+                                    <i class="fas fa-check-circle"></i>
+                                    已完成
+                                </span>
+                            </div>
+                            <div class="flex items-center mb-2">
+                                <div class="flex items-center">
+                                    <img src="https://flagcdn.com/w40/us.png" alt="USD" class="currency-flag mr-2">
+                                    <div class="text-sm font-medium text-gray-900">$5,000.00</div>
+                                </div>
+                                <i class="fas fa-arrow-right mx-2 text-gray-400"></i>
+                                <div class="flex items-center">
+                                    <img src="https://flagcdn.com/w40/cn.png" alt="CNY" class="currency-flag mr-2">
+                                    <div class="text-sm font-medium text-gray-900">¥36,150.00</div>
                                 </div>
                             </div>
-                            <div class="text-right">
-                                <p class="font-medium text-gray-800">£3,180.00</p>
-                                <p class="text-sm text-red-500">-0.8%</p>
+                            <div class="flex justify-between text-xs text-gray-500">
+                                <div>汇率: 1 美元 = 7.2300 人民币</div>
+                                <div>手续费: $12.50</div>
                             </div>
                         </div>
-                        <div class="flex justify-between items-center p-3 border border-gray-100 rounded-lg hover:bg-gray-50">
-                            <div class="flex items-center">
-                                <img src="https://flagcdn.com/w40/cn.png" alt="CNY" class="currency-flag mr-3">
-                                <div>
-                                    <p class="font-medium text-gray-800">CNY</p>
-                                    <p class="text-sm text-gray-500">Chinese Yuan</p>
+                        
+                        <!-- 可以添加更多历史记录 -->
+                        <div class="history-item rounded-xl">
+                            <div class="flex justify-between items-center mb-3">
+                                <div class="text-sm font-medium text-gray-900">2023年4月15日</div>
+                                <span class="status-badge success">
+                                    <i class="fas fa-check-circle"></i>
+                                    已完成
+                                </span>
+                            </div>
+                            <div class="flex items-center mb-2">
+                                <div class="flex items-center">
+                                    <img src="https://flagcdn.com/w40/eu.png" alt="EUR" class="currency-flag mr-2">
+                                    <div class="text-sm font-medium text-gray-900">€3,000.00</div>
+                                </div>
+                                <i class="fas fa-arrow-right mx-2 text-gray-400"></i>
+                                <div class="flex items-center">
+                                    <img src="https://flagcdn.com/w40/us.png" alt="USD" class="currency-flag mr-2">
+                                    <div class="text-sm font-medium text-gray-900">$3,270.00</div>
                                 </div>
                             </div>
-                            <div class="text-right">
-                                <p class="font-medium text-gray-800">¥15,600.00</p>
-                                <p class="text-sm text-green-500">+1.2%</p>
+                            <div class="flex justify-between text-xs text-gray-500">
+                                <div>汇率: 1 欧元 = 1.0900 美元</div>
+                                <div>手续费: €7.50</div>
                             </div>
                         </div>
                     </div>
-                    <div class="mt-4">
-                        <button class="w-full bg-gray-100 hover:bg-gray-200 text-gray-800 px-4 py-2 rounded-lg text-sm font-medium">
-                            Add Currency
+
+                    <div class="p-4 border-t border-gray-200 bg-gray-50">
+                        <button class="w-full text-blue-600 hover:text-blue-800 text-sm font-medium">
+                            查看全部兑换历史
                         </button>
                     </div>
                 </div>
             </div>
         </div>
-
-        <!-- Exchange History -->
-        <div class="bg-white rounded-xl shadow-md overflow-hidden mb-8">
-            <div class="p-6 border-b border-gray-200 flex justify-between items-center">
-                <h2 class="text-xl font-semibold text-gray-800">Exchange History</h2>
-                <button class="text-blue-600 hover:text-blue-800 text-sm font-medium">View All</button>
-            </div>
-            <div class="overflow-x-auto">
-                <table class="min-w-full divide-y divide-gray-200">
-                    <thead class="bg-gray-50">
-                        <tr>
-                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
-                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">From</th>
-                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">To</th>
-                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Rate</th>
-                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Fee</th>
-                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                        </tr>
-                    </thead>
-                    <tbody class="bg-white divide-y divide-gray-200">
-                        <tr>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="text-sm text-gray-900">May 10, 2023</div>
-                                <div class="text-xs text-gray-500">16:48:33 UTC</div>
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="flex items-center">
-                                    <img src="https://flagcdn.com/w40/us.png" alt="USD" class="currency-flag mr-2">
-                                    <div class="text-sm font-medium text-gray-900">$2,000.00</div>
-                                </div>
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="flex items-center">
-                                    <img src="https://flagcdn.com/w40/eu.png" alt="EUR" class="currency-flag mr-2">
-                                    <div class="text-sm font-medium text-gray-900">€1,860.00</div>
-                                </div>
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">1 USD = 0.9300 EUR</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">$5.00</td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Completed</span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="text-sm text-gray-900">May 5, 2023</div>
-                                <div class="text-xs text-gray-500">09:22:15 UTC</div>
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="flex items-center">
-                                    <img src="https://flagcdn.com/w40/gb.png" alt="GBP" class="currency-flag mr-2">
-                                    <div class="text-sm font-medium text-gray-900">£1,500.00</div>
-                                </div>
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="flex items-center">
-                                    <img src="https://flagcdn.com/w40/us.png" alt="USD" class="currency-flag mr-2">
-                                    <div class="text-sm font-medium text-gray-900">$1,878.00</div>
-                                </div>
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">1 GBP = 1.2520 USD</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">£3.75</td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Completed</span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="text-sm text-gray-900">Apr 28, 2023</div>
-                                <div class="text-xs text-gray-500">14:05:42 UTC</div>
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="flex items-center">
-                                    <img src="https://flagcdn.com/w40/us.png" alt="USD" class="currency-flag mr-2">
-                                    <div class="text-sm font-medium text-gray-900">$5,000.00</div>
-                                </div>
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="flex items-center">
-                                    <img src="https://flagcdn.com/w40/cn.png" alt="CNY" class="currency-flag mr-2">
-                                    <div class="text-sm font-medium text-gray-900">¥36,150.00</div>
-                                </div>
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">1 USD = 7.2300 CNY</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">$12.50</td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Completed</span>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-        <!-- Market Trends -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div class="bg-white rounded-xl shadow-md p-6">
-                <h2 class="text-xl font-semibold text-gray-800 mb-4">Currency Trends</h2>
-                <div class="h-64 flex items-center justify-center bg-gray-100 rounded-lg">
-                    <div class="text-center">
-                        <i class="fas fa-chart-line text-4xl text-gray-400 mb-2"></i>
-                        <p class="text-gray-500">Chart visualization would appear here</p>
-                    </div>
-                </div>
-                <div class="mt-4 grid grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Currency Pair</label>
-                        <select class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-                            <option>EUR/USD</option>
-                            <option>GBP/USD</option>
-                            <option>USD/JPY</option>
-                            <option>USD/CNY</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Time Range</label>
-                        <select class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-                            <option>1 Day</option>
-                            <option>1 Week</option>
-                            <option>1 Month</option>
-                            <option>3 Months</option>
-                            <option>1 Year</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-            <div class="bg-white rounded-xl shadow-md p-6">
-                <h2 class="text-xl font-semibold text-gray-800 mb-4">Market News</h2>
-                <div class="space-y-4">
-                    <div class="border-b border-gray-100 pb-4">
-                        <h3 class="font-medium text-gray-800 mb-1">Fed Signals Potential Rate Cut in Coming Months</h3>
-                        <p class="text-sm text-gray-600 mb-2">The Federal Reserve indicated it may begin lowering interest rates if inflation continues to ease, potentially weakening the dollar.</p>
-                        <div class="flex justify-between items-center">
-                            <span class="text-xs text-gray-500">Bloomberg • 2 hours ago</span>
-                            <a href="#" class="text-xs text-blue-600 hover:text-blue-800">Read More</a>
-                        </div>
-                    </div>
-                    <div class="border-b border-gray-100 pb-4">
-                        <h3 class="font-medium text-gray-800 mb-1">ECB Holds Rates Steady Amid Economic Uncertainty</h3>
-                        <p class="text-sm text-gray-600 mb-2">The European Central Bank maintained its current interest rates, citing ongoing economic challenges in the eurozone.</p>
-                        <div class="flex justify-between items-center">
-                            <span class="text-xs text-gray-500">Reuters • 5 hours ago</span>
-                            <a href="#" class="text-xs text-blue-600 hover:text-blue-800">Read More</a>
-                        </div>
-                    </div>
-                    <div>
-                        <h3 class="font-medium text-gray-800 mb-1">Chinese Yuan Weakens Against Dollar on Trade Concerns</h3>
-                        <p class="text-sm text-gray-600 mb-2">The Chinese yuan fell to a three-month low against the dollar as trade tensions and economic growth concerns weigh on the currency.</p>
-                        <div class="flex justify-between items-center">
-                            <span class="text-xs text-gray-500">Financial Times • 8 hours ago</span>
-                            <a href="#" class="text-xs text-blue-600 hover:text-blue-800">Read More</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="mt-4">
-                    <button class="w-full bg-gray-100 hover:bg-gray-200 text-gray-800 px-4 py-2 rounded-lg text-sm font-medium">
-                        View All News
-                    </button>
-                </div>
-            </div>
-        </div>
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 用户中心下拉菜单
+            const userCenterBtn = document.getElementById('userCenterBtn');
+            const userCenterDropdown = document.getElementById('userCenterDropdown');
+            
+            if (userCenterBtn && userCenterDropdown) {
+                userCenterBtn.addEventListener('click', function() {
+                    userCenterDropdown.classList.toggle('hidden');
+                });
+                
+                // 点击其他地方关闭下拉菜单
+                document.addEventListener('click', function(event) {
+                    if (!userCenterBtn.contains(event.target) && !userCenterDropdown.contains(event.target)) {
+                        userCenterDropdown.classList.add('hidden');
+                    }
+                });
+            }
+            
+            // 模拟倒计时
+            let countdown = 15;
+            const countdownEl = document.querySelector('.countdown-badge');
+            const rateExpiredEl = document.getElementById('rate-expired');
+            const refreshButtonEl = document.getElementById('refresh-button');
+            
+            if (countdownEl) {
+                const timer = setInterval(() => {
+                    countdown--;
+                    countdownEl.textContent = countdown;
+                    
+                    if (countdown <= 0) {
+                        clearInterval(timer);
+                        // 显示汇率已失效和刷新按钮
+                        if (rateExpiredEl) rateExpiredEl.classList.remove('hidden');
+                        if (refreshButtonEl) refreshButtonEl.classList.remove('hidden');
+                    }
+                }, 1000);
+                
+                // 刷新按钮点击事件
+                if (refreshButtonEl) {
+                    refreshButtonEl.addEventListener('click', function() {
+                        // 重置倒计时
+                        countdown = 15;
+                        countdownEl.textContent = countdown;
+                        // 隐藏汇率已失效和刷新按钮
+                        rateExpiredEl.classList.add('hidden');
+                        refreshButtonEl.classList.add('hidden');
+                        
+                        // 重新开始倒计时
+                        const newTimer = setInterval(() => {
+                            countdown--;
+                            countdownEl.textContent = countdown;
+                            
+                            if (countdown <= 0) {
+                                clearInterval(newTimer);
+                                // 显示汇率已失效和刷新按钮
+                                rateExpiredEl.classList.remove('hidden');
+                                refreshButtonEl.classList.remove('hidden');
+                            }
+                        }, 1000);
+                    });
+                }
+            }
+        });
+    </script>
 </body>
 </html> 
