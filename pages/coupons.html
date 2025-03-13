@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>优惠券 & 流量包 - Whalet</title>
+    <title>福利中心 - Whalet</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -11,403 +11,510 @@
             background-color: #f9fafb;
             font-family: 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
         }
-        .card {
+        .welfare-card {
             transition: all 0.3s ease;
         }
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        .welfare-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 12px -3px rgba(0, 0, 0, 0.1);
         }
-        .coupon-tab.active {
-            color: #4f46e5;
-            border-color: #4f46e5;
-        }
-        .coupon-card {
+        .tab-button {
             position: relative;
-            overflow: hidden;
-            transition: all 0.3s ease;
+            transition: all 0.2s ease;
         }
-        .coupon-card::before {
+        .tab-button.active {
+            color: #4f46e5;
+        }
+        .tab-button.active::after {
             content: '';
             position: absolute;
-            left: -8px;
-            top: 50%;
-            width: 16px;
-            height: 16px;
-            background-color: #f9fafb;
-            border-radius: 50%;
-            transform: translateY(-50%);
-            z-index: 1;
+            bottom: -2px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: #4f46e5;
         }
-        .coupon-card::after {
-            content: '';
-            position: absolute;
-            right: -8px;
-            top: 50%;
-            width: 16px;
-            height: 16px;
-            background-color: #f9fafb;
-            border-radius: 50%;
-            transform: translateY(-50%);
-            z-index: 1;
+        .status-badge {
+            font-size: 0.75rem;
+            padding: 0.25rem 0.75rem;
+            border-radius: 1rem;
         }
-        .coupon-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        .status-unused {
+            background-color: #e0f2fe;
+            color: #0369a1;
         }
-        .expired {
-            filter: grayscale(1);
-            opacity: 0.7;
+        .status-used {
+            background-color: #dcfce7;
+            color: #15803d;
+        }
+        .status-expired {
+            background-color: #f3f4f6;
+            color: #6b7280;
         }
     </style>
 </head>
 <body>
     <div class="container mx-auto px-4 py-6">
-        <!-- 页面标题 -->
-        <div class="bg-white p-8 rounded-xl shadow-sm mb-6">
-            <div class="flex justify-between items-start">
-                <div>
-                    <h1 class="text-2xl font-bold text-gray-800 mb-2">优惠券 & 流量包</h1>
-                    <p class="text-gray-600">管理您的优惠券和流量包，节省交易费用</p>
+        <!-- 顶部导航 -->
+        <div class="flex justify-end mb-4">
+            <div class="flex items-center space-x-6">
+                <!-- 公告图标 -->
+                <div class="relative">
+                    <a href="#" class="text-gray-600 hover:text-blue-600">
+                        <span class="relative">
+                            <i class="fas fa-bell text-lg"></i>
+                            <span class="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full"></span>
+                        </span>
+                    </a>
                 </div>
-                <div class="flex space-x-3">
-                    <button class="bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2 rounded-lg text-sm font-medium flex items-center">
-                        <i class="fas fa-ticket-alt mr-2"></i>
-                        兑换码
+                
+                <!-- 帮助中心 -->
+                <a href="#" class="text-gray-600 hover:text-blue-600 text-sm">帮助中心</a>
+                
+                <!-- 用户中心 -->
+                <div class="relative">
+                    <button id="userCenterBtn" class="text-gray-600 hover:text-blue-600">
+                        <i class="fas fa-user-circle text-lg"></i>
                     </button>
-                    <button class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg text-sm font-medium flex items-center">
-                        <i class="fas fa-shopping-cart mr-2"></i>
-                        购买流量包
-                    </button>
+                    <div id="userCenterDropdown" class="absolute right-0 top-full mt-1 w-32 bg-white rounded-lg shadow-lg py-2 hidden z-10">
+                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">安全设置</a>
+                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">费率查询</a>
+                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">优惠券</a>
+                        <div class="border-t border-gray-100 my-1"></div>
+                        <a href="#" class="block px-4 py-2 text-sm text-red-600 hover:bg-gray-100">退出</a>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <!-- 资源概览 -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-            <div class="bg-white p-6 rounded-xl shadow-sm">
-                <div class="flex items-center justify-between mb-4">
-                    <h3 class="text-gray-500 font-medium">可用优惠券</h3>
-                    <div class="rounded-full bg-blue-100 w-10 h-10 flex items-center justify-center">
+        <!-- 福利概览卡片 -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+            <!-- 优惠券卡片 -->
+            <div class="welfare-card bg-white rounded-xl shadow-sm p-3">
+                <div class="flex items-center justify-between mb-2">
+                    <h3 class="text-gray-800 font-medium">优惠券</h3>
+                    <div class="rounded-full bg-blue-100 w-7 h-7 flex items-center justify-center">
                         <i class="fas fa-ticket-alt text-blue-600"></i>
                     </div>
                 </div>
-                <p class="text-2xl font-bold text-gray-800">5</p>
-                <p class="mt-2 text-sm text-gray-600">包含折扣券和免费交易券</p>
-            </div>
-
-            <div class="bg-white p-6 rounded-xl shadow-sm">
-                <div class="flex items-center justify-between mb-4">
-                    <h3 class="text-gray-500 font-medium">剩余流量</h3>
-                    <div class="rounded-full bg-green-100 w-10 h-10 flex items-center justify-center">
-                        <i class="fas fa-database text-green-600"></i>
+                <div class="space-y-1">
+                    <div class="flex justify-between items-center">
+                        <span class="text-gray-600 text-sm">可用优惠券</span>
+                        <span class="text-xl font-bold text-gray-800">5</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-gray-600 text-sm">即将过期</span>
+                        <span class="text-sm text-red-500">2张 / 7天内</span>
                     </div>
                 </div>
-                <p class="text-2xl font-bold text-gray-800">250 <span class="text-base font-normal">笔 / 月</span></p>
-                <div class="mt-3">
-                    <div class="flex justify-between text-sm mb-1">
-                        <span class="text-gray-600">已使用</span>
-                        <span class="text-gray-800">86/250</span>
+            </div>
+
+            <!-- 免费提现额度卡片 -->
+            <div class="welfare-card bg-white rounded-xl shadow-sm p-3">
+                <div class="flex items-center justify-between mb-2">
+                    <h3 class="text-gray-800 font-medium">免费提现额度</h3>
+                    <div class="rounded-full bg-green-100 w-7 h-7 flex items-center justify-center">
+                        <i class="fas fa-wallet text-green-600"></i>
                     </div>
-                    <div class="w-full bg-gray-200 rounded-full h-2.5">
-                        <div class="bg-green-600 h-2.5 rounded-full" style="width: 34%"></div>
+                </div>
+                <div class="space-y-1">
+                    <div class="flex justify-between items-center">
+                        <span class="text-gray-600 text-sm">总额度</span>
+                        <span class="text-xl font-bold text-gray-800">¥50,000</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-gray-600 text-sm">已用/可用</span>
+                        <div class="text-right">
+                            <span class="text-gray-800 text-sm">¥12,500</span>
+                            <span class="text-gray-400 mx-1">/</span>
+                            <span class="text-green-600 text-sm font-medium">¥37,500</span>
+                        </div>
+                    </div>
+                    <div class="w-full bg-gray-100 rounded-full h-1">
+                        <div class="bg-green-500 h-1 rounded-full" style="width: 25%"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 预留福利卡片位置 -->
+            <div class="welfare-card bg-white rounded-xl shadow-sm p-3 border-2 border-dashed border-gray-200">
+                <div class="flex items-center justify-center h-full">
+                    <div class="text-center">
+                        <div class="rounded-full bg-gray-100 w-8 h-8 flex items-center justify-center mx-auto mb-1">
+                            <i class="fas fa-plus text-gray-400"></i>
+                        </div>
+                        <p class="text-gray-500 text-sm">更多福利即将开放</p>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- 优惠券和流量包切换标签 -->
-        <div class="bg-white rounded-xl shadow-sm mb-6">
+        <!-- 详细内容区域 -->
+        <div class="bg-white rounded-xl shadow-sm">
+            <!-- 标签页切换 -->
             <div class="border-b border-gray-200">
-                <div class="flex py-2 px-4">
-                    <button class="coupon-tab active whitespace-nowrap px-6 py-3 font-medium text-base border-b-2 border-transparent focus:outline-none">优惠券</button>
-                    <button class="coupon-tab whitespace-nowrap px-6 py-3 font-medium text-base text-gray-500 border-b-2 border-transparent hover:text-gray-700 focus:outline-none">流量包</button>
-                    <button class="coupon-tab whitespace-nowrap px-6 py-3 font-medium text-base text-gray-500 border-b-2 border-transparent hover:text-gray-700 focus:outline-none">使用记录</button>
+                <div class="flex">
+                    <button class="tab-button active px-6 py-4 text-sm font-medium" data-tab="coupons">
+                        优惠券
+                    </button>
+                    <button class="tab-button px-6 py-4 text-sm font-medium text-gray-500" data-tab="withdrawal">
+                        免费提现额度
+                    </button>
                 </div>
             </div>
 
-            <!-- 优惠券列表 -->
-            <div class="p-6">
-                <div class="mb-6 flex flex-wrap justify-between items-center">
-                    <h2 class="text-xl font-semibold text-gray-800 mb-4 md:mb-0">我的优惠券</h2>
-                    <div class="flex space-x-3">
-                        <button class="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-medium">全部</button>
-                        <button class="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg text-sm font-medium">可用</button>
-                        <button class="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg text-sm font-medium">已过期</button>
-                    </div>
+            <!-- 优惠券内容 -->
+            <div id="couponsTab" class="p-6">
+                <!-- 使用说明 -->
+                <div class="bg-blue-50 border border-blue-100 rounded-lg p-4 mb-6">
+                    <h4 class="text-blue-800 font-medium mb-2">使用说明</h4>
+                    <ul class="text-blue-700 text-sm space-y-1">
+                        <li class="flex items-center">
+                            <i class="fas fa-info-circle mr-2"></i>
+                            优惠券不能叠加使用
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-info-circle mr-2"></i>
+                            提现费用减免券支持任意转换为其他币种
+                        </li>
+                    </ul>
                 </div>
 
+                <!-- 操作栏 -->
+                <div class="flex justify-between items-center mb-6">
+                    <div class="flex space-x-2">
+                        <button class="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg text-sm font-medium" data-filter="all">全部</button>
+                        <button class="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-medium" data-filter="unused">未使用</button>
+                        <button class="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg text-sm font-medium" data-filter="used">已使用</button>
+                        <button class="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg text-sm font-medium" data-filter="expired">已过期</button>
+                    </div>
+                    <button class="flex items-center text-blue-600 hover:text-blue-700">
+                        <i class="fas fa-history mr-2"></i>
+                        <span class="text-sm font-medium">使用记录</span>
+                    </button>
+                </div>
+
+                <!-- 优惠券列表 -->
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <!-- 优惠券1 -->
-                    <div class="coupon-card bg-gradient-to-r from-blue-500 to-blue-600 rounded-lg text-white overflow-hidden">
-                        <div class="p-5">
-                            <div class="flex justify-between items-start">
-                                <div>
-                                    <h3 class="text-xl font-bold mb-1">$50 交易费抵扣券</h3>
-                                    <p class="text-blue-100 text-sm mb-3">适用于所有货币交易</p>
-                                    <div class="border border-blue-300 rounded-lg px-2 py-1 inline-block text-xs">
-                                        单笔交易满 $5,000 可用
-                                    </div>
+                    <!-- 未使用的优惠券 -->
+                    <div class="relative bg-white rounded-lg overflow-hidden coupon-item shadow-sm" data-status="unused">
+                        <div class="flex">
+                            <!-- 左侧金额部分 -->
+                            <div class="w-1/3 bg-blue-600 p-4 flex flex-col justify-center items-center text-white relative">
+                                <div class="absolute -right-3 top-0 bottom-0 flex flex-col justify-evenly">
+                                    <div class="w-6 h-6 bg-gray-100 rounded-full"></div>
+                                    <div class="w-6 h-6 bg-gray-100 rounded-full"></div>
+                                    <div class="w-6 h-6 bg-gray-100 rounded-full"></div>
                                 </div>
-                                <div class="text-right">
-                                    <div class="bg-white text-blue-600 rounded-full h-14 w-14 flex items-center justify-center font-bold text-lg">
-                                        $50
+                                <div class="text-2xl font-bold mb-2">$50.00</div>
+                                <span class="text-xs bg-blue-500 px-2 py-0.5 rounded-full">手续费≥$10.00可用</span>
+                            </div>
+                            
+                            <!-- 右侧内容部分 -->
+                            <div class="flex-1 p-4">
+                                <div class="flex justify-between items-start">
+                                    <div>
+                                        <h4 class="text-base font-medium text-gray-800 mb-2">交易手续费抵扣券</h4>
+                                        <div class="space-y-1.5">
+                                            <div class="flex items-center text-sm text-gray-600">
+                                                <i class="fas fa-globe-americas w-5 mr-2"></i>
+                                                <span>支持平台：</span>
+                                                <span class="text-gray-600 ml-1">亚马逊北美站</span>
+                                            </div>
+                                            <div class="flex items-center text-sm text-gray-600">
+                                                <i class="fas fa-coins w-5 mr-2"></i>
+                                                <span>币种：</span>
+                                                <div class="flex items-center ml-1">
+                                                    <span class="text-gray-600">USDT</span>
+                                                    <a href="#" class="ml-2 text-blue-600 hover:text-blue-700 hover:underline text-xs">
+                                                        <i class="fas fa-exchange-alt mr-1"></i>
+                                                        转换
+                                                    </a>
+                                                </div>
+                                            </div>
+                                            <div class="flex items-center text-sm text-gray-600">
+                                                <i class="far fa-calendar-alt w-5 mr-2"></i>
+                                                <span>有效期：</span>
+                                                <span class="ml-1">2024-02-01 至 2024-03-31</span>
+                                            </div>
+                                        </div>
                                     </div>
+                                    <span class="status-badge status-unused">未使用</span>
                                 </div>
                             </div>
-                        </div>
-                        <div class="bg-blue-700 p-4 border-t border-blue-400 flex justify-between items-center">
-                            <div class="text-xs text-blue-200">
-                                有效期至: 2023-08-31
-                            </div>
-                            <button class="bg-white text-blue-600 px-3 py-1 rounded text-xs font-medium">
-                                立即使用
-                            </button>
                         </div>
                     </div>
-                    
-                    <!-- 优惠券2 -->
-                    <div class="coupon-card bg-gradient-to-r from-green-500 to-green-600 rounded-lg text-white overflow-hidden">
-                        <div class="p-5">
-                            <div class="flex justify-between items-start">
-                                <div>
-                                    <h3 class="text-xl font-bold mb-1">85折 手续费优惠券</h3>
-                                    <p class="text-green-100 text-sm mb-3">所有货币均可使用</p>
-                                    <div class="border border-green-300 rounded-lg px-2 py-1 inline-block text-xs">
-                                        无最低交易金额限制
-                                    </div>
-                                </div>
-                                <div class="text-right">
-                                    <div class="bg-white text-green-600 rounded-full h-14 w-14 flex items-center justify-center font-bold text-lg">
-                                        85折
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="bg-green-700 p-4 border-t border-green-400 flex justify-between items-center">
-                            <div class="text-xs text-green-200">
-                                有效期至: 2023-09-15
-                            </div>
-                            <button class="bg-white text-green-600 px-3 py-1 rounded text-xs font-medium">
-                                立即使用
-                            </button>
-                        </div>
-                    </div>
-                    
-                    <!-- 优惠券3 -->
-                    <div class="coupon-card bg-gradient-to-r from-purple-500 to-purple-600 rounded-lg text-white overflow-hidden">
-                        <div class="p-5">
-                            <div class="flex justify-between items-start">
-                                <div>
-                                    <h3 class="text-xl font-bold mb-1">5笔 免费交易券</h3>
-                                    <p class="text-purple-100 text-sm mb-3">外汇兑换手续费全免</p>
-                                    <div class="border border-purple-300 rounded-lg px-2 py-1 inline-block text-xs">
-                                        单笔最高兑换额 $10,000
-                                    </div>
-                                </div>
-                                <div class="text-right">
-                                    <div class="bg-white text-purple-600 rounded-full h-14 w-14 flex items-center justify-center font-bold text-lg">
-                                        5笔
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="bg-purple-700 p-4 border-t border-purple-400 flex justify-between items-center">
-                            <div class="text-xs text-purple-200">
-                                有效期至: 2023-07-31
-                            </div>
-                            <button class="bg-white text-purple-600 px-3 py-1 rounded text-xs font-medium">
-                                立即使用
-                            </button>
-                        </div>
-                    </div>
-                    
-                    <!-- 优惠券4 (已过期) -->
-                    <div class="coupon-card expired bg-gradient-to-r from-gray-400 to-gray-500 rounded-lg text-white overflow-hidden">
-                        <div class="p-5">
-                            <div class="flex justify-between items-start">
-                                <div>
-                                    <h3 class="text-xl font-bold mb-1">$20 交易费抵扣券</h3>
-                                    <p class="text-gray-200 text-sm mb-3">适用于所有交易</p>
-                                    <div class="border border-gray-300 rounded-lg px-2 py-1 inline-block text-xs">
-                                        单笔交易满 $1,000 可用
-                                    </div>
-                                </div>
-                                <div class="text-right">
-                                    <div class="bg-white text-gray-600 rounded-full h-14 w-14 flex items-center justify-center font-bold text-lg">
-                                        $20
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="bg-gray-600 p-4 border-t border-gray-400 flex justify-between items-center">
-                            <div class="text-xs text-gray-300">
-                                已过期: 2023-05-15
-                            </div>
-                            <button class="bg-gray-300 text-gray-600 px-3 py-1 rounded text-xs font-medium cursor-not-allowed">
-                                已过期
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
 
-        <!-- 流量包推荐 -->
-        <div class="bg-white rounded-xl shadow-sm mb-6">
-            <div class="p-6 border-b border-gray-200">
-                <h2 class="text-xl font-semibold text-gray-800">推荐流量包</h2>
-            </div>
-            <div class="p-6 grid grid-cols-1 md:grid-cols-3 gap-6">
-                <!-- 流量包1 -->
-                <div class="card border border-gray-200 rounded-lg overflow-hidden">
-                    <div class="bg-blue-50 p-4 border-b border-blue-100">
-                        <h3 class="text-lg font-bold text-blue-800">标准流量包</h3>
-                        <p class="text-sm text-blue-600">适合小型企业</p>
-                    </div>
-                    <div class="p-6">
-                        <div class="text-center mb-4">
-                            <p class="text-3xl font-bold text-gray-800">$99<span class="text-lg font-normal text-gray-500">/月</span></p>
-                            <p class="text-sm text-gray-600 mt-1">每月500笔交易</p>
+                    <!-- 已使用的优惠券 -->
+                    <div class="relative bg-white rounded-lg overflow-hidden opacity-75 coupon-item shadow-sm hidden" data-status="used">
+                        <div class="flex">
+                            <!-- 左侧金额部分 -->
+                            <div class="w-1/3 bg-gray-500 p-4 flex flex-col justify-center items-center text-white relative">
+                                <div class="absolute -right-3 top-0 bottom-0 flex flex-col justify-evenly">
+                                    <div class="w-6 h-6 bg-gray-100 rounded-full"></div>
+                                    <div class="w-6 h-6 bg-gray-100 rounded-full"></div>
+                                    <div class="w-6 h-6 bg-gray-100 rounded-full"></div>
+                                </div>
+                                <div class="text-2xl font-bold mb-2">85折</div>
+                                <span class="text-xs bg-gray-600 px-2 py-0.5 rounded-full">无使用门槛</span>
+                            </div>
+                            
+                            <!-- 右侧内容部分 -->
+                            <div class="flex-1 p-4">
+                                <div class="flex justify-between items-start">
+                                    <div>
+                                        <h4 class="text-base font-medium text-gray-600 mb-2">手续费折扣券</h4>
+                                        <div class="space-y-1.5">
+                                            <div class="flex items-center text-sm text-gray-500">
+                                                <i class="fas fa-globe-americas w-5 mr-2"></i>
+                                                <span>支持平台：</span>
+                                                <span class="text-gray-500 ml-1">亚马逊北美站</span>
+                                            </div>
+                                            <div class="flex items-center text-sm text-gray-500">
+                                                <i class="fas fa-coins w-5 mr-2"></i>
+                                                <span>币种：</span>
+                                                <span class="text-gray-500 ml-1">全部币种</span>
+                                            </div>
+                                            <div class="flex items-center text-sm text-gray-500">
+                                                <i class="far fa-calendar-alt w-5 mr-2"></i>
+                                                <span>使用时间：</span>
+                                                <span class="ml-1">2024-02-15 14:30:25</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <span class="status-badge status-used">已使用</span>
+                                </div>
+                            </div>
                         </div>
-                        <ul class="space-y-3 mb-6">
-                            <li class="flex items-start">
-                                <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
-                                <span class="text-sm text-gray-600">每笔交易成本降低20%</span>
-                            </li>
-                            <li class="flex items-start">
-                                <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
-                                <span class="text-sm text-gray-600">支持所有主要货币</span>
-                            </li>
-                            <li class="flex items-start">
-                                <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
-                                <span class="text-sm text-gray-600">无单笔交易限额</span>
-                            </li>
-                            <li class="flex items-start">
-                                <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
-                                <span class="text-sm text-gray-600">标准客户支持</span>
-                            </li>
-                        </ul>
-                        <button class="w-full py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium">
-                            立即购买
-                        </button>
+                    </div>
+
+                    <!-- 已过期的优惠券 -->
+                    <div class="relative bg-white rounded-lg overflow-hidden opacity-75 coupon-item shadow-sm hidden" data-status="expired">
+                        <div class="flex">
+                            <!-- 左侧金额部分 -->
+                            <div class="w-1/3 bg-gray-400 p-4 flex flex-col justify-center items-center text-white relative">
+                                <div class="absolute -right-3 top-0 bottom-0 flex flex-col justify-evenly">
+                                    <div class="w-6 h-6 bg-gray-100 rounded-full"></div>
+                                    <div class="w-6 h-6 bg-gray-100 rounded-full"></div>
+                                    <div class="w-6 h-6 bg-gray-100 rounded-full"></div>
+                                </div>
+                                <div class="text-2xl font-bold mb-2">$20.00</div>
+                                <span class="text-xs bg-gray-500 px-2 py-0.5 rounded-full">手续费≥$5.00可用</span>
+                            </div>
+                            
+                            <!-- 右侧内容部分 -->
+                            <div class="flex-1 p-4">
+                                <div class="flex justify-between items-start">
+                                    <div>
+                                        <h4 class="text-base font-medium text-gray-600 mb-2">交易手续费抵扣券</h4>
+                                        <div class="space-y-1.5">
+                                            <div class="flex items-center text-sm text-gray-500">
+                                                <i class="fas fa-globe-americas w-5 mr-2"></i>
+                                                <span>支持平台：</span>
+                                                <span class="text-gray-500 ml-1">亚马逊北美站</span>
+                                            </div>
+                                            <div class="flex items-center text-sm text-gray-500">
+                                                <i class="fas fa-coins w-5 mr-2"></i>
+                                                <span>币种：</span>
+                                                <span class="text-gray-500 ml-1">BTC, ETH</span>
+                                            </div>
+                                            <div class="flex items-center text-sm text-gray-500">
+                                                <i class="far fa-calendar-alt w-5 mr-2"></i>
+                                                <span>有效期：</span>
+                                                <span class="ml-1">2024-01-01 至 2024-01-31</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <span class="status-badge status-expired">已过期</span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                
-                <!-- 流量包2 (热门) -->
-                <div class="card border border-blue-200 rounded-lg overflow-hidden relative">
-                    <div class="absolute top-2 right-2">
-                        <span class="px-2 py-1 bg-red-500 text-white text-xs font-bold rounded-full">热门</span>
+
+                <!-- 分页 -->
+                <div class="flex justify-between items-center mt-6">
+                    <div class="text-sm text-gray-600">
+                        共 24 条记录
                     </div>
-                    <div class="bg-indigo-50 p-4 border-b border-indigo-100">
-                        <h3 class="text-lg font-bold text-indigo-800">商业流量包</h3>
-                        <p class="text-sm text-indigo-600">适合中型企业</p>
-                    </div>
-                    <div class="p-6">
-                        <div class="text-center mb-4">
-                            <p class="text-3xl font-bold text-gray-800">$199<span class="text-lg font-normal text-gray-500">/月</span></p>
-                            <p class="text-sm text-gray-600 mt-1">每月1,200笔交易</p>
-                        </div>
-                        <ul class="space-y-3 mb-6">
-                            <li class="flex items-start">
-                                <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
-                                <span class="text-sm text-gray-600">每笔交易成本降低35%</span>
-                            </li>
-                            <li class="flex items-start">
-                                <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
-                                <span class="text-sm text-gray-600">支持所有币种</span>
-                            </li>
-                            <li class="flex items-start">
-                                <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
-                                <span class="text-sm text-gray-600">优先交易处理</span>
-                            </li>
-                            <li class="flex items-start">
-                                <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
-                                <span class="text-sm text-gray-600">专属客户经理</span>
-                            </li>
-                        </ul>
-                        <button class="w-full py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-sm font-medium">
-                            立即购买
-                        </button>
-                    </div>
-                </div>
-                
-                <!-- 流量包3 -->
-                <div class="card border border-gray-200 rounded-lg overflow-hidden">
-                    <div class="bg-purple-50 p-4 border-b border-purple-100">
-                        <h3 class="text-lg font-bold text-purple-800">企业流量包</h3>
-                        <p class="text-sm text-purple-600">适合大型企业</p>
-                    </div>
-                    <div class="p-6">
-                        <div class="text-center mb-4">
-                            <p class="text-3xl font-bold text-gray-800">$499<span class="text-lg font-normal text-gray-500">/月</span></p>
-                            <p class="text-sm text-gray-600 mt-1">每月3,500笔交易</p>
-                        </div>
-                        <ul class="space-y-3 mb-6">
-                            <li class="flex items-start">
-                                <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
-                                <span class="text-sm text-gray-600">每笔交易成本降低50%</span>
-                            </li>
-                            <li class="flex items-start">
-                                <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
-                                <span class="text-sm text-gray-600">支持所有币种和支付方式</span>
-                            </li>
-                            <li class="flex items-start">
-                                <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
-                                <span class="text-sm text-gray-600">企业API接入</span>
-                            </li>
-                            <li class="flex items-start">
-                                <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
-                                <span class="text-sm text-gray-600">7x24小时专属客服</span>
-                            </li>
-                        </ul>
-                        <button class="w-full py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg text-sm font-medium">
-                            联系销售
-                        </button>
+                    <div class="flex items-center space-x-2">
+                        <button class="px-3 py-1 border border-gray-300 rounded text-sm text-gray-600 hover:bg-gray-50">上一页</button>
+                        <button class="px-3 py-1 bg-blue-600 text-white rounded text-sm">1</button>
+                        <button class="px-3 py-1 border border-gray-300 rounded text-sm text-gray-600 hover:bg-gray-50">2</button>
+                        <button class="px-3 py-1 border border-gray-300 rounded text-sm text-gray-600 hover:bg-gray-50">3</button>
+                        <button class="px-3 py-1 border border-gray-300 rounded text-sm text-gray-600 hover:bg-gray-50">下一页</button>
                     </div>
                 </div>
             </div>
-        </div>
-        
-        <!-- 使用说明 -->
-        <div class="bg-white rounded-xl shadow-sm p-6">
-            <h2 class="text-lg font-medium text-gray-800 mb-4">使用说明</h2>
-            <div class="space-y-4">
-                <div class="flex items-start">
-                    <div class="text-blue-500 mr-3">
-                        <i class="fas fa-info-circle"></i>
+
+            <!-- 免费提现额度内容 -->
+            <div id="withdrawalTab" class="p-6 hidden">
+                <!-- 操作栏 -->
+                <div class="flex justify-between items-center mb-6">
+                    <div class="flex space-x-4">
+                        <button class="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-medium">额度记录</button>
+                        <button class="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg text-sm font-medium">我的订单</button>
                     </div>
-                    <div>
-                        <h3 class="text-sm font-medium text-gray-800">优惠券使用方式</h3>
-                        <p class="text-sm text-gray-600 mt-1">
-                            在交易过程中，系统会自动显示可用的优惠券，您也可以手动选择使用特定优惠券。每笔交易仅能使用一张优惠券。
-                        </p>
-                    </div>
-                </div>
-                <div class="flex items-start">
-                    <div class="text-blue-500 mr-3">
-                        <i class="fas fa-info-circle"></i>
-                    </div>
-                    <div>
-                        <h3 class="text-sm font-medium text-gray-800">流量包说明</h3>
-                        <p class="text-sm text-gray-600 mt-1">
-                            流量包内的交易次数在有效期内使用完即止，未使用完的次数将在有效期结束后自动清零。可选择按月订阅自动续费，或单次购买。
-                        </p>
+                    <div class="flex items-center space-x-3">
+                        <div class="text-sm text-gray-600">
+                            统计区间：
+                        </div>
+                        <select class="border border-gray-300 rounded px-3 py-1 text-sm">
+                            <option>最近7天</option>
+                            <option>最近30天</option>
+                            <option>最近90天</option>
+                        </select>
                     </div>
                 </div>
-                <div class="flex items-start">
-                    <div class="text-yellow-500 mr-3">
-                        <i class="fas fa-exclamation-triangle"></i>
+
+                <!-- 额度记录表格 -->
+                <div class="overflow-x-auto">
+                    <table class="min-w-full">
+                        <thead>
+                            <tr class="bg-gray-50">
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">记录日期</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">业务类型</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">额度变动</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">剩余额度</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">说明</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">操作</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">2024-02-20 15:30:45</td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span class="px-2 py-1 bg-red-100 text-red-600 rounded-full text-xs font-medium">使用</span>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-red-600">-¥5,000</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">¥37,500</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">提现手续费减免</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm">
+                                    <button class="text-blue-600 hover:text-blue-700 font-medium">详情</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">2024-02-01 00:00:00</td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span class="px-2 py-1 bg-green-100 text-green-600 rounded-full text-xs font-medium">赠送</span>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-green-600">+¥50,000</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">¥50,000</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">每月免费提现额度</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm">
+                                    <button class="text-blue-600 hover:text-blue-700 font-medium">详情</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">2024-01-31 23:59:59</td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span class="px-2 py-1 bg-gray-100 text-gray-600 rounded-full text-xs font-medium">到期失效</span>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">-¥15,000</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">¥0</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">1月份额度到期</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm">
+                                    <button class="text-blue-600 hover:text-blue-700 font-medium">详情</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- 分页 -->
+                <div class="flex justify-between items-center mt-6">
+                    <div class="text-sm text-gray-600">
+                        共 36 条记录
                     </div>
-                    <div>
-                        <h3 class="text-sm font-medium text-gray-800">重要提示</h3>
-                        <p class="text-sm text-gray-600 mt-1">
-                            优惠券不可兑换现金，不可与其他优惠同时使用。部分特殊交易可能不支持使用优惠券，详情请查看具体优惠券说明。
-                        </p>
+                    <div class="flex items-center space-x-2">
+                        <button class="px-3 py-1 border border-gray-300 rounded text-sm text-gray-600 hover:bg-gray-50">上一页</button>
+                        <button class="px-3 py-1 bg-blue-600 text-white rounded text-sm">1</button>
+                        <button class="px-3 py-1 border border-gray-300 rounded text-sm text-gray-600 hover:bg-gray-50">2</button>
+                        <button class="px-3 py-1 border border-gray-300 rounded text-sm text-gray-600 hover:bg-gray-50">3</button>
+                        <button class="px-3 py-1 border border-gray-300 rounded text-sm text-gray-600 hover:bg-gray-50">下一页</button>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
+    <script>
+        // 用户中心下拉菜单
+        const userCenterBtn = document.getElementById('userCenterBtn');
+        const userCenterDropdown = document.getElementById('userCenterDropdown');
+        
+        if (userCenterBtn && userCenterDropdown) {
+            userCenterBtn.addEventListener('click', function() {
+                userCenterDropdown.classList.toggle('hidden');
+            });
+            
+            // 点击其他地方关闭下拉菜单
+            document.addEventListener('click', function(event) {
+                if (!userCenterBtn.contains(event.target)) {
+                    userCenterDropdown.classList.add('hidden');
+                }
+            });
+        }
+
+        // 标签页切换
+        const tabButtons = document.querySelectorAll('.tab-button');
+        const tabContents = {
+            'coupons': document.getElementById('couponsTab'),
+            'withdrawal': document.getElementById('withdrawalTab')
+        };
+
+        tabButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                // 移除所有标签的激活状态
+                tabButtons.forEach(btn => {
+                    btn.classList.remove('active');
+                    btn.classList.add('text-gray-500');
+                });
+
+                // 隐藏所有内容
+                Object.values(tabContents).forEach(content => {
+                    content.classList.add('hidden');
+                });
+
+                // 激活当前标签
+                button.classList.add('active');
+                button.classList.remove('text-gray-500');
+
+                // 显示对应内容
+                const tabId = button.getAttribute('data-tab');
+                tabContents[tabId].classList.remove('hidden');
+            });
+        });
+
+        // 优惠券筛选功能
+        const filterButtons = document.querySelectorAll('[data-filter]');
+        const couponItems = document.querySelectorAll('.coupon-item');
+
+        filterButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                // 更新按钮样式
+                filterButtons.forEach(btn => {
+                    btn.classList.remove('bg-blue-600', 'text-white');
+                    btn.classList.add('bg-gray-100', 'text-gray-700');
+                });
+                button.classList.remove('bg-gray-100', 'text-gray-700');
+                button.classList.add('bg-blue-600', 'text-white');
+
+                // 筛选优惠券
+                const filter = button.getAttribute('data-filter');
+                couponItems.forEach(item => {
+                    const status = item.getAttribute('data-status');
+                    if (filter === 'all' || filter === status) {
+                        item.classList.remove('hidden');
+                    } else {
+                        item.classList.add('hidden');
+                    }
+                });
+            });
+        });
+
+        // 默认显示未使用的优惠券
+        document.querySelector('[data-filter="unused"]').click();
+    </script>
 </body>
 </html> 

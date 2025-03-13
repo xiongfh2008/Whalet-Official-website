@@ -82,12 +82,48 @@
                     <button id="userCenterBtn" class="text-gray-600 hover:text-blue-600">
                         <i class="fas fa-user-circle text-lg"></i>
                     </button>
-                    <div id="userCenterDropdown" class="absolute right-0 top-full mt-1 w-32 bg-white rounded-lg shadow-lg py-2 hidden z-10">
-                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">安全设置</a>
-                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">费率查询</a>
-                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">优惠券</a>
-                        <div class="border-t border-gray-100 my-1"></div>
-                        <a href="#" class="block px-4 py-2 text-sm text-red-600 hover:bg-gray-100">退出</a>
+                    <div id="userCenterDropdown" class="absolute right-0 top-full mt-1 w-72 bg-white rounded-lg shadow-lg py-3 hidden z-10">
+                        <!-- 用户信息部分 -->
+                        <div class="px-4 pb-3 border-b border-gray-100">
+                            <div class="flex items-center justify-between mb-2">
+                                <div class="font-medium text-gray-900">张三</div>
+                                <a href="#" class="text-xs text-blue-600 hover:text-blue-800">升级为企业</a>
+                            </div>
+                            <div class="flex items-center justify-between mb-2">
+                                <div class="text-sm text-gray-600">
+                                    <span>Zhang San</span>
+                                    <button class="ml-1 text-gray-400 hover:text-gray-600">
+                                        <i class="fas fa-edit text-xs"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="flex items-center text-sm text-gray-500">
+                                <span>ID: WH78965412</span>
+                                <button class="ml-1 text-gray-400 hover:text-gray-600">
+                                    <i class="fas fa-copy text-xs"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <!-- 菜单选项 -->
+                        <div class="py-1">
+                            <a href="security.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                <i class="fas fa-shield-alt w-5 text-gray-400"></i>
+                                安全设置
+                            </a>
+                            <a href="fees.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                <i class="fas fa-percentage w-5 text-gray-400"></i>
+                                费率查询
+                            </a>
+                            <a href="coupons.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                <i class="fas fa-gift w-5 text-gray-400"></i>
+                                福利中心
+                            </a>
+                            <div class="border-t border-gray-100 my-1"></div>
+                            <a href="logout.html" class="block px-4 py-2 text-sm text-red-600 hover:bg-gray-100">
+                                <i class="fas fa-sign-out-alt w-5"></i>
+                                退出
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -95,24 +131,26 @@
 
         <!-- 广告横幅 -->
         <div class="mb-4" id="adBanner">
-            <div class="bg-gradient-to-r from-blue-500 to-indigo-600 rounded-xl overflow-hidden shadow-sm">
+            <div class="bg-gradient-to-r from-blue-500 to-indigo-600 rounded-lg overflow-hidden shadow-sm">
                 <div class="relative">
                     <!-- 关闭按钮 -->
-                    <button id="closeAdBanner" class="absolute top-3 right-3 text-white/80 hover:text-white">
+                    <button id="closeAdBanner" class="absolute top-2.5 right-3 text-white/80 hover:text-white">
                         <i class="fas fa-times"></i>
                     </button>
                     
                     <!-- 广告内容 -->
-                    <div class="flex items-center justify-between p-6">
-                        <div class="flex-1">
-                            <h3 class="text-white text-lg font-medium mb-2">跨境收款广告位</h3>
-                            <p class="text-blue-100 text-sm mb-4">支持 东南亚比索|泰铢(B2B)|卢比本币 直收</p>
-                            <button class="bg-white text-blue-600 px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-50 transition-colors">
+                    <div class="flex items-center justify-between py-3.5 px-4">
+                        <div class="flex-1 flex items-center space-x-4">
+                            <div>
+                                <h3 class="text-white text-base font-medium leading-tight mb-1">跨境收款广告位</h3>
+                                <p class="text-blue-100 text-sm">支持 东南亚比索|泰铢|卢比 直收</p>
+                            </div>
+                            <button class="bg-white/95 hover:bg-white text-blue-600 px-3.5 py-1.5 rounded text-sm font-medium transition-colors whitespace-nowrap">
                                 立即开通
                             </button>
                         </div>
-                        <div class="hidden md:block">
-                            <i class="fas fa-gift text-white/90 text-6xl"></i>
+                        <div class="hidden md:block pl-3">
+                            <i class="fas fa-gift text-white/90 text-3xl"></i>
                         </div>
                     </div>
                 </div>
@@ -817,7 +855,7 @@
                 link: 'payment.html'
             },
             'forex': {
-                title: '汇兑',
+                title: '外汇兑换',
                 icon: 'fa-exchange-alt',
                 bgColor: 'bg-purple-100',
                 textColor: 'text-purple-600',
@@ -831,7 +869,7 @@
                 link: 'cards.html'
             },
             'acquiring': {
-                title: '收单',
+                title: '账单收款',
                 icon: 'fa-receipt',
                 bgColor: 'bg-pink-100',
                 textColor: 'text-pink-600',
@@ -843,9 +881,9 @@
         let selectedQuickNavItems = [
             'platform-collection',
             'trade-collection',
-            'payment',
-            'forex',
-            'cards'
+            'acquiring',
+            'cards',
+            'payment'
         ];
 
         // 渲染快速导航网格
