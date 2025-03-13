@@ -1,0 +1,1283 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>提现 - Whalet</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-blue: #2563eb;
+            --primary-light-blue: #3b82f6;
+            --secondary-blue: #dbeafe;
+            --neutral-gray: #6b7280;
+        }
+        
+        body {
+            background-color: #ffffff;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            color: #111827;
+        }
+        
+        .card {
+            transition: all 0.2s ease;
+            border: 1px solid #e5e7eb;
+            background: #ffffff;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+        
+        .card:hover {
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+        
+        .account-card {
+            transition: all 0.15s ease;
+            border: 1px solid #e5e7eb;
+            background: #ffffff;
+        }
+        
+        .account-card:hover {
+            border-color: var(--primary-blue);
+        }
+        
+        .account-card.selected {
+            background-color: #f8fafc;
+            border-color: var(--primary-blue);
+            border-width: 2px;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-blue);
+            color: white;
+            transition: all 0.2s ease;
+            font-weight: 500;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--primary-light-blue);
+        }
+        
+        .btn-secondary {
+            background-color: white;
+            color: var(--neutral-gray);
+            border: 1px solid #e5e7eb;
+            transition: all 0.2s ease;
+            font-weight: 500;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+        }
+        
+        .btn-secondary:hover {
+            background-color: #f9fafb;
+            border-color: #d1d5db;
+        }
+        
+        .input-group {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+        
+        .input-group input {
+            width: 100%;
+            padding: 0.75rem 1rem 0.75rem 2.5rem;
+            border: 1px solid #e5e7eb;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            line-height: 1.5;
+            transition: all 0.2s ease;
+        }
+        
+        .input-group input:focus {
+            outline: none;
+            border-color: var(--primary-blue);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+        
+        .input-group .currency-symbol {
+            position: absolute;
+            left: 1rem;
+            color: #6b7280;
+            font-weight: 500;
+        }
+        
+        .select-currency {
+            padding: 0.75rem 2.5rem 0.75rem 1rem;
+            border: 1px solid #e5e7eb;
+            border-radius: 0.5rem;
+            background-color: white;
+            font-size: 1rem;
+            line-height: 1.5;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%236b7280'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 0.75rem center;
+            background-size: 1.25rem;
+        }
+        
+        .select-currency:focus {
+            outline: none;
+            border-color: var(--primary-blue);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+        
+        .status-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+        
+        .status-badge.success {
+            background-color: #ecfdf5;
+            color: #047857;
+        }
+        
+        .status-badge.pending {
+            background-color: #fef3c7;
+            color: #92400e;
+        }
+        
+        .section-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #111827;
+            margin-bottom: 1.5rem;
+        }
+        
+        .info-text {
+            color: #6b7280;
+            font-size: 0.875rem;
+        }
+        
+        .notice-box {
+            background-color: #fffbeb;
+            border: 1px solid #fef3c7;
+            border-radius: 0.5rem;
+            padding: 1rem;
+        }
+        
+        .notice-box .title {
+            color: #92400e;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+        
+        .notice-box .content {
+            color: #92400e;
+            opacity: 0.8;
+        }
+        
+        .currency-card {
+            transition: all 0.3s ease;
+        }
+        
+        .currency-card.hidden-currency {
+            display: none;
+        }
+        
+        .currency-filter {
+            position: relative;
+            min-width: 180px;
+        }
+        
+        .currency-filter select {
+            appearance: none;
+            padding-right: 2.5rem;
+            background-position: right 0.75rem center;
+            background-repeat: no-repeat;
+            background-size: 1.25rem;
+        }
+        
+        .tooltip {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+        }
+        
+        .tooltip .tooltip-text {
+            visibility: hidden;
+            background-color: #1f2937;
+            color: white;
+            text-align: left;
+            padding: 0.5rem 0.75rem;
+            border-radius: 0.375rem;
+            font-size: 0.75rem;
+            line-height: 1.25;
+            position: absolute;
+            z-index: 1;
+            width: max-content;
+            max-width: 200px;
+            bottom: 125%;
+            left: 50%;
+            transform: translateX(-50%);
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+        
+        .tooltip:hover .tooltip-text {
+            visibility: visible;
+            opacity: 1;
+        }
+        
+        .tooltip .tooltip-text::after {
+            content: "";
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            margin-left: -5px;
+            border-width: 5px;
+            border-style: solid;
+            border-color: #1f2937 transparent transparent transparent;
+        }
+    </style>
+</head>
+<body>
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- 顶部导航 -->
+        <div class="flex justify-between items-center mb-8">
+            <div class="flex items-center space-x-4">
+                <h1 class="text-xl font-medium text-gray-800">提现</h1>
+                <div class="flex items-center space-x-2"> 
+                   <!-- <span class="text-sm text-gray-500">今日提现限额</span>-->
+                   <!-- <span class="text-sm font-medium text-blue-600">¥1,000,000</span>-->
+                </div>
+            </div>
+            <div class="flex items-center space-x-6">
+                <div class="relative">
+                    <button class="text-gray-600 hover:text-blue-600 transition-colors">
+                            <i class="fas fa-bell text-lg"></i>
+                            <span class="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full"></span>
+                    </button>
+                </div>
+                <a href="#" class="text-gray-600 hover:text-blue-600 text-sm transition-colors">帮助中心</a>
+                <div class="relative">
+                    <button class="flex items-center space-x-2 text-gray-600 hover:text-blue-600 transition-colors">
+                        <i class="fas fa-user-circle text-lg"></i>
+                        <i class="fas fa-chevron-down text-xs"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 账户余额展示 -->
+        <div class="mb-6">
+            <div class="card rounded-lg p-5">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="flex items-center space-x-3">
+                        <h3 class="text-lg font-medium text-gray-800">账户总览</h3>
+                </div>
+                    <div class="flex items-center space-x-3">
+                        <button class="text-blue-600 hover:bg-blue-50 px-3 py-1.5 rounded text-sm font-medium flex items-center" id="refreshBalance">
+                            <i class="fas fa-sync-alt mr-1.5"></i>
+                            刷新
+                        </button>
+                        <div class="currency-filter">
+                            <select id="currencyFilter" class="text-sm border border-gray-200 rounded-lg px-3 py-1.5 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                <option value="all">全部币种</option>
+                                <option value="CNH">CNH - 跨境人民币</option>
+                                <option value="USD">USD - 美元</option>
+                                <option value="EUR">EUR - 欧元</option>
+                                <option value="GBP">GBP - 英镑</option>
+                                <option value="JPY">JPY - 日元</option>
+                                <option value="HKD">HKD - 港币</option>
+                                <option value="SGD">SGD - 新加坡元</option>
+                                <option value="AUD">AUD - 澳元</option>
+                                <option value="CAD">CAD - 加拿大元</option>
+                                <option value="CHF">CHF - 瑞士法郎</option>
+                                <option value="NZD">NZD - 新西兰元</option>
+                                <option value="KRW">KRW - 韩元</option>
+                                <option value="THB">THB - 泰铢</option>
+                                <option value="MYR">MYR - 马来西亚林吉特</option>
+                            </select>
+                    </div>
+                    </div>
+                </div>
+
+                <!-- 币种列表 -->
+                <div class="space-y-4">
+                    <!-- 主要币种展示 -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                        <!-- CNH -->
+                        <div class="currency-card" data-currency="CNH">
+                            <div class="border border-gray-100 rounded-lg p-3">
+                                <div class="flex items-center justify-between mb-2">
+                                    <div class="flex items-center space-x-2">
+                                        <div class="w-6 h-6 rounded-full bg-white border border-gray-100 flex items-center justify-center overflow-hidden">
+                                            <img src="https://cdn.jsdelivr.net/gh/lipis/flag-icons/flags/4x3/cn.svg" class="w-full h-full object-cover" alt="CNH">
+                                        </div>
+                                        <div>
+                                            <h4 class="font-medium text-gray-900 text-sm">跨境人民币</h4>
+                                            <p class="text-xs text-gray-500">CNH</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="space-y-1.5">
+                                    <div class="flex justify-between items-center">
+                                        <span class="text-xs text-gray-500">可用余额</span>
+                                        <span class="font-medium text-sm">¥987,654.32</span>
+                                    </div>
+                                    <div class="flex justify-between items-center">
+                                        <div class="tooltip">
+                                            <span class="text-xs text-gray-500 flex items-center">
+                                                冻结金额
+                                                <i class="fas fa-info-circle text-gray-400 ml-1 text-xs"></i>
+                                            </span>
+                                            <div class="tooltip-text">
+                                                <p class="mb-1">冻结金额包含：</p>
+                                                <ul class="list-disc pl-4 space-y-0.5">
+                                                    <li>风控审核中的交易</li>
+                                                    <li>交易保证金</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <div class="flex items-center space-x-1">
+                                            <span class="font-medium text-sm">¥35,280.00</span>
+                                            <i class="fas fa-lock text-red-500 text-xs"></i>
+                                        </div>
+                                    </div>
+                                    <div class="flex justify-between items-center">
+                                        <span class="text-xs text-gray-500">提现额度</span>
+                                        <span class="font-medium text-sm">¥1,000,000.00</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- USD -->
+                        <div class="currency-card" data-currency="USD">
+                            <div class="border border-gray-100 rounded-lg p-3">
+                                <div class="flex items-center justify-between mb-2">
+                                    <div class="flex items-center space-x-2">
+                                        <div class="w-6 h-6 rounded-full bg-white border border-gray-100 flex items-center justify-center overflow-hidden">
+                                            <img src="https://cdn.jsdelivr.net/gh/lipis/flag-icons/flags/4x3/us.svg" class="w-full h-full object-cover" alt="USD">
+                                        </div>
+                                        <div>
+                                            <h4 class="font-medium text-gray-900 text-sm">美元</h4>
+                                            <p class="text-xs text-gray-500">USD</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="space-y-1.5">
+                                    <div class="flex justify-between items-center">
+                                        <span class="text-xs text-gray-500">可用余额</span>
+                                        <span class="font-medium text-sm">$76,543.21</span>
+                                    </div>
+                                    <div class="flex justify-between items-center">
+                                        <div class="tooltip">
+                                            <span class="text-xs text-gray-500 flex items-center">
+                                                冻结金额
+                                                <i class="fas fa-info-circle text-gray-400 ml-1 text-xs"></i>
+                                            </span>
+                                            <div class="tooltip-text">
+                                                <p class="mb-1">冻结金额包含：</p>
+                                                <ul class="list-disc pl-4 space-y-0.5">
+                                                    <li>风控审核中的交易</li>
+                                                    <li>交易保证金</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <div class="flex items-center space-x-1">
+                                            <span class="font-medium text-sm">$2,345.68</span>
+                                            <i class="fas fa-lock text-red-500 text-xs"></i>
+                                        </div>
+                                    </div>
+                                    <div class="flex justify-between items-center">
+                                        <span class="text-xs text-gray-500">提现额度</span>
+                                        <span class="font-medium text-sm">$150,000.00</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- EUR -->
+                        <div class="currency-card" data-currency="EUR">
+                            <div class="border border-gray-100 rounded-lg p-3">
+                                <div class="flex items-center justify-between mb-2">
+                                    <div class="flex items-center space-x-2">
+                                        <div class="w-6 h-6 rounded-full bg-white border border-gray-100 flex items-center justify-center overflow-hidden">
+                                            <img src="https://cdn.jsdelivr.net/gh/lipis/flag-icons/flags/4x3/eu.svg" class="w-full h-full object-cover" alt="EUR">
+                                        </div>
+                                        <div>
+                                            <h4 class="font-medium text-gray-900 text-sm">欧元</h4>
+                                            <p class="text-xs text-gray-500">EUR</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="space-y-1.5">
+                                    <div class="flex justify-between items-center">
+                                        <span class="text-xs text-gray-500">可用余额</span>
+                                        <span class="font-medium text-sm">€25,432.10</span>
+                                    </div>
+                                    <div class="flex justify-between items-center">
+                                        <div class="tooltip">
+                                            <span class="text-xs text-gray-500 flex items-center">
+                                                冻结金额
+                                                <i class="fas fa-info-circle text-gray-400 ml-1 text-xs"></i>
+                                            </span>
+                                            <div class="tooltip-text">
+                                                <p class="mb-1">冻结金额包含：</p>
+                                                <ul class="list-disc pl-4 space-y-0.5">
+                                                    <li>风控审核中的交易</li>
+                                                    <li>交易保证金</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <div class="flex items-center space-x-1">
+                                            <span class="font-medium text-sm">€1,000.00</span>
+                                            <i class="fas fa-lock text-red-500 text-xs"></i>
+                                        </div>
+                                    </div>
+                                    <div class="flex justify-between items-center">
+                                        <span class="text-xs text-gray-500">提现额度</span>
+                                        <span class="font-medium text-sm">€120,000.00</span>
+                                    </div>
+                    </div>
+                </div>
+            </div>
+
+                        <!-- GBP -->
+                        <div class="currency-card" data-currency="GBP">
+                            <div class="border border-gray-100 rounded-lg p-3">
+                                <div class="flex items-center justify-between mb-2">
+                                    <div class="flex items-center space-x-2">
+                                        <div class="w-6 h-6 rounded-full bg-white border border-gray-100 flex items-center justify-center overflow-hidden">
+                                            <img src="https://cdn.jsdelivr.net/gh/lipis/flag-icons/flags/4x3/gb.svg" class="w-full h-full object-cover" alt="GBP">
+                                        </div>
+                                        <div>
+                                            <h4 class="font-medium text-gray-900 text-sm">英镑</h4>
+                                            <p class="text-xs text-gray-500">GBP</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="space-y-1.5">
+                                    <div class="flex justify-between items-center">
+                                        <span class="text-xs text-gray-500">可用余额</span>
+                                        <span class="font-medium text-sm">£12,345.67</span>
+                                    </div>
+                                    <div class="flex justify-between items-center">
+                                        <div class="tooltip">
+                                            <span class="text-xs text-gray-500 flex items-center">
+                                                冻结金额
+                                                <i class="fas fa-info-circle text-gray-400 ml-1 text-xs"></i>
+                                            </span>
+                                            <div class="tooltip-text">
+                                                <p class="mb-1">冻结金额包含：</p>
+                                                <ul class="list-disc pl-4 space-y-0.5">
+                                                    <li>风控审核中的交易</li>
+                                                    <li>交易保证金</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <div class="flex items-center space-x-1">
+                                            <span class="font-medium text-sm">£234.57</span>
+                                            <i class="fas fa-lock text-red-500 text-xs"></i>
+                                        </div>
+                                    </div>
+                                    <div class="flex justify-between items-center">
+                                        <span class="text-xs text-gray-500">提现额度</span>
+                                        <span class="font-medium text-sm">£100,000.00</span>
+                                    </div>
+                                </div>
+                            </div>
+                </div>
+                    </div>
+
+                    <!-- 更多币种展示 -->
+                    <div class="hidden" id="moreCurrencies">
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                            <!-- JPY -->
+                            <div class="currency-card" data-currency="JPY">
+                                <div class="border border-gray-100 rounded-lg p-3">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <div class="flex items-center space-x-2">
+                                            <div class="w-6 h-6 rounded-full bg-white border border-gray-100 flex items-center justify-center overflow-hidden">
+                                                <img src="https://cdn.jsdelivr.net/gh/lipis/flag-icons/flags/4x3/jp.svg" class="w-full h-full object-cover" alt="JPY">
+                                            </div>
+                                            <div>
+                                                <h4 class="font-medium text-gray-900 text-sm">日元</h4>
+                                                <p class="text-xs text-gray-500">JPY</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="space-y-1.5">
+                                        <div class="flex justify-between items-center">
+                                            <span class="text-xs text-gray-500">可用余额</span>
+                                            <span class="font-medium text-sm">¥8,765,432</span>
+                                        </div>
+                                        <div class="flex justify-between items-center">
+                                            <div class="tooltip">
+                                                <span class="text-xs text-gray-500 flex items-center">
+                                                    冻结金额
+                                                    <i class="fas fa-info-circle text-gray-400 ml-1 text-xs"></i>
+                                                </span>
+                                                <div class="tooltip-text">
+                                                    <p class="mb-1">冻结金额包含：</p>
+                                                    <ul class="list-disc pl-4 space-y-0.5">
+                                                        <li>风控审核中的交易</li>
+                                                        <li>交易保证金</li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            <div class="flex items-center space-x-1">
+                                                <span class="font-medium text-sm">¥123,456</span>
+                                                <i class="fas fa-lock text-red-500 text-xs"></i>
+                                            </div>
+                                        </div>
+                                        <div class="flex justify-between items-center">
+                                            <span class="text-xs text-gray-500">提现额度</span>
+                                            <span class="font-medium text-sm">¥10,000,000</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- HKD -->
+                            <div class="currency-card" data-currency="HKD">
+                                <div class="border border-gray-100 rounded-lg p-3">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <div class="flex items-center space-x-2">
+                                            <div class="w-6 h-6 rounded-full bg-white border border-gray-100 flex items-center justify-center overflow-hidden">
+                                                <img src="https://cdn.jsdelivr.net/gh/lipis/flag-icons/flags/4x3/hk.svg" class="w-full h-full object-cover" alt="HKD">
+                                            </div>
+                                            <div>
+                                                <h4 class="font-medium text-gray-900 text-sm">港币</h4>
+                                                <p class="text-xs text-gray-500">HKD</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="space-y-1.5">
+                                        <div class="flex justify-between items-center">
+                                            <span class="text-xs text-gray-500">可用余额</span>
+                                            <span class="font-medium text-sm">HK$543,210.00</span>
+                                        </div>
+                                        <div class="flex justify-between items-center">
+                                            <div class="tooltip">
+                                                <span class="text-xs text-gray-500 flex items-center">
+                                                    冻结金额
+                                                    <i class="fas fa-info-circle text-gray-400 ml-1 text-xs"></i>
+                                                </span>
+                                                <div class="tooltip-text">
+                                                    <p class="mb-1">冻结金额包含：</p>
+                                                    <ul class="list-disc pl-4 space-y-0.5">
+                                                        <li>风控审核中的交易</li>
+                                                        <li>交易保证金</li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            <div class="flex items-center space-x-1">
+                                                <span class="font-medium text-sm">HK$12,345.00</span>
+                                                <i class="fas fa-lock text-red-500 text-xs"></i>
+                                            </div>
+                                        </div>
+                                        <div class="flex justify-between items-center">
+                                            <span class="text-xs text-gray-500">提现额度</span>
+                                            <span class="font-medium text-sm">HK$800,000.00</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- SGD -->
+                            <div class="currency-card" data-currency="SGD">
+                                <div class="border border-gray-100 rounded-lg p-3">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <div class="flex items-center space-x-2">
+                                            <div class="w-6 h-6 rounded-full bg-white border border-gray-100 flex items-center justify-center overflow-hidden">
+                                                <img src="https://cdn.jsdelivr.net/gh/lipis/flag-icons/flags/4x3/sg.svg" class="w-full h-full object-cover" alt="SGD">
+                                            </div>
+                                            <div>
+                                                <h4 class="font-medium text-gray-900 text-sm">新加坡元</h4>
+                                                <p class="text-xs text-gray-500">SGD</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="space-y-1.5">
+                                        <div class="flex justify-between items-center">
+                                            <span class="text-xs text-gray-500">可用余额</span>
+                                            <span class="font-medium text-sm">S$98,765.43</span>
+                                        </div>
+                                        <div class="flex justify-between items-center">
+                                            <div class="tooltip">
+                                                <span class="text-xs text-gray-500 flex items-center">
+                                                    冻结金额
+                                                    <i class="fas fa-info-circle text-gray-400 ml-1 text-xs"></i>
+                                                </span>
+                                                <div class="tooltip-text">
+                                                    <p class="mb-1">冻结金额包含：</p>
+                                                    <ul class="list-disc pl-4 space-y-0.5">
+                                                        <li>风控审核中的交易</li>
+                                                        <li>交易保证金</li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            <div class="flex items-center space-x-1">
+                                                <span class="font-medium text-sm">S$4,321.00</span>
+                                                <i class="fas fa-lock text-red-500 text-xs"></i>
+                                            </div>
+                                        </div>
+                                        <div class="flex justify-between items-center">
+                                            <span class="text-xs text-gray-500">提现额度</span>
+                                            <span class="font-medium text-sm">S$500,000.00</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- AUD -->
+                            <div class="currency-card" data-currency="AUD">
+                                <div class="border border-gray-100 rounded-lg p-3">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <div class="flex items-center space-x-2">
+                                            <div class="w-6 h-6 rounded-full bg-white border border-gray-100 flex items-center justify-center overflow-hidden">
+                                                <img src="https://cdn.jsdelivr.net/gh/lipis/flag-icons/flags/4x3/au.svg" class="w-full h-full object-cover" alt="AUD">
+                                            </div>
+                                            <div>
+                                                <h4 class="font-medium text-gray-900 text-sm">澳元</h4>
+                                                <p class="text-xs text-gray-500">AUD</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="space-y-1.5">
+                                        <div class="flex justify-between items-center">
+                                            <span class="text-xs text-gray-500">可用余额</span>
+                                            <span class="font-medium text-sm">A$45,678.90</span>
+                                        </div>
+                                        <div class="flex justify-between items-center">
+                                            <div class="tooltip">
+                                                <span class="text-xs text-gray-500 flex items-center">
+                                                    冻结金额
+                                                    <i class="fas fa-info-circle text-gray-400 ml-1 text-xs"></i>
+                                                </span>
+                                                <div class="tooltip-text">
+                                                    <p class="mb-1">冻结金额包含：</p>
+                                                    <ul class="list-disc pl-4 space-y-0.5">
+                                                        <li>风控审核中的交易</li>
+                                                        <li>交易保证金</li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            <div class="flex items-center space-x-1">
+                                                <span class="font-medium text-sm">A$1,234.56</span>
+                                                <i class="fas fa-lock text-red-500 text-xs"></i>
+                                            </div>
+                                        </div>
+                                        <div class="flex justify-between items-center">
+                                            <span class="text-xs text-gray-500">提现额度</span>
+                                            <span class="font-medium text-sm">A$200,000.00</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- CAD -->
+                            <div class="currency-card" data-currency="CAD">
+                                <div class="border border-gray-100 rounded-lg p-3">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <div class="flex items-center space-x-2">
+                                            <div class="w-6 h-6 rounded-full bg-white border border-gray-100 flex items-center justify-center overflow-hidden">
+                                                <img src="https://cdn.jsdelivr.net/gh/lipis/flag-icons/flags/4x3/ca.svg" class="w-full h-full object-cover" alt="CAD">
+                                            </div>
+                                            <div>
+                                                <h4 class="font-medium text-gray-900 text-sm">加拿大元</h4>
+                                                <p class="text-xs text-gray-500">CAD</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="space-y-1.5">
+                                        <div class="flex justify-between items-center">
+                                            <span class="text-xs text-gray-500">可用余额</span>
+                                            <span class="font-medium text-sm">C$34,567.89</span>
+                                        </div>
+                                        <div class="flex justify-between items-center">
+                                            <div class="tooltip">
+                                                <span class="text-xs text-gray-500 flex items-center">
+                                                    冻结金额
+                                                    <i class="fas fa-info-circle text-gray-400 ml-1 text-xs"></i>
+                                                </span>
+                                                <div class="tooltip-text">
+                                                    <p class="mb-1">冻结金额包含：</p>
+                                                    <ul class="list-disc pl-4 space-y-0.5">
+                                                        <li>风控审核中的交易</li>
+                                                        <li>交易保证金</li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            <div class="flex items-center space-x-1">
+                                                <span class="font-medium text-sm">C$987.65</span>
+                                                <i class="fas fa-lock text-red-500 text-xs"></i>
+                                            </div>
+                                        </div>
+                                        <div class="flex justify-between items-center">
+                                            <span class="text-xs text-gray-500">提现额度</span>
+                                            <span class="font-medium text-sm">C$180,000.00</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- CHF -->
+                            <div class="currency-card" data-currency="CHF">
+                                <div class="border border-gray-100 rounded-lg p-3">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <div class="flex items-center space-x-2">
+                                            <div class="w-6 h-6 rounded-full bg-white border border-gray-100 flex items-center justify-center overflow-hidden">
+                                                <img src="https://cdn.jsdelivr.net/gh/lipis/flag-icons/flags/4x3/ch.svg" class="w-full h-full object-cover" alt="CHF">
+                                            </div>
+                                            <div>
+                                                <h4 class="font-medium text-gray-900 text-sm">瑞士法郎</h4>
+                                                <p class="text-xs text-gray-500">CHF</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="space-y-1.5">
+                                        <div class="flex justify-between items-center">
+                                            <span class="text-xs text-gray-500">可用余额</span>
+                                            <span class="font-medium text-sm">CHF 23,456.78</span>
+                                        </div>
+                                        <div class="flex justify-between items-center">
+                                            <div class="tooltip">
+                                                <span class="text-xs text-gray-500 flex items-center">
+                                                    冻结金额
+                                                    <i class="fas fa-info-circle text-gray-400 ml-1 text-xs"></i>
+                                                </span>
+                                                <div class="tooltip-text">
+                                                    <p class="mb-1">冻结金额包含：</p>
+                                                    <ul class="list-disc pl-4 space-y-0.5">
+                                                        <li>风控审核中的交易</li>
+                                                        <li>交易保证金</li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            <div class="flex items-center space-x-1">
+                                                <span class="font-medium text-sm">CHF 876.54</span>
+                                                <i class="fas fa-lock text-red-500 text-xs"></i>
+                                            </div>
+                                        </div>
+                                        <div class="flex justify-between items-center">
+                                            <span class="text-xs text-gray-500">提现额度</span>
+                                            <span class="font-medium text-sm">CHF 160,000.00</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- NZD -->
+                            <div class="currency-card" data-currency="NZD">
+                                <div class="border border-gray-100 rounded-lg p-3">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <div class="flex items-center space-x-2">
+                                            <div class="w-6 h-6 rounded-full bg-white border border-gray-100 flex items-center justify-center overflow-hidden">
+                                                <img src="https://cdn.jsdelivr.net/gh/lipis/flag-icons/flags/4x3/nz.svg" class="w-full h-full object-cover" alt="NZD">
+                                            </div>
+                                            <div>
+                                                <h4 class="font-medium text-gray-900 text-sm">新西兰元</h4>
+                                                <p class="text-xs text-gray-500">NZD</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="space-y-1.5">
+                                        <div class="flex justify-between items-center">
+                                            <span class="text-xs text-gray-500">可用余额</span>
+                                            <span class="font-medium text-sm">NZ$12,345.67</span>
+                                        </div>
+                                        <div class="flex justify-between items-center">
+                                            <div class="tooltip">
+                                                <span class="text-xs text-gray-500 flex items-center">
+                                                    冻结金额
+                                                    <i class="fas fa-info-circle text-gray-400 ml-1 text-xs"></i>
+                                                </span>
+                                                <div class="tooltip-text">
+                                                    <p class="mb-1">冻结金额包含：</p>
+                                                    <ul class="list-disc pl-4 space-y-0.5">
+                                                        <li>风控审核中的交易</li>
+                                                        <li>交易保证金</li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            <div class="flex items-center space-x-1">
+                                                <span class="font-medium text-sm">NZ$765.43</span>
+                                                <i class="fas fa-lock text-red-500 text-xs"></i>
+                                            </div>
+                                        </div>
+                                        <div class="flex justify-between items-center">
+                                            <span class="text-xs text-gray-500">提现额度</span>
+                                            <span class="font-medium text-sm">NZ$140,000.00</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- KRW -->
+                            <div class="currency-card" data-currency="KRW">
+                                <div class="border border-gray-100 rounded-lg p-3">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <div class="flex items-center space-x-2">
+                                            <div class="w-6 h-6 rounded-full bg-white border border-gray-100 flex items-center justify-center overflow-hidden">
+                                                <img src="https://cdn.jsdelivr.net/gh/lipis/flag-icons/flags/4x3/kr.svg" class="w-full h-full object-cover" alt="KRW">
+                                            </div>
+                                            <div>
+                                                <h4 class="font-medium text-gray-900 text-sm">韩元</h4>
+                                                <p class="text-xs text-gray-500">KRW</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="space-y-1.5">
+                                        <div class="flex justify-between items-center">
+                                            <span class="text-xs text-gray-500">可用余额</span>
+                                            <span class="font-medium text-sm">₩56,789,012</span>
+                                        </div>
+                                        <div class="flex justify-between items-center">
+                                            <div class="tooltip">
+                                                <span class="text-xs text-gray-500 flex items-center">
+                                                    冻结金额
+                                                    <i class="fas fa-info-circle text-gray-400 ml-1 text-xs"></i>
+                                                </span>
+                                                <div class="tooltip-text">
+                                                    <p class="mb-1">冻结金额包含：</p>
+                                                    <ul class="list-disc pl-4 space-y-0.5">
+                                                        <li>风控审核中的交易</li>
+                                                        <li>交易保证金</li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            <div class="flex items-center space-x-1">
+                                                <span class="font-medium text-sm">₩2,345,678</span>
+                                                <i class="fas fa-lock text-red-500 text-xs"></i>
+                                            </div>
+                                        </div>
+                                        <div class="flex justify-between items-center">
+                                            <span class="text-xs text-gray-500">提现额度</span>
+                                            <span class="font-medium text-sm">₩200,000,000</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- THB -->
+                            <div class="currency-card" data-currency="THB">
+                                <div class="border border-gray-100 rounded-lg p-3">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <div class="flex items-center space-x-2">
+                                            <div class="w-6 h-6 rounded-full bg-white border border-gray-100 flex items-center justify-center overflow-hidden">
+                                                <img src="https://cdn.jsdelivr.net/gh/lipis/flag-icons/flags/4x3/th.svg" class="w-full h-full object-cover" alt="THB">
+                                            </div>
+                                            <div>
+                                                <h4 class="font-medium text-gray-900 text-sm">泰铢</h4>
+                                                <p class="text-xs text-gray-500">THB</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="space-y-1.5">
+                                        <div class="flex justify-between items-center">
+                                            <span class="text-xs text-gray-500">可用余额</span>
+                                            <span class="font-medium text-sm">฿345,678.90</span>
+                                        </div>
+                                        <div class="flex justify-between items-center">
+                                            <div class="tooltip">
+                                                <span class="text-xs text-gray-500 flex items-center">
+                                                    冻结金额
+                                                    <i class="fas fa-info-circle text-gray-400 ml-1 text-xs"></i>
+                                                </span>
+                                                <div class="tooltip-text">
+                                                    <p class="mb-1">冻结金额包含：</p>
+                                                    <ul class="list-disc pl-4 space-y-0.5">
+                                                        <li>风控审核中的交易</li>
+                                                        <li>交易保证金</li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            <div class="flex items-center space-x-1">
+                                                <span class="font-medium text-sm">฿12,345.67</span>
+                                                <i class="fas fa-lock text-red-500 text-xs"></i>
+                                            </div>
+                                        </div>
+                                        <div class="flex justify-between items-center">
+                                            <span class="text-xs text-gray-500">提现额度</span>
+                                            <span class="font-medium text-sm">฿5,000,000.00</span>
+                    </div>
+                    </div>
+                </div>
+            </div>
+
+                            <!-- MYR -->
+                            <div class="currency-card" data-currency="MYR">
+                                <div class="border border-gray-100 rounded-lg p-3">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <div class="flex items-center space-x-2">
+                                            <div class="w-6 h-6 rounded-full bg-white border border-gray-100 flex items-center justify-center overflow-hidden">
+                                                <img src="https://cdn.jsdelivr.net/gh/lipis/flag-icons/flags/4x3/my.svg" class="w-full h-full object-cover" alt="MYR">
+                                            </div>
+                                            <div>
+                                                <h4 class="font-medium text-gray-900 text-sm">马来西亚林吉特</h4>
+                                                <p class="text-xs text-gray-500">MYR</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="space-y-1.5">
+                                        <div class="flex justify-between items-center">
+                                            <span class="text-xs text-gray-500">可用余额</span>
+                                            <span class="font-medium text-sm">RM123,456.78</span>
+                                        </div>
+                                        <div class="flex justify-between items-center">
+                                            <div class="tooltip">
+                                                <span class="text-xs text-gray-500 flex items-center">
+                                                    冻结金额
+                                                    <i class="fas fa-info-circle text-gray-400 ml-1 text-xs"></i>
+                                                </span>
+                                                <div class="tooltip-text">
+                                                    <p class="mb-1">冻结金额包含：</p>
+                                                    <ul class="list-disc pl-4 space-y-0.5">
+                                                        <li>风控审核中的交易</li>
+                                                        <li>交易保证金</li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            <div class="flex items-center space-x-1">
+                                                <span class="font-medium text-sm">RM4,321.00</span>
+                                                <i class="fas fa-lock text-red-500 text-xs"></i>
+                                            </div>
+                                        </div>
+                                        <div class="flex justify-between items-center">
+                                            <span class="text-xs text-gray-500">提现额度</span>
+                                            <span class="font-medium text-sm">RM800,000.00</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                </div>
+                    </div>
+
+                    <!-- 展开/收起按钮 -->
+                    <div class="flex justify-center mt-4">
+                        <button id="toggleMoreCurrencies" class="text-blue-600 hover:text-blue-700 text-sm font-medium flex items-center space-x-1 px-4 py-2 rounded-full hover:bg-blue-50 transition-colors">
+                            <span class="show-more">查看更多币种</span>
+                            <span class="show-less hidden">收起</span>
+                            <i class="fas fa-chevron-down show-more"></i>
+                            <i class="fas fa-chevron-up show-less hidden"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 提现操作区 -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <!-- 表单区 -->
+            <div class="md:col-span-2">
+                <div class="card rounded-lg p-6">
+                    <h3 class="section-title">提现申请</h3>
+                
+                <!-- 提现方式选择 -->
+                <div class="mb-6">
+                        <label class="block text-sm font-medium text-gray-700 mb-3">提现方式</label>
+                    <div class="flex space-x-3">
+                            <button class="btn-primary">银行卡</button>
+                            <button class="btn-secondary">数字钱包</button>
+                            <button class="btn-secondary">平台账户</button>
+                    </div>
+                </div>
+                
+                <!-- 收款账户 -->
+                <div class="mb-6">
+                        <div class="flex justify-between items-center mb-3">
+                            <label class="text-sm font-medium text-gray-700">收款账户</label>
+                            <button class="text-blue-600 text-sm font-medium hover:text-blue-700 transition-colors">
+                            <i class="fas fa-plus mr-1"></i>
+                            添加新账户
+                        </button>
+                    </div>
+                        <div class="space-y-3">
+                        <!-- 账户卡片 1 -->
+                            <div class="account-card selected rounded-lg p-4">
+                            <div class="flex items-start">
+                                    <div class="w-5 h-5 mt-1">
+                                        <div class="w-full h-full border-2 border-blue-600 rounded-full flex items-center justify-center">
+                                            <div class="w-2.5 h-2.5 bg-blue-600 rounded-full"></div>
+                                        </div>
+                                    </div>
+                                    <div class="ml-3 flex-1">
+                                    <div class="flex justify-between items-start">
+                                        <div>
+                                                <h4 class="font-medium">中国银行 (储蓄卡)</h4>
+                                                <p class="text-sm text-gray-500 mt-1">**** **** **** 5678</p>
+                                        </div>
+                                        <img src="https://upload.wikimedia.org/wikipedia/zh/7/7b/China_Bank_new_logo.png" class="h-8 w-auto" alt="Bank Logo">
+                                    </div>
+                                        <div class="mt-2 flex justify-between items-center">
+                                        <p class="text-xs text-gray-500">张三</p>
+                                            <span class="text-xs text-blue-600 font-medium">默认账户</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- 账户卡片 2 -->
+                            <div class="account-card rounded-lg p-4">
+                            <div class="flex items-start">
+                                    <div class="w-5 h-5 mt-1">
+                                        <div class="w-full h-full border-2 border-gray-300 rounded-full"></div>
+                                </div>
+                                    <div class="ml-3 flex-1">
+                                    <div class="flex justify-between items-start">
+                                        <div>
+                                                <h4 class="font-medium">招商银行 (信用卡)</h4>
+                                                <p class="text-sm text-gray-500 mt-1">**** **** **** 1234</p>
+                                        </div>
+                                        <img src="https://upload.wikimedia.org/wikipedia/zh/c/c1/China_Merchants_Bank_logo.svg" class="h-8 w-auto" alt="Bank Logo">
+                                    </div>
+                                        <div class="mt-2 flex justify-between items-center">
+                                        <p class="text-xs text-gray-500">张三</p>
+                                            <span class="text-xs text-gray-400">上次使用: 2023-05-10</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 提现金额 -->
+                <div class="mb-6">
+                        <label class="block text-sm font-medium text-gray-700 mb-3">提现金额</label>
+                        <div class="space-y-4">
+                            <div class="input-group">
+                                <span class="currency-symbol">¥</span>
+                                <input type="text" placeholder="0.00" class="text-lg">
+                            </div>
+                            <div class="flex justify-between text-sm">
+                            <span class="text-gray-500">可用余额: ¥987,654.32</span>
+                                <button class="text-blue-600 font-medium hover:text-blue-700 transition-colors">全部提现</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 手续费预估 -->
+                    <div class="mb-6 bg-gray-50 rounded-lg p-4">
+                        <div class="space-y-3">
+                            <div class="flex justify-between items-center">
+                        <span class="text-sm text-gray-600">手续费</span>
+                                <span class="text-sm font-medium">¥15.00</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                                <span class="text-sm text-gray-600">预计到账时间</span>
+                                <span class="text-sm font-medium">T+1工作日 (最快24小时内)</span>
+                            </div>
+                            <div class="flex justify-between items-center pt-2 border-t border-gray-200">
+                                <span class="text-sm font-medium">实际到账金额</span>
+                        <span class="text-sm font-medium text-blue-600">¥9,985.00</span>
+                            </div>
+                    </div>
+                </div>
+                
+                <!-- 附言信息 -->
+                <div class="mb-6">
+                        <label class="block text-sm font-medium text-gray-700 mb-3">附言信息 (选填)</label>
+                        <textarea 
+                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" 
+                            rows="2" 
+                            placeholder="添加备注信息..."></textarea>
+                </div>
+                
+                <!-- 提交按钮 -->
+                <div class="flex justify-end">
+                        <button class="btn-primary">确认提现</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 提现记录 -->
+            <div class="card rounded-lg p-6">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="section-title">提现记录</h3>
+                    <a href="#" class="text-blue-600 text-sm hover:text-blue-700 transition-colors">查看全部</a>
+                </div>
+                <div class="space-y-4">
+                    <!-- 记录1 -->
+                    <div class="border-b border-gray-100 pb-4">
+                        <div class="flex justify-between items-start mb-2">
+                            <div>
+                                <h4 class="text-sm font-medium">¥20,000.00</h4>
+                                <p class="text-xs text-gray-500 mt-1">中国银行 (*5678)</p>
+                            </div>
+                            <span class="status-badge success">已完成</span>
+                        </div>
+                        <div class="flex justify-between text-xs text-gray-500">
+                            <span>手续费: ¥30.00</span>
+                            <span>2023-05-12</span>
+                        </div>
+                    </div>
+                    
+                    <!-- 记录2 -->
+                    <div class="border-b border-gray-100 pb-4">
+                        <div class="flex justify-between items-start mb-2">
+                            <div>
+                                <h4 class="text-sm font-medium">$5,000.00</h4>
+                                <p class="text-xs text-gray-500 mt-1">招商银行 (*1234)</p>
+                            </div>
+                            <span class="status-badge pending">处理中</span>
+                        </div>
+                        <div class="flex justify-between text-xs text-gray-500">
+                            <span>手续费: $15.00</span>
+                            <span>2023-05-10</span>
+                        </div>
+                    </div>
+                    
+                    <!-- 记录3 -->
+                    <div class="border-b border-gray-100 pb-4">
+                        <div class="flex justify-between items-start mb-2">
+                            <div>
+                                <h4 class="text-sm font-medium">€3,500.00</h4>
+                                <p class="text-xs text-gray-500 mt-1">中国银行 (*5678)</p>
+                            </div>
+                            <span class="status-badge success">已完成</span>
+                        </div>
+                        <div class="flex justify-between text-xs text-gray-500">
+                            <span>手续费: €10.50</span>
+                            <span>2023-05-05</span>
+                        </div>
+                    </div>
+                    
+                    <!-- 记录4 -->
+                    <div>
+                        <div class="flex justify-between items-start mb-2">
+                            <div>
+                                <h4 class="text-sm font-medium">¥15,000.00</h4>
+                                <p class="text-xs text-gray-500 mt-1">招商银行 (*1234)</p>
+                            </div>
+                            <span class="status-badge success">已完成</span>
+                        </div>
+                        <div class="flex justify-between text-xs text-gray-500">
+                            <span>手续费: ¥22.50</span>
+                            <span>2023-05-01</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- 提示信息 -->
+         <!--
+        <div class="mt-8">
+            <div class="bg-white rounded-xl shadow-sm p-5">
+                <div class="flex justify-between items-center mb-4">
+                    <div class="flex items-center space-x-2">
+                        <h3 class="text-lg font-medium text-gray-800">提现须知</h3>
+                        <span class="text-xs text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full">重要</span>
+                    </div>
+                </div>
+                <div class="space-y-3">
+                    <div class="flex items-start space-x-3">
+                        <div class="flex-shrink-0 w-6 h-6 bg-blue-100 rounded-full flex items-center justify-center">
+                            <span class="text-sm font-medium text-blue-600">1</span>
+                        </div>
+                        <p class="text-sm text-gray-600">工作日16:00前的提现申请，将会在T+1工作日内到账</p>
+                    </div>
+                    <div class="flex items-start space-x-3">
+                        <div class="flex-shrink-0 w-6 h-6 bg-blue-100 rounded-full flex items-center justify-center">
+                            <span class="text-sm font-medium text-blue-600">2</span>
+                        </div>
+                        <p class="text-sm text-gray-600">单笔提现金额超过10万元人民币，可能需要额外审核</p>
+                    </div>
+                    <div class="flex items-start space-x-3">
+                        <div class="flex-shrink-0 w-6 h-6 bg-blue-100 rounded-full flex items-center justify-center">
+                            <span class="text-sm font-medium text-blue-600">3</span>
+                        </div>
+                        <p class="text-sm text-gray-600">为了保障资金安全，首次提现至新增银行卡可能需要额外验证</p>
+                    </div>
+                    <div class="flex items-start space-x-3">
+                        <div class="flex-shrink-0 w-6 h-6 bg-blue-100 rounded-full flex items-center justify-center">
+                            <span class="text-sm font-medium text-blue-600">4</span>
+                        </div>
+                        <p class="text-sm text-gray-600">提现手续费率为0.15%，最低15元人民币/笔</p>
+                    </div>
+                </div>
+            </div>
+            -->
+        </div>
+        
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 用户菜单功能
+            const userBtn = document.querySelector('button:has(.fa-user-circle)');
+            const dropdownMenu = document.createElement('div');
+            dropdownMenu.className = 'absolute right-0 top-full mt-2 w-48 bg-white rounded-lg shadow-lg py-2 hidden z-10 border border-gray-100';
+            dropdownMenu.innerHTML = `
+                <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">安全设置</a>
+                <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">费率查询</a>
+                <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">优惠券</a>
+                <div class="border-t border-gray-100 my-1"></div>
+                <a href="#" class="block px-4 py-2 text-sm text-red-600 hover:bg-gray-50">退出</a>
+            `;
+            
+            userBtn.parentNode.appendChild(dropdownMenu);
+            
+            userBtn.addEventListener('click', function() {
+                dropdownMenu.classList.toggle('hidden');
+            });
+            
+            document.addEventListener('click', function(e) {
+                if (!userBtn.contains(e.target)) {
+                    dropdownMenu.classList.add('hidden');
+                }
+            });
+
+            // 币种展开/收起和筛选功能
+            const toggleBtn = document.getElementById('toggleMoreCurrencies');
+            const moreCurrencies = document.getElementById('moreCurrencies');
+            const showMoreElements = document.querySelectorAll('.show-more');
+            const showLessElements = document.querySelectorAll('.show-less');
+            const currencyFilter = document.getElementById('currencyFilter');
+            const currencyCards = document.querySelectorAll('.currency-card');
+
+            function filterCurrencies(selectedCurrency) {
+                currencyCards.forEach(card => {
+                    const cardCurrency = card.getAttribute('data-currency');
+                    if (selectedCurrency === 'all' || cardCurrency === selectedCurrency) {
+                        card.classList.remove('hidden-currency');
+                    } else {
+                        card.classList.add('hidden-currency');
+                    }
+                });
+
+                // 如果选择了特定币种，显示所有容器并隐藏展开按钮
+                if (selectedCurrency !== 'all') {
+                    moreCurrencies.classList.remove('hidden');
+                    toggleBtn.style.display = 'none';
+                } else {
+                    // 恢复默认显示状态
+                    moreCurrencies.classList.add('hidden');
+                    toggleBtn.style.display = 'flex';
+                }
+            }
+
+            // 币种筛选事件
+            currencyFilter.addEventListener('change', function() {
+                filterCurrencies(this.value);
+            });
+
+            // 展开/收起事件
+            toggleBtn.addEventListener('click', function() {
+                moreCurrencies.classList.toggle('hidden');
+                showMoreElements.forEach(el => el.classList.toggle('hidden'));
+                showLessElements.forEach(el => el.classList.toggle('hidden'));
+            });
+
+            // 刷新按钮动画
+            const refreshBtn = document.getElementById('refreshBalance');
+            refreshBtn.addEventListener('click', function() {
+                const icon = this.querySelector('.fa-sync-alt');
+                icon.style.transition = 'transform 0.5s';
+                icon.style.transform = 'rotate(360deg)';
+                
+                setTimeout(() => {
+                    icon.style.transform = 'rotate(0deg)';
+                }, 500);
+            });
+        });
+    </script>
+</body>
+</html> 

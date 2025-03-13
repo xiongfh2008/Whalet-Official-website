@@ -37,50 +37,341 @@
             height: 2px;
             background-color: #4f46e5;
         }
+        .tab-btn.active {
+            border-bottom: 2px solid #4f46e5;
+            color: #4f46e5;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        .platform-card {
+            transition: all 0.3s ease;
+        }
+        .platform-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
     </style>
 </head>
 <body>
     <div class="container mx-auto px-4 py-6">
-        <!-- 页面标题 -->
-        <div class="bg-white p-8 rounded-xl shadow-sm mb-6">
-            <div class="flex justify-between items-start">
-                <div>
-                    <h1 class="text-2xl font-bold text-gray-800 mb-2">付款</h1>
-                    <p class="text-gray-600">快速安全的国际转账与付款服务</p>
-                </div>
-                <div class="flex space-x-3">
-                    <button class="bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2 rounded-lg text-sm font-medium flex items-center">
-                        <i class="fas fa-file-invoice mr-2"></i>
-                        付款记录
-                    </button>
-                    <button class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg text-sm font-medium flex items-center">
-                        <i class="fas fa-plus mr-2"></i>
-                        创建付款
-                    </button>
-                </div>
-            </div>
-        </div>
 
         <!-- 付款类型导航 -->
-        <div class="mb-6 bg-white rounded-xl shadow-sm p-6 pb-0">
-            <div class="flex border-b border-gray-200">
-                <button class="tab-button active pb-4 px-6 text-blue-600 font-medium text-sm">
-                    单笔付款
-                </button>
-                <button class="tab-button pb-4 px-6 text-gray-500 hover:text-gray-700 font-medium text-sm">
-                    批量付款
-                </button>
-                <button class="tab-button pb-4 px-6 text-gray-500 hover:text-gray-700 font-medium text-sm">
-                    定期付款
-                </button>
-                <button class="tab-button pb-4 px-6 text-gray-500 hover:text-gray-700 font-medium text-sm">
-                    应付账单
-                </button>
+        <div class="bg-white rounded-lg shadow-sm mb-6">
+            <div class="border-b border-gray-200">
+                <div class="flex justify-between items-center">
+                    <nav class="flex justify-start -mb-px pl-6">
+                        <button id="singlePaymentTab" class="tab-btn active whitespace-nowrap py-4 px-8 border-b-2 border-blue-600 text-center text-sm font-medium text-blue-600 mr-2" data-tab="single-payment">
+                            单笔付款
+                        </button>
+                        <button id="payeeManagementTab" class="tab-btn whitespace-nowrap py-4 px-8 border-b-2 border-transparent text-center text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300 mr-2" data-tab="payee-management">
+                            收款人管理
+                        </button>
+                    </nav>
+                    <div class="flex items-center space-x-6 pr-6">
+                        <!-- 公告图标 -->
+                        <div class="relative">
+                            <a href="#" class="text-gray-600 hover:text-blue-600">
+                                <span class="relative">
+                                    <i class="fas fa-bell text-lg"></i>
+                                    <span class="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full"></span>
+                                </span>
+                            </a>
+                        </div>
+                        
+                        <!-- 帮助中心 -->
+                        <a href="#" class="text-gray-600 hover:text-blue-600 text-sm">帮助中心</a>
+                        
+                        <!-- 用户中心 -->
+                        <div class="relative">
+                            <button id="userCenterBtn" class="text-gray-600 hover:text-blue-600">
+                                <i class="fas fa-user-circle text-lg"></i>
+                            </button>
+                            <div id="userCenterDropdown" class="absolute right-0 top-full mt-1 w-32 bg-white rounded-lg shadow-lg py-2 hidden z-10">
+                                <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">安全设置</a>
+                                <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">费率查询</a>
+                                <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">优惠券</a>
+                                <div class="border-t border-gray-100 my-1"></div>
+                                <a href="#" class="block px-4 py-2 text-sm text-red-600 hover:bg-gray-100">退出</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <!-- 付款表单区 -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        <!-- 收款人管理内容区 -->
+        <div id="payeeManagementContent" class="mb-8 hidden">
+            <div class="bg-white rounded-xl shadow-sm p-6">
+                <!-- 搜索筛选区 -->
+                <div class="mb-6">
+                    <div class="flex flex-wrap items-end gap-4">
+                        <div class="flex-1 min-w-[200px]">
+                            <label class="block text-sm font-medium text-gray-700 mb-1">收款人名称或备注名称</label>
+                            <input type="text" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="支持模糊查询">
+                        </div>
+                        <div class="w-40">
+                            <label class="block text-sm font-medium text-gray-700 mb-1">类型</label>
+                            <select class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent appearance-none">
+                                <option value="">全部</option>
+                                <option value="personal">个人</option>
+                                <option value="corporate">企业</option>
+                            </select>
+                        </div>
+                        <div class="w-40">
+                            <label class="block text-sm font-medium text-gray-700 mb-1">币种</label>
+                            <select class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent appearance-none">
+                                <option value="">全部</option>
+                                <option value="USD">USD - 美元</option>
+                                <option value="EUR">EUR - 欧元</option>
+                                <option value="GBP">GBP - 英镑</option>
+                                <option value="JPY">JPY - 日元</option>
+                                <option value="SGD">SGD - 新加坡元</option>
+                                <option value="AUD">AUD - 澳元</option>
+                            </select>
+                        </div>
+                        <div>
+                            <button class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium">
+                                搜索
+                            </button>
+                            <button class="px-4 py-2 border border-gray-300 hover:bg-gray-50 rounded-lg text-sm font-medium text-gray-700 ml-2">
+                                重置
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 操作按钮区 -->
+                <div class="mb-4 flex justify-between items-center">
+                    <button id="addPayeeBtn" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium flex items-center">
+                        <i class="fas fa-plus mr-1"></i>
+                        添加收款人
+                    </button>
+                    <div>
+                        <button class="px-4 py-2 border border-gray-300 hover:bg-gray-50 rounded-lg text-sm font-medium text-gray-700">
+                            <i class="fas fa-download mr-1"></i>
+                            导出
+                        </button>
+                        <button class="px-4 py-2 border border-gray-300 hover:bg-gray-50 rounded-lg text-sm font-medium text-gray-700 ml-2">
+                            <i class="fas fa-cog mr-1"></i>
+                            列表设置
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 收款人列表 -->
+                <div class="w-full">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead>
+                            <tr>
+                                <th class="w-[40px] px-2 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    <input type="checkbox" class="rounded text-blue-600">
+                                </th>
+                                <th class="w-[80px] px-2 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    类型
+                                </th>
+                                <th class="w-[100px] px-2 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    供应商类型
+                                </th>
+                                <th class="w-[160px] px-2 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    收款人名称
+                                </th>
+                                <th class="w-[120px] px-2 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    备注名称
+                                </th>
+                                <th class="w-[100px] px-2 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    账户类型
+                                </th>
+                                <th class="w-[120px] px-2 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    银行机构
+                                </th>
+                                <th class="w-[120px] px-2 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    银行账号
+                                </th>
+                                <th class="w-[80px] px-2 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    币种
+                                </th>
+                                <th class="w-[80px] px-2 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    状态
+                                </th>
+                                <th class="w-[100px] px-2 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    操作
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">
+                            <!-- 示例数据行 1 -->
+                            <tr>
+                                <td class="px-2 py-4 whitespace-nowrap">
+                                    <input type="checkbox" class="rounded text-blue-600">
+                                </td>
+                                <td class="px-2 py-4 whitespace-nowrap">
+                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
+                                        企业
+                                    </span>
+                                </td>
+                                <td class="px-2 py-4 whitespace-nowrap text-sm text-gray-600">
+                                    物料供应商
+                                </td>
+                                <td class="px-2 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                                    American Supplier Inc.
+                                </td>
+                                <td class="px-2 py-4 whitespace-nowrap text-sm text-gray-600">
+                                    美国供应商
+                                </td>
+                                <td class="px-2 py-4 whitespace-nowrap text-sm text-gray-600">
+                                    企业账户
+                                </td>
+                                <td class="px-2 py-4 whitespace-nowrap text-sm text-gray-600">
+                                    Bank of America
+                                </td>
+                                <td class="px-2 py-4 whitespace-nowrap text-sm text-gray-600">
+                                    ****5678
+                                </td>
+                                <td class="px-2 py-4 whitespace-nowrap text-sm text-gray-600">
+                                    USD
+                                </td>
+                                <td class="px-2 py-4 whitespace-nowrap">
+                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                        正常
+                                    </span>
+                                </td>
+                                <td class="px-2 py-4 whitespace-nowrap text-sm text-gray-500">
+                                    <a href="#" class="text-blue-600 hover:text-blue-900 mr-2">详情</a>
+                                    <a href="#" class="text-red-600 hover:text-red-900">删除</a>
+                                </td>
+                            </tr>
+                            
+                            <!-- 示例数据行 2 -->
+                            <tr>
+                                <td class="px-2 py-4 whitespace-nowrap">
+                                    <input type="checkbox" class="rounded text-blue-600">
+                                </td>
+                                <td class="px-2 py-4 whitespace-nowrap">
+                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
+                                        企业
+                                    </span>
+                                </td>
+                                <td class="px-2 py-4 whitespace-nowrap text-sm text-gray-600">
+                                    服务供应商
+                                </td>
+                                <td class="px-2 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                                    European Trading Ltd.
+                                </td>
+                                <td class="px-2 py-4 whitespace-nowrap text-sm text-gray-600">
+                                    欧洲贸易
+                                </td>
+                                <td class="px-2 py-4 whitespace-nowrap text-sm text-gray-600">
+                                    企业账户
+                                </td>
+                                <td class="px-2 py-4 whitespace-nowrap text-sm text-gray-600">
+                                    Deutsche Bank
+                                </td>
+                                <td class="px-2 py-4 whitespace-nowrap text-sm text-gray-600">
+                                    ****3456
+                                </td>
+                                <td class="px-2 py-4 whitespace-nowrap text-sm text-gray-600">
+                                    EUR
+                                </td>
+                                <td class="px-2 py-4 whitespace-nowrap">
+                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
+                                        审核中
+                                    </span>
+                                </td>
+                                <td class="px-2 py-4 whitespace-nowrap text-sm text-gray-500">
+                                    <a href="#" class="text-blue-600 hover:text-blue-900 mr-2">详情</a>
+                                    <a href="#" class="text-red-600 hover:text-red-900">删除</a>
+                                </td>
+                            </tr>
+                            
+                            <!-- 示例数据行 3 -->
+                            <tr>
+                                <td class="px-2 py-4 whitespace-nowrap">
+                                    <input type="checkbox" class="rounded text-blue-600">
+                                </td>
+                                <td class="px-2 py-4 whitespace-nowrap">
+                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-purple-100 text-purple-800">
+                                        个人
+                                    </span>
+                                </td>
+                                <td class="px-2 py-4 whitespace-nowrap text-sm text-gray-600">
+                                    自由职业者
+                                </td>
+                                <td class="px-2 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                                    John Smith
+                                </td>
+                                <td class="px-2 py-4 whitespace-nowrap text-sm text-gray-600">
+                                    设计师John
+                                </td>
+                                <td class="px-2 py-4 whitespace-nowrap text-sm text-gray-600">
+                                    个人账户
+                                </td>
+                                <td class="px-2 py-4 whitespace-nowrap text-sm text-gray-600">
+                                    Barclays
+                                </td>
+                                <td class="px-2 py-4 whitespace-nowrap text-sm text-gray-600">
+                                    ****7890
+                                </td>
+                                <td class="px-2 py-4 whitespace-nowrap text-sm text-gray-600">
+                                    GBP
+                                </td>
+                                <td class="px-2 py-4 whitespace-nowrap">
+                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
+                                        审核拒绝
+                                    </span>
+                                </td>
+                                <td class="px-2 py-4 whitespace-nowrap text-sm text-gray-500">
+                                    <a href="#" class="text-blue-600 hover:text-blue-900 mr-2">详情</a>
+                                    <a href="#" class="text-red-600 hover:text-red-900">删除</a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <!-- 分页 -->
+                <div class="mt-6 flex items-center justify-between">
+                    <div class="text-sm text-gray-700">
+                        显示 <span class="font-medium">1</span> 到 <span class="font-medium">3</span> 条，共 <span class="font-medium">12</span> 条记录
+                    </div>
+                    <div class="flex-1 flex justify-center">
+                        <nav class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
+                            <a href="#" class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+                                <span class="sr-only">上一页</span>
+                                <i class="fas fa-chevron-left text-xs"></i>
+                            </a>
+                            <a href="#" class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-blue-50 text-sm font-medium text-blue-600 hover:bg-blue-100">
+                                1
+                            </a>
+                            <a href="#" class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">
+                                2
+                            </a>
+                            <a href="#" class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">
+                                3
+                            </a>
+                            <a href="#" class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+                                <span class="sr-only">下一页</span>
+                                <i class="fas fa-chevron-right text-xs"></i>
+                            </a>
+                        </nav>
+                    </div>
+                    <div class="text-sm text-gray-700 flex items-center">
+                        跳转至
+                        <input type="number" min="1" class="w-12 mx-2 px-2 py-1 border border-gray-300 rounded-md text-center">
+                        页
+                        <button class="ml-2 px-3 py-1 border border-gray-300 rounded-md hover:bg-gray-50">
+                            确定
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 单笔付款内容区 -->
+        <div id="singlePaymentContent" class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
             <!-- 付款表单 -->
             <div class="md:col-span-2 bg-white rounded-xl shadow-sm p-6">
                 <!-- 步骤显示 -->
@@ -123,136 +414,156 @@
 
                 <!-- 收款方选择 -->
                 <div class="mb-6">
-                    <div class="flex justify-between items-center mb-4">
-                        <h3 class="text-lg font-medium text-gray-800">收款方</h3>
-                        <button class="text-blue-600 text-sm font-medium flex items-center">
-                            <i class="fas fa-plus mr-1"></i>
-                            添加新收款方
-                        </button>
+                    <!-- 账户类型选择 -->
+                    <div class="mb-6">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">账户类型<span class="text-red-500 ml-0.5">*</span></label>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="relative">
+                                <input type="radio" id="bankAccount" name="accountType" value="bank" class="peer hidden" checked>
+                                <label for="bankAccount" class="block p-4 border-2 rounded-lg cursor-pointer transition-all duration-200 hover:border-blue-500 peer-checked:border-blue-600 peer-checked:bg-blue-50 relative">
+                                    <div class="flex items-center justify-between">
+                                        <div class="flex items-center">
+                                            <i class="fas fa-university text-xl text-gray-600 peer-checked:text-blue-600"></i>
+                                            <span class="ml-3 font-medium text-gray-900 peer-checked:text-blue-600">银行账号</span>
+                                        </div>
+                                        <div class="hidden peer-checked:block">
+                                            <i class="fas fa-check-circle text-blue-600"></i>
+                                        </div>
+                                    </div>
+                                </label>
+                            </div>
+                            <div class="relative">
+                                <input type="radio" id="eWallet" name="accountType" value="wallet" class="peer hidden">
+                                <label for="eWallet" class="block p-4 border-2 rounded-lg cursor-pointer transition-all duration-200 hover:border-blue-500 peer-checked:border-blue-600 peer-checked:bg-blue-50 relative">
+                                    <div class="flex items-center justify-between">
+                                        <div class="flex items-center">
+                                            <i class="fas fa-wallet text-xl text-gray-600 peer-checked:text-blue-600"></i>
+                                            <span class="ml-3 font-medium text-gray-900 peer-checked:text-blue-600">电子钱包</span>
+                                        </div>
+                                        <div class="hidden peer-checked:block">
+                                            <i class="fas fa-check-circle text-blue-600"></i>
+                                        </div>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
                     </div>
-                    
-                    <!-- 最近收款方 -->
+
+                    <!-- 收款人选择 -->
                     <div class="mb-4">
-                        <label class="block text-sm font-medium text-gray-700 mb-2">最近收款方</label>
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                            <!-- 收款方卡片 1 -->
-                            <div class="payee-card p-4 border border-gray-200 rounded-lg">
-                                <div class="flex justify-between items-start">
-                                    <div class="flex items-center">
+                        <div class="flex justify-between items-center mb-4">
+                            <label class="text-sm font-medium text-gray-700">收款人<span class="text-red-500 ml-0.5">*</span></label>
+                            <button class="text-blue-600 text-sm font-medium flex items-center">
+                                <i class="fas fa-plus mr-1"></i>
+                                添加新收款人
+                            </button>
+                        </div>
+
+                        <!-- 搜索和筛选 -->
+                        <div class="flex gap-3 mb-4">
+                            <div class="flex-1">
+                                <div class="relative">
+                                    <input type="text" placeholder="搜索收款人名称或账号" class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                    <div class="absolute left-3 top-2.5 text-gray-400">
+                                        <i class="fas fa-search"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="relative">
+                                <select class="w-32 pl-3 pr-8 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent appearance-none">
+                                    <option value="">全部币种</option>
+                                    <option value="USD">USD</option>
+                                    <option value="EUR">EUR</option>
+                                    <option value="GBP">GBP</option>
+                                </select>
+                                <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-500">
+                                    <i class="fas fa-chevron-down text-xs"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 收款人列表 -->
+                        <div class="border border-gray-200 rounded-lg overflow-hidden">
+                            <!-- 收款人1 -->
+                            <div class="payee-card p-4 border-b border-gray-200 hover:bg-gray-50">
+                                <div class="flex items-center">
+                                    <div class="flex-none">
+                                        <input type="radio" name="payee" value="payee1" class="w-4 h-4 text-blue-600 border-gray-300 focus:ring-blue-500">
+                                    </div>
+                                    <div class="flex-none ml-4">
                                         <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-700 font-bold">
                                             AS
                                         </div>
-                                        <div class="ml-3">
-                                            <h4 class="font-medium text-gray-900">American Supplier Inc.</h4>
-                                            <p class="text-xs text-gray-500">上次付款: 2023-05-05</p>
+                                    </div>
+                                    <div class="flex-1 ml-4">
+                                        <div class="flex justify-between items-start">
+                                            <div>
+                                                <h4 class="font-medium text-gray-900">American Supplier Inc.</h4>
+                                                <p class="text-sm text-gray-500">Bank of America | ****8888</p>
+                                            </div>
+                                            <span class="px-2 py-1 bg-gray-100 rounded text-xs font-medium text-gray-600">USD</span>
                                         </div>
-                                    </div>
-                                    <div class="text-gray-400">
-                                        <i class="fas fa-check-circle text-green-500"></i>
-                                    </div>
-                                </div>
-                                <div class="mt-3 text-sm">
-                                    <div class="flex justify-between">
-                                        <span class="text-gray-500">Bank of America</span>
-                                        <span class="text-gray-700">USD</span>
                                     </div>
                                 </div>
                             </div>
-                            
-                            <!-- 收款方卡片 2 -->
-                            <div class="payee-card p-4 border border-gray-200 rounded-lg">
-                                <div class="flex justify-between items-start">
-                                    <div class="flex items-center">
+
+                            <!-- 收款人2 -->
+                            <div class="payee-card p-4 border-b border-gray-200 hover:bg-gray-50">
+                                <div class="flex items-center">
+                                    <div class="flex-none">
+                                        <input type="radio" name="payee" value="payee2" class="w-4 h-4 text-blue-600 border-gray-300 focus:ring-blue-500">
+                                    </div>
+                                    <div class="flex-none ml-4">
                                         <div class="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center text-green-700 font-bold">
                                             ET
                                         </div>
-                                        <div class="ml-3">
-                                            <h4 class="font-medium text-gray-900">European Trading Ltd.</h4>
-                                            <p class="text-xs text-gray-500">上次付款: 2023-04-28</p>
+                                    </div>
+                                    <div class="flex-1 ml-4">
+                                        <div class="flex justify-between items-start">
+                                            <div>
+                                                <h4 class="font-medium text-gray-900">European Trading Ltd.</h4>
+                                                <p class="text-sm text-gray-500">Deutsche Bank | ****3456</p>
+                                            </div>
+                                            <span class="px-2 py-1 bg-gray-100 rounded text-xs font-medium text-gray-600">EUR</span>
                                         </div>
                                     </div>
-                                    <div class="text-gray-400">
-                                        <i class="fas fa-check-circle text-green-500"></i>
-                                    </div>
-                                </div>
-                                <div class="mt-3 text-sm">
-                                    <div class="flex justify-between">
-                                        <span class="text-gray-500">Deutsche Bank</span>
-                                        <span class="text-gray-700">EUR</span>
-                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                    
-                    <!-- 或者手动输入 -->
-                    <div class="mt-6">
-                        <div class="flex items-center mb-4">
-                            <span class="flex-grow border-t border-gray-300"></span>
-                            <span class="mx-4 text-sm text-gray-500">或者手动输入收款方信息</span>
-                            <span class="flex-grow border-t border-gray-300"></span>
-                        </div>
-                        
-                        <!-- 表单 -->
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-1">收款方全称</label>
-                                <input type="text" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="公司或个人全称">
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-1">收款方邮箱（选填）</label>
-                                <input type="email" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="用于通知收款方">
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-1">收款国家/地区</label>
-                                <select class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent appearance-none">
-                                    <option>美国</option>
-                                    <option>英国</option>
-                                    <option>欧盟</option>
-                                    <option>新加坡</option>
-                                    <option>澳大利亚</option>
-                                    <option>日本</option>
-                                    <option>其他</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-1">币种</label>
-                                <select class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent appearance-none">
-                                    <option>USD - 美元</option>
-                                    <option>EUR - 欧元</option>
-                                    <option>GBP - 英镑</option>
-                                    <option>JPY - 日元</option>
-                                    <option>SGD - 新加坡元</option>
-                                    <option>AUD - 澳元</option>
-                                </select>
+
+                            <!-- 收款人3 -->
+                            <div class="payee-card p-4 hover:bg-gray-50">
+                                <div class="flex items-center">
+                                    <div class="flex-none">
+                                        <input type="radio" name="payee" value="payee3" class="w-4 h-4 text-blue-600 border-gray-300 focus:ring-blue-500">
+                                    </div>
+                                    <div class="flex-none ml-4">
+                                        <div class="w-10 h-10 rounded-full bg-purple-100 flex items-center justify-center text-purple-700 font-bold">
+                                            AT
+                                        </div>
+                                    </div>
+                                    <div class="flex-1 ml-4">
+                                        <div class="flex justify-between items-start">
+                                            <div>
+                                                <h4 class="font-medium text-gray-900">Asia Tech Co., Ltd.</h4>
+                                                <p class="text-sm text-gray-500">DBS Bank | ****7890</p>
+                                            </div>
+                                            <span class="px-2 py-1 bg-gray-100 rounded text-xs font-medium text-gray-600">SGD</span>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    
-                    <!-- 银行账户信息 -->
-                    <div class="mt-6">
-                        <h4 class="text-sm font-medium text-gray-700 mb-3">银行账户信息</h4>
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-1">银行名称</label>
-                                <input type="text" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="完整银行名称">
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-1">账号类型</label>
-                                <select class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent appearance-none">
-                                    <option>支票账户</option>
-                                    <option>储蓄账户</option>
-                                    <option>企业账户</option>
-                                    <option>其他</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-1">账户号码</label>
-                                <input type="text" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="账户号码">
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-1">Swift/BIC 代码</label>
-                                <input type="text" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="国际银行代码">
+
+                        <!-- 分页 -->
+                        <div class="mt-4 flex items-center justify-between text-sm text-gray-500">
+                            <span>显示 1-3 共 8 个收款人</span>
+                            <div class="flex items-center space-x-2">
+                                <button class="px-2 py-1 border border-gray-300 rounded hover:bg-gray-50 disabled:opacity-50" disabled>
+                                    <i class="fas fa-chevron-left"></i>
+                                </button>
+                                <button class="px-2 py-1 border border-gray-300 rounded hover:bg-gray-50">
+                                    <i class="fas fa-chevron-right"></i>
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -260,239 +571,652 @@
                 
                 <!-- 表单控制按钮 -->
                 <div class="flex justify-between pt-4 border-t border-gray-100">
-                    <button class="px-4 py-2 border border-gray-300 hover:bg-gray-50 rounded-lg text-sm font-medium text-gray-700">
-                        取消
-                    </button>
-                    <button class="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium">
+                    <button id="nextToStep2" class="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium">
                         下一步：付款详情
                     </button>
                 </div>
             </div>
             
-            <!-- 右侧信息栏 -->
-            <div>
-                <!-- 汇率信息 -->
-                <div class="bg-white rounded-xl shadow-sm p-6 mb-6">
-                    <h3 class="text-lg font-medium text-gray-800 mb-4">今日汇率</h3>
-                    <div class="space-y-3">
-                        <div class="flex justify-between items-center pb-2 border-b border-gray-100">
-                            <div class="flex items-center">
-                                <span class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-700 mr-2 font-bold text-xs">$</span>
-                                <div>
-                                    <p class="text-sm font-medium text-gray-800">USD/CNY</p>
-                                    <p class="text-xs text-gray-500">美元/人民币</p>
-                                </div>
+            <!-- 付款详情表单 -->
+            <div id="paymentStep2" class="md:col-span-2 bg-white rounded-xl shadow-sm p-6 hidden">
+                <!-- 步骤显示 -->
+                <div class="mb-6">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 rounded-full bg-blue-600 text-white flex items-center justify-center font-medium">
+                                1
                             </div>
-                            <div class="text-right">
-                                <p class="text-sm font-medium text-gray-800">7.2546</p>
-                                <p class="text-xs text-green-600">+0.15%</p>
+                            <div class="ml-2">
+                                <span class="text-sm font-medium text-gray-800">收款方信息</span>
                             </div>
                         </div>
-                        <div class="flex justify-between items-center pb-2 border-b border-gray-100">
-                            <div class="flex items-center">
-                                <span class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-700 mr-2 font-bold text-xs">€</span>
-                                <div>
-                                    <p class="text-sm font-medium text-gray-800">EUR/CNY</p>
-                                    <p class="text-xs text-gray-500">欧元/人民币</p>
-                                </div>
+                        <div class="flex-1 mx-4">
+                            <div class="h-1 bg-blue-600 rounded"></div>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 rounded-full bg-blue-600 text-white flex items-center justify-center font-medium">
+                                2
                             </div>
-                            <div class="text-right">
-                                <p class="text-sm font-medium text-gray-800">8.1235</p>
-                                <p class="text-xs text-green-600">+0.08%</p>
+                            <div class="ml-2">
+                                <span class="text-sm font-medium text-gray-800">付款详情</span>
                             </div>
                         </div>
-                        <div class="flex justify-between items-center">
-                            <div class="flex items-center">
-                                <span class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-700 mr-2 font-bold text-xs">£</span>
-                                <div>
-                                    <p class="text-sm font-medium text-gray-800">GBP/CNY</p>
-                                    <p class="text-xs text-gray-500">英镑/人民币</p>
-                                </div>
-                            </div>
-                            <div class="text-right">
-                                <p class="text-sm font-medium text-gray-800">9.5421</p>
-                                <p class="text-xs text-red-600">-0.12%</p>
-                            </div>
+                        <div class="flex-1 mx-4">
+                            <div class="h-1 bg-gray-200 rounded"></div>
                         </div>
-                    </div>
-                    <div class="mt-4 text-center">
-                        <a href="#" class="text-blue-600 text-sm font-medium hover:text-blue-800">
-                            更多汇率信息
-                        </a>
-                    </div>
-                </div>
-                
-                <!-- 付款指南 -->
-                <div class="bg-white rounded-xl shadow-sm p-6">
-                    <h3 class="text-lg font-medium text-gray-800 mb-4">付款指南</h3>
-                    <div class="space-y-4">
-                        <div class="flex items-start">
-                            <div class="w-6 h-6 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center mr-3 mt-0.5">
-                                <span class="text-xs font-bold">1</span>
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 rounded-full bg-gray-200 text-gray-600 flex items-center justify-center font-medium">
+                                3
                             </div>
-                            <div>
-                                <h4 class="text-sm font-medium text-gray-800">选择收款方</h4>
-                                <p class="text-xs text-gray-600 mt-1">选择已有收款方或添加新的收款方信息</p>
+                            <div class="ml-2">
+                                <span class="text-sm font-medium text-gray-500">确认付款</span>
                             </div>
-                        </div>
-                        <div class="flex items-start">
-                            <div class="w-6 h-6 rounded-full bg-gray-100 text-gray-700 flex items-center justify-center mr-3 mt-0.5">
-                                <span class="text-xs font-bold">2</span>
-                            </div>
-                            <div>
-                                <h4 class="text-sm font-medium text-gray-800">填写付款详情</h4>
-                                <p class="text-xs text-gray-600 mt-1">设置金额、付款日期和付款用途等信息</p>
-                            </div>
-                        </div>
-                        <div class="flex items-start">
-                            <div class="w-6 h-6 rounded-full bg-gray-100 text-gray-700 flex items-center justify-center mr-3 mt-0.5">
-                                <span class="text-xs font-bold">3</span>
-                            </div>
-                            <div>
-                                <h4 class="text-sm font-medium text-gray-800">确认并付款</h4>
-                                <p class="text-xs text-gray-600 mt-1">检查信息并授权付款，资金将会按照处理时间安排转出</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="mt-4 p-3 bg-blue-50 rounded-lg">
-                        <div class="flex items-start">
-                            <div class="text-blue-500 mr-3">
-                                <i class="fas fa-info-circle"></i>
-                            </div>
-                            <p class="text-xs text-blue-800">
-                                国际转账一般需要1-3个工作日完成，具体到账时间取决于收款行和地区。详细手续费和汇率请见下一步确认页面。
-                            </p>
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
-        
-        <!-- 常用收款方 -->
-        <div class="bg-white rounded-xl shadow-sm mb-6">
-            <div class="p-6 border-b border-gray-200">
-                <div class="flex justify-between items-center">
-                    <h3 class="text-lg font-medium text-gray-800">常用收款方</h3>
-                    <button class="text-blue-600 text-sm font-medium">
-                        管理收款方
+
+                <!-- 付款详情表单内容 -->
+                <div class="space-y-6">
+                    <!-- 账户类型和收款人信息 -->
+                    <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                        <div>
+                            <p class="text-sm text-gray-600">账户类型：<span class="text-gray-900">银行账号</span></p>
+                            <p class="text-sm text-gray-600 mt-2">收款人：<span class="text-gray-900">American Supplier Inc.</span></p>
+                        </div>
+                        <button id="backToStep1" class="text-blue-600 text-sm hover:text-blue-700">修改</button>
+                    </div>
+
+                    <!-- 付款金额 -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">付款金额<span class="text-red-500 ml-0.5">*</span></label>
+                        <div class="flex gap-4">
+                            <div class="flex-1">
+                                <input type="number" id="paymentAmount" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="请输入金额">
+                            </div>
+                            <div class="relative w-32">
+                                <select id="paymentCurrency" class="w-full pl-3 pr-8 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent appearance-none">
+                                    <option value="USD">USD</option>
+                                    <option value="EUR">EUR</option>
+                                    <option value="GBP">GBP</option>
+                                </select>
+                                <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-500">
+                                    <i class="fas fa-chevron-down text-xs"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex justify-end">
+                            <div id="availableBalance" class="mt-1.5 text-sm text-gray-500 flex items-center">
+                                <i class="fas fa-wallet text-gray-400 mr-1.5"></i>
+                                可用余额：<span class="text-gray-900 font-medium ml-1">1,234.56 USD</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 手续费信息 -->
+                    <div id="feeSection" class="bg-gray-50 rounded-lg p-4 space-y-3">
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-600">手续费</span>
+                            <span class="text-gray-900">50.00 USD</span>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-600">抵扣手续费</span>
+                            <span class="text-green-600">-30.00 USD</span>
+                        </div>
+                        <div class="flex justify-between text-sm font-medium">
+                            <span class="text-gray-600">实际手续费</span>
+                            <span class="text-gray-900">20.00 USD</span>
+                        </div>
+                        <div id="exchangeRate" class="flex justify-between text-sm border-t border-gray-200 pt-3 hidden">
+                            <span class="text-gray-600">参考汇率</span>
+                            <span class="text-gray-900">1 USD = 0.85 EUR</span>
+                        </div>
+                    </div>
+
+                    <!-- 到账金额 -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">到账金额<span class="text-red-500 ml-0.5">*</span></label>
+                        <div class="flex gap-4">
+                            <div class="flex-1">
+                                <input type="number" id="receiveAmount" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="请输入金额">
+                            </div>
+                            <div class="relative w-32">
+                                <select id="receiveCurrency" class="w-full pl-3 pr-8 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent appearance-none">
+                                    <option value="USD">USD</option>
+                                    <option value="EUR">EUR</option>
+                                    <option value="GBP">GBP</option>
+                                </select>
+                                <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-500">
+                                    <i class="fas fa-chevron-down text-xs"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 付款人名称 -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">付款人名称<span class="text-red-500 ml-0.5">*</span></label>
+                        <div class="relative">
+                            <select id="payerSelect" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent appearance-none" required>
+                                <option value="">请选择付款人</option>
+                                <option value="whalet" data-label="免费" data-label-type="free">whalet</option>
+                                <option value="zhangsan" data-label="限时免费" data-label-type="limited">zhang san</option>
+                            </select>
+                            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-500">
+                                <i class="fas fa-chevron-down text-xs"></i>
+                            </div>
+                            <div class="absolute right-10 top-1/2 transform -translate-y-1/2">
+                                <span id="payerLabel" class="text-xs px-2 py-1 rounded"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 汇款目的 -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">汇款目的<span class="text-red-500 ml-0.5">*</span></label>
+                        <select class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent appearance-none" required>
+                            <option value="">请选择汇款目的</option>
+                            <option value="advanced">Advanced Goods Payments-预付款项</option>
+                            <option value="export">Export Goods Payments-出囗货物付款</option>
+                            <option value="goods">Goods and Services-商品和服务费用</option>
+                        </select>
+                    </div>
+
+                    <!-- 交易附言 -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">交易附言</label>
+                        <input type="text" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="请输入交易附言">
+                    </div>
+
+                    <!-- 付款凭证 -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">付款凭证</label>
+                        <div class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center">
+                            <input type="file" class="hidden" id="fileUpload" accept=".jpg,.png,.jpeg,.pdf">
+                            <label for="fileUpload" class="cursor-pointer">
+                                <i class="fas fa-cloud-upload-alt text-3xl text-gray-400 mb-2"></i>
+                                <p class="text-sm text-gray-500">请确认信息无误，证件图片清晰可见</p>
+                                <p class="text-xs text-gray-400 mt-1">支持jpg、png、jpeg、pdf，文件不超过5M</p>
+                                <button type="button" class="text-blue-600 text-sm mt-2 hover:text-blue-700">查看示例</button>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- 预计汇出时间 -->
+                    <div class="bg-gray-50 rounded-lg p-4">
+                        <div class="flex items-start">
+                            <i class="fas fa-clock text-gray-400 mt-1 mr-2"></i>
+                            <div>
+                                <p class="text-sm font-medium text-gray-700">预计汇出时间</p>
+                                <p class="text-sm text-gray-500 mt-1">T+1 （非工作时间以银行实际处理为准）</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 表单控制按钮 -->
+                <div class="flex justify-between pt-6 mt-8 border-t border-gray-100">
+                    <button id="backToStep1Btn" class="px-6 py-2 border border-gray-300 text-gray-700 rounded-lg text-sm font-medium hover:bg-gray-50">
+                        上一步
+                    </button>
+                    <button class="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium">
+                        下一步：确认付款
                     </button>
                 </div>
             </div>
-            <div class="p-6 grid grid-cols-1 md:grid-cols-3 gap-4">
-                <!-- 收款方1 -->
-                <div class="payee-card border border-gray-200 rounded-lg p-4 hover:shadow-md">
-                    <div class="flex justify-between items-start mb-3">
-                        <div class="flex items-center">
+
+            <!-- 右侧栏 -->
+            <div class="space-y-6">
+                <!-- 常用收款人 -->
+                <div class="bg-white rounded-xl shadow-sm p-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-base font-medium text-gray-900">常用收款人</h3>
+                        <button class="text-sm text-blue-600 hover:text-blue-700 font-medium flex items-center">
+                            查看全部收款人
+                            <i class="fas fa-chevron-right ml-1 text-xs"></i>
+                        </button>
+                    </div>
+                    <div class="space-y-4">
+                        <!-- 收款人卡片 -->
+                        <div class="flex items-center p-3 border border-gray-200 rounded-lg hover:border-blue-500 cursor-pointer transition-colors">
                             <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-700 font-bold">
                                 AS
                             </div>
-                            <div class="ml-3">
-                                <h4 class="font-medium text-gray-900">American Supplier Inc.</h4>
-                                <p class="text-xs text-gray-500">创建于: 2023-01-15</p>
+                            <div class="ml-3 flex-1">
+                                <h4 class="text-sm font-medium text-gray-900">American Supplier Inc.</h4>
+                                <p class="text-xs text-gray-500">Bank of America | USD</p>
                             </div>
                         </div>
-                        <div class="text-gray-400">
-                            <i class="fas fa-ellipsis-h"></i>
-                        </div>
-                    </div>
-                    <div class="space-y-1 text-sm">
-                        <div class="flex justify-between">
-                            <span class="text-gray-500">币种</span>
-                            <span class="font-medium text-gray-800">USD</span>
-                        </div>
-                        <div class="flex justify-between">
-                            <span class="text-gray-500">银行</span>
-                            <span class="font-medium text-gray-800">Bank of America</span>
-                        </div>
-                        <div class="flex justify-between">
-                            <span class="text-gray-500">最近付款</span>
-                            <span class="font-medium text-gray-800">2023-05-05</span>
-                        </div>
-                    </div>
-                    <div class="mt-3 pt-3 border-t border-gray-100 flex justify-between">
-                        <button class="text-blue-600 text-sm hover:text-blue-800">使用</button>
-                        <button class="text-gray-500 text-sm hover:text-gray-700">查看详情</button>
-                    </div>
-                </div>
-                
-                <!-- 收款方2 -->
-                <div class="payee-card border border-gray-200 rounded-lg p-4 hover:shadow-md">
-                    <div class="flex justify-between items-start mb-3">
-                        <div class="flex items-center">
+                        <div class="flex items-center p-3 border border-gray-200 rounded-lg hover:border-blue-500 cursor-pointer transition-colors">
                             <div class="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center text-green-700 font-bold">
                                 ET
                             </div>
-                            <div class="ml-3">
-                                <h4 class="font-medium text-gray-900">European Trading Ltd.</h4>
-                                <p class="text-xs text-gray-500">创建于: 2022-11-08</p>
+                            <div class="ml-3 flex-1">
+                                <h4 class="text-sm font-medium text-gray-900">European Trading Ltd.</h4>
+                                <p class="text-xs text-gray-500">Deutsche Bank | EUR</p>
                             </div>
                         </div>
-                        <div class="text-gray-400">
-                            <i class="fas fa-ellipsis-h"></i>
-                        </div>
-                    </div>
-                    <div class="space-y-1 text-sm">
-                        <div class="flex justify-between">
-                            <span class="text-gray-500">币种</span>
-                            <span class="font-medium text-gray-800">EUR</span>
-                        </div>
-                        <div class="flex justify-between">
-                            <span class="text-gray-500">银行</span>
-                            <span class="font-medium text-gray-800">Deutsche Bank</span>
-                        </div>
-                        <div class="flex justify-between">
-                            <span class="text-gray-500">最近付款</span>
-                            <span class="font-medium text-gray-800">2023-04-28</span>
-                        </div>
-                    </div>
-                    <div class="mt-3 pt-3 border-t border-gray-100 flex justify-between">
-                        <button class="text-blue-600 text-sm hover:text-blue-800">使用</button>
-                        <button class="text-gray-500 text-sm hover:text-gray-700">查看详情</button>
-                    </div>
-                </div>
-                
-                <!-- 收款方3 -->
-                <div class="payee-card border border-gray-200 rounded-lg p-4 hover:shadow-md">
-                    <div class="flex justify-between items-start mb-3">
-                        <div class="flex items-center">
+                        <div class="flex items-center p-3 border border-gray-200 rounded-lg hover:border-blue-500 cursor-pointer transition-colors">
                             <div class="w-10 h-10 rounded-full bg-purple-100 flex items-center justify-center text-purple-700 font-bold">
                                 AT
                             </div>
-                            <div class="ml-3">
-                                <h4 class="font-medium text-gray-900">Asia Tech Co., Ltd.</h4>
-                                <p class="text-xs text-gray-500">创建于: 2023-03-22</p>
+                            <div class="ml-3 flex-1">
+                                <h4 class="text-sm font-medium text-gray-900">Asia Tech Co., Ltd.</h4>
+                                <p class="text-xs text-gray-500">DBS Bank | SGD</p>
                             </div>
                         </div>
-                        <div class="text-gray-400">
-                            <i class="fas fa-ellipsis-h"></i>
-                        </div>
                     </div>
-                    <div class="space-y-1 text-sm">
-                        <div class="flex justify-between">
-                            <span class="text-gray-500">币种</span>
-                            <span class="font-medium text-gray-800">SGD</span>
+                </div>
+
+                <!-- 付款指南 -->
+                <div class="bg-white rounded-xl shadow-sm p-6">
+                    <h3 class="text-base font-medium text-gray-900 mb-4">付款指南</h3>
+                    <div class="space-y-4">
+                        <div class="flex items-start">
+                            <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 flex-shrink-0">
+                                <i class="fas fa-info"></i>
+                            </div>
+                            <div class="ml-3">
+                                <p class="text-sm text-gray-500 mt-1">请确保收款人信息准确，避免因信息错误导致退汇</p>
+                            </div>
                         </div>
-                        <div class="flex justify-between">
-                            <span class="text-gray-500">银行</span>
-                            <span class="font-medium text-gray-800">DBS Bank</span>
+                        <div class="flex items-start">
+                            <div class="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center text-green-600 flex-shrink-0">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                            <div class="ml-3">
+                                <p class="text-sm text-gray-500 mt-1">设置金额、付款日期和付款用途等信息</p>
+                            </div>
                         </div>
-                        <div class="flex justify-between">
-                            <span class="text-gray-500">最近付款</span>
-                            <span class="font-medium text-gray-800">2023-04-15</span>
+                        <div class="flex items-start">
+                            <div class="w-8 h-8 rounded-full bg-yellow-100 flex items-center justify-center text-yellow-600 flex-shrink-0">
+                                <i class="fas fa-shield-alt"></i>
+                            </div>
+                            <div class="ml-3">
+                                <p class="text-sm text-gray-500 mt-1">检查信息并授权付款，资金将会按照处理时间安排转出</p>
+                            </div>
                         </div>
-                    </div>
-                    <div class="mt-3 pt-3 border-t border-gray-100 flex justify-between">
-                        <button class="text-blue-600 text-sm hover:text-blue-800">使用</button>
-                        <button class="text-gray-500 text-sm hover:text-gray-700">查看详情</button>
                     </div>
                 </div>
             </div>
-            <div class="px-6 py-4 border-t border-gray-100 text-center">
-                <button class="text-blue-600 hover:text-blue-800 text-sm font-medium">
-                    查看全部收款方 (12)
-                </button>
+        </div>
+    </div>
+
+    <!-- 添加收款人弹框 -->
+    <div id="addPayeeModal" class="fixed top-0 left-0 w-screen h-screen bg-white hidden z-[9999] overflow-y-auto">
+        <!-- 弹框头部 -->
+        <div class="sticky top-0 bg-white border-b border-gray-200 z-10">
+            <div class="container mx-auto px-4">
+                <div class="flex items-center justify-between py-4">
+                    <div class="flex items-center space-x-4">
+                        <button id="closeAddPayeeModal" class="p-2 hover:bg-gray-100 rounded-full transition-colors">
+                            <i class="fas fa-arrow-left text-gray-600"></i>
+                        </button>
+                        <h3 class="text-lg font-medium text-gray-900">添加收款人</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 弹框内容 -->
+        <div class="container mx-auto px-4 py-6">
+            <form id="addPayeeForm" class="max-w-3xl mx-auto space-y-6">
+                <!-- 账户类型 -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">账户类型<span class="text-red-500 ml-0.5">*</span></label>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="relative">
+                            <input type="radio" id="modalBankAccount" name="modalAccountType" value="bank" class="peer hidden" checked>
+                            <label for="modalBankAccount" class="block p-4 border-2 rounded-lg cursor-pointer transition-all duration-200 hover:border-blue-500 peer-checked:border-blue-600 peer-checked:bg-blue-50">
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center">
+                                        <i class="fas fa-university text-xl text-gray-600 peer-checked:text-blue-600"></i>
+                                        <span class="ml-3 font-medium text-gray-900">银行账号</span>
+                                    </div>
+                                    <div class="hidden peer-checked:block">
+                                        <i class="fas fa-check-circle text-blue-600"></i>
+                                    </div>
+                                </div>
+                            </label>
+                        </div>
+                        <div class="relative">
+                            <input type="radio" id="modalEWallet" name="modalAccountType" value="wallet" class="peer hidden">
+                            <label for="modalEWallet" class="block p-4 border-2 rounded-lg cursor-pointer transition-all duration-200 hover:border-blue-500 peer-checked:border-blue-600 peer-checked:bg-blue-50">
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center">
+                                        <i class="fas fa-wallet text-xl text-gray-600 peer-checked:text-blue-600"></i>
+                                        <span class="ml-3 font-medium text-gray-900">电子钱包</span>
+                                    </div>
+                                    <div class="hidden peer-checked:block">
+                                        <i class="fas fa-check-circle text-blue-600"></i>
+                                    </div>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 收款人类型 -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">收款人类型<span class="text-red-500 ml-0.5">*</span></label>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="relative">
+                            <input type="radio" id="modalPersonal" name="modalPayeeType" value="personal" class="peer hidden" checked>
+                            <label for="modalPersonal" class="block p-4 border-2 rounded-lg cursor-pointer transition-all duration-200 hover:border-blue-500 peer-checked:border-blue-600 peer-checked:bg-blue-50">
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center">
+                                        <i class="fas fa-user text-xl text-gray-600 peer-checked:text-blue-600"></i>
+                                        <span class="ml-3 font-medium text-gray-900">个人</span>
+                                    </div>
+                                    <div class="hidden peer-checked:block">
+                                        <i class="fas fa-check-circle text-blue-600"></i>
+                                    </div>
+                                </div>
+                            </label>
+                        </div>
+                        <div class="relative">
+                            <input type="radio" id="modalCorporate" name="modalPayeeType" value="corporate" class="peer hidden">
+                            <label for="modalCorporate" class="block p-4 border-2 rounded-lg cursor-pointer transition-all duration-200 hover:border-blue-500 peer-checked:border-blue-600 peer-checked:bg-blue-50">
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center">
+                                        <i class="fas fa-building text-xl text-gray-600 peer-checked:text-blue-600"></i>
+                                        <span class="ml-3 font-medium text-gray-900">企业</span>
+                                    </div>
+                                    <div class="hidden peer-checked:block">
+                                        <i class="fas fa-check-circle text-blue-600"></i>
+                                    </div>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 基本信息 -->
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">收款人名称<span class="text-red-500 ml-0.5">*</span></label>
+                        <input type="text" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="请输入收款人名称">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">备注名称</label>
+                        <input type="text" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="请输入备注名称">
+                    </div>
+                </div>
+
+                <!-- 银行信息 -->
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">银行机构<span class="text-red-500 ml-0.5">*</span></label>
+                        <select class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent appearance-none">
+                            <option value="">请选择银行</option>
+                            <option value="BOA">Bank of America</option>
+                            <option value="HSBC">HSBC</option>
+                            <option value="DB">Deutsche Bank</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">币种<span class="text-red-500 ml-0.5">*</span></label>
+                        <select class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent appearance-none">
+                            <option value="">请选择币种</option>
+                            <option value="USD">USD - 美元</option>
+                            <option value="EUR">EUR - 欧元</option>
+                            <option value="GBP">GBP - 英镑</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- 账号信息 -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">银行账号<span class="text-red-500 ml-0.5">*</span></label>
+                    <input type="text" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="请输入银行账号">
+                </div>
+
+                <!-- 供应商类型 -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">供应商类型<span class="text-red-500 ml-0.5">*</span></label>
+                    <select class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent appearance-none">
+                        <option value="">请选择供应商类型</option>
+                        <option value="material">物料供应商</option>
+                        <option value="service">服务供应商</option>
+                        <option value="freelancer">自由职业者</option>
+                    </select>
+                </div>
+            </form>
+        </div>
+
+        <!-- 弹框底部 -->
+        <div class="sticky bottom-0 bg-white border-t border-gray-200 z-10">
+            <div class="container mx-auto px-4">
+                <div class="max-w-3xl mx-auto flex justify-end py-4 space-x-3">
+                    <button type="button" id="cancelAddPayee" class="px-6 py-2 border border-gray-300 text-gray-700 rounded-lg text-sm font-medium hover:bg-gray-50">
+                        取消
+                    </button>
+                    <button type="submit" class="px-6 py-2 bg-blue-600 text-white rounded-lg text-sm font-medium hover:bg-blue-700">
+                        确定
+                    </button>
+                </div>
             </div>
         </div>
     </div>
+
+    <!-- JavaScript for tab switching -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Get all tab buttons and content areas
+            const tabButtons = {
+                singlePayment: document.getElementById('singlePaymentTab'),
+                payeeManagement: document.getElementById('payeeManagementTab')
+            };
+
+            const contentAreas = {
+                singlePayment: document.getElementById('singlePaymentContent'),
+                payeeManagement: document.getElementById('payeeManagementContent')
+            };
+
+            // Step switching elements
+            const step1Content = document.querySelector('#singlePaymentContent > div:first-child');
+            const step2Content = document.getElementById('paymentStep2');
+            const nextToStep2Btn = document.getElementById('nextToStep2');
+            const backToStep1Btn = document.getElementById('backToStep1Btn');
+            const backToStep1Link = document.getElementById('backToStep1');
+
+            // Currency comparison for exchange rate display
+            const paymentCurrency = document.getElementById('paymentCurrency');
+            const receiveCurrency = document.getElementById('receiveCurrency');
+            const exchangeRate = document.getElementById('exchangeRate');
+
+            // Payer selection for label display
+            const payerSelect = document.getElementById('payerSelect');
+            const payerLabel = document.getElementById('payerLabel');
+
+            // Currency balance mapping
+            const balances = {
+                'USD': '1,234.56',
+                'EUR': '890.12',
+                'GBP': '678.34'
+            };
+
+            // Update available balance display
+            function updateAvailableBalance(currency) {
+                const balanceSpan = document.querySelector('#availableBalance span');
+                balanceSpan.textContent = `${balances[currency]} ${currency}`;
+            }
+
+            // Currency comparison for exchange rate display
+            function updateExchangeRate() {
+                if (paymentCurrency.value !== receiveCurrency.value) {
+                    exchangeRate.classList.remove('hidden');
+                } else {
+                    exchangeRate.classList.add('hidden');
+                }
+            }
+
+            // Function to handle step switching
+            function switchStep(toStep2) {
+                if (toStep2) {
+                    step1Content.classList.add('hidden');
+                    step2Content.classList.remove('hidden');
+                } else {
+                    step1Content.classList.remove('hidden');
+                    step2Content.classList.add('hidden');
+                }
+            }
+
+            // Function to handle payer label
+            function updatePayerLabel(value) {
+                const payerLabel = document.getElementById('payerLabel');
+                const selectedOption = payerSelect.options[payerSelect.selectedIndex];
+                
+                if (selectedOption && selectedOption.value) {
+                    const labelType = selectedOption.dataset.labelType;
+                    payerLabel.textContent = selectedOption.dataset.label;
+                    
+                    if (labelType === 'free') {
+                        payerLabel.className = 'text-xs px-2 py-1 rounded bg-green-50 text-green-600';
+                    } else if (labelType === 'limited') {
+                        payerLabel.className = 'text-xs px-2 py-1 rounded bg-orange-50 text-orange-600';
+                    }
+                } else {
+                    payerLabel.textContent = '';
+                    payerLabel.className = 'text-xs px-2 py-1 rounded hidden';
+                }
+            }
+
+            // Add event listeners
+            nextToStep2Btn.addEventListener('click', () => switchStep(true));
+            backToStep1Btn.addEventListener('click', () => switchStep(false));
+            backToStep1Link.addEventListener('click', () => switchStep(false));
+
+            paymentCurrency.addEventListener('change', (e) => {
+                updateAvailableBalance(e.target.value);
+                updateExchangeRate();
+            });
+            receiveCurrency.addEventListener('change', updateExchangeRate);
+
+            if (payerSelect) {
+                // 自定义下拉选项样式
+                payerSelect.addEventListener('focus', function() {
+                    // 创建自定义下拉列表
+                    const dropdown = document.createElement('div');
+                    dropdown.className = 'absolute left-0 right-0 mt-1 bg-white border border-gray-300 rounded-lg shadow-lg z-50';
+                    
+                    Array.from(this.options).forEach((option, index) => {
+                        if (index === 0) return; // 跳过默认选项
+                        
+                        const item = document.createElement('div');
+                        item.className = 'px-3 py-2 hover:bg-gray-50 cursor-pointer flex justify-between items-center';
+                        
+                        const text = document.createElement('span');
+                        text.textContent = option.text;
+                        text.className = 'text-gray-900';
+                        
+                        const label = document.createElement('span');
+                        label.textContent = option.dataset.label;
+                        label.className = option.dataset.labelType === 'free' 
+                            ? 'text-xs px-2 py-1 rounded bg-green-50 text-green-600'
+                            : 'text-xs px-2 py-1 rounded bg-orange-50 text-orange-600';
+                        
+                        item.appendChild(text);
+                        item.appendChild(label);
+                        
+                        item.addEventListener('click', () => {
+                            this.value = option.value;
+                            updatePayerLabel(option.value);
+                            dropdown.remove();
+                        });
+                        
+                        dropdown.appendChild(item);
+                    });
+                    
+                    this.parentNode.appendChild(dropdown);
+                });
+                
+                // 点击其他地方时关闭下拉列表
+                document.addEventListener('click', function(e) {
+                    if (!payerSelect.contains(e.target)) {
+                        const dropdown = payerSelect.parentNode.querySelector('.absolute.bg-white');
+                        if (dropdown) dropdown.remove();
+                    }
+                });
+                
+                payerSelect.addEventListener('change', (e) => updatePayerLabel(e.target.value));
+                // Initialize label for default selection
+                updatePayerLabel(payerSelect.value);
+            }
+
+            // Function to handle tab switching
+            function switchTab(activeTab) {
+                // Reset all tabs
+                Object.values(tabButtons).forEach(button => {
+                    button.classList.remove('active');
+                    button.classList.remove('text-blue-600');
+                    button.classList.add('text-gray-500');
+                    button.classList.remove('border-blue-600');
+                    button.classList.add('border-transparent');
+                });
+                
+                // Hide all content areas
+                Object.values(contentAreas).forEach(content => {
+                    if (content) content.classList.add('hidden');
+                });
+                
+                // Activate selected tab
+                tabButtons[activeTab].classList.add('active');
+                tabButtons[activeTab].classList.add('text-blue-600');
+                tabButtons[activeTab].classList.remove('text-gray-500');
+                tabButtons[activeTab].classList.add('border-blue-600');
+                tabButtons[activeTab].classList.remove('border-transparent');
+                
+                // Show selected content
+                if (contentAreas[activeTab]) {
+                    contentAreas[activeTab].classList.remove('hidden');
+                }
+
+                // Reset to step 1 when switching tabs
+                if (activeTab === 'singlePayment') {
+                    switchStep(false);
+                }
+            }
+
+            // Add click event listeners to tabs
+            tabButtons.singlePayment.addEventListener('click', () => switchTab('singlePayment'));
+            tabButtons.payeeManagement.addEventListener('click', () => switchTab('payeeManagement'));
+
+            // User Center Dropdown
+            const userCenterBtn = document.getElementById('userCenterBtn');
+            const userCenterDropdown = document.getElementById('userCenterDropdown');
+
+            userCenterBtn.addEventListener('click', function() {
+                userCenterDropdown.classList.toggle('hidden');
+            });
+
+            // Close dropdown when clicking outside
+            document.addEventListener('click', function(event) {
+                if (!userCenterBtn.contains(event.target) && !userCenterDropdown.contains(event.target)) {
+                    userCenterDropdown.classList.add('hidden');
+                }
+            });
+
+            // Add Payee Modal
+            const addPayeeModal = document.getElementById('addPayeeModal');
+            const addPayeeBtn = document.getElementById('addPayeeBtn');
+            const closeAddPayeeModal = document.getElementById('closeAddPayeeModal');
+            const cancelAddPayee = document.getElementById('cancelAddPayee');
+
+            function toggleAddPayeeModal() {
+                addPayeeModal.classList.toggle('hidden');
+            }
+
+            addPayeeBtn.addEventListener('click', toggleAddPayeeModal);
+            closeAddPayeeModal.addEventListener('click', toggleAddPayeeModal);
+            cancelAddPayee.addEventListener('click', toggleAddPayeeModal);
+
+            // Close modal when clicking outside
+            addPayeeModal.addEventListener('click', function(event) {
+                if (event.target === addPayeeModal) {
+                    toggleAddPayeeModal();
+                }
+            });
+        });
+    </script>
 </body>
 </html> 

@@ -6,356 +6,1336 @@
     <title>提现 - Whalet</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <style>
+        :root {
+            --primary-blue: #2563eb;
+            --primary-light-blue: #3b82f6;
+            --secondary-blue: #dbeafe;
+            --neutral-gray: #6b7280;
+        }
+        
         body {
             background-color: #f9fafb;
             font-family: 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            color: #111827;
         }
+        
         .card {
             transition: all 0.3s ease;
+            border: 1px solid #e5e7eb;
+            background: #ffffff;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
         }
+        
         .card:hover {
             transform: translateY(-5px);
             box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
         }
+        
         .account-card {
+            transition: all 0.15s ease;
+            border: 1px solid #e5e7eb;
+            background: #ffffff;
+        }
+        
+        .account-card:hover {
+            border-color: var(--primary-blue);
+        }
+        
+        .account-card.selected {
+            background-color: #f8fafc;
+            border-color: var(--primary-blue);
+            border-width: 2px;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-blue);
+            color: white;
+            transition: all 0.2s ease;
+            font-weight: 500;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--primary-light-blue);
+        }
+        
+        .btn-secondary {
+            background-color: white;
+            color: var(--neutral-gray);
+            border: 1px solid #e5e7eb;
+            transition: all 0.2s ease;
+            font-weight: 500;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+        }
+        
+        .btn-secondary:hover {
+            background-color: #f9fafb;
+            border-color: #d1d5db;
+        }
+        
+        .input-group {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+        
+        .input-group input {
+            width: 100%;
+            padding: 0.75rem 1rem 0.75rem 2.5rem;
+            border: 1px solid #e5e7eb;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            line-height: 1.5;
             transition: all 0.2s ease;
         }
-        .account-card:hover, .account-card.selected {
+        
+        .input-group input:focus {
+            outline: none;
+            border-color: var(--primary-blue);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+        
+        .input-group .currency-symbol {
+            position: absolute;
+            left: 1rem;
+            color: #6b7280;
+            font-weight: 500;
+        }
+        
+        .select-currency {
+            padding: 0.75rem 2.5rem 0.75rem 1rem;
+            border: 1px solid #e5e7eb;
+            border-radius: 0.5rem;
+            background-color: white;
+            font-size: 1rem;
+            line-height: 1.5;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%236b7280'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 0.75rem center;
+            background-size: 1.25rem;
+        }
+        
+        .select-currency:focus {
+            outline: none;
+            border-color: var(--primary-blue);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+        
+        .status-badge {
+            padding: 0.15rem 0.5rem;
+            border-radius: 9999px;
+            font-size: 0.65rem;
+            font-weight: 500;
+        }
+        
+        .status-badge.success {
+            background-color: #ecfdf5;
+            color: #047857;
+        }
+        
+        .status-badge.pending {
+            background-color: #fef3c7;
+            color: #92400e;
+        }
+        
+        .status-badge.rejected {
+            background-color: #fee2e2;
+            color: #b91c1c;
+        }
+        
+        .section-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #111827;
+            margin-bottom: 1.5rem;
+        }
+        
+        .info-text {
+            color: #6b7280;
+            font-size: 0.875rem;
+        }
+        
+        .notice-box {
+            background-color: #fffbeb;
+            border: 1px solid #fef3c7;
+            border-radius: 0.5rem;
+            padding: 1rem;
+        }
+        
+        .notice-box .title {
+            color: #92400e;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+        
+        .notice-box .content {
+            color: #92400e;
+            opacity: 0.8;
+        }
+        
+        .currency-card {
+            transition: all 0.3s ease;
+        }
+        
+        .currency-card.hidden-currency {
+            display: none;
+        }
+        
+        .currency-filter {
+            position: relative;
+            min-width: 180px;
+        }
+        
+        .currency-filter select {
+            appearance: none;
+            padding-right: 2.5rem;
+            background-position: right 0.75rem center;
+            background-repeat: no-repeat;
+            background-size: 1.25rem;
+        }
+        
+        .tooltip {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+        }
+        
+        .tooltip .tooltip-text {
+            visibility: hidden;
+            background-color: #1f2937;
+            color: white;
+            text-align: left;
+            padding: 0.5rem 0.75rem;
+            border-radius: 0.375rem;
+            font-size: 0.75rem;
+            line-height: 1.25;
+            position: absolute;
+            z-index: 1;
+            width: max-content;
+            max-width: 200px;
+            bottom: 125%;
+            left: 50%;
+            transform: translateX(-50%);
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+        
+        .tooltip:hover .tooltip-text {
+            visibility: visible;
+            opacity: 1;
+        }
+        
+        .tooltip .tooltip-text::after {
+            content: "";
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            margin-left: -5px;
+            border-width: 5px;
+            border-style: solid;
+            border-color: #1f2937 transparent transparent transparent;
+        }
+        
+        /* Tab Styles */
+        .tab-container {
+            border-bottom: 1px solid #e5e7eb;
+            margin-bottom: 2rem;
+        }
+        
+        .tab-button {
+            position: relative;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+        
+        .tab-button.active {
+            color: #2563eb;
+        }
+        
+        .tab-button.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: #2563eb;
+        }
+        
+        .tab-button:hover:not(.active) {
+            color: #4b5563;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+
+        .bank-logo {
+            width: 2rem;
+            height: 2rem;
+            object-fit: contain;
+            padding: 0.2rem;
+            border-radius: 9999px;
+            background: white;
+            border: 1px solid #e5e7eb;
+        }
+
+        .bank-card {
+            transition: all 0.2s ease;
+            cursor: pointer;
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 0.75rem;
+            padding: 0.875rem;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .bank-card:hover {
             border-color: #4f46e5;
         }
-        .account-card.selected {
-            background-color: #eef2ff;
+
+        .currency-tag {
+            background-color: #f3f4f6;
+            padding: 0.15rem 0.4rem;
+            border-radius: 9999px;
+            font-size: 0.65rem;
+            color: #4b5563;
+            font-weight: 500;
         }
+
+        .add-card-button {
+            border: 2px dashed #e5e7eb;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            min-height: 140px;
+            transition: all 0.2s ease;
+        }
+
+        .add-card-button:hover {
+            border-color: #2563eb;
+            background-color: #f8fafc;
+        }
+
+      
+
+        
+
+       
     </style>
 </head>
 <body>
-    <div class="container mx-auto px-4 py-6">
-        <!-- 顶部导航 - 与首页相同 -->
-        <div class="flex justify-end mb-6">
-            <div class="flex items-center space-x-6">
-                <!-- 公告图标 -->
-                <div class="relative">
-                    <a href="#" class="text-gray-600 hover:text-blue-600">
-                        <span class="relative">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- 顶部导航 -->
+        <div class="mb-6 bg-white rounded-xl shadow-sm">
+            <div class="flex justify-between items-center px-6 border-b border-gray-200">
+                <div class="flex">
+                    <button class="tab-button active py-4 px-6 text-blue-600 font-medium text-sm">
+                        提现
+                    </button>
+                    <button class="tab-button py-4 px-6 text-gray-500 hover:text-gray-700 font-medium text-sm">
+                        提现账户
+                    </button>
+                </div>
+                <div class="flex items-center space-x-6">
+                    <div class="relative">
+                        <button class="text-gray-600 hover:text-blue-600 transition-colors">
                             <i class="fas fa-bell text-lg"></i>
                             <span class="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full"></span>
-                        </span>
-                    </a>
-                </div>
-                
-                <!-- 帮助中心 -->
-                <a href="#" class="text-gray-600 hover:text-blue-600 text-sm">帮助中心</a>
-                
-                <!-- 用户中心 -->
-                <div class="relative">
-                    <button id="userCenterBtn" class="text-gray-600 hover:text-blue-600">
-                        <i class="fas fa-user-circle text-lg"></i>
-                    </button>
-                    <div id="userCenterDropdown" class="absolute right-0 top-full mt-1 w-32 bg-white rounded-lg shadow-lg py-2 hidden z-10">
-                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">安全设置</a>
-                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">费率查询</a>
-                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">优惠券</a>
-                        <div class="border-t border-gray-100 my-1"></div>
-                        <a href="#" class="block px-4 py-2 text-sm text-red-600 hover:bg-gray-100">退出</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        
-        <!-- 账户余额展示 -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-            <div class="bg-white p-6 rounded-xl shadow-sm">
-                <div class="flex items-center justify-between mb-4">
-                    <h3 class="text-gray-500 font-medium">可用余额</h3>
-                    <span class="text-blue-600 bg-blue-100 px-2 py-1 rounded text-xs font-medium">所有币种</span>
-                </div>
-                <p class="text-2xl font-bold text-gray-800">¥987,654.32</p>
-                <div class="mt-4 space-y-2">
-                    <div class="flex justify-between text-sm">
-                        <span class="text-gray-500">USD</span>
-                        <span class="font-medium text-gray-800">$76,543.21</span>
-                    </div>
-                    <div class="flex justify-between text-sm">
-                        <span class="text-gray-500">EUR</span>
-                        <span class="font-medium text-gray-800">€25,432.10</span>
-                    </div>
-                    <div class="flex justify-between text-sm">
-                        <span class="text-gray-500">GBP</span>
-                        <span class="font-medium text-gray-800">£12,345.67</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="bg-white p-6 rounded-xl shadow-sm">
-                <div class="flex items-center justify-between mb-4">
-                    <h3 class="text-gray-500 font-medium">待结算资金</h3>
-                    <i class="fas fa-clock text-yellow-500"></i>
-                </div>
-                <p class="text-2xl font-bold text-gray-800">¥246,913.57</p>
-                <div class="mt-4 space-y-2">
-                    <div class="flex justify-between text-sm">
-                        <span class="text-gray-500">预计今日到账</span>
-                        <span class="font-medium text-gray-800">¥120,500.00</span>
-                    </div>
-                    <div class="flex justify-between text-sm">
-                        <span class="text-gray-500">预计明日到账</span>
-                        <span class="font-medium text-gray-800">¥75,800.00</span>
-                    </div>
-                    <div class="flex justify-between text-sm">
-                        <span class="text-gray-500">预计3天后到账</span>
-                        <span class="font-medium text-gray-800">¥50,613.57</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="bg-white p-6 rounded-xl shadow-sm">
-                <div class="flex items-center justify-between mb-4">
-                    <h3 class="text-gray-500 font-medium">冻结金额</h3>
-                    <i class="fas fa-lock text-red-500"></i>
-                </div>
-                <p class="text-2xl font-bold text-gray-800">¥35,280.00</p>
-                <div class="mt-4 space-y-2">
-                    <div class="flex justify-between text-sm">
-                        <span class="text-gray-500">风控审核</span>
-                        <span class="font-medium text-gray-800">¥22,000.00</span>
-                    </div>
-                    <div class="flex justify-between text-sm">
-                        <span class="text-gray-500">交易保证金</span>
-                        <span class="font-medium text-gray-800">¥13,280.00</span>
-                    </div>
-                    <button class="mt-2 w-full text-blue-600 text-sm font-medium">了解更多</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- 提现操作区 -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-            <!-- 表单区 -->
-            <div class="md:col-span-2 bg-white rounded-xl shadow-sm p-6">
-                <h3 class="text-lg font-medium text-gray-800 mb-6">提现申请</h3>
-                
-                <!-- 提现方式选择 -->
-                <div class="mb-6">
-                    <label class="block text-sm font-medium text-gray-700 mb-2">提现方式</label>
-                    <div class="flex space-x-3">
-                        <button class="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-medium">银行卡</button>
-                        <button class="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg text-sm font-medium">数字钱包</button>
-                        <button class="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg text-sm font-medium">平台账户</button>
-                    </div>
-                </div>
-                
-                <!-- 收款账户 -->
-                <div class="mb-6">
-                    <div class="flex justify-between items-center mb-2">
-                        <label class="block text-sm font-medium text-gray-700">收款账户</label>
-                        <button class="text-blue-600 text-sm font-medium">
-                            <i class="fas fa-plus mr-1"></i>
-                            添加新账户
                         </button>
                     </div>
-                    <div class="grid grid-cols-1 gap-3">
-                        <!-- 账户卡片 1 -->
-                        <div class="account-card border border-gray-200 rounded-lg p-4 selected">
-                            <div class="flex items-start">
-                                <div class="w-6 h-6 mt-0.5">
-                                    <div class="w-4 h-4 border-2 border-blue-600 rounded-full bg-white">
-                                        <div class="w-2 h-2 bg-blue-600 rounded-full m-0.5"></div>
+                    <a href="#" class="text-gray-600 hover:text-blue-600 text-sm transition-colors">帮助中心</a>
+                    <div class="relative">
+                        <button class="flex items-center space-x-2 text-gray-600 hover:text-blue-600 transition-colors">
+                            <i class="fas fa-user-circle text-lg"></i>
+                            <i class="fas fa-chevron-down text-xs"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab Contents -->
+        <div class="tab-contents">
+            <!-- 提现 Tab -->
+            <div id="withdrawal" class="tab-content active" x-data="{
+                selectedBank: null,
+                withdrawalAmount: '',
+                withdrawalCurrency: 'USD',
+                availableCurrencies: ['USD', 'CNY', 'EUR', 'GBP'],
+                withdrawalCurrencies: ['USD', 'EUR', 'GBP'],
+                receivingCurrencies: ['USD', 'CNY', 'EUR', 'GBP'],
+                balances: {
+                    'USD': 10000.00,
+                    'CNY': 50000.00,
+                    'EUR': 8000.00,
+                    'GBP': 6000.00
+                },
+                fee: 0,
+                discountFee: 0,
+                actualFee: 0,
+                exchangeRate: 7.2202,
+                countdown: 80,
+                exchangeRateTimer: null,
+                receivingAmount: 0,
+                receivingCurrency: 'CNY',
+                payerName: 'Whalet',
+                remittancePurpose: '',
+                transactionNote: '',
+                banks: [
+                    { id: 1, name: '兴业银行', number: '7616', currency: 'CNY', status: 'active' },
+                    { id: 2, name: 'China Merchants Bank', number: '1234', currency: 'USD', status: 'active' }
+                ],
+                showBankSelector: false,
+                showFeeDetails: false,
+                isSubmitting: false,
+                formErrors: {},
+                
+                init() {
+                    this.initializeForm();
+                    this.setupWatchers();
+                },
+
+                initializeForm() {
+                    // 设置默认值
+                    this.receivingCurrency = 'CNY';
+                    this.formErrors = {
+                        withdrawalAmount: '',
+                        selectedBank: '',
+                        remittancePurpose: ''
+                    };
+                },
+
+                setupWatchers() {
+                    this.$watch('withdrawalAmount', (value) => {
+                        this.validateAmount(value);
+                        this.calculateFees();
+                        this.calculateReceivingAmount();
+                    });
+                    
+                    this.$watch('selectedBank', (value) => {
+                        if(value) {
+                            // Only set receiving currency to match bank's currency
+                            this.receivingCurrency = value.currency;
+                            this.startExchangeRateTimer();
+                            this.formErrors.selectedBank = '';
+                        }
+                    });
+
+                    this.$watch('withdrawalCurrency', () => {
+                        // Only start the exchange rate timer
+                        this.startExchangeRateTimer();
+                        // Recalculate receiving amount
+                        this.calculateReceivingAmount();
+                    });
+
+                    this.$watch('receivingCurrency', (newVal, oldVal) => {
+                        if(this.selectedBank && newVal !== this.selectedBank.currency) {
+                            // Force it back to the bank's currency
+                            this.receivingCurrency = this.selectedBank.currency;
+                        }
+                    });
+                },
+
+                validateAmount(value) {
+                    if (!value) {
+                        this.formErrors.withdrawalAmount = '请输入提现金额';
+                    } else if (parseFloat(value) < 150) {
+                        this.formErrors.withdrawalAmount = '提现金额不能小于150';
+                    } else if (parseFloat(value) > 250000) {
+                        this.formErrors.withdrawalAmount = '提现金额不能超过250,000';
+                    } else {
+                        this.formErrors.withdrawalAmount = '';
+                    }
+                },
+                
+                calculateFees() {
+                    if(!this.withdrawalAmount) return;
+                    this.fee = parseFloat(this.withdrawalAmount) * 0.01;
+                    this.discountFee = this.fee * 0.2;
+                    this.actualFee = this.fee - this.discountFee;
+                },
+                
+                calculateReceivingAmount() {
+                    if(!this.withdrawalAmount) return;
+                    const amount = parseFloat(this.withdrawalAmount) - this.actualFee;
+                    this.receivingAmount = this.withdrawalCurrency === this.receivingCurrency ? 
+                        amount : 
+                        amount * this.exchangeRate;
+                },
+                
+                formatCurrency(amount, currency) {
+                    return new Intl.NumberFormat('zh-CN', {
+                        style: 'currency',
+                        currency: currency
+                    }).format(amount);
+                },
+                
+                startExchangeRateTimer() {
+                    if (this.exchangeRateTimer) {
+                        clearInterval(this.exchangeRateTimer);
+                        this.exchangeRateTimer = null;
+                    }
+                    
+                    if (this.withdrawalCurrency === this.receivingCurrency) {
+                        return;
+                    }
+                    
+                    this.countdown = 80;
+                    this.calculateReceivingAmount();
+                    this.exchangeRateTimer = setInterval(() => {
+                        this.countdown--;
+                        if (this.countdown <= 0) {
+                            // 模拟汇率更新，实际项目中应该调用API获取最新汇率
+                            this.exchangeRate = (Math.random() * 0.1 + 7.15).toFixed(4);
+                            this.countdown = 80;
+                            this.calculateReceivingAmount();
+                        }
+                    }, 1000);
+                }
+            }">
+                <div class="grid grid-cols-12 gap-6">
+                    <!-- 发起提现卡片 -->
+                    <div class="col-span-12 lg:col-span-8 order-last lg:order-first">
+                        <div class="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
+                            <div class="px-6 py-4 bg-gradient-to-r from-blue-50 to-white border-b border-gray-200">
+                                <div class="flex items-center space-x-3">
+                                        <div class="w-7 h-7 bg-blue-100 rounded-lg flex items-center justify-center">
+                                        <i class="fas fa-wallet text-blue-600"></i>
+                            </div>
+                                        <h3 class="text-base font-medium text-gray-800">发起提现</h3>
+                            </div>
+                        </div>
+
+                        <!-- 提现表单内容 -->
+                            <div class="p-6 space-y-4">
+                            <!-- 提现银行卡选择 -->
+                                <div class="form-group">
+                                    <div class="form-label">
+                                        <label class="text-sm font-medium text-gray-700">提现银行卡</label>
+                            </div>
+                                    <div class="form-field">
+                                    <div class="relative w-full">
+                                        <!-- 选择框 -->
+                                        <button 
+                                            @click="showBankSelector = !showBankSelector"
+                                                class="w-full bg-white border border-gray-300 rounded-lg px-4 py-3 text-left flex items-center justify-between hover:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-colors"
+                                        >
+                                            <template x-if="selectedBank">
+                                                <div class="flex items-center space-x-3 flex-1 min-w-0">
+                                                    <div class="flex-shrink-0 w-8 h-8 bg-white rounded-lg flex items-center justify-center border border-gray-200 overflow-hidden">
+                                                        <img :src="`https://cdn.jsdelivr.net/gh/lipis/flag-icons/flags/4x3/${selectedBank.currency.toLowerCase() === 'usd' ? 'us' : selectedBank.currency.toLowerCase() === 'cny' ? 'cn' : selectedBank.currency.toLowerCase() === 'gbp' ? 'gb' : selectedBank.currency.toLowerCase()}.svg`"
+                                                             :alt="selectedBank.currency"
+                                                             class="w-6 h-6 object-contain"
+                                                             onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJjdXJyZW50Q29sb3IiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBjbGFzcz0ibHVjaWRlIGx1Y2lkZS1idWlsZGluZy0yIj48cGF0aCBkPSJNNiAyMlY0YTIgMiAwIDAgMSAyLTJoOGEyIDIgMCAwIDEgMiAydjE4WiIvPjxwYXRoIGQ9Ik02IDEySDRhMiAyIDAgMCAwLTIgMnY2YTIgMiAwIDAgMCAyIDJoMiIvPjxwYXRoIGQ9Ik0xOCAxMmgyYTIgMiAwIDAgMSAyIDJ2NmEyIDIgMCAwIDEtMiAyaC0yIi8+PHBhdGggZD0iTTEwIDZoNCIvPjxwYXRoIGQ9Ik0xMCAxMGg0Ii8+PHBhdGggZD0iTTEwIDE0aDQiLz48cGF0aCBkPSJNMTAgMThoNCIvPjwvc3ZnPg=='">
+                                                        </div>
+                                                    <div class="flex items-center space-x-2 flex-1 min-w-0">
+                                                        <span class="text-sm font-medium truncate" x-text="selectedBank.name"></span>
+                                                        <span class="text-sm text-gray-500" x-text="'(' + selectedBank.number + ')'"></span>
+                                                            <span class="text-xs px-1.5 py-0.5 bg-gray-100 text-gray-600 rounded-full" x-text="selectedBank.currency"></span>
                                     </div>
                                 </div>
-                                <div class="ml-2 flex-1">
-                                    <div class="flex justify-between items-start">
-                                        <div>
-                                            <h4 class="font-medium text-gray-900">中国银行 (储蓄卡)</h4>
-                                            <p class="text-sm text-gray-500">**** **** **** 5678</p>
+                                            </template>
+                                            <template x-if="!selectedBank">
+                                                <span class="text-gray-500">请选择提现银行卡</span>
+                                            </template>
+                                            <i class="fas fa-chevron-down text-gray-400 ml-2 flex-shrink-0"></i>
+                                        </button>
+                                        
+                                        <!-- 下拉框 -->
+                                        <div 
+                                            x-show="showBankSelector"
+                                            @click.away="showBankSelector = false"
+                                            class="absolute z-10 left-0 mt-1 w-full bg-white border border-gray-200 rounded-lg shadow-lg"
+                                                style="display: none;"
+                                        >
+                                            <div class="p-1">
+                                                <template x-for="bank in banks" :key="bank.id">
+                                                    <button
+                                                        @click="selectedBank = bank; showBankSelector = false"
+                                                        class="w-full px-3 py-2 flex items-center space-x-3 hover:bg-gray-50 rounded-md group"
+                                                    >
+                                                        <div class="flex-shrink-0 w-8 h-8 bg-white rounded-lg flex items-center justify-center border border-gray-200 group-hover:border-blue-200 overflow-hidden">
+                                                            <img :src="`https://cdn.jsdelivr.net/gh/lipis/flag-icons/flags/4x3/${bank.currency.toLowerCase() === 'usd' ? 'us' : bank.currency.toLowerCase() === 'cny' ? 'cn' : bank.currency.toLowerCase() === 'gbp' ? 'gb' : bank.currency.toLowerCase()}.svg`"
+                                                                 :alt="bank.currency"
+                                                                 class="w-6 h-6 object-contain"
+                                                                 onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJjdXJyZW50Q29sb3IiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBjbGFzcz0ibHVjaWRlIGx1Y2lkZS1idWlsZGluZy0yIj48cGF0aCBkPSJNNiAyMlY0YTIgMiAwIDAgMSAyLTJoOGEyIDIgMCAwIDEgMiAydjE4WiIvPjxwYXRoIGQ9Ik02IDEySDRhMiAyIDAgMCAwLTIgMnY2YTIgMiAwIDAgMCAyIDJoMiIvPjxwYXRoIGQ9Ik0xOCAxMmgyYTIgMiAwIDAgMSAyIDJ2NmEyIDIgMCAwIDEtMiAyaC0yIi8+PHBhdGggZD0iTTEwIDZoNCIvPjxwYXRoIGQ9Ik0xMCAxMGg0Ii8+PHBhdGggZD0iTTEwIDE0aDQiLz48cGF0aCBkPSJNMTAgMThoNCIvPjwvc3ZnPg=='">
+                                                        </div>
+                                                        <div class="flex items-center space-x-2 flex-1 min-w-0">
+                                                            <span class="text-sm font-medium truncate" x-text="bank.name"></span>
+                                                            <span class="text-sm text-gray-500" x-text="'(' + bank.number + ')'"></span>
+                                                                <span class="text-xs px-1.5 py-0.5 bg-gray-100 text-gray-600 rounded-full group-hover:bg-blue-50 group-hover:text-blue-600" x-text="bank.currency"></span>
+                                                        </div>
+                                                    </button>
+                                                </template>
+                                                <div class="border-t border-gray-100 mt-1 pt-1">
+                                                    <button
+                                                        class="w-full px-3 py-2 text-sm text-blue-600 hover:bg-blue-50 rounded-md flex items-center justify-center"
+                                                    >
+                                                        <i class="fas fa-plus mr-2"></i>
+                                                        添加新银行卡
+                                        </button>
+                                                </div>
+                                            </div>
                                         </div>
-                                        <img src="https://upload.wikimedia.org/wikipedia/zh/7/7b/China_Bank_new_logo.png" class="h-8 w-auto" alt="Bank Logo">
-                                    </div>
-                                    <div class="mt-1 flex justify-between items-center">
-                                        <p class="text-xs text-gray-500">张三</p>
-                                        <p class="text-xs text-blue-600">默认账户</p>
+                                        </div>
                                     </div>
                                 </div>
+
+                            <!-- 提现金额 -->
+                                <div class="form-group mb-1">
+                                    <div class="form-label">
+                                        <label class="text-sm font-medium text-gray-700">提现金额</label>
+                                    </div>
+                                    <div class="form-field">
+                                        <div class="flex space-x-3">
+                                        <div class="flex-1">
+                                            <div class="relative">
+                                                <input
+                                                    type="number"
+                                                    x-model="withdrawalAmount"
+                                                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:ring-opacity-50 transition-colors"
+                                                    placeholder="请输入提现金额"
+                                                >
+                                        </div>
+                                    </div>
+                                        <div class="relative">
+                                            <select
+                                                x-model="withdrawalCurrency"
+                                                    class="w-[220px] px-4 py-3 pr-8 border border-gray-300 rounded-lg bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:ring-opacity-50 appearance-none transition-colors"
+                                            >
+                                                <template x-for="currency in withdrawalCurrencies" :key="currency">
+                                                    <option :value="currency" class="py-2">
+                                                        <span x-text="currency"></span>
+                                                        <span x-text="` (${formatCurrency(balances[currency], currency)})`"></span>
+                                                    </option>
+                                                </template>
+                                            </select>
+                                            <div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
+                                                <i class="fas fa-chevron-down text-gray-400 text-xs"></i>
+                                            </div>
+                                            <div class="absolute -bottom-5 right-0 text-xs text-gray-500">
+                                                <span>可用：</span>
+                                                <span x-text="formatCurrency(balances[withdrawalCurrency], withdrawalCurrency)"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                        <p class="mt-1 mb-0 text-xs text-gray-500">
+                                        单笔提现最低 150 USD，最高 250,000 USD
+                                    </p>
                             </div>
                         </div>
                         
-                        <!-- 账户卡片 2 -->
-                        <div class="account-card border border-gray-200 rounded-lg p-4">
-                            <div class="flex items-start">
-                                <div class="w-6 h-6 mt-0.5">
-                                    <div class="w-4 h-4 border-2 border-gray-300 rounded-full bg-white"></div>
-                                </div>
-                                <div class="ml-2 flex-1">
-                                    <div class="flex justify-between items-start">
-                                        <div>
-                                            <h4 class="font-medium text-gray-900">招商银行 (信用卡)</h4>
-                                            <p class="text-sm text-gray-500">**** **** **** 1234</p>
+                            <!-- 手续费信息 -->
+                                <div class="form-group mt-0">
+                                    <div class="form-label">
+                                        <label class="text-sm font-medium text-transparent">&nbsp;</label>
+                                    </div>
+                                    <div class="form-field">
+                                        <div class="bg-gray-50 rounded-lg p-3 space-y-2">
+                                            <div class="flex items-center justify-between">
+                                            <span class="text-sm text-gray-600">手续费</span>
+                                            <span class="text-sm font-medium" x-text="formatCurrency(fee, withdrawalCurrency)"></span>
+                            </div>
+                                            <div class="flex items-center justify-between">
+                                            <span class="text-sm text-gray-600">抵扣手续费</span>
+                                            <span class="text-sm font-medium text-green-600" x-text="'- ' + formatCurrency(discountFee, withdrawalCurrency)"></span>
+                            </div>
+                                            <div class="flex items-center justify-between pb-2 border-b border-gray-200">
+                                            <span class="text-sm font-medium">实际手续费</span>
+                                            <span class="text-sm font-medium" x-text="formatCurrency(actualFee, withdrawalCurrency)"></span>
+                        </div>
+                                        <!-- 参考汇率 -->
+                                        <template x-if="withdrawalCurrency !== receivingCurrency">
+                                            <div class="flex items-center justify-between pt-2">
+                                                <span class="text-sm text-gray-600">参考汇率</span>
+                                                <div class="flex items-center space-x-2">
+                                                    <span class="text-sm" x-text="`1 ${withdrawalCurrency} = ${exchangeRate} ${receivingCurrency}`"></span>
+                                                        <span class="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded-md" x-text="countdown + '秒'"></span>
+                                                </div>
+                                            </div>
+                                        </template>
+                                            </div>
+                    </div>
+                </div>
+                
+                            <!-- 到账金额 -->
+                                <div class="form-group">
+                                    <div class="form-label">
+                                        <label class="text-sm font-medium text-gray-700">到账金额</label>
+                    </div>
+                                    <div class="form-field">
+                                        <div class="flex space-x-3">
+                                        <div class="flex-1">
+                                            <input
+                                                type="number"
+                                                x-model="receivingAmount"
+                                                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:ring-opacity-50 transition-colors"
+                                                placeholder="请输入到账金额"
+                                            >
+                                                    </div>
+                                        <div class="relative">
+                                            <select
+                                                x-model="receivingCurrency"
+                                                :disabled="selectedBank !== null"
+                                                :class="{'bg-gray-100 opacity-75': selectedBank !== null}"
+                                                    class="w-[220px] px-4 py-3 pr-8 border border-gray-300 rounded-lg bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:ring-opacity-50 appearance-none transition-colors"
+                                            >
+                                                <template x-for="currency in receivingCurrencies" :key="currency">
+                                                    <option :value="currency" x-text="currency"></option>
+                                                </template>
+                                            </select>
+                                            <div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
+                                                <i class="fas fa-chevron-down text-gray-400 text-xs"></i>
+                                            </div>
                                         </div>
-                                        <img src="https://upload.wikimedia.org/wikipedia/zh/c/c1/China_Merchants_Bank_logo.svg" class="h-8 w-auto" alt="Bank Logo">
                                     </div>
-                                    <div class="mt-1 flex justify-between items-center">
-                                        <p class="text-xs text-gray-500">张三</p>
-                                        <p class="text-xs text-gray-400">上次使用: 2023-05-10</p>
+                                        <p x-show="selectedBank !== null" class="mt-1 text-xs text-blue-600">
+                                            <i class="fas fa-info-circle mr-1"></i> 到账币种已与所选银行卡同步
+                                        </p>
+                            </div>
+                        </div>
+                
+                            <!-- 付款人名称 (动态显示) -->
+                                <div class="form-group" x-show="selectedBank && selectedBank.currency !== 'CNY'">
+                                    <div class="form-label">
+                                        <label class="text-sm font-medium text-gray-700">付款人名称</label>
+                                </div>
+                                    <div class="form-field">
+                                    <div class="relative" x-data="{ open: false }">
+                                        <button
+                                            @click="open = !open"
+                                            type="button"
+                                                class="w-full px-4 py-3 border border-gray-300 rounded-lg bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:ring-opacity-50 text-left flex items-center justify-between transition-colors"
+                                        >
+                                            <div class="flex items-center justify-between flex-1">
+                                                <span x-text="payerName"></span>
+                                                    <span x-show="payerName === 'Whalet'" class="text-xs text-green-600 bg-green-50 px-2 py-0.5 rounded-full">免费</span>
+                                                    <span x-show="payerName === 'Zhang San'" class="text-xs text-orange-600 bg-orange-50 px-2 py-0.5 rounded-full">限时免费</span>
+                                            </div>
+                                            <i class="fas fa-chevron-down text-gray-400 ml-2"></i>
+                                        </button>
+                                        
+                                        <div
+                                            x-show="open"
+                                            @click.away="open = false"
+                                            class="absolute z-10 w-full mt-1 bg-white border border-gray-200 rounded-lg shadow-lg"
+                                                style="display: none;"
+                                        >
+                                            <div class="py-1">
+                                                <button
+                                                    @click="payerName = 'Whalet'; open = false"
+                                                    class="w-full px-4 py-2 text-left hover:bg-gray-50"
+                                                >
+                                                    <div class="flex items-center justify-between">
+                                                        <span>Whalet</span>
+                                                            <span class="text-xs text-green-600 bg-green-50 px-2 py-0.5 rounded-full">免费</span>
+                                                    </div>
+                                                </button>
+                                                <button
+                                                    @click="payerName = 'Zhang San'; open = false"
+                                                    class="w-full px-4 py-2 text-left hover:bg-gray-50"
+                                                >
+                                                    <div class="flex items-center justify-between">
+                                                        <span>Zhang San</span>
+                                                            <span class="text-xs text-orange-600 bg-orange-50 px-2 py-0.5 rounded-full">限时免费</span>
+                                                    </div>
+                                                </button>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- 提现金额 -->
-                <div class="mb-6">
-                    <label class="block text-sm font-medium text-gray-700 mb-2">提现金额</label>
-                    <div class="relative">
-                        <div class="flex">
-                            <div class="relative flex-1">
-                                <input type="text" class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-lg" placeholder="0.00">
-                                <div class="absolute left-3 top-3 text-gray-500 font-medium">¥</div>
+
+                            <!-- 汇款目的 (动态显示) -->
+                                <div class="form-group" x-show="selectedBank && selectedBank.currency !== 'CNY'">
+                                    <div class="form-label">
+                                        <label class="text-sm font-medium text-gray-700">汇款目的</label>
+                                </div>
+                                    <div class="form-field">
+                                    <select
+                                        x-model="remittancePurpose"
+                                            class="w-full px-4 py-3 border border-gray-300 rounded-lg bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:ring-opacity-50 appearance-none transition-colors"
+                                    >
+                                        <option value="">请选择汇款目的</option>
+                                        <option value="goods">Advanced Goods Payments-预付款项</option>
+                                        <option value="service">Export Goods Payments-出囗货物付款</option>
+                                        <option value="investment">Goods and Services-商品和服务费用</option>
+                                    </select>
+                                </div>
                             </div>
-                            <div class="ml-2">
-                                <select class="h-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent appearance-none">
-                                    <option>CNY</option>
-                                    <option>USD</option>
-                                    <option>EUR</option>
-                                    <option>GBP</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="mt-2 flex justify-between text-sm">
-                            <span class="text-gray-500">可用余额: ¥987,654.32</span>
-                            <button class="text-blue-600 font-medium">全部提现</button>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- 手续费预估 -->
-                <div class="mb-6 p-4 bg-gray-50 rounded-lg">
-                    <div class="flex justify-between items-center mb-2">
-                        <span class="text-sm text-gray-600">手续费</span>
-                        <span class="text-sm font-medium text-gray-800">¥15.00</span>
-                    </div>
-                    <div class="flex justify-between items-center mb-2">
-                        <span class="text-sm text-gray-600">预计到账时间</span>
-                        <span class="text-sm font-medium text-gray-800">T+1工作日 (最快24小时内)</span>
-                    </div>
-                    <div class="flex justify-between items-center">
-                        <span class="text-sm font-medium text-gray-800">实际到账金额</span>
-                        <span class="text-sm font-medium text-blue-600">¥9,985.00</span>
-                    </div>
-                </div>
-                
-                <!-- 附言信息 -->
-                <div class="mb-6">
-                    <label class="block text-sm font-medium text-gray-700 mb-2">附言信息 (选填)</label>
-                    <textarea class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" rows="2" placeholder="添加备注信息..."></textarea>
-                </div>
-                
-                <!-- 提交按钮 -->
-                <div class="flex justify-end">
-                    <button class="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium">
-                        确认提现
-                    </button>
+
+                            <!-- 交易附言 (动态显示) -->
+                                <div class="form-group" x-show="selectedBank && selectedBank.currency !== 'CNY'">
+                                    <div class="form-label">
+                                        <label class="text-sm font-medium text-gray-700">交易附言</label>
+                                </div>
+                                    <div class="form-field">
+                                        <input
+                                            type="text"
+                                        x-model="transactionNote"
+                                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:ring-opacity-50 transition-colors"
+                                        placeholder="请输入交易附言"
+                                        >
                 </div>
             </div>
             
-            <!-- 提现记录 -->
-            <div class="bg-white rounded-xl shadow-sm p-6">
-                <div class="flex justify-between items-center mb-4">
-                    <h3 class="text-lg font-medium text-gray-800">提现记录</h3>
-                    <a href="#" class="text-blue-600 text-sm hover:text-blue-800">查看全部</a>
-                </div>
-                <div class="space-y-4">
-                    <!-- 记录1 -->
-                    <div class="border-b border-gray-100 pb-4">
-                        <div class="flex justify-between items-start mb-2">
-                            <div>
-                                <h4 class="text-sm font-medium text-gray-800">¥20,000.00</h4>
-                                <p class="text-xs text-gray-500">中国银行 (*5678)</p>
-                            </div>
-                            <span class="px-2 py-1 text-xs font-medium rounded-full bg-green-100 text-green-800">
-                                已完成
-                            </span>
-                        </div>
-                        <div class="flex justify-between text-xs text-gray-500">
-                            <span>手续费: ¥30.00</span>
-                            <span>2023-05-12</span>
+                            <!-- 提交按钮 -->
+                                <div class="form-group pt-3 mt-3 border-t border-gray-200">
+                                    <div class="form-label">
+                                        <label class="text-sm font-medium text-transparent">&nbsp;</label>
+                                    </div>
+                                    <div class="form-field">
+                                        <div class="flex justify-center">
+                                            <button 
+                                                class="w-48 bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors text-base font-medium"
+                                                :disabled="!selectedBank || !withdrawalAmount"
+                                                :class="{'opacity-50 cursor-not-allowed': !selectedBank || !withdrawalAmount}"
+                                            >
+                                                下一步
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                            </div>
                         </div>
                     </div>
                     
-                    <!-- 记录2 -->
-                    <div class="border-b border-gray-100 pb-4">
-                        <div class="flex justify-between items-start mb-2">
-                            <div>
-                                <h4 class="text-sm font-medium text-gray-800">$5,000.00</h4>
-                                <p class="text-xs text-gray-500">招商银行 (*1234)</p>
+                    <!-- 最近提现记录卡片 -->
+                    <div class="col-span-12 lg:col-span-4 order-first lg:order-last">
+                    <div class="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
+                            <div class="px-4 py-4 bg-gradient-to-r from-gray-50 to-white border-b border-gray-200">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center space-x-3">
+                                    <div class="w-8 h-8 bg-gray-100 rounded-lg flex items-center justify-center">
+                                        <i class="fas fa-history text-gray-600"></i>
+                                    </div>
+                                    <h3 class="text-lg font-medium text-gray-800">最近提现记录</h3>
+                                </div>
+                                <a href="#" class="text-sm text-blue-600 hover:text-blue-700 flex items-center group">
+                                    查看全部
+                                    <i class="fas fa-chevron-right ml-1 text-xs transition-transform group-hover:translate-x-0.5"></i>
+                                </a>
                             </div>
-                            <span class="px-2 py-1 text-xs font-medium rounded-full bg-yellow-100 text-yellow-800">
-                                处理中
-                            </span>
                         </div>
-                        <div class="flex justify-between text-xs text-gray-500">
-                            <span>手续费: $15.00</span>
-                            <span>2023-05-10</span>
-                        </div>
-                    </div>
-                    
-                    <!-- 记录3 -->
-                    <div class="border-b border-gray-100 pb-4">
-                        <div class="flex justify-between items-start mb-2">
-                            <div>
-                                <h4 class="text-sm font-medium text-gray-800">€3,500.00</h4>
-                                <p class="text-xs text-gray-500">中国银行 (*5678)</p>
+                        
+                            <div class="p-3">
+                                <table class="w-full">
+                                <thead>
+                                        <tr class="text-xs text-gray-500 uppercase">
+                                            <th class="pb-2 text-left w-20">时间</th>
+                                            <th class="pb-2 text-right">金额</th>
+                                            <th class="pb-2 text-center w-16">状态</th>
+                                            <th class="pb-2 text-right w-12">操作</th>
+                                    </tr>
+                                </thead>
+                                    <tbody class="text-sm">
+                                        <tr class="border-t border-gray-100">
+                                            <td class="py-2 text-gray-600">09-15</td>
+                                            <td class="py-2 text-right font-medium">¥10,000</td>
+                                            <td class="py-2">
+                                                <div class="flex justify-center">
+                                                    <span class="status-badge success">已完成</span>
+                                            </div>
+                                        </td>
+                                            <td class="py-2 text-right">
+                                                <button class="text-blue-600 hover:text-blue-700">详情</button>
+                                        </td>
+                                    </tr>
+                                        <tr class="border-t border-gray-100">
+                                            <td class="py-2 text-gray-600">09-10</td>
+                                            <td class="py-2 text-right font-medium">¥5,000</td>
+                                            <td class="py-2">
+                                                <div class="flex justify-center">
+                                                    <span class="status-badge success">已完成</span>
+                                            </div>
+                                        </td>
+                                            <td class="py-2 text-right">
+                                                <button class="text-blue-600 hover:text-blue-700">详情</button>
+                                        </td>
+                                    </tr>
+                                        <tr class="border-t border-gray-100">
+                                            <td class="py-2 text-gray-600">09-05</td>
+                                            <td class="py-2 text-right font-medium">¥8,500</td>
+                                            <td class="py-2">
+                                                <div class="flex justify-center">
+                                                    <span class="status-badge pending">处理中</span>
+                                            </div>
+                                        </td>
+                                            <td class="py-2 text-right">
+                                                <button class="text-blue-600 hover:text-blue-700">详情</button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
                             </div>
-                            <span class="px-2 py-1 text-xs font-medium rounded-full bg-green-100 text-green-800">
-                                已完成
-                            </span>
                         </div>
-                        <div class="flex justify-between text-xs text-gray-500">
-                            <span>手续费: €10.50</span>
-                            <span>2023-05-05</span>
-                        </div>
-                    </div>
-                    
-                    <!-- 记录4 -->
-                    <div>
-                        <div class="flex justify-between items-start mb-2">
-                            <div>
-                                <h4 class="text-sm font-medium text-gray-800">¥15,000.00</h4>
-                                <p class="text-xs text-gray-500">招商银行 (*1234)</p>
-                            </div>
-                            <span class="px-2 py-1 text-xs font-medium rounded-full bg-green-100 text-green-800">
-                                已完成
-                            </span>
-                        </div>
-                        <div class="flex justify-between text-xs text-gray-500">
-                            <span>手续费: ¥22.50</span>
-                            <span>2023-05-01</span>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-        
-        <!-- 提示信息 -->
-        <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-100">
-            <div class="flex">
-                <div class="flex-shrink-0">
-                    <i class="fas fa-info-circle text-yellow-400"></i>
+
+            <!-- 提现账户 Tab -->
+            <div id="accounts" class="tab-content">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-lg font-medium text-gray-800">我的银行卡</h2>
+                    <button class="text-sm text-blue-600 hover:text-blue-700 font-medium">
+                        <i class="fas fa-plus mr-1"></i>
+                        添加新卡
+                    </button>
                 </div>
-                <div class="ml-3">
-                    <h3 class="text-sm font-medium text-yellow-800">提现须知</h3>
-                    <div class="mt-2 text-sm text-yellow-700">
-                        <ul class="list-disc pl-5 space-y-1">
-                            <li>工作日16:00前的提现申请，将会在T+1工作日内到账</li>
-                            <li>单笔提现金额超过10万元人民币，可能需要额外审核</li>
-                            <li>为了保障资金安全，首次提现至新增银行卡可能需要额外验证</li>
-                            <li>提现手续费率为0.15%，最低15元人民币/笔</li>
-                        </ul>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <!-- Add New Card Button -->
+                    <div class="bank-card add-card-button">
+                        <i class="fas fa-plus-circle text-2xl text-gray-400 mb-1"></i>
+                        <span class="text-xs text-gray-600">添加新银行卡</span>
+                    </div>
+
+                    <!-- CNY Bank Card (China Mainland) -->
+                    <div class="bank-card cursor-pointer hover:shadow-md transition-shadow" onclick="showCardDetails(this)">
+                        <div class="flex justify-between items-start mb-2">
+                            <div class="flex items-center space-x-1.5">
+                                <img src="https://cdn.jsdelivr.net/gh/lipis/flag-icons/flags/4x3/cn.svg" alt="CNY" class="bank-logo">
+                                <span class="status-badge success">正常</span>
+                            </div>
+                            <div class="flex items-center space-x-1">
+                                <span class="currency-tag">CNY</span>
+                                <button class="text-gray-400 hover:text-red-500 text-xs" onclick="event.stopPropagation()">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="space-y-0.5 mt-auto">
+                            <h3 class="font-medium text-sm">中国银行</h3>
+                            <p class="text-xs text-gray-600">张三</p>
+                            <p class="text-xs text-gray-500">**** **** **** 5678</p>
+                            <div class="flex items-center mt-1">
+                                <span class="text-xs text-blue-600 bg-blue-50 px-1.5 py-0.5 rounded-full">默认账户</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Bank Cards -->
+                    <div class="bank-card cursor-pointer hover:shadow-md transition-shadow" onclick="showCardDetails(this)">
+                        <div class="flex justify-between items-start mb-2">
+                            <div class="flex items-center space-x-1.5">
+                            <img src="https://cdn.jsdelivr.net/gh/lipis/flag-icons/flags/4x3/us.svg" alt="USD" class="bank-logo">
+                                <span class="status-badge pending">审核中</span>
+                            </div>
+                            <div class="flex items-center space-x-1">
+                                <span class="currency-tag">USD</span>
+                                <button class="text-gray-400 hover:text-red-500 text-xs" onclick="event.stopPropagation()">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="space-y-0.5 mt-auto">
+                            <h3 class="font-medium text-sm">China Merchants Bank</h3>
+                            <p class="text-xs text-gray-600">ZHANG SAN</p>
+                            <p class="text-xs text-gray-500">**** **** **** 1234</p>
+                        </div>
+                    </div>
+
+                    <!-- 工商银行 -->
+                    <div class="bank-card cursor-pointer hover:shadow-md transition-shadow" onclick="showCardDetails(this)">
+                        <div class="flex justify-between items-start mb-2">
+                            <div class="flex items-center space-x-1.5">
+                            <img src="https://cdn.jsdelivr.net/gh/lipis/flag-icons/flags/4x3/eu.svg" alt="EUR" class="bank-logo">
+                                <span class="status-badge rejected">审核拒绝</span>
+                            </div>
+                            <div class="flex items-center space-x-1">
+                                <span class="currency-tag">EUR</span>
+                                <button class="text-gray-400 hover:text-red-500 text-xs" onclick="event.stopPropagation()">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="space-y-0.5 mt-auto">
+                            <h3 class="font-medium text-sm">ICBC</h3>
+                            <p class="text-xs text-gray-600">ZHANG SAN</p>
+                            <p class="text-xs text-gray-500">**** **** **** 9012</p>
+                        </div>
+                    </div>
+
+                    <!-- 建设银行 -->
+                    <div class="bank-card cursor-pointer hover:shadow-md transition-shadow" onclick="showCardDetails(this)">
+                        <div class="flex justify-between items-start mb-4">
+                            <div class="flex items-center space-x-3">
+                            <img src="https://cdn.jsdelivr.net/gh/lipis/flag-icons/flags/4x3/gb.svg" alt="GBP" class="bank-logo">
+                                <span class="status-badge success">正常</span>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <span class="currency-tag">GBP</span>
+                                <button class="text-gray-400 hover:text-red-500" onclick="event.stopPropagation()">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="space-y-2">
+                            <h3 class="font-medium">China Construction Bank</h3>
+                            <p class="text-sm text-gray-600">ZHANG SAN</p>
+                            <p class="text-sm text-gray-500">**** **** **** 3456</p>
+                        </div>
+                    </div>
+
+                    <!-- 农业银行 -->
+                    <div class="bank-card cursor-pointer hover:shadow-md transition-shadow" onclick="showCardDetails(this)">
+                        <div class="flex justify-between items-start mb-4">
+                            <div class="flex items-center space-x-3">
+                            <img src="https://cdn.jsdelivr.net/gh/lipis/flag-icons/flags/4x3/jp.svg" alt="JPY" class="bank-logo">
+                                <span class="status-badge pending">审核中</span>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <span class="currency-tag">JPY</span>
+                                <button class="text-gray-400 hover:text-red-500" onclick="event.stopPropagation()">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="space-y-2">
+                            <h3 class="font-medium">Agricultural Bank of China</h3>
+                            <p class="text-sm text-gray-600">ZHANG SAN</p>
+                            <p class="text-sm text-gray-500">**** **** **** 7890</p>
+                        </div>
+                    </div>
+
+                    <!-- 交通银行 -->
+                    <div class="bank-card cursor-pointer hover:shadow-md transition-shadow" onclick="showCardDetails(this)">
+                        <div class="flex justify-between items-start mb-4">
+                            <div class="flex items-center space-x-3">
+                            <img src="https://cdn.jsdelivr.net/gh/lipis/flag-icons/flags/4x3/hk.svg" alt="HKD" class="bank-logo">
+                                <span class="status-badge success">正常</span>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <span class="currency-tag">HKD</span>
+                                <button class="text-gray-400 hover:text-red-500" onclick="event.stopPropagation()">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="space-y-2">
+                            <h3 class="font-medium">Bank of Communications</h3>
+                            <p class="text-sm text-gray-600">ZHANG SAN</p>
+                            <p class="text-sm text-gray-500">**** **** **** 2345</p>
+                        </div>
+                    </div>
+
+                    <!-- 中信银行 -->
+                    <div class="bank-card cursor-pointer hover:shadow-md transition-shadow" onclick="showCardDetails(this)">
+                        <div class="flex justify-between items-start mb-4">
+                            <div class="flex items-center space-x-3">
+                            <img src="https://cdn.jsdelivr.net/gh/lipis/flag-icons/flags/4x3/sg.svg" alt="SGD" class="bank-logo">
+                                <span class="status-badge rejected">审核拒绝</span>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <span class="currency-tag">SGD</span>
+                                <button class="text-gray-400 hover:text-red-500" onclick="event.stopPropagation()">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="space-y-2">
+                            <h3 class="font-medium">CITIC Bank</h3>
+                            <p class="text-sm text-gray-600">ZHANG SAN</p>
+                            <p class="text-sm text-gray-500">**** **** **** 6789</p>
+                        </div>
+                    </div>
+
+                    <!-- 浦发银行 -->
+                    <div class="bank-card cursor-pointer hover:shadow-md transition-shadow" onclick="showCardDetails(this)">
+                        <div class="flex justify-between items-start mb-4">
+                            <div class="flex items-center space-x-3">
+                            <img src="https://cdn.jsdelivr.net/gh/lipis/flag-icons/flags/4x3/au.svg" alt="AUD" class="bank-logo">
+                                <span class="status-badge success">正常</span>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <span class="currency-tag">AUD</span>
+                                <button class="text-gray-400 hover:text-red-500" onclick="event.stopPropagation()">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="space-y-2">
+                            <h3 class="font-medium">Shanghai Pudong Development Bank</h3>
+                            <p class="text-sm text-gray-600">ZHANG SAN</p>
+                            <p class="text-sm text-gray-500">**** **** **** 0123</p>
+                        </div>
+                    </div>
+
+                    <!-- 民生银行 -->
+                    <div class="bank-card cursor-pointer hover:shadow-md transition-shadow" onclick="showCardDetails(this)">
+                        <div class="flex justify-between items-start mb-4">
+                            <div class="flex items-center space-x-3">
+                            <img src="https://cdn.jsdelivr.net/gh/lipis/flag-icons/flags/4x3/ca.svg" alt="CAD" class="bank-logo">
+                                <span class="status-badge pending">审核中</span>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <span class="currency-tag">CAD</span>
+                                <button class="text-gray-400 hover:text-red-500" onclick="event.stopPropagation()">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="space-y-2">
+                            <h3 class="font-medium">China Minsheng Bank</h3>
+                            <p class="text-sm text-gray-600">ZHANG SAN</p>
+                            <p class="text-sm text-gray-500">**** **** **** 4567</p>
+                        </div>
+                    </div>
+
+                    <!-- 光大银行 -->
+                    <div class="bank-card cursor-pointer hover:shadow-md transition-shadow" onclick="showCardDetails(this)">
+                        <div class="flex justify-between items-start mb-4">
+                            <div class="flex items-center space-x-3">
+                            <img src="https://cdn.jsdelivr.net/gh/lipis/flag-icons/flags/4x3/ch.svg" alt="CHF" class="bank-logo">
+                                <span class="status-badge success">正常</span>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <span class="currency-tag">CHF</span>
+                                <button class="text-gray-400 hover:text-red-500" onclick="event.stopPropagation()">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="space-y-2">
+                            <h3 class="font-medium">China Everbright Bank</h3>
+                            <p class="text-sm text-gray-600">ZHANG SAN</p>
+                            <p class="text-sm text-gray-500">**** **** **** 8901</p>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
+    <script>
+        // 添加银行卡详情弹窗功能 - 定义在全局范围内确保始终可用
+        function showCardDetails(card) {
+            // 获取卡片信息
+            const bankName = card.querySelector('h3').textContent;
+            const cardHolder = card.querySelector('p:nth-of-type(1)').textContent;
+            const cardNumber = card.querySelector('p:last-of-type').textContent;
+            const currency = card.querySelector('.currency-tag').textContent;
+            const bankLogo = card.querySelector('img').src;
+
+            // 获取状态信息
+            const statusBadge = card.querySelector('.status-badge');
+            const status = statusBadge ? statusBadge.textContent : '未知';
+            const statusClass = statusBadge ? statusBadge.classList[1] : '';
+
+            // 检查是否是默认账户
+            const isDefault = card.querySelector('.text-blue-600.bg-blue-50') !== null;
+            
+            // 创建模态框
+            const modal = document.createElement('div');
+            modal.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 opacity-0 transition-opacity duration-300';
+            modal.innerHTML = `
+                <div class="bg-white rounded-lg p-6 max-w-md w-full mx-4 transform translate-y-4 transition-transform duration-300">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-10 h-10 rounded-lg border border-gray-200 overflow-hidden flex items-center justify-center">
+                                <img src="${bankLogo}" alt="${bankName}" class="w-8 h-8 object-contain">
+                            </div>
+                            <h3 class="text-lg font-medium">银行卡详情</h3>
+                        </div>
+                        <button class="text-gray-400 hover:text-gray-600" onclick="this.closest('.fixed').remove()">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <div class="space-y-4">
+                        <div>
+                            <label class="text-sm text-gray-500">银行名称</label>
+                            <p class="text-base font-medium">${bankName}</p>
+                        </div>
+                        <div>
+                            <label class="text-sm text-gray-500">持卡人</label>
+                            <p class="text-base">${cardHolder}</p>
+                        </div>
+                        <div>
+                            <label class="text-sm text-gray-500">卡号</label>
+                            <p class="text-base">${cardNumber}</p>
+                        </div>
+                        <div>
+                            <label class="text-sm text-gray-500">币种</label>
+                            <p class="text-base">
+                                <span class="inline-flex items-center space-x-2">
+                                    <span class="px-2 py-1 bg-gray-100 rounded-md">${currency}</span>
+                                </span>
+                            </p>
+                        </div>
+                        <div>
+                            <label class="text-sm text-gray-500">状态</label>
+                            <p class="text-base">
+                                <span class="status-badge ${statusClass}">${status}</span>
+                            </p>
+                        </div>
+                        <div>
+                            <label class="text-sm text-gray-500">开户行</label>
+                            <p class="text-base">上海市浦东新区分行</p>
+                        </div>
+                        <div>
+                            <label class="text-sm text-gray-500">开户时间</label>
+                            <p class="text-base">2023-06-15</p>
+                        </div>
+                        ${isDefault ? `
+                        <div>
+                            <span class="inline-flex items-center px-2 py-1 text-sm text-blue-600 bg-blue-50 rounded-md">
+                                <i class="fas fa-check-circle mr-1"></i>
+                                默认提现账户
+                            </span>
+                        </div>
+                        ` : ''}
+                        <div class="pt-4 flex justify-end space-x-4">
+                            <button class="px-4 py-2 text-sm text-gray-600 hover:text-gray-800 rounded" onclick="this.closest('.fixed').remove()">
+                                关闭
+                            </button>
+                            <button class="px-4 py-2 text-sm text-white bg-blue-600 rounded hover:bg-blue-700 transition-colors">
+                                编辑
+                            </button>
+                            ${!isDefault ? `
+                            <button class="px-4 py-2 text-sm text-blue-600 bg-blue-50 rounded hover:bg-blue-100 transition-colors">
+                                设为默认
+                            </button>
+                            ` : ''}
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(modal);
+            
+            // Add animation by delaying opacity change
+            setTimeout(() => {
+                modal.style.opacity = '1';
+                modal.querySelector('.bg-white').style.transform = 'translateY(0)';
+            }, 10);
+            
+            // Add close on backdrop click
+            modal.addEventListener('click', function(e) {
+                if (e.target === modal) {
+                    modal.style.opacity = '0';
+                    modal.querySelector('.bg-white').style.transform = 'translateY(4px)';
+                    setTimeout(() => modal.remove(), 300);
+                }
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Tab Switching Logic
+            const tabButtons = document.querySelectorAll('.tab-button');
+            const tabContents = document.querySelectorAll('.tab-content');
+
+            tabButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    // Remove active class from all buttons and contents
+                    tabButtons.forEach(btn => {
+                        btn.classList.remove('active');
+                        btn.classList.remove('text-blue-600');
+                        btn.classList.add('text-gray-500');
+                    });
+                    tabContents.forEach(content => content.classList.remove('active'));
+
+                    // Add active class to clicked button and corresponding content
+                    button.classList.add('active');
+                    button.classList.add('text-blue-600');
+                    button.classList.remove('text-gray-500');
+                    
+                    const tabId = button.textContent.trim() === '提现' ? 'withdrawal' : 'accounts';
+                    document.getElementById(tabId).classList.add('active');
+                });
+            });
+
+            // User menu functionality
+            const userBtn = document.querySelector('button:has(.fa-user-circle)');
+            const dropdownMenu = document.createElement('div');
+            dropdownMenu.className = 'absolute right-0 top-full mt-2 w-48 bg-white rounded-lg shadow-lg py-2 hidden z-10 border border-gray-100';
+            dropdownMenu.innerHTML = `
+                <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">安全设置</a>
+                <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">费率查询</a>
+                <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">优惠券</a>
+                <div class="border-t border-gray-100 my-1"></div>
+                <a href="#" class="block px-4 py-2 text-sm text-red-600 hover:bg-gray-50">退出</a>
+            `;
+            
+            userBtn.parentNode.appendChild(dropdownMenu);
+            
+            userBtn.addEventListener('click', function() {
+                dropdownMenu.classList.toggle('hidden');
+            });
+            
+            document.addEventListener('click', function(e) {
+                if (!userBtn.contains(e.target)) {
+                    dropdownMenu.classList.add('hidden');
+                }
+            });
+
+            // 币种展开/收起和筛选功能
+            const toggleBtn = document.getElementById('toggleMoreCurrencies');
+            const moreCurrencies = document.getElementById('moreCurrencies');
+            const showMoreElements = document.querySelectorAll('.show-more');
+            const showLessElements = document.querySelectorAll('.show-less');
+            const currencyFilter = document.getElementById('currencyFilter');
+            const currencyCards = document.querySelectorAll('.currency-card');
+
+            function filterCurrencies(selectedCurrency) {
+                currencyCards.forEach(card => {
+                    const cardCurrency = card.getAttribute('data-currency');
+                    if (selectedCurrency === 'all' || cardCurrency === selectedCurrency) {
+                        card.classList.remove('hidden-currency');
+                    } else {
+                        card.classList.add('hidden-currency');
+                    }
+                });
+
+                // 如果选择了特定币种，显示所有容器并隐藏展开按钮
+                if (selectedCurrency !== 'all') {
+                    moreCurrencies.classList.remove('hidden');
+                    toggleBtn.style.display = 'none';
+                } else {
+                    // 恢复默认显示状态
+                    moreCurrencies.classList.add('hidden');
+                    toggleBtn.style.display = 'flex';
+                }
+            }
+
+            // 币种筛选事件
+            currencyFilter.addEventListener('change', function() {
+                filterCurrencies(this.value);
+            });
+
+            // 展开/收起事件
+            toggleBtn.addEventListener('click', function() {
+                moreCurrencies.classList.toggle('hidden');
+                showMoreElements.forEach(el => el.classList.toggle('hidden'));
+                showLessElements.forEach(el => el.classList.toggle('hidden'));
+            });
+
+            // 刷新按钮动画
+            const refreshBtn = document.getElementById('refreshBalance');
+            refreshBtn.addEventListener('click', function() {
+                const icon = this.querySelector('.fa-sync-alt');
+                icon.style.transition = 'transform 0.5s';
+                icon.style.transform = 'rotate(360deg)';
+                
+                setTimeout(() => {
+                    icon.style.transform = 'rotate(0deg)';
+                }, 500);
+            });
+        });
+    </script>
 </body>
 </html> 
