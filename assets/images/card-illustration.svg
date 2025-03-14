@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="400" height="300" viewBox="0 0 400 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <!-- Background pattern -->
+    <rect width="400" height="300" fill="#F8F9FA"/>
+    <path d="M0 0L400 300M0 150L400 150M0 300L400 0" stroke="#E9ECEF" stroke-width="2"/>
+    
+    <!-- Credit card -->
+    <g transform="translate(50, 75)">
+        <!-- Card body -->
+        <rect x="0" y="0" width="300" height="180" rx="10" fill="#007AFF"/>
+        <rect x="0" y="0" width="300" height="180" rx="10" fill="url(#paint0_linear)"/>
+        
+        <!-- Chip -->
+        <rect x="40" y="70" width="50" height="40" rx="5" fill="#FFD700"/>
+        
+        <!-- Card number -->
+        <rect x="40" y="130" width="220" height="10" rx="5" fill="white" fill-opacity="0.5"/>
+        
+        <!-- Logo -->
+        <circle cx="250" cy="40" r="20" fill="white" fill-opacity="0.8"/>
+    </g>
+    
+    <!-- Gradient definition -->
+    <defs>
+        <linearGradient id="paint0_linear" x1="0" y1="0" x2="300" y2="180" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stop-color="#0056b3" stop-opacity="0.1"/>
+            <stop offset="100%" stop-color="#007AFF" stop-opacity="0.5"/>
+        </linearGradient>
+    </defs>
+</svg> 

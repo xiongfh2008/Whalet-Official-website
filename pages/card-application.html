@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>开通鲸卡服务 - Whalet</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            line-height: 1.5;
+            background-color: #f5f5f5;
+            min-height: 100vh;
+            padding: 24px;
+        }
+
+        .card-application {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px;
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            gap: 40px;
+        }
+
+        .content-section {
+            flex: 1;
+            max-width: 600px;
+        }
+
+        .image-section {
+            flex: 1;
+            text-align: center;
+        }
+
+        .image-section img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .title {
+            font-size: 32px;
+            font-weight: bold;
+            color: #1a1a1a;
+            margin-bottom: 20px;
+        }
+
+        .description {
+            color: #4b5563;
+            margin-bottom: 32px;
+            line-height: 1.6;
+            font-size: 16px;
+        }
+
+        .feature {
+            margin-bottom: 32px;
+            padding: 24px;
+            background-color: #f9fafb;
+            border-radius: 8px;
+        }
+
+        .feature h3 {
+            font-size: 24px;
+            font-weight: 600;
+            color: #1a1a1a;
+            margin-bottom: 16px;
+        }
+
+        .feature p {
+            color: #4b5563;
+            line-height: 1.6;
+            font-size: 16px;
+        }
+
+        .agreement {
+            margin: 32px 0;
+            padding: 24px;
+            background-color: #f9fafb;
+            border-radius: 8px;
+        }
+
+        .agreement label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .agreement input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            border-radius: 4px;
+            border: 2px solid #d1d5db;
+            cursor: pointer;
+        }
+
+        .agreement a {
+            color: #4f46e5;
+            text-decoration: none;
+        }
+
+        .agreement a:hover {
+            text-decoration: underline;
+        }
+
+        .submit-btn {
+            background-color: #4f46e5;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            width: 100%;
+            max-width: 200px;
+        }
+
+        .submit-btn:disabled {
+            background-color: #d1d5db;
+            cursor: not-allowed;
+        }
+
+        .submit-btn:hover:not(:disabled) {
+            background-color: #4338ca;
+        }
+
+        .loading {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.8);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .loading.active {
+            display: flex;
+        }
+
+        .loading-spinner {
+            width: 48px;
+            height: 48px;
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid #4f46e5;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 16px;
+            }
+
+            .card-application {
+                flex-direction: column;
+                padding: 24px;
+            }
+
+            .content-section {
+                max-width: 100%;
+            }
+
+            .image-section {
+                margin-top: 32px;
+            }
+
+            .title {
+                font-size: 28px;
+            }
+
+            .feature h3 {
+                font-size: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="card-application">
+        <div class="content-section">
+            <h1 class="title">鲸卡</h1>
+            <p class="description">鲸卡是易鲸与银行及服务提供商合作推出的虚拟银行卡服务，可以支持Mastercard 和 Visa 的线上商户消费</p>
+            
+            <div class="feature">
+                <h3>快捷开户 余额充值</h3>
+                <p>根据您的收款量自动生成开卡张数，匹配不同店铺需求，使用账户余额快速充值，实时到账，无需提款、无需汇兑，高效便捷。</p>
+            </div>
+
+            <div class="feature">
+                <h3>费率透明 安全无忧</h3>
+                <p>支持美元反复充值，费率3%封顶，流程简单易操作，高效风险管理机制，为每一笔交易保驾护航。</p>
+            </div>
+
+            <div class="agreement">
+                <label>
+                    <input type="checkbox" id="agreementCheckbox">
+                    <span>同意并遵守</span>
+                    <a href="#" target="_blank">《鲸卡VCC客户服务协议》</a>
+                </label>
+            </div>
+
+            <button class="submit-btn" id="submitBtn" disabled>申请开通</button>
+        </div>
+        <div class="image-section">
+            <img src="../assets/images/card-illustration.svg" alt="鲸卡服务示意图">
+        </div>
+    </div>
+
+    <div class="loading">
+        <div class="loading-spinner"></div>
+    </div>
+
+    <script>
+        // 确保图片加载
+        window.addEventListener('load', function() {
+            const img = document.querySelector('.image-section img');
+            if (img.complete) {
+                console.log('Image loaded successfully');
+            } else {
+                console.log('Image failed to load');
+            }
+        });
+
+        document.getElementById('agreementCheckbox').addEventListener('change', function(e) {
+            document.getElementById('submitBtn').disabled = !e.target.checked;
+        });
+
+        document.getElementById('submitBtn').addEventListener('click', function() {
+            if (document.getElementById('agreementCheckbox').checked) {
+                // Show loading animation
+                document.querySelector('.loading').classList.add('active');
+                
+                // Simulate processing time (remove in production)
+                setTimeout(() => {
+                    window.location.href = 'cards.html';
+                }, 1000);
+            }
+        });
+    </script>
+</body>
+</html> 

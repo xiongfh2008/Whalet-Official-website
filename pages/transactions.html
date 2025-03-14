@@ -208,13 +208,17 @@
                                         <i class="fas fa-shield-alt w-5 text-gray-400"></i>
                                         安全设置
                                     </a>
+                                    <a href="authentication-info.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                        <i class="fas fa-id-card w-5 text-gray-400"></i>
+                                        认证信息
+                                    </a>
                                     <a href="fees.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
                                         <i class="fas fa-percentage w-5 text-gray-400"></i>
                                         费率查询
                                     </a>
                                     <a href="coupons.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
                                         <i class="fas fa-gift w-5 text-gray-400"></i>
-                                        福利中心
+                                        我的优惠
                                     </a>
                                     <div class="border-t border-gray-100 my-1"></div>
                                     <a href="logout.html" class="block px-4 py-2 text-sm text-red-600 hover:bg-gray-100">
@@ -424,39 +428,54 @@
     </div>
 
     <script>
-        // 标签页切换逻辑
-        const tabs = ['collection', 'withdrawal', 'payment', 'exchange', 'acquiring', 'other', 'voucher'];
-        
-        tabs.forEach(tab => {
-            const button = document.getElementById(`tab-${tab}`);
-            const content = document.getElementById(`content-${tab}`);
+        document.addEventListener('DOMContentLoaded', function() {
+            // 标签页切换逻辑
+            const tabs = ['collection', 'withdrawal', 'payment', 'exchange', 'acquiring', 'other', 'voucher'];
             
-            button.addEventListener('click', () => {
-                // 移除所有标签页的激活状态
-                tabs.forEach(t => {
-                    document.getElementById(`tab-${t}`).classList.remove('active');
-                    document.getElementById(`content-${t}`).classList.add('hidden');
-                });
-                
-                // 激活当前标签页
-                button.classList.add('active');
-                content.classList.remove('hidden');
+            tabs.forEach(tab => {
+                const button = document.getElementById(`tab-${tab}`);
+                if (button) {
+                    button.addEventListener('click', () => {
+                        // 移除所有标签页的激活状态
+                        tabs.forEach(t => {
+                            const tabButton = document.getElementById(`tab-${t}`);
+                            const tabContent = document.getElementById(`content-${t}`);
+                            if (tabButton) tabButton.classList.remove('active');
+                            if (tabContent) tabContent.classList.add('hidden');
+                        });
+                        
+                        // 激活当前标签页
+                        button.classList.add('active');
+                        const content = document.getElementById(`content-${tab}`);
+                        if (content) content.classList.remove('hidden');
+                    });
+                }
             });
-        });
 
-        // 用户中心下拉菜单逻辑
-        const userCenterBtn = document.getElementById('userCenterBtn');
-        const userCenterDropdown = document.getElementById('userCenterDropdown');
+            // 用户中心下拉菜单逻辑
+            const userCenterBtn = document.getElementById('userCenterBtn');
+            const userCenterDropdown = document.getElementById('userCenterDropdown');
 
-        userCenterBtn.addEventListener('click', () => {
-            userCenterDropdown.classList.toggle('hidden');
-        });
+            if (userCenterBtn && userCenterDropdown) {
+                userCenterBtn.addEventListener('click', () => {
+                    userCenterDropdown.classList.toggle('hidden');
+                });
 
-        // 点击其他地方关闭下拉菜单
-        document.addEventListener('click', (event) => {
-            if (!userCenterBtn.contains(event.target)) {
-                userCenterDropdown.classList.add('hidden');
+                // 点击其他地方关闭下拉菜单
+                document.addEventListener('click', (event) => {
+                    if (!userCenterBtn.contains(event.target)) {
+                        userCenterDropdown.classList.add('hidden');
+                    }
+                });
             }
+
+            // 初始化日期选择器
+            const dateInputs = document.querySelectorAll('input[type="text"][placeholder*="日期"]');
+            dateInputs.forEach(input => {
+                input.type = 'date';
+            });
+
+            console.log('Transactions page initialized'); // 添加调试日志
         });
     </script>
 </body>

@@ -1,0 +1,100 @@
+.auth-info-container {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.info-item {
+    @apply mb-6;
+}
+
+.info-label {
+    @apply text-sm text-gray-500 mb-2;
+}
+
+.info-value {
+    @apply text-base text-gray-800 font-medium;
+}
+
+.id-photos {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.id-photo {
+    width: 100%;
+    aspect-ratio: 4/3;
+    object-fit: cover;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+}
+
+.masked-text {
+    @apply font-mono;
+}
+
+.photo-placeholder {
+    background-color: #f5f5f5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #999;
+}
+
+.photo-placeholder i {
+    font-size: 2rem;
+}
+
+.id-photo-container {
+    @apply bg-gray-50 rounded-lg overflow-hidden transition-transform duration-200 hover:transform hover:scale-105;
+}
+
+.id-photo-container img {
+    @apply w-full h-48 object-cover;
+}
+
+/* Photo containers */
+.photo-container {
+    @apply relative bg-gray-50 rounded-lg overflow-hidden aspect-[4/3];
+}
+
+.photo-mask {
+    @apply absolute inset-0 flex flex-col items-center justify-center bg-gray-100 cursor-pointer 
+           transition-all duration-200 hover:bg-gray-200;
+}
+
+.photo-mask p {
+    @apply text-sm text-gray-600;
+}
+
+.photo-container img {
+    @apply absolute inset-0 w-full h-full object-cover;
+}
+
+/* Password Modal */
+#passwordModal {
+    @apply z-50;
+}
+
+.payment-password-input input {
+    @apply focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent;
+}
+
+.payment-password-input input:not(:placeholder-shown) {
+    @apply bg-gray-100;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .id-photo-container {
+        @apply mb-4;
+    }
+    .photo-container {
+        @apply mb-4;
+    }
+} 

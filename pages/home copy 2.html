@@ -1,0 +1,1015 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>首页 - Whalet</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            background-color: #f9fafb;
+            font-family: 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+        }
+        .card {
+            transition: all 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+        .stat-card {
+            height: 100%;
+        }
+        .chart-container {
+            height: 300px;
+            position: relative;
+        }
+        .currency-card {
+            transition: all 0.2s ease;
+        }
+        .currency-card:hover {
+            background-color: #f3f4f6;
+        }
+        .calendar-day {
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.875rem;
+        }
+        .calendar-day.today {
+            background-color: #eef2ff;
+            color: #4f46e5;
+            font-weight: 600;
+            border-radius: 9999px;
+        }
+        .calendar-day.holiday {
+            background-color: #fee2e2;
+            color: #dc2626;
+            border-radius: 9999px;
+        }
+        .currency-flag {
+            width: 20px;
+            height: 14px;
+            margin-right: 6px;
+            border-radius: 2px;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="container mx-auto px-4 py-6">
+        <!-- 顶部导航 -->
+        <div class="flex justify-between mb-4">
+            <!-- 左侧按钮 -->
+            <div>
+            </div>
+
+            <!-- 右侧按钮组 -->
+            <div class="flex items-center space-x-6">
+                <!-- 公告图标 -->
+                <div class="relative">
+                    <a href="#" class="text-gray-600 hover:text-blue-600">
+                        <span class="relative">
+                            <i class="fas fa-bell text-lg"></i>
+                            <span class="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full"></span>
+                        </span>
+                    </a>
+                </div>
+                
+                <!-- 帮助中心 -->
+                <a href="#" class="text-gray-600 hover:text-blue-600 text-sm">帮助中心</a>
+                
+                <!-- 用户中心 -->
+                <div class="relative">
+                    <button id="userCenterBtn" class="text-gray-600 hover:text-blue-600">
+                        <i class="fas fa-user-circle text-lg"></i>
+                    </button>
+                    <div id="userCenterDropdown" class="absolute right-0 top-full mt-1 w-72 bg-white rounded-lg shadow-lg py-3 hidden z-10">
+                        <!-- 用户信息部分 -->
+                        <div class="px-4 pb-3 border-b border-gray-100">
+                            <div class="flex items-center justify-between mb-2">
+                                <div class="font-medium text-gray-900">张三</div>
+                                <a href="#" class="text-xs text-blue-600 hover:text-blue-800">升级为企业</a>
+                            </div>
+                            <div class="flex items-center justify-between mb-2">
+                                <div class="text-sm text-gray-600">
+                                    <span>Zhang San</span>
+                                    <button class="ml-1 text-gray-400 hover:text-gray-600">
+                                        <i class="fas fa-edit text-xs"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="flex items-center text-sm text-gray-500">
+                                <span>ID: WH78965412</span>
+                                <button class="ml-1 text-gray-400 hover:text-gray-600">
+                                    <i class="fas fa-copy text-xs"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <!-- 菜单选项 -->
+                        <div class="py-1">
+                            <a href="security.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                <i class="fas fa-shield-alt w-5 text-gray-400"></i>
+                                安全设置
+                            </a>
+                            <a href="authentication-info.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                <i class="fas fa-id-card w-5 text-gray-400"></i>
+                                认证信息
+                            </a>
+                            <a href="fees.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                <i class="fas fa-percentage w-5 text-gray-400"></i>
+                                费率查询
+                            </a>
+                            <a href="coupons.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                <i class="fas fa-gift w-5 text-gray-400"></i>
+                                我的优惠
+                            </a>
+                            <div class="border-t border-gray-100 my-1"></div>
+                            <a href="logout.html" class="block px-4 py-2 text-sm text-red-600 hover:bg-gray-100">
+                                <i class="fas fa-sign-out-alt w-5"></i>
+                                退出
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 广告横幅 -->
+        <div class="mb-4" id="adBanner">
+            <div class="bg-gradient-to-r from-blue-500 to-indigo-600 rounded-lg overflow-hidden shadow-sm">
+                <div class="relative">
+                    <!-- 关闭按钮 -->
+                    <button id="closeAdBanner" class="absolute top-2.5 right-3 text-white/80 hover:text-white">
+                        <i class="fas fa-times"></i>
+                    </button>
+                    
+                    <!-- 广告内容 -->
+                    <div class="flex items-center justify-between py-3.5 px-4">
+                        <div class="flex-1 flex items-center space-x-4">
+                            <div>
+                                <h3 class="text-white text-base font-medium leading-tight mb-1">跨境收款广告位</h3>
+                                <p class="text-blue-100 text-sm">支持 东南亚比索|泰铢|卢比 直收</p>
+                            </div>
+                            <button class="bg-white/95 hover:bg-white text-blue-600 px-3.5 py-1.5 rounded text-sm font-medium transition-colors whitespace-nowrap">
+                                立即开通
+                            </button>
+                        </div>
+                        <div class="hidden md:block pl-3">
+                            <i class="fas fa-gift text-white/90 text-3xl"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 快速导航 & 待办事项 (同一行) -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-4">
+            <!-- 快速导航 -->
+            <div class="lg:col-span-2 bg-white rounded-xl shadow-sm p-4">
+                <div class="flex justify-between items-center mb-3">
+                    <h3 class="text-lg font-medium text-gray-800">快速导航</h3>
+                    <button id="manageQuickNav" class="text-blue-600 hover:bg-blue-50 px-2 py-1 rounded text-sm font-medium flex items-center">
+                        <i class="fas fa-cog mr-1"></i> 管理
+                    </button>
+                </div>
+                <div id="quickNavGrid" class="grid grid-cols-3 sm:grid-cols-5 gap-2">
+                    <!-- Grid items will be dynamically populated by JavaScript -->
+                </div>
+            </div>
+            
+            <!-- 待办事项 -->
+            <div class="bg-white rounded-xl shadow-sm p-4">
+                <div class="flex justify-between items-center mb-3">
+                    <div class="flex items-center">
+                        <h3 class="text-lg font-medium text-gray-800">待办事项</h3>
+                        <span class="ml-2 px-2 py-0.5 bg-red-100 text-red-600 rounded-full text-xs font-semibold">5</span>
+                    </div>
+                    <a href="#" class="text-blue-600 hover:bg-blue-50 px-2 py-1 rounded text-sm font-medium flex items-center">
+                        查看全部 <i class="fas fa-chevron-right ml-1 text-xs"></i>
+                    </a>
+                </div>
+                <div class="space-y-2">
+                    <!-- 显示两条待办事项 -->
+                    <div class="flex items-center justify-between border border-gray-200 rounded-lg p-2 hover:bg-gray-50 cursor-pointer">
+                        <div class="flex-1">
+                            <h4 class="text-sm font-medium text-gray-800">提交收款账户申请</h4>
+                        </div>
+                        <div class="text-gray-400">
+                            <i class="fas fa-chevron-right text-xs"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-center justify-between border border-gray-200 rounded-lg p-2 hover:bg-gray-50 cursor-pointer">
+                        <div class="flex-1">
+                            <h4 class="text-sm font-medium text-gray-800">核对本月交易记录</h4>
+                        </div>
+                        <div class="text-gray-400">
+                            <i class="fas fa-chevron-right text-xs"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 账户总览 -->
+        <div class="bg-white rounded-xl shadow-sm p-5 mb-4">
+            <div class="flex items-center justify-between mb-4">
+                <div class="flex items-center space-x-3">
+                    <h3 class="text-lg font-medium text-gray-800">账户总览</h3>
+                </div>
+                <div class="flex items-center space-x-6">
+                    <button class="text-blue-600 hover:text-blue-800 text-sm font-medium flex items-center" onclick="window.location.href='withdrawal.html'">
+                        <i class="fas fa-wallet mr-1.5"></i>
+                        提现
+                    </button>
+                    <button class="text-blue-600 hover:text-blue-800 text-sm font-medium flex items-center" onclick="window.location.href='payment.html'">
+                        <i class="fas fa-paper-plane mr-1.5"></i>
+                        付款
+                    </button>
+                    <button class="text-blue-600 hover:text-blue-800 text-sm font-medium flex items-center" onclick="window.location.href='forex.html'">
+                        <i class="fas fa-exchange-alt mr-1.5"></i>
+                        汇兑
+                    </button>
+                </div>
+            </div>
+
+            <!-- 币种列表 -->
+            <div class="space-y-4">
+                <!-- 主要币种展示 -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <!-- CNH -->
+                    <div class="currency-card" data-currency="CNH">
+                        <div class="border border-gray-100 rounded-lg p-3">
+                            <div class="flex items-center justify-between mb-2">
+                                <div class="flex items-center space-x-2">
+                                    <div class="w-6 h-6 rounded-full bg-white border border-gray-100 flex items-center justify-center overflow-hidden">
+                                        <img src="https://cdn.jsdelivr.net/gh/lipis/flag-icons/flags/4x3/cn.svg" class="w-full h-full object-cover" alt="CNH">
+                        </div>
+                        <div>
+                                        <h4 class="font-medium text-gray-900 text-sm">跨境人民币</h4>
+                                        <p class="text-xs text-gray-500">CNH</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="space-y-1.5">
+                                <div class="flex justify-between items-center">
+                                    <span class="text-xs text-gray-500">可用余额</span>
+                                    <span class="font-medium text-sm">¥987,654.32</span>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <div class="tooltip">
+                                        <span class="text-xs text-gray-500 flex items-center">
+                                            不可用余额
+                                            <i class="fas fa-info-circle text-gray-400 ml-1 text-xs"></i>
+                                        </span>
+                                        <div class="tooltip-text">
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center space-x-1">
+                                        <span class="font-medium text-sm">¥35,280.00</span>
+                                        <i class="fas fa-lock text-red-500 text-xs"></i>
+                                    </div>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-xs text-gray-500">结汇额度</span>
+                                    <span class="font-medium text-sm">¥1,000,000.00</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- USD -->
+                    <div class="currency-card" data-currency="USD">
+                        <div class="border border-gray-100 rounded-lg p-3">
+                            <div class="flex items-center justify-between mb-2">
+                                <div class="flex items-center space-x-2">
+                                    <div class="w-6 h-6 rounded-full bg-white border border-gray-100 flex items-center justify-center overflow-hidden">
+                                        <img src="https://cdn.jsdelivr.net/gh/lipis/flag-icons/flags/4x3/us.svg" class="w-full h-full object-cover" alt="USD">
+                                    </div>
+                                    <div>
+                                        <h4 class="font-medium text-gray-900 text-sm">美元</h4>
+                                        <p class="text-xs text-gray-500">USD</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="space-y-1.5">
+                                <div class="flex justify-between items-center">
+                                    <span class="text-xs text-gray-500">可用余额</span>
+                                    <span class="font-medium text-sm">$76,543.21</span>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <div class="tooltip">
+                                        <span class="text-xs text-gray-500 flex items-center">
+                                            不可用余额
+                                            <i class="fas fa-info-circle text-gray-400 ml-1 text-xs"></i>
+                                        </span>
+                                        <div class="tooltip-text">
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center space-x-1">
+                                        <span class="font-medium text-sm">$2,345.68</span>
+                                        <i class="fas fa-lock text-red-500 text-xs"></i>
+                    </div>
+                </div>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-xs text-gray-500">结汇额度</span>
+                                    <span class="font-medium text-sm">$150,000.00</span>
+                                </div>
+                        </div>
+                        </div>
+                    </div>
+
+                    <!-- EUR -->
+                    <div class="currency-card" data-currency="EUR">
+                        <div class="border border-gray-100 rounded-lg p-3">
+                            <div class="flex items-center justify-between mb-2">
+                                <div class="flex items-center space-x-2">
+                                    <div class="w-6 h-6 rounded-full bg-white border border-gray-100 flex items-center justify-center overflow-hidden">
+                                        <img src="https://cdn.jsdelivr.net/gh/lipis/flag-icons/flags/4x3/eu.svg" class="w-full h-full object-cover" alt="EUR">
+                                    </div>
+                                    <div>
+                                        <h4 class="font-medium text-gray-900 text-sm">欧元</h4>
+                                        <p class="text-xs text-gray-500">EUR</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="space-y-1.5">
+                                <div class="flex justify-between items-center">
+                                    <span class="text-xs text-gray-500">可用余额</span>
+                                    <span class="font-medium text-sm">€25,432.10</span>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <div class="tooltip">
+                                        <span class="text-xs text-gray-500 flex items-center">
+                                            不可用余额
+                                            <i class="fas fa-info-circle text-gray-400 ml-1 text-xs"></i>
+                                        </span>
+                                        <div class="tooltip-text">
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center space-x-1">
+                                        <span class="font-medium text-sm">€1,000.00</span>
+                                        <i class="fas fa-lock text-red-500 text-xs"></i>
+                    </div>
+                </div>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-xs text-gray-500">结汇额度</span>
+                                    <span class="font-medium text-sm">€120,000.00</span>
+                                </div>
+                        </div>
+                        </div>
+                    </div>
+
+                    <!-- GBP -->
+                    <div class="currency-card" data-currency="GBP">
+                        <div class="border border-gray-100 rounded-lg p-3">
+                            <div class="flex items-center justify-between mb-2">
+                                <div class="flex items-center space-x-2">
+                                    <div class="w-6 h-6 rounded-full bg-white border border-gray-100 flex items-center justify-center overflow-hidden">
+                                        <img src="https://cdn.jsdelivr.net/gh/lipis/flag-icons/flags/4x3/gb.svg" class="w-full h-full object-cover" alt="GBP">
+                                    </div>
+                                    <div>
+                                        <h4 class="font-medium text-gray-900 text-sm">英镑</h4>
+                                        <p class="text-xs text-gray-500">GBP</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="space-y-1.5">
+                                <div class="flex justify-between items-center">
+                                    <span class="text-xs text-gray-500">可用余额</span>
+                                    <span class="font-medium text-sm">£12,345.67</span>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <div class="tooltip">
+                                        <span class="text-xs text-gray-500 flex items-center">
+                                            不可用余额
+                                            <i class="fas fa-info-circle text-gray-400 ml-1 text-xs"></i>
+                                        </span>
+                                        <div class="tooltip-text">
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center space-x-1">
+                                        <span class="font-medium text-sm">£234.57</span>
+                                        <i class="fas fa-lock text-red-500 text-xs"></i>
+                    </div>
+                </div>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-xs text-gray-500">结汇额度</span>
+                                    <span class="font-medium text-sm">£100,000.00</span>
+                                </div>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 更多币种展示 -->
+                <div class="hidden" id="moreCurrencies">
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mt-4">
+                        <!-- JPY -->
+                        <div class="currency-card" data-currency="JPY">
+                            <div class="border border-gray-100 rounded-lg p-3">
+                                <div class="flex items-center justify-between mb-2">
+                                    <div class="flex items-center space-x-2">
+                                        <div class="w-6 h-6 rounded-full bg-white border border-gray-100 flex items-center justify-center overflow-hidden">
+                                            <img src="https://cdn.jsdelivr.net/gh/lipis/flag-icons/flags/4x3/jp.svg" class="w-full h-full object-cover" alt="JPY">
+                        </div>
+                        <div>
+                                            <h4 class="font-medium text-gray-900 text-sm">日元</h4>
+                                            <p class="text-xs text-gray-500">JPY</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="space-y-1.5">
+                                    <div class="flex justify-between items-center">
+                                        <span class="text-xs text-gray-500">可用余额</span>
+                                        <span class="font-medium text-sm">¥8,765,432</span>
+                                    </div>
+                                    <div class="flex justify-between items-center">
+                                        <div class="tooltip">
+                                            <span class="text-xs text-gray-500 flex items-center">
+                                                不可用余额
+                                                <i class="fas fa-info-circle text-gray-400 ml-1 text-xs"></i>
+                                            </span>
+                                            <div class="tooltip-text">
+                                            </div>
+                                        </div>
+                                        <div class="flex items-center space-x-1">
+                                            <span class="font-medium text-sm">¥123,456</span>
+                                            <i class="fas fa-lock text-red-500 text-xs"></i>
+                        </div>
+                    </div>
+                                    <div class="flex justify-between items-center">
+                                        <span class="text-xs text-gray-500">结汇额度</span>
+                                        <span class="font-medium text-sm">¥10,000,000</span>
+                                    </div>
+                    </div>
+                    </div>
+                </div>
+                
+                        <!-- HKD -->
+                        <div class="currency-card" data-currency="HKD">
+                            <div class="border border-gray-100 rounded-lg p-3">
+                                <div class="flex items-center justify-between mb-2">
+                                    <div class="flex items-center space-x-2">
+                                        <div class="w-6 h-6 rounded-full bg-white border border-gray-100 flex items-center justify-center overflow-hidden">
+                                            <img src="https://cdn.jsdelivr.net/gh/lipis/flag-icons/flags/4x3/hk.svg" class="w-full h-full object-cover" alt="HKD">
+                        </div>
+                        <div>
+                                            <h4 class="font-medium text-gray-900 text-sm">港币</h4>
+                                            <p class="text-xs text-gray-500">HKD</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="space-y-1.5">
+                                    <div class="flex justify-between items-center">
+                                        <span class="text-xs text-gray-500">可用余额</span>
+                                        <span class="font-medium text-sm">HK$543,210.00</span>
+                                    </div>
+                                    <div class="flex justify-between items-center">
+                                        <div class="tooltip">
+                                            <span class="text-xs text-gray-500 flex items-center">
+                                                不可用余额
+                                                <i class="fas fa-info-circle text-gray-400 ml-1 text-xs"></i>
+                                            </span>
+                                            <div class="tooltip-text">
+                                            </div>
+                                        </div>
+                                        <div class="flex items-center space-x-1">
+                                            <span class="font-medium text-sm">HK$12,345.00</span>
+                                            <i class="fas fa-lock text-red-500 text-xs"></i>
+                        </div>
+                    </div>
+                                    <div class="flex justify-between items-center">
+                                        <span class="text-xs text-gray-500">结汇额度</span>
+                                        <span class="font-medium text-sm">HK$800,000.00</span>
+                                    </div>
+                    </div>
+                    </div>
+                </div>
+                
+                        <!-- AUD -->
+                        <div class="currency-card" data-currency="AUD">
+                            <div class="border border-gray-100 rounded-lg p-3">
+                                <div class="flex items-center justify-between mb-2">
+                                    <div class="flex items-center space-x-2">
+                                        <div class="w-6 h-6 rounded-full bg-white border border-gray-100 flex items-center justify-center overflow-hidden">
+                                            <img src="https://cdn.jsdelivr.net/gh/lipis/flag-icons/flags/4x3/au.svg" class="w-full h-full object-cover" alt="AUD">
+                        </div>
+                        <div>
+                                            <h4 class="font-medium text-gray-900 text-sm">澳元</h4>
+                                            <p class="text-xs text-gray-500">AUD</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="space-y-1.5">
+                                    <div class="flex justify-between items-center">
+                                        <span class="text-xs text-gray-500">可用余额</span>
+                                        <span class="font-medium text-sm">A$45,678.90</span>
+                                    </div>
+                                    <div class="flex justify-between items-center">
+                                        <div class="tooltip">
+                                            <span class="text-xs text-gray-500 flex items-center">
+                                                不可用余额
+                                                <i class="fas fa-info-circle text-gray-400 ml-1 text-xs"></i>
+                                            </span>
+                                            <div class="tooltip-text">
+                                            </div>
+                                        </div>
+                                        <div class="flex items-center space-x-1">
+                                            <span class="font-medium text-sm">A$1,234.56</span>
+                                            <i class="fas fa-lock text-red-500 text-xs"></i>
+                        </div>
+                    </div>
+                                    <div class="flex justify-between items-center">
+                                        <span class="text-xs text-gray-500">结汇额度</span>
+                                        <span class="font-medium text-sm">A$500,000.00</span>
+                                    </div>
+                    </div>
+                </div>
+                        </div>
+
+                        <!-- CAD -->
+                        <div class="currency-card" data-currency="CAD">
+                            <div class="border border-gray-100 rounded-lg p-3">
+                                <div class="flex items-center justify-between mb-2">
+                                    <div class="flex items-center space-x-2">
+                                        <div class="w-6 h-6 rounded-full bg-white border border-gray-100 flex items-center justify-center overflow-hidden">
+                                            <img src="https://cdn.jsdelivr.net/gh/lipis/flag-icons/flags/4x3/ca.svg" class="w-full h-full object-cover" alt="CAD">
+                                        </div>
+                                        <div>
+                                            <h4 class="font-medium text-gray-900 text-sm">加元</h4>
+                                            <p class="text-xs text-gray-500">CAD</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="space-y-1.5">
+                                    <div class="flex justify-between items-center">
+                                        <span class="text-xs text-gray-500">可用余额</span>
+                                        <span class="font-medium text-sm">C$34,567.89</span>
+                                    </div>
+                                    <div class="flex justify-between items-center">
+                                        <div class="tooltip">
+                                            <span class="text-xs text-gray-500 flex items-center">
+                                                不可用余额
+                                                <i class="fas fa-info-circle text-gray-400 ml-1 text-xs"></i>
+                                            </span>
+                                            <div class="tooltip-text">
+                                            </div>
+                                        </div>
+                                        <div class="flex items-center space-x-1">
+                                            <span class="font-medium text-sm">C$987.65</span>
+                                            <i class="fas fa-lock text-red-500 text-xs"></i>
+                                        </div>
+                                    </div>
+                                    <div class="flex justify-between items-center">
+                                        <span class="text-xs text-gray-500">结汇额度</span>
+                                        <span class="font-medium text-sm">C$500,000.00</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 显示更多按钮 -->
+                <div class="flex justify-center mt-4">
+                    <button id="toggleMoreCurrencies" class="text-blue-600 hover:bg-blue-50 px-4 py-2 rounded text-sm font-medium flex items-center">
+                        <span class="show-more">显示更多币种</span>
+                        <span class="show-less hidden">收起币种列表</span>
+                        <i class="fas fa-chevron-down ml-1 show-more"></i>
+                        <i class="fas fa-chevron-up ml-1 show-less hidden"></i>
+                    </button>
+                    </div>
+                </div>
+            </div>
+            
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-4">
+            <!-- 近期交易 -->
+            <div class="lg:col-span-2 bg-white rounded-xl shadow-sm p-5">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-lg font-medium text-gray-800">近期交易</h3>
+                    <a href="#" class="text-blue-600 text-sm hover:text-blue-800">查看全部</a>
+                </div>
+                <div class="space-y-4">
+                    <div class="flex items-center py-3 border-b border-gray-100">
+                        <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 mr-3">
+                            <i class="fas fa-arrow-down"></i>
+                        </div>
+                        <div class="flex-1">
+                            <h4 class="text-sm font-medium text-gray-800">收款</h4>
+                            <p class="text-xs text-gray-500">来自 Amazon 平台</p>
+                        </div>
+                        <div class="text-right">
+                            <p class="text-sm font-medium text-green-600">+$12,345.67</p>
+                            <p class="text-xs text-gray-500">今天 10:30</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center py-3 border-b border-gray-100">
+                        <div class="w-10 h-10 rounded-full bg-purple-100 flex items-center justify-center text-purple-600 mr-3">
+                            <i class="fas fa-exchange-alt"></i>
+                        </div>
+                        <div class="flex-1">
+                            <h4 class="text-sm font-medium text-gray-800">兑换</h4>
+                            <p class="text-xs text-gray-500">USD 转换为 CNY</p>
+                        </div>
+                        <div class="text-right">
+                            <p class="text-sm font-medium text-blue-600">$5,000 → ¥32,500</p>
+                            <p class="text-xs text-gray-500">昨天 14:25</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center py-3 border-b border-gray-100">
+                        <div class="w-10 h-10 rounded-full bg-red-100 flex items-center justify-center text-red-600 mr-3">
+                            <i class="fas fa-arrow-up"></i>
+                        </div>
+                        <div class="flex-1">
+                            <h4 class="text-sm font-medium text-gray-800">付款</h4>
+                            <p class="text-xs text-gray-500">供应商付款</p>
+                        </div>
+                        <div class="text-right">
+                            <p class="text-sm font-medium text-red-600">-$8,643.21</p>
+                            <p class="text-xs text-gray-500">昨天 09:15</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center py-3 border-b border-gray-100">
+                        <div class="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center text-green-600 mr-3">
+                            <i class="fas fa-arrow-down"></i>
+                        </div>
+                        <div class="flex-1">
+                            <h4 class="text-sm font-medium text-gray-800">收款</h4>
+                            <p class="text-xs text-gray-500">来自 Shopify 店铺</p>
+                        </div>
+                        <div class="text-right">
+                            <p class="text-sm font-medium text-green-600">+€4,321.00</p>
+                            <p class="text-xs text-gray-500">2天前</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center py-3">
+                        <div class="w-10 h-10 rounded-full bg-yellow-100 flex items-center justify-center text-yellow-600 mr-3">
+                            <i class="fas fa-wallet"></i>
+                        </div>
+                        <div class="flex-1">
+                            <h4 class="text-sm font-medium text-gray-800">提现</h4>
+                            <p class="text-xs text-gray-500">至中国银行账户</p>
+                        </div>
+                        <div class="text-right">
+                            <p class="text-sm font-medium text-red-600">-¥50,000.00</p>
+                            <p class="text-xs text-gray-500">3天前</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 银行假期日历 -->
+            <div class="bg-white rounded-xl shadow-sm p-5">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-lg font-medium text-gray-800">银行假期日历</h3>
+                    <select id="calendarMonthSelect" class="text-sm border-gray-300 rounded shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
+                        <!-- 月份选项将通过JavaScript动态生成 -->
+                    </select>
+                </div>
+                
+                <!-- 日历星期头 -->
+                <div class="grid grid-cols-7 mb-2 text-center">
+                    <div class="text-sm font-medium text-gray-500">一</div>
+                    <div class="text-sm font-medium text-gray-500">二</div>
+                    <div class="text-sm font-medium text-gray-500">三</div>
+                    <div class="text-sm font-medium text-gray-500">四</div>
+                    <div class="text-sm font-medium text-gray-500">五</div>
+                    <div class="text-sm font-medium text-gray-500">六</div>
+                    <div class="text-sm font-medium text-gray-500">日</div>
+                </div>
+                
+                <!-- 日历日期 -->
+                <div class="grid grid-cols-7 gap-1 mb-4">
+                    <!-- 前一个月的日期占位 -->
+                    <div class="calendar-day text-gray-300">27</div>
+                    <div class="calendar-day text-gray-300">28</div>
+                    <div class="calendar-day text-gray-300">29</div>
+                    <div class="calendar-day text-gray-300">30</div>
+                    
+                    <!-- 当月的日期 -->
+                    <div class="calendar-day text-gray-800">1</div>
+                    <div class="calendar-day text-gray-800">2</div>
+                    <div class="calendar-day text-gray-800">3</div>
+                    <div class="calendar-day text-gray-800">4</div>
+                    <div class="calendar-day text-gray-800">5</div>
+                    <div class="calendar-day text-gray-800">6</div>
+                    <div class="calendar-day text-gray-800">7</div>
+                    <div class="calendar-day text-gray-800">8</div>
+                    <div class="calendar-day text-gray-800">9</div>
+                    <div class="calendar-day text-gray-800">10</div>
+                    <div class="calendar-day text-gray-800">11</div>
+                    <div class="calendar-day holiday" title="USD 美国假期：纪念日">12</div>
+                    <div class="calendar-day text-gray-800">13</div>
+                    <div class="calendar-day text-gray-800">14</div>
+                    <div class="calendar-day text-gray-800">15</div>
+                    <div class="calendar-day today">16</div>
+                    <div class="calendar-day text-gray-800">17</div>
+                    <div class="calendar-day text-gray-800">18</div>
+                    <div class="calendar-day holiday" title="GBP 英国银行假期">19</div>
+                    <div class="calendar-day text-gray-800">20</div>
+                    <div class="calendar-day text-gray-800">21</div>
+                    <div class="calendar-day text-gray-800">22</div>
+                    <div class="calendar-day text-gray-800">23</div>
+                    <div class="calendar-day text-gray-800">24</div>
+                    <div class="calendar-day holiday" title="EUR 欧元区假期：圣诞节">25</div>
+                    <div class="calendar-day holiday" title="USD, GBP, EUR 多区域假期">26</div>
+                    <div class="calendar-day text-gray-800">27</div>
+                    <div class="calendar-day text-gray-800">28</div>
+                    <div class="calendar-day text-gray-800">29</div>
+                    <div class="calendar-day text-gray-800">30</div>
+                    <div class="calendar-day text-gray-800">31</div>
+                </div>
+                
+                <!-- 假日图例 -->
+                <div class="border-t border-gray-200 pt-3">
+                    <h4 class="text-sm font-medium text-gray-700 mb-2">近期银行假期</h4>
+                    <div class="space-y-2">
+                        <div class="flex items-center">
+                            <span class="inline-block w-3 h-3 bg-red-500 rounded-full mr-2"></span>
+                            <span class="text-xs text-gray-600">12月12日 - USD (美元) - 美国纪念日</span>
+                        </div>
+                        <div class="flex items-center">
+                            <span class="inline-block w-3 h-3 bg-red-500 rounded-full mr-2"></span>
+                            <span class="text-xs text-gray-600">12月19日 - GBP (英镑) - 英国银行假期</span>
+                        </div>
+                        <div class="flex items-center">
+                            <span class="inline-block w-3 h-3 bg-red-500 rounded-full mr-2"></span>
+                            <span class="text-xs text-gray-600">12月25日 - EUR (欧元) - 圣诞节</span>
+                        </div>
+                        <div class="flex items-center">
+                            <span class="inline-block w-3 h-3 bg-red-500 rounded-full mr-2"></span>
+                            <span class="text-xs text-gray-600">12月26日 - USD, GBP, EUR - 多区域假期</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 快速导航管理弹出框 -->
+    <div id="quickNavModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center">
+        <div class="bg-white rounded-xl shadow-lg w-full max-w-lg mx-4">
+            <div class="p-5 border-b border-gray-200">
+                <div class="flex justify-between items-center">
+                    <h3 class="text-lg font-medium text-gray-800">管理快速导航</h3>
+                    <button id="closeQuickNavModal" class="text-gray-400 hover:text-gray-600">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="p-5">
+                <p class="text-sm text-gray-600 mb-4">请选择要显示的快速导航入口（最多6个）</p>
+                <div class="space-y-3" id="quickNavOptions">
+                    <!-- Options will be dynamically populated by JavaScript -->
+                </div>
+            </div>
+            <div class="p-5 border-t border-gray-200 flex justify-end space-x-3">
+                <button id="cancelQuickNav" class="px-4 py-2 text-sm text-gray-600 hover:text-gray-800">
+                    取消
+                </button>
+                <button id="saveQuickNav" class="px-4 py-2 text-sm text-white bg-blue-600 rounded hover:bg-blue-700">
+                    保存
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 用户中心下拉菜单点击切换显示
+        document.getElementById('userCenterBtn').addEventListener('click', function(e) {
+            e.preventDefault();
+            document.getElementById('userCenterDropdown').classList.toggle('hidden');
+        });
+        
+        // 点击页面其他区域关闭下拉菜单
+        document.addEventListener('click', function(e) {
+            if (!document.getElementById('userCenterBtn').contains(e.target) && 
+                !document.getElementById('userCenterDropdown').contains(e.target)) {
+                document.getElementById('userCenterDropdown').classList.add('hidden');
+            }
+        });
+        
+        // 设置银行假期日历的当前月份
+        document.addEventListener('DOMContentLoaded', function() {
+            const monthSelect = document.getElementById('calendarMonthSelect');
+            const currentDate = new Date();
+            const currentYear = currentDate.getFullYear();
+            const currentMonth = currentDate.getMonth();
+            
+            // 生成当前月份前后共6个月的选项
+            for (let i = -2; i <= 3; i++) {
+                let date = new Date(currentYear, currentMonth + i, 1);
+                let year = date.getFullYear();
+                let month = date.getMonth() + 1; // JavaScript月份从0开始
+                
+                let option = document.createElement('option');
+                option.value = `${year}-${month}`;
+                option.textContent = `${year}年${month}月`;
+                
+                // 设置当前月份为默认选中
+                if (i === 0) {
+                    option.selected = true;
+                }
+                
+                monthSelect.appendChild(option);
+            }
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const toggleButton = document.getElementById('toggleMoreCurrencies');
+            const moreCurrencies = document.getElementById('moreCurrencies');
+            const showMoreElements = document.querySelectorAll('.show-more');
+            const showLessElements = document.querySelectorAll('.show-less');
+
+            toggleButton.addEventListener('click', function() {
+                moreCurrencies.classList.toggle('hidden');
+                showMoreElements.forEach(el => el.classList.toggle('hidden'));
+                showLessElements.forEach(el => el.classList.toggle('hidden'));
+            });
+        });
+
+        // 快速导航配置
+        const quickNavItems = {
+            'platform-collection': {
+                title: '平台收款',
+                icon: 'fa-store',
+                bgColor: 'bg-blue-100',
+                textColor: 'text-blue-600',
+                link: 'platform-collection.html'
+            },
+            'trade-collection': {
+                title: '外贸收款',
+                icon: 'fa-globe',
+                bgColor: 'bg-indigo-100',
+                textColor: 'text-indigo-600',
+                link: 'trade-collection.html'
+            },
+            'withdrawal': {
+                title: '提现',
+                icon: 'fa-wallet',
+                bgColor: 'bg-red-100',
+                textColor: 'text-red-600',
+                link: 'withdrawal.html'
+            },
+            'payment': {
+                title: '付款',
+                icon: 'fa-paper-plane',
+                bgColor: 'bg-green-100',
+                textColor: 'text-green-600',
+                link: 'payment.html'
+            },
+            'forex': {
+                title: '外汇兑换',
+                icon: 'fa-exchange-alt',
+                bgColor: 'bg-purple-100',
+                textColor: 'text-purple-600',
+                link: 'forex.html'
+            },
+            'cards': {
+                title: '卡片',
+                icon: 'fa-credit-card',
+                bgColor: 'bg-yellow-100',
+                textColor: 'text-yellow-600',
+                link: 'cards.html'
+            },
+            'acquiring': {
+                title: '账单收款',
+                icon: 'fa-receipt',
+                bgColor: 'bg-pink-100',
+                textColor: 'text-pink-600',
+                link: 'bill-collection.html'
+            }
+        };
+
+        // 默认显示的快速导航项
+        let selectedQuickNavItems = [
+            'platform-collection',
+            'trade-collection',
+            'acquiring',
+            'cards',
+            'payment'
+        ];
+
+        // 渲染快速导航网格
+        function renderQuickNavGrid() {
+            const grid = document.getElementById('quickNavGrid');
+            grid.innerHTML = '';
+            
+            selectedQuickNavItems.forEach(key => {
+                const item = quickNavItems[key];
+                const card = document.createElement('div');
+                card.className = 'card bg-white border border-gray-200 rounded-lg p-2 text-center hover:border-blue-500 cursor-pointer';
+                card.onclick = () => window.location.href = item.link;
+                
+                card.innerHTML = `
+                    <div class="${item.bgColor} ${item.textColor} rounded-full w-8 h-8 flex items-center justify-center mx-auto mb-1">
+                        <i class="fas ${item.icon}"></i>
+                    </div>
+                    <h4 class="text-xs font-medium text-gray-800">${item.title}</h4>
+                `;
+                
+                grid.appendChild(card);
+            });
+        }
+
+        // 渲染快速导航选项
+        function renderQuickNavOptions() {
+            const optionsContainer = document.getElementById('quickNavOptions');
+            optionsContainer.innerHTML = '';
+            
+            Object.entries(quickNavItems).forEach(([key, item]) => {
+                const option = document.createElement('div');
+                option.className = 'flex items-center space-x-3';
+                
+                const isSelected = selectedQuickNavItems.includes(key);
+                
+                option.innerHTML = `
+                    <label class="flex items-center cursor-pointer w-full">
+                        <input type="checkbox" class="quick-nav-checkbox form-checkbox h-5 w-5 text-blue-600 rounded border-gray-300"
+                               value="${key}" ${isSelected ? 'checked' : ''}>
+                        <div class="ml-3 flex items-center">
+                            <div class="${item.bgColor} ${item.textColor} rounded-full w-8 h-8 flex items-center justify-center mr-3">
+                                <i class="fas ${item.icon}"></i>
+                            </div>
+                            <span class="text-sm text-gray-700">${item.title}</span>
+                        </div>
+                    </label>
+                `;
+                
+                optionsContainer.appendChild(option);
+            });
+            
+            // 添加复选框事件监听
+            document.querySelectorAll('.quick-nav-checkbox').forEach(checkbox => {
+                checkbox.addEventListener('change', function() {
+                    const selectedCount = document.querySelectorAll('.quick-nav-checkbox:checked').length;
+                    if (selectedCount > 5) {
+                        this.checked = false;
+                        alert('最多只能选择5个快速导航入口');
+                    }
+                });
+            });
+        }
+
+        // 初始化快速导航管理
+        document.addEventListener('DOMContentLoaded', function() {
+            const modal = document.getElementById('quickNavModal');
+            const manageBtn = document.getElementById('manageQuickNav');
+            const closeBtn = document.getElementById('closeQuickNavModal');
+            const cancelBtn = document.getElementById('cancelQuickNav');
+            const saveBtn = document.getElementById('saveQuickNav');
+            
+            // 渲染初始快速导航
+            renderQuickNavGrid();
+            
+            // 打开管理弹窗
+            manageBtn.addEventListener('click', () => {
+                renderQuickNavOptions();
+                modal.classList.remove('hidden');
+            });
+            
+            // 关闭管理弹窗
+            [closeBtn, cancelBtn].forEach(btn => {
+                btn.addEventListener('click', () => {
+                    modal.classList.add('hidden');
+                });
+            });
+            
+            // 保存设置
+            saveBtn.addEventListener('click', () => {
+                const selectedCheckboxes = document.querySelectorAll('.quick-nav-checkbox:checked');
+                if (selectedCheckboxes.length > 5) {
+                    alert('最多只能选择5个快速导航入口');
+                    return;
+                }
+                
+                selectedQuickNavItems = Array.from(selectedCheckboxes).map(cb => cb.value);
+                renderQuickNavGrid();
+                modal.classList.add('hidden');
+            });
+            
+            // 点击弹窗外部关闭
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    modal.classList.add('hidden');
+                }
+            });
+        });
+
+        // 广告横幅关闭功能
+        document.addEventListener('DOMContentLoaded', function() {
+            const closeAdBtn = document.getElementById('closeAdBanner');
+            const adBanner = document.getElementById('adBanner');
+            
+            closeAdBtn.addEventListener('click', function() {
+                adBanner.style.display = 'none';
+            });
+        });
+    </script>
+</body>
+</html> 

@@ -11,6 +11,18 @@
             font-family: 'Inter', 'PingFang SC', 'Microsoft YaHei', sans-serif;
             background-color: #f8fafc;
         }
+        .tab-btn {
+            border-bottom: 2px solid transparent;
+            color: #6b7280;
+        }
+        .tab-btn:hover {
+            color: #374151;
+            border-bottom-color: #d1d5db;
+        }
+        .tab-btn.active {
+            border-bottom: 2px solid #4f46e5;
+            color: #4f46e5;
+        }
         .card {
             transition: transform 0.2s, box-shadow 0.2s;
             border: 1px solid rgba(226, 232, 240, 0.8);
@@ -315,67 +327,80 @@
 <body class="bg-gray-50">
     <div class="container mx-auto px-4 py-6">
         <!-- 顶部导航 - 与首页相同 -->
-        <div class="flex justify-end mb-6">
-            <div class="flex items-center space-x-6">
-                <!-- 公告图标 -->
-                <div class="relative">
-                    <a href="#" class="text-gray-600 hover:text-blue-600">
-                        <span class="relative">
-                            <i class="fas fa-bell text-lg"></i>
-                            <span class="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full"></span>
-                        </span>
-                    </a>
-                </div>
-                
-                <!-- 帮助 -->
-                <a href="#" class="text-gray-600 hover:text-blue-600 text-sm">帮助</a>
-                
-                <!-- 用户中心 -->
-                <div class="relative">
-                    <button id="userCenterBtn" class="text-gray-600 hover:text-blue-600">
-                        <i class="fas fa-user-circle text-lg"></i>
-                    </button>
-                    <div id="userCenterDropdown" class="absolute right-0 top-full mt-1 w-64 bg-white rounded-lg shadow-lg py-3 hidden z-10">
-                        <!-- 用户信息部分 -->
-                        <div class="px-4 pb-3 border-b border-gray-100">
-                            <div class="flex items-center justify-between mb-2">
-                                <h3 class="font-medium text-gray-900">张珊珊</h3>
-                                <a href="#" class="text-xs text-blue-600 hover:text-blue-700">升级为企业</a>
-                            </div>
-                            <div class="flex items-center justify-between mb-2">
-                                <div class="flex items-center">
-                                    <span class="text-sm text-gray-600">ZHANG SHANSHAN</span>
-                                    <button class="ml-2 text-gray-400 hover:text-gray-600">
-                                        <i class="fas fa-edit text-xs"></i>
-                                    </button>
+        <div class="bg-white rounded-lg shadow-sm mb-4">
+            <div class="border-b border-gray-200">
+                <div class="flex justify-between items-center">
+                    <nav class="flex justify-start -mb-px pl-6">
+                        <button class="tab-btn active whitespace-nowrap py-4 px-8 border-b-2 text-center text-sm font-medium">
+                            货币兑换
+                        </button>
+                    </nav>
+                    <div class="flex items-center space-x-6 pr-6">
+                        <!-- 公告图标 -->
+                        <div class="relative">
+                            <a href="#" class="text-gray-600 hover:text-blue-600">
+                                <span class="relative">
+                                    <i class="fas fa-bell text-lg"></i>
+                                    <span class="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full"></span>
+                                </span>
+                            </a>
+                        </div>
+                        
+                        <!-- 帮助 -->
+                        <a href="#" class="text-gray-600 hover:text-blue-600 text-sm">帮助</a>
+                        
+                        <!-- 用户中心 -->
+                        <div class="relative">
+                            <button id="userCenterBtn" class="text-gray-600 hover:text-blue-600">
+                                <i class="fas fa-user-circle text-lg"></i>
+                            </button>
+                            <div id="userCenterDropdown" class="absolute right-0 top-full mt-1 w-64 bg-white rounded-lg shadow-lg py-3 hidden z-10">
+                                <!-- 用户信息部分 -->
+                                <div class="px-4 pb-3 border-b border-gray-100">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <h3 class="font-medium text-gray-900">张珊珊</h3>
+                                        <a href="#" class="text-xs text-blue-600 hover:text-blue-700">升级为企业</a>
+                                    </div>
+                                    <div class="flex items-center justify-between mb-2">
+                                        <div class="flex items-center">
+                                            <span class="text-sm text-gray-600">ZHANG SHANSHAN</span>
+                                            <button class="ml-2 text-gray-400 hover:text-gray-600">
+                                                <i class="fas fa-edit text-xs"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center justify-between">
+                                        <span class="text-sm text-gray-600">ID</span>
+                                        <button class="text-gray-400 hover:text-gray-600">
+                                            <i class="fas fa-copy text-xs"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <!-- 菜单选项 -->
+                                <div class="py-1">
+                                    <a href="security.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                        <i class="fas fa-shield-alt w-5 text-gray-400"></i>
+                                        安全设置
+                                    </a>
+                                    <a href="authentication-info.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                        <i class="fas fa-id-card w-5 text-gray-400"></i>
+                                        认证信息
+                                    </a>
+                                    <a href="fees.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                        <i class="fas fa-percentage w-5 text-gray-400"></i>
+                                        费率查询
+                                    </a>
+                                    <a href="coupons.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                        <i class="fas fa-gift w-5 text-gray-400"></i>
+                                        我的优惠
+                                    </a>
+                                    <div class="border-t border-gray-100 my-1"></div>
+                                    <a href="logout.html" class="block px-4 py-2 text-sm text-red-600 hover:bg-gray-100">
+                                        <i class="fas fa-sign-out-alt w-5"></i>
+                                        退出
+                                    </a>
                                 </div>
                             </div>
-                            <div class="flex items-center justify-between">
-                                <span class="text-sm text-gray-600">ID</span>
-                                <button class="text-gray-400 hover:text-gray-600">
-                                    <i class="fas fa-copy text-xs"></i>
-                                </button>
-                            </div>
-                        </div>
-                        <!-- 菜单选项 -->
-                        <div class="py-1">
-                            <a href="security.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                                <i class="fas fa-shield-alt w-5 text-gray-400"></i>
-                                安全设置
-                            </a>
-                            <a href="fees.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                                <i class="fas fa-percentage w-5 text-gray-400"></i>
-                                费率查询
-                            </a>
-                            <a href="coupons.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                                <i class="fas fa-gift w-5 text-gray-400"></i>
-                                福利中心
-                            </a>
-                            <div class="border-t border-gray-100 my-1"></div>
-                            <a href="logout.html" class="block px-4 py-2 text-sm text-red-600 hover:bg-gray-100">
-                                <i class="fas fa-sign-out-alt w-5"></i>
-                                退出
-                            </a>
                         </div>
                     </div>
                 </div>

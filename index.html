@@ -119,6 +119,106 @@
             width: 100%;
             height: 100%;
         }
+        /* 添加引导提示样式 */
+        .shepherd-button {
+            background: #4f46e5 !important;
+            color: white !important;
+            border-radius: 4px !important;
+            padding: 8px 16px !important;
+            margin: 4px !important;
+        }
+        .shepherd-text {
+            font-size: 14px !important;
+            line-height: 1.6 !important;
+            padding: 16px !important;
+        }
+        .shepherd-header {
+            background: #4f46e5 !important;
+            padding: 8px 16px !important;
+        }
+        .shepherd-title {
+            color: white !important;
+            font-size: 16px !important;
+        }
+        .shepherd-content {
+            max-width: 400px !important;
+        }
+        /* 添加帮助按钮样式 */
+        #help-button {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #4f46e5;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            z-index: 1000;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        #help-button:hover {
+            background: #4338ca;
+        }
+        /* 引导提示样式 */
+        .tour-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            display: none;
+        }
+        .tour-tooltip {
+            position: absolute;
+            background: white;
+            padding: 16px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            z-index: 1001;
+            display: none;
+        }
+        .tour-tooltip::before {
+            content: '';
+            position: absolute;
+            left: -10px;
+            top: 20px;
+            border-style: solid;
+            border-width: 10px 10px 10px 0;
+            border-color: transparent white transparent transparent;
+            width: 0;
+            height: 0;
+        }
+        .tour-tooltip h3 {
+            color: #4f46e5;
+            font-size: 16px;
+            margin-bottom: 8px;
+        }
+        .tour-tooltip p {
+            color: #4b5563;
+            font-size: 14px;
+            line-height: 1.6;
+            margin-bottom: 16px;
+        }
+        .tour-tooltip button {
+            background: #4f46e5;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 4px;
+            border: none;
+            cursor: pointer;
+        }
+        .tour-tooltip button:hover {
+            background: #4338ca;
+        }
+        /* 高亮菜单项样式 */
+        .highlight-menu {
+            position: relative;
+            z-index: 1002;
+            background: white !important;
+        }
     </style>
 </head>
 <body class="bg-gray-50 text-gray-800">
@@ -142,15 +242,23 @@
                 <!-- 首页 -->
                 <li>
                     <div class="menu-item" data-page="home">
-                        <i class="fas fa-home w-5 text-center"></i>
+                        <i class="fas fa-home"></i>
                         <span class="ml-3 menu-text">首页</span>
+                    </div>
+                </li>
+                
+                <!-- 我的资产 -->
+                <li>
+                    <div class="menu-item" data-page="my-assets">
+                        <i class="fas fa-wallet"></i>
+                        <span class="ml-3 menu-text">我的资产</span>
                     </div>
                 </li>
                 
                 <!-- 收款 -->
                 <li>
                     <div class="menu-item" data-toggle="submenu-collection">
-                        <i class="fas fa-money-bill-wave w-5 text-center"></i>
+                        <i class="fas fa-money-check-alt"></i>
                         <span class="ml-3 menu-text">收款</span>
                         <i class="fas fa-chevron-down ml-auto text-xs submenu-toggle"></i>
                     </div>
@@ -223,6 +331,11 @@
                                 <span class="menu-text">付款</span>
                             </div>
                         </li>
+                        <li>
+                            <div class="menu-item" data-page="payee-management">
+                                <span class="menu-text">收款人管理</span>
+                            </div>
+                        </li>
                     </ul>
                 </li>
                 
@@ -248,13 +361,18 @@
                             </div>
                         </li>
                         <li>
+                            <div class="menu-item" data-page="authentication-info">
+                                <span class="menu-text">认证信息</span>
+                            </div>
+                        </li>
+                        <li>
                             <div class="menu-item" data-page="fees">
                                 <span class="menu-text">费率查询</span>
                             </div>
                         </li>
                         <li>
                             <div class="menu-item" data-page="coupons">
-                                <span class="menu-text">福利中心</span>
+                                <span class="menu-text">我的优惠</span>
                             </div>
                         </li>
                     </ul>
@@ -268,59 +386,176 @@
         <iframe id="content-frame" src="pages/home.html" title="内容"></iframe>
     </main>
     
+    <!-- 添加帮助按钮 -->
+    <button id="help-button">
+        <i class="fas fa-question-circle mr-2"></i>功能引导
+    </button>
+
+    <!-- 引导提示遮罩和提示框 -->
+    <div class="tour-overlay"></div>
+    <div class="tour-tooltip">
+        <h3></h3>
+        <p></p>
+        <button class="next-step">下一步</button>
+    </div>
+
+    <!-- 收单服务开通弹框 -->
+    <div id="acquiringServiceModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden z-50 flex items-center justify-center">
+        <div class="bg-white rounded-lg p-8 max-w-md w-full mx-4">
+            <div class="mb-6">
+                <h3 class="text-xl font-semibold text-gray-900 mb-4">开通收单服务</h3>
+                <p class="text-gray-700">尊敬的客户，在您开通全球收单产品前，请仔细阅读并同意以下服务协议及政策。</p>
+            </div>
+            
+            <div class="mb-6">
+                <label for="websiteUrl" class="block text-sm font-medium text-gray-700 mb-2">
+                    收单网站链接
+                    <span class="text-red-500 ml-1">*</span>
+                </label>
+                <input type="url" id="websiteUrl" name="websiteUrl" required
+                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                    placeholder="请输入您的网站链接（必填）">
+            </div>
+            
+            <div class="mb-6">
+                <label class="flex items-start">
+                    <input type="checkbox" id="agreementCheckbox" 
+                        class="mt-1 h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded">
+                    <span class="ml-2 text-sm text-gray-600">
+                        已阅读并同意
+                        <a href="#" class="text-indigo-600 hover:text-indigo-800">《跨境收款服务协议》</a>
+                        和
+                        <a href="#" class="text-indigo-600 hover:text-indigo-800">《隐私协议》</a>
+                    </span>
+                </label>
+            </div>
+            
+            <div class="flex justify-end space-x-4">
+                <button type="button" id="cancelAcquiringService"
+                    class="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
+                    取消
+                </button>
+                <button type="button" id="confirmAcquiringService"
+                    class="px-4 py-2 text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                    确认开通
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/shepherd.js@10.0.1/dist/js/shepherd.min.js"></script>
     <script>
         // 存储当前活动页面
         let currentPage = 'home';
+        // 添加收单服务开通状态标志
+        let isAcquiringServiceEnabled = false; // 默认未开通
+
+        // 页面URL映射
+        const pageUrls = {
+            'home': 'pages/home.html',
+            'my-assets': 'pages/my-assets.html',
+            'platform-collection': 'pages/platform-collection.html',
+            'trade-collection': 'pages/trade-collection.html',
+            'bill-collection': 'pages/bill-collection.html',
+            'transaction-list': 'pages/transaction-list.html',
+            'forex': 'pages/forex.html',
+            'cards': 'pages/cards.html',
+            'withdrawal': 'pages/withdrawal.html',
+            'payment': 'pages/payment.html',
+            'payee-management': 'pages/payee-management.html',
+            'transactions': 'pages/transactions.html',  // 确保有这个映射
+            'security': 'pages/security.html',
+            'authentication-info': 'pages/authentication-info.html',
+            'fees': 'pages/fees.html',
+            'coupons': 'pages/coupons.html'
+        };
 
         // 加载页面内容
         function loadPage(pageName) {
-            const iframe = document.getElementById('content-frame');
-            iframe.src = `pages/${pageName}.html`;
-            currentPage = pageName;
-            
-            // 更新活动菜单状态
-            document.querySelectorAll('.menu-item').forEach(item => {
-                item.classList.remove('active');
-                if (item.getAttribute('data-page') === pageName) {
-                    item.classList.add('active');
-                }
-            });
-
-            // 更新浏览器历史
-            history.pushState({ page: pageName }, '', `#${pageName}`);
-        }
-
-        // 处理菜单点击事件
-        document.querySelectorAll('.menu-item[data-page]').forEach(item => {
-            item.addEventListener('click', event => {
-                event.preventDefault();
-                const pageName = item.getAttribute('data-page');
-                loadPage(pageName);
-            });
-        });
-
-        // 切换子菜单
-        document.querySelectorAll('[data-toggle]').forEach(item => {
-            item.addEventListener('click', event => {
-                event.preventDefault();
-                const submenuId = item.getAttribute('data-toggle');
-                const submenu = document.getElementById(submenuId);
+            console.log('Loading page:', pageName);
+            if (pageUrls[pageName]) {
+                const iframe = document.getElementById('content-frame');
+                iframe.src = pageUrls[pageName];
+                currentPage = pageName;
                 
-                // 切换子菜单状态
-                if (submenu) {
-                    submenu.classList.toggle('open');
-                    
-                    // 切换箭头图标
-                    const chevron = item.querySelector('.fa-chevron-down, .fa-chevron-up');
-                    if (chevron) {
-                        if (submenu.classList.contains('open')) {
-                            chevron.classList.replace('fa-chevron-down', 'fa-chevron-up');
-                        } else {
-                            chevron.classList.replace('fa-chevron-up', 'fa-chevron-down');
+                // 更新活动菜单状态
+                document.querySelectorAll('.menu-item').forEach(item => {
+                    item.classList.remove('active');
+                    if (item.getAttribute('data-page') === pageName) {
+                        item.classList.add('active');
+                        
+                        // 如果是子菜单项，展开父菜单
+                        const submenu = item.closest('.submenu');
+                        if (submenu) {
+                            submenu.classList.add('open');
+                            const parentMenuItem = submenu.previousElementSibling;
+                            if (parentMenuItem) {
+                                const chevron = parentMenuItem.querySelector('.submenu-toggle');
+                                if (chevron) {
+                                    chevron.classList.replace('fa-chevron-down', 'fa-chevron-up');
+                                }
+                            }
                         }
                     }
-                }
+                });
+                
+                console.log('Page loaded:', iframe.src);
+            } else {
+                console.error('Page URL not found:', pageName);
+            }
+        }
+
+        // 初始化事件监听
+        document.addEventListener('DOMContentLoaded', () => {
+            // 处理菜单项点击
+            document.querySelectorAll('.menu-item[data-page]').forEach(item => {
+                item.addEventListener('click', event => {
+                    event.preventDefault();
+                    event.stopPropagation(); // 阻止事件冒泡
+                    const pageName = item.getAttribute('data-page');
+                    console.log('Menu item clicked:', pageName);
+                    loadPage(pageName);
+                });
             });
+
+            // 处理子菜单切换
+            document.querySelectorAll('[data-toggle]').forEach(item => {
+                item.addEventListener('click', event => {
+                    event.preventDefault();
+                    const submenuId = item.getAttribute('data-toggle');
+                    const submenu = document.getElementById(submenuId);
+                    
+                    // 切换子菜单状态
+                    if (submenu) {
+                        // 关闭其他所有子菜单
+                        document.querySelectorAll('.submenu').forEach(menu => {
+                            if (menu !== submenu) {
+                                menu.classList.remove('open');
+                                const toggle = menu.previousElementSibling.querySelector('.submenu-toggle');
+                                if (toggle) {
+                                    toggle.classList.replace('fa-chevron-up', 'fa-chevron-down');
+                                }
+                            }
+                        });
+
+                        // 切换当前子菜单
+                        submenu.classList.toggle('open');
+                        const chevron = item.querySelector('.submenu-toggle');
+                        if (chevron) {
+                            if (submenu.classList.contains('open')) {
+                                chevron.classList.replace('fa-chevron-down', 'fa-chevron-up');
+                            } else {
+                                chevron.classList.replace('fa-chevron-up', 'fa-chevron-down');
+                            }
+                        }
+                    }
+                });
+            });
+
+            // 初始化页面
+            const initialPage = window.location.hash.slice(1) || 'home';
+            loadPage(initialPage);
+            initTour();
         });
 
         // 切换侧边栏
@@ -339,31 +574,6 @@
             }
         });
 
-        // 处理折叠侧边栏下的子菜单悬浮效果
-        document.querySelectorAll('[data-toggle]').forEach(item => {
-            item.addEventListener('mouseenter', () => {
-                const sidebar = document.getElementById('sidebar');
-                if (sidebar.classList.contains('collapsed')) {
-                    const submenuId = item.getAttribute('data-toggle');
-                    const submenu = document.getElementById(submenuId);
-                    if (submenu) {
-                        submenu.classList.add('open');
-                    }
-                }
-            });
-            
-            const submenuId = item.getAttribute('data-toggle');
-            const submenu = document.getElementById(submenuId);
-            if (submenu) {
-                item.parentElement.addEventListener('mouseleave', () => {
-                    const sidebar = document.getElementById('sidebar');
-                    if (sidebar.classList.contains('collapsed')) {
-                        submenu.classList.remove('open');
-                    }
-                });
-            }
-        });
-
         // 处理浏览器返回/前进按钮
         window.addEventListener('popstate', event => {
             if (event.state && event.state.page) {
@@ -371,10 +581,200 @@
             }
         });
 
-        // 根据URL hash加载初始页面
-        document.addEventListener('DOMContentLoaded', () => {
-            const initialPage = window.location.hash.slice(1) || 'home';
-            loadPage(initialPage);
+        // 引导步骤配置
+        const tourSteps = [
+            {
+                element: '[data-page="platform-collection"]',
+                title: '平台收款',
+                text: '平台收款的申请收款账户、持有人管理、结汇订单上传等相关功能',
+                beforeShow: () => {
+                    const submenu = document.getElementById('submenu-collection');
+                    submenu.classList.add('open');
+                }
+            },
+            {
+                element: '[data-page="trade-collection"]',
+                title: '外贸收款',
+                text: '外贸收款的申请收款账户、关联订单、上传外贸订单等相关功能',
+                beforeShow: () => {
+                    const submenu = document.getElementById('submenu-collection');
+                    submenu.classList.add('open');
+                }
+            },
+            {
+                element: '[data-toggle="submenu-acquiring"]',
+                title: '收单功能',
+                text: '收单相关的账单收款和支付/退款记录在此处'
+            },
+            {
+                element: '[data-page="cards"]',
+                title: '卡功能',
+                text: '原鲸卡服务相关的功能在此处'
+            },
+            {
+                element: '[data-toggle="submenu-payment"]',
+                title: '提现付款功能',
+                text: '提现/付款相关功能在此处'
+            }
+        ];
+
+        // 引导功能实现
+        function initTour() {
+            let currentStep = 0;
+            const overlay = document.querySelector('.tour-overlay');
+            const tooltip = document.querySelector('.tour-tooltip');
+            const nextButton = tooltip.querySelector('.next-step');
+            let currentHighlight = null;
+
+            function showStep(step) {
+                const targetElement = document.querySelector(step.element);
+                if (!targetElement) return;
+
+                // 执行步骤前的准备工作
+                if (step.beforeShow) {
+                    step.beforeShow();
+                }
+
+                // 移除之前的高亮
+                if (currentHighlight) {
+                    currentHighlight.classList.remove('highlight-menu');
+                }
+
+                // 设置新的高亮
+                targetElement.classList.add('highlight-menu');
+                currentHighlight = targetElement;
+
+                // 显示遮罩和提示框
+                overlay.style.display = 'block';
+                tooltip.style.display = 'block';
+
+                // 更新提示内容
+                tooltip.querySelector('h3').textContent = step.title;
+                tooltip.querySelector('p').textContent = step.text;
+
+                // 更新按钮文本
+                nextButton.textContent = currentStep === tourSteps.length - 1 ? '完成' : '下一步';
+
+                // 计算提示框位置
+                const rect = targetElement.getBoundingClientRect();
+                const tooltipHeight = tooltip.offsetHeight;
+                
+                // 将提示框垂直居中对齐到目标元素
+                const targetMiddle = rect.top + rect.height / 2;
+                const tooltipTop = targetMiddle - tooltipHeight / 2;
+                
+                // 设置提示框位置，确保箭头指向目标元素的中间
+                tooltip.style.left = `${rect.right + 20}px`;
+                tooltip.style.top = `${tooltipTop}px`;
+            }
+
+            function nextStep() {
+                if (currentStep < tourSteps.length - 1) {
+                    currentStep++;
+                    showStep(tourSteps[currentStep]);
+                } else {
+                    endTour();
+                }
+            }
+
+            function endTour() {
+                overlay.style.display = 'none';
+                tooltip.style.display = 'none';
+                if (currentHighlight) {
+                    currentHighlight.classList.remove('highlight-menu');
+                }
+                localStorage.setItem('tourCompleted', 'true');
+            }
+
+            // 绑定事件
+            nextButton.addEventListener('click', nextStep);
+            overlay.addEventListener('click', endTour);
+
+            // 添加帮助按钮点击事件
+            document.getElementById('help-button').addEventListener('click', () => {
+                currentStep = 0;
+                showStep(tourSteps[0]);
+            });
+
+            // 如果是首次访问，自动开始引导
+            if (!localStorage.getItem('tourCompleted')) {
+                setTimeout(() => {
+                    showStep(tourSteps[0]);
+                }, 500);
+            }
+        }
+
+        // 收单服务开通弹框相关代码
+        document.addEventListener('DOMContentLoaded', function() {
+            const acquiringMenuItem = document.querySelector('[data-toggle="submenu-acquiring"]');
+            const acquiringModal = document.getElementById('acquiringServiceModal');
+            const cancelButton = document.getElementById('cancelAcquiringService');
+            const confirmButton = document.getElementById('confirmAcquiringService');
+            const websiteUrlInput = document.getElementById('websiteUrl');
+            const agreementCheckbox = document.getElementById('agreementCheckbox');
+
+            // 点击收单菜单项时显示弹框
+            if (acquiringMenuItem) {
+                acquiringMenuItem.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    
+                    // 如果服务未开通，显示弹框
+                    if (!isAcquiringServiceEnabled) {
+                        acquiringModal.classList.remove('hidden');
+                    }
+                });
+            }
+
+            // 点击取消按钮关闭弹框
+            cancelButton.addEventListener('click', function() {
+                acquiringModal.classList.add('hidden');
+                // 重置表单
+                websiteUrlInput.value = '';
+                agreementCheckbox.checked = false;
+            });
+
+            // 点击确认按钮处理提交
+            confirmButton.addEventListener('click', function() {
+                if (!websiteUrlInput.value.trim()) {
+                    alert('请输入收单网站链接');
+                    return;
+                }
+                if (!agreementCheckbox.checked) {
+                    alert('请阅读并同意服务协议和隐私协议');
+                    return;
+                }
+                
+                // 设置服务开通状态
+                isAcquiringServiceEnabled = true;
+                
+                // 关闭弹框并展开子菜单
+                acquiringModal.classList.add('hidden');
+                const submenu = document.getElementById('submenu-acquiring');
+                if (submenu) {
+                    submenu.classList.add('open');
+                    const chevron = acquiringMenuItem.querySelector('.fa-chevron-down');
+                    if (chevron) {
+                        chevron.classList.replace('fa-chevron-down', 'fa-chevron-up');
+                    }
+                }
+                
+                // 重置表单
+                websiteUrlInput.value = '';
+                agreementCheckbox.checked = false;
+                
+                alert('申请已提交，我们会尽快处理您的申请');
+            });
+
+            // 点击模态框外部区域关闭弹框
+            acquiringModal.addEventListener('click', function(e) {
+                if (e.target === acquiringModal) {
+                    acquiringModal.classList.add('hidden');
+                    // 重置表单
+                    websiteUrlInput.value = '';
+                    agreementCheckbox.checked = false;
+                }
+            });
         });
     </script>
 </body>
