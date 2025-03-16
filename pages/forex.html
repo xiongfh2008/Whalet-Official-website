@@ -394,6 +394,10 @@
                                         <i class="fas fa-gift w-5 text-gray-400"></i>
                                         我的优惠
                                     </a>
+                                    <a href="my-invitation.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                        <i class="fas fa-user-plus w-5 text-gray-400"></i>
+                                        我的邀请
+                                    </a>
                                     <div class="border-t border-gray-100 my-1"></div>
                                     <a href="logout.html" class="block px-4 py-2 text-sm text-red-600 hover:bg-gray-100">
                                         <i class="fas fa-sign-out-alt w-5"></i>
@@ -414,7 +418,7 @@
                 <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
         <!-- 页面标题 -->
         <div class="mb-6">
-                        <h1 class="text-2xl font-bold text-gray-800">货币兑换</h1>
+                        <h1 class="text-xl font-semibold text-gray-800">外汇兑换</h1>
         </div>
 
                     <!-- 步骤指示器 -->
@@ -675,7 +679,7 @@
                     </div>
 
                     <div class="p-4 border-t border-gray-200 bg-gray-50">
-                        <button class="w-full text-blue-600 hover:text-blue-800 text-sm font-medium">
+                        <button id="viewAllExchangeHistory" class="w-full text-blue-600 hover:text-blue-800 text-sm font-medium">
                             查看全部兑换历史
                         </button>
                     </div>
@@ -700,6 +704,15 @@
                     if (!userCenterBtn.contains(event.target) && !userCenterDropdown.contains(event.target)) {
                         userCenterDropdown.classList.add('hidden');
                     }
+                });
+            }
+            
+            // 查看全部兑换历史按钮点击事件
+            const viewAllExchangeHistoryBtn = document.getElementById('viewAllExchangeHistory');
+            if (viewAllExchangeHistoryBtn) {
+                viewAllExchangeHistoryBtn.addEventListener('click', function() {
+                    // 跳转到交易查询页面，并传递参数以激活换汇记录标签
+                    window.location.href = 'transactions.html?tab=exchange';
                 });
             }
             

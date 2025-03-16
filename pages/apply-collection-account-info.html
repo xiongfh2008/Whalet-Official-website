@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>填写信息 - Whalet</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .step-indicator {
+            position: relative;
+        }
+        .step-indicator::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 100%;
+            width: 100%;
+            height: 2px;
+            background-color: #e5e7eb;
+            transform: translateY(-50%);
+        }
+        .step-indicator.active::after {
+            background-color: #4f46e5;
+        }
+        .step-number {
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            margin-right: 8px;
+            font-size: 12px;
+        }
+        .form-required::before {
+            content: '*';
+            color: #ef4444;
+            margin-right: 4px;
+        }
+        .platform-icon {
+            width: 30px;
+            height: 30px;
+            background-color: #ff8c00;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-right: 8px;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <div class="container mx-auto px-4 py-6">
+        <!-- 步骤指示器 -->
+        <div class="mb-6">
+            <div class="flex justify-between items-center max-w-2xl mx-auto">
+                <div class="flex items-center step-indicator">
+                    <div class="step-number bg-green-500 text-white">
+                        <i class="fas fa-check text-xs"></i>
+                    </div>
+                    <span class="text-green-500 font-medium text-sm">选择平台</span>
+                </div>
+                <div class="flex items-center step-indicator active">
+                    <div class="step-number bg-blue-600 text-white">2</div>
+                    <span class="text-blue-600 font-medium text-sm">填写信息</span>
+                </div>
+                <div class="flex items-center">
+                    <div class="step-number bg-gray-200 text-gray-600">3</div>
+                    <span class="text-gray-600 text-sm">确认提交</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 主要内容区域 -->
+        <div class="max-w-7xl mx-auto">
+            <div class="bg-white rounded-lg shadow-sm p-6">
+                <div class="flex items-center mb-6">
+                    <button class="mr-4 text-gray-600 hover:text-gray-900" onclick="history.back()">
+                        <i class="fas fa-arrow-left"></i>
+                        <span class="ml-1 text-sm">返回</span>
+                    </button>
+                </div>
+
+                <h1 class="text-xl font-medium text-gray-800 mb-6">填写境外收款账户产信息</h1>
+
+                <!-- 选中的平台信息 -->
+                <div class="mb-6 p-4 bg-gray-50 rounded-lg">
+                    <div class="flex items-center">
+                        <span class="text-sm text-gray-600 mr-2">当前选择收款平台:</span>
+                        <div class="flex items-center">
+                            <div class="platform-icon">A</div>
+                            <span class="text-sm font-medium">Amazon</span>
+                        </div>
+                        <button onclick="history.back()" class="ml-2 text-blue-600 text-sm hover:text-blue-800">重新选择</button>
+                    </div>
+                </div>
+
+                <!-- 表单 -->
+                <form class="space-y-8">
+                    <!-- 店铺信息组 -->
+                    <div class="space-y-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <!-- 店铺所在地区 -->
+                            <div class="form-group">
+                                <label class="block text-sm font-medium text-gray-700 mb-2 form-required">店铺所在地区</label>
+                                <select class="w-full p-2 border border-gray-300 rounded-md text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                    <option value="">北美站-美国、墨西哥、加拿大</option>
+                                </select>
+                            </div>
+
+                            <!-- 收款币种 -->
+                            <div class="form-group">
+                                <label class="block text-sm font-medium text-gray-700 mb-2">收款币种</label>
+                                <div class="flex items-center p-2 bg-gray-50 rounded-md">
+                                    <input type="radio" id="usd" name="currency" class="mr-2" checked>
+                                    <label for="usd" class="text-sm">美元(USD)</label>
+                                </div>
+                            </div>
+
+                            <!-- 银行所在地 -->
+                            <div class="form-group">
+                                <label class="block text-sm font-medium text-gray-700 mb-2 form-required">银行所在地</label>
+                                <select class="w-full p-2 border border-gray-300 rounded-md text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                    <option value="">美国 可开卡账号</option>
+                                </select>
+                                <div class="mt-1 flex items-center">
+                                    <i class="fas fa-info-circle text-blue-500 mr-1"></i>
+                                    <span class="text-xs text-gray-500">官方合规账号，更安全</span>
+                                </div>
+                            </div>
+
+                            <!-- 店铺情况 -->
+                            <div class="form-group">
+                                <label class="block text-sm font-medium text-gray-700 mb-2">店铺情况</label>
+                                <div class="flex items-center space-x-4 p-2 bg-gray-50 rounded-md">
+                                    <div class="flex items-center">
+                                        <input type="radio" id="existing" name="storeStatus" class="mr-2" checked>
+                                        <label for="existing" class="text-sm">已有店铺</label>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <input type="radio" id="planning" name="storeStatus" class="mr-2">
+                                        <label for="planning" class="text-sm">暂无店铺/有无店铺</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 店铺名称 -->
+                            <div class="form-group">
+                                <label class="block text-sm font-medium text-gray-700 mb-2 form-required">店铺名称</label>
+                                <input type="text" placeholder="输入店铺名称，便于管理识别" class="w-full p-2 border border-gray-300 rounded-md text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                            </div>
+
+                            <!-- 店铺别名 -->
+                            <div class="form-group">
+                                <label class="block text-sm font-medium text-gray-700 mb-2">店铺别名</label>
+                                <input type="text" placeholder="店铺别名" class="w-full p-2 border border-gray-300 rounded-md text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                            </div>
+
+                            <!-- 经营类别 -->
+                            <div class="form-group">
+                                <label class="block text-sm font-medium text-gray-700 mb-2 form-required">经营类别</label>
+                                <select class="w-full p-2 border border-gray-300 rounded-md text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                    <option value="">请选择经营类别</option>
+                                </select>
+                            </div>
+
+                            <!-- 预计年销售额 -->
+                            <div class="form-group">
+                                <label class="block text-sm font-medium text-gray-700 mb-2 form-required">预计年销售额</label>
+                                <select class="w-full p-2 border border-gray-300 rounded-md text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                    <option value="">请选择预计年销售额</option>
+                                </select>
+                            </div>
+
+                            <!-- 持有人 -->
+                            <div class="form-group">
+                                <label class="block text-sm font-medium text-gray-700 mb-2 form-required">持有人名称</label>
+                                <div class="flex items-center space-x-2">
+                                    <select class="flex-1 p-2 border border-gray-300 rounded-md text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                        <option value="">请选择持有人</option>
+                                    </select>
+                                    <a href="#" class="text-blue-600 text-sm hover:text-blue-800 whitespace-nowrap">添加持有人</a>
+                                </div>
+                            </div>
+
+                            <!-- 客户名称 -->
+                            <div class="form-group">
+                                <label class="block text-sm font-medium text-gray-700 mb-2 form-required">账户名称</label>
+                                <input type="text" placeholder="账户名称" class="w-full p-2 border border-gray-300 rounded-md text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                <p class="mt-1 text-xs text-red-500">需与平台登记内容保持一致，一般为英文，名称不一致可能会线下风险监控</p>
+                            </div>
+
+                            <!-- 持有人银行账户 -->
+                            <div class="form-group">
+                                <label class="block text-sm font-medium text-gray-700 mb-2 form-required">持有人银行账户</label>
+                                <div class="flex items-center space-x-2">
+                                    <select class="flex-1 p-2 border border-gray-300 rounded-md text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                        <option value="">请选择持有人银行账户</option>
+                                    </select>
+                                    <a href="#" class="text-blue-600 text-sm hover:text-blue-800 whitespace-nowrap">添加</a>
+                                </div>
+                                <p class="mt-1 text-xs text-red-500">如果未提提或提交的信息有误，可能会影响店铺的安全性。</p>
+                            </div>
+
+                            <!-- 接收方式 -->
+                            <div class="form-group">
+                                <label class="block text-sm font-medium text-gray-700 mb-2 form-required">接收方式</label>
+                                <div class="flex items-center p-2 bg-gray-50 rounded-md">
+                                    <input type="radio" id="direct" name="receiveMethod" class="mr-2" checked>
+                                    <label for="direct" class="text-sm">即转接收</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 协议确认 -->
+                    <div class="space-y-4">
+                        <div class="p-4 bg-blue-50 rounded-lg text-sm text-gray-600">
+                            <p>您需要签署平台马来西亚收款账户，为确保您的收款服务，点击确认，即可完成。即转接收操作指引 > 请确保您的网络允许环境（包含网络环境、电脑设备）进行操作，以免发生相关联系。</p>
+                        </div>
+                        <div class="flex items-center">
+                            <input type="checkbox" id="agreement" class="mr-2">
+                            <label for="agreement" class="text-sm">已阅读并同意</label>
+                            <a href="#" class="text-blue-600 text-sm mx-1">《境外收款服务协议》</a>
+                            <a href="#" class="text-blue-600 text-sm mx-1">《跨境支付协议》</a>
+                            <a href="#" class="text-blue-600 text-sm mx-1">《承诺函》</a>
+                        </div>
+                    </div>
+
+                    <!-- 提交按钮 -->
+                    <div class="flex justify-end pt-4">
+                        <button type="submit" class="px-8 py-2.5 bg-blue-600 text-white rounded-md text-sm font-medium hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+                            提交申请
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html> 

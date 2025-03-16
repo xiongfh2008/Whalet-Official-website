@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>申请收款账户 - 确认提交 - Whalet</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .step-indicator {
+            position: relative;
+        }
+        .step-indicator::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 100%;
+            width: 100%;
+            height: 2px;
+            background-color: #e5e7eb;
+            transform: translateY(-50%);
+        }
+        .step-indicator.active::after {
+            background-color: #4f46e5;
+        }
+        .step-number {
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <div class="container mx-auto px-4 py-8">
+        <!-- 步骤指示器 -->
+        <div class="mb-8">
+            <div class="flex justify-between items-center max-w-3xl mx-auto">
+                <div class="flex items-center step-indicator">
+                    <div class="step-number bg-green-500 text-white">
+                        <i class="fas fa-check"></i>
+                    </div>
+                    <span class="text-green-500 font-medium">选择平台</span>
+                </div>
+                <div class="flex items-center step-indicator">
+                    <div class="step-number bg-green-500 text-white">
+                        <i class="fas fa-check"></i>
+                    </div>
+                    <span class="text-green-500 font-medium">填写信息</span>
+                </div>
+                <div class="flex items-center">
+                    <div class="step-number bg-blue-600 text-white">3</div>
+                    <span class="text-blue-600 font-medium">确认提交</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 主要内容区域 -->
+        <div class="max-w-4xl mx-auto">
+            <div class="bg-white rounded-lg shadow-sm p-6">
+                <!-- 信息确认 -->
+                <div class="space-y-6">
+                    <!-- 基本信息 -->
+                    <div>
+                        <h2 class="text-xl font-semibold text-gray-800 mb-4">基本信息</h2>
+                        <div class="grid grid-cols-2 gap-x-8 gap-y-4">
+                            <div>
+                                <label class="text-sm text-gray-500">账户名称</label>
+                                <p class="mt-1 text-sm text-gray-900">Global Tech Store</p>
+                            </div>
+                            <div>
+                                <label class="text-sm text-gray-500">账户币种</label>
+                                <p class="mt-1 text-sm text-gray-900">USD - 美元</p>
+                            </div>
+                            <div>
+                                <label class="text-sm text-gray-500">持有人类型</label>
+                                <p class="mt-1 text-sm text-gray-900">个人</p>
+                            </div>
+                            <div>
+                                <label class="text-sm text-gray-500">持有人</label>
+                                <p class="mt-1 text-sm text-gray-900">张三</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 收款信息 -->
+                    <div>
+                        <h2 class="text-xl font-semibold text-gray-800 mb-4">收款信息</h2>
+                        <div class="grid grid-cols-2 gap-x-8 gap-y-4">
+                            <div>
+                                <label class="text-sm text-gray-500">收款银行</label>
+                                <p class="mt-1 text-sm text-gray-900">汇丰银行</p>
+                            </div>
+                            <div>
+                                <label class="text-sm text-gray-500">银行账号</label>
+                                <p class="mt-1 text-sm text-gray-900">**** **** **** 5678</p>
+                            </div>
+                            <div>
+                                <label class="text-sm text-gray-500">Swift Code</label>
+                                <p class="mt-1 text-sm text-gray-900">HSBCHKHH</p>
+                            </div>
+                            <div>
+                                <label class="text-sm text-gray-500">银行地址</label>
+                                <p class="mt-1 text-sm text-gray-900">香港中环皇后大道中1号</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 平台信息 -->
+                    <div>
+                        <h2 class="text-xl font-semibold text-gray-800 mb-4">平台信息</h2>
+                        <div class="grid grid-cols-2 gap-x-8 gap-y-4">
+                            <div>
+                                <label class="text-sm text-gray-500">店铺名称</label>
+                                <p class="mt-1 text-sm text-gray-900">Global Tech Store</p>
+                            </div>
+                            <div>
+                                <label class="text-sm text-gray-500">店铺链接</label>
+                                <p class="mt-1 text-sm text-gray-900">https://www.amazon.com/shop/globaltechstore</p>
+                            </div>
+                            <div>
+                                <label class="text-sm text-gray-500">平台账号</label>
+                                <p class="mt-1 text-sm text-gray-900">globaltechstore_us</p>
+                            </div>
+                            <div>
+                                <label class="text-sm text-gray-500">平台注册邮箱</label>
+                                <p class="mt-1 text-sm text-gray-900">business@globaltechstore.com</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 其他设置 -->
+                    <div>
+                        <h2 class="text-xl font-semibold text-gray-800 mb-4">其他设置</h2>
+                        <div class="space-y-4">
+                            <div>
+                                <label class="text-sm text-gray-500">自动续费</label>
+                                <p class="mt-1 text-sm text-gray-900">是</p>
+                            </div>
+                            <div>
+                                <label class="text-sm text-gray-500">备注</label>
+                                <p class="mt-1 text-sm text-gray-900">美国亚马逊主站店铺收款账户</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 服务协议 -->
+                    <div class="border-t pt-6">
+                        <div class="flex items-start">
+                            <div class="flex items-center h-5">
+                                <input id="agreement" type="checkbox" class="h-4 w-4 text-blue-600 rounded border-gray-300">
+                            </div>
+                            <div class="ml-3">
+                                <label for="agreement" class="text-sm text-gray-700">
+                                    我已阅读并同意
+                                    <a href="#" class="text-blue-600 hover:text-blue-800">《收款账户服务协议》</a>
+                                    和
+                                    <a href="#" class="text-blue-600 hover:text-blue-800">《风险提示》</a>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 底部按钮 -->
+            <div class="flex justify-between mt-8">
+                <button class="px-6 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50" onclick="window.location.href='apply-collection-account-info.html'">
+                    上一步
+                </button>
+                <button id="submitBtn" class="px-6 py-2 bg-blue-600 text-white rounded-md text-sm font-medium hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed" disabled>
+                    提交申请
+                </button>
+            </div>
+        </div>
+
+        <!-- 提交成功弹窗 -->
+        <div id="successModal" class="fixed inset-0 z-50 hidden">
+            <div class="fixed inset-0 bg-black bg-opacity-50"></div>
+            <div class="relative z-10 flex items-center justify-center min-h-screen p-4">
+                <div class="bg-white rounded-lg shadow-xl w-full max-w-md p-6">
+                    <div class="text-center">
+                        <div class="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-green-100 mb-4">
+                            <i class="fas fa-check text-green-600 text-xl"></i>
+                        </div>
+                        <h3 class="text-lg font-medium text-gray-900 mb-2">申请提交成功</h3>
+                        <p class="text-sm text-gray-500 mb-6">
+                            您的收款账户申请已提交成功，我们将在1-3个工作日内完成审核。请耐心等待审核结果。
+                        </p>
+                        <div class="mt-5">
+                            <button class="w-full px-4 py-2 bg-blue-600 text-white rounded-md text-sm font-medium hover:bg-blue-700" onclick="window.location.href='platform-collection.html'">
+                                返回收款账户列表
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 同意协议复选框控制提交按钮状态
+        const agreementCheckbox = document.getElementById('agreement');
+        const submitBtn = document.getElementById('submitBtn');
+        const successModal = document.getElementById('successModal');
+
+        agreementCheckbox.addEventListener('change', () => {
+            submitBtn.disabled = !agreementCheckbox.checked;
+        });
+
+        // 提交申请
+        submitBtn.addEventListener('click', () => {
+            // 这里添加提交逻辑
+            successModal.classList.remove('hidden');
+        });
+
+        // 点击弹窗外部关闭弹窗
+        successModal.addEventListener('click', (e) => {
+            if (e.target === successModal) {
+                successModal.classList.add('hidden');
+            }
+        });
+    </script>
+</body>
+</html> 

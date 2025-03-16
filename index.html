@@ -219,6 +219,244 @@
             z-index: 1002;
             background: white !important;
         }
+        
+        /* 活动弹框样式 */
+        #activity-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999; /* 确保在最顶层 */
+        }
+        
+        #activity-modal.hidden {
+            display: none !important;
+        }
+        
+        .activity-container {
+            width: 60%;
+            max-width: 500px;
+            background: linear-gradient(135deg, #f0f7ff, #fff);
+            border-radius: 16px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            position: relative;
+            overflow: hidden;
+            animation: fadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        
+        .activity-header {
+            background: linear-gradient(135deg, #4f46e5, #6366f1);
+            padding: 12px;
+            color: white;
+            text-align: center;
+            position: relative;
+        }
+        
+        .activity-header::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            right: 0;
+            height: 20px;
+            background: white;
+            border-radius: 50% 50% 0 0;
+        }
+        
+        .activity-content {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .activity-title {
+            font-size: 22px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #4f46e5;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+        
+        .activity-description {
+            text-align: center;
+            color: #4b5563;
+            margin-bottom: 15px;
+            line-height: 1.5;
+            font-size: 14px;
+        }
+        
+        .activity-benefit {
+            display: flex;
+            align-items: center;
+            margin: 10px 0;
+            padding: 10px 15px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            width: 100%;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        
+        .benefit-icon {
+            background-color: #ff7e5f;
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 15px;
+            flex-shrink: 0;
+        }
+        
+        .benefit-text {
+            font-weight: 500;
+        }
+        
+        .activity-actions {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 15px;
+            width: 100%;
+        }
+        
+        .activity-btn {
+            padding: 8px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 14px;
+        }
+        
+        .join-btn {
+            background-color: #4f46e5;
+            color: white;
+            border: none;
+        }
+        
+        .join-btn:hover {
+            background-color: #4338ca;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(79, 70, 229, 0.3);
+        }
+        
+        .close-btn {
+            background-color: transparent;
+            color: #6b7280;
+            border: 1px solid #d1d5db;
+        }
+        
+        .close-btn:hover {
+            background-color: #eef2ff;
+        }
+        
+        .absolute-close {
+            position: absolute;
+            top: 6px;
+            right: 6px;
+            background-color: rgba(255, 255, 255, 0.2);
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            z-index: 100;
+            transition: all 0.2s;
+        }
+        
+        .absolute-close:hover {
+            background-color: rgba(255, 255, 255, 0.4);
+            transform: rotate(90deg);
+        }
+        
+        .timer-section {
+            margin: 15px 0;
+            width: 100%;
+            background-color: #f3f4f6;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        
+        .timer-title {
+            font-weight: 600;
+            color: #4b5563;
+            margin-bottom: 10px;
+        }
+        
+        .timer-display {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        .timer-unit {
+            background-color: #ff7e5f;
+            color: white;
+            border-radius: 6px;
+            padding: 8px 12px;
+            min-width: 60px;
+            font-weight: bold;
+            position: relative;
+        }
+        
+        .timer-unit::after {
+            content: attr(data-label);
+            position: absolute;
+            bottom: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 12px;
+            color: #4b5563;
+            font-weight: normal;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        .pulse-animation {
+            animation: pulse 2s infinite;
+        }
+        
+        /* 响应式调整 */
+        @media (max-width: 768px) {
+            .activity-container {
+                width: 95%;
+            }
+            
+            .activity-title {
+                font-size: 24px;
+            }
+            
+            .activity-actions {
+                flex-direction: column;
+            }
+            
+            .activity-btn {
+                width: 100%;
+                margin: 5px 0;
+            }
+        }
     </style>
 </head>
 <body class="bg-gray-50 text-gray-800">
@@ -375,6 +613,11 @@
                                 <span class="menu-text">我的优惠</span>
                             </div>
                         </li>
+                        <li>
+                            <div class="menu-item" data-page="my-invitation">
+                                <span class="menu-text">我的邀请</span>
+                            </div>
+                        </li>
                     </ul>
                 </li>
             </ul>
@@ -385,6 +628,44 @@
     <main id="content-area">
         <iframe id="content-frame" src="pages/home.html" title="内容"></iframe>
     </main>
+    
+    <!-- 收单服务申请弹框 -->
+    <div id="acquiring-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div class="bg-white rounded-lg p-8 max-w-md w-full mx-4">
+            <h3 class="text-xl font-semibold mb-4">申请开通收单服务</h3>
+            <p class="text-gray-600 mb-6">尊敬的客户，在您开通全球收单产品前，请仔细阅读并同意以下服务协议及政策。</p>
+            
+            <div class="mb-6">
+                <label for="website-url" class="block text-sm font-medium text-gray-700 mb-2">
+                    收单网站链接 <span class="text-red-500">*</span>
+                </label>
+                <input type="url" 
+                    id="website-url" 
+                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500" 
+                    placeholder="请输入您的网站链接"
+                    required>
+                <p id="url-error" class="mt-1 text-sm text-red-500 hidden">请输入收单网站链接</p>
+            </div>
+            
+            <div class="mb-6">
+                <label class="flex items-start">
+                    <input type="checkbox" id="terms-checkbox" class="mt-1 mr-2">
+                    <span class="text-sm text-gray-600">
+                        已阅读并同意
+                        <a href="#" class="text-indigo-600 hover:text-indigo-800">《跨境收款服务协议》</a>
+                        <a href="#" class="text-indigo-600 hover:text-indigo-800">《隐私协议》</a>
+                    </span>
+                </label>
+            </div>
+            
+            <div class="flex justify-end space-x-4">
+                <button id="cancel-acquiring" class="px-4 py-2 text-gray-600 hover:text-gray-800">取消</button>
+                <button id="submit-acquiring" class="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed">
+                    提交申请
+                </button>
+            </div>
+        </div>
+    </div>
     
     <!-- 添加帮助按钮 -->
     <button id="help-button">
@@ -399,46 +680,34 @@
         <button class="next-step">下一步</button>
     </div>
 
-    <!-- 收单服务开通弹框 -->
-    <div id="acquiringServiceModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden z-50 flex items-center justify-center">
-        <div class="bg-white rounded-lg p-8 max-w-md w-full mx-4">
-            <div class="mb-6">
-                <h3 class="text-xl font-semibold text-gray-900 mb-4">开通收单服务</h3>
-                <p class="text-gray-700">尊敬的客户，在您开通全球收单产品前，请仔细阅读并同意以下服务协议及政策。</p>
+    <!-- 活动弹框 -->
+    <div id="activity-modal" class="hidden">
+        <div class="activity-container">
+            <div class="activity-header">
+                <div class="absolute-close" id="activity-close-x">
+                    <i class="fa-solid fa-times"></i>
+                </div>
             </div>
             
-            <div class="mb-6">
-                <label for="websiteUrl" class="block text-sm font-medium text-gray-700 mb-2">
-                    收单网站链接
-                    <span class="text-red-500 ml-1">*</span>
-                </label>
-                <input type="url" id="websiteUrl" name="websiteUrl" required
-                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-                    placeholder="请输入您的网站链接（必填）">
-            </div>
-            
-            <div class="mb-6">
-                <label class="flex items-start">
-                    <input type="checkbox" id="agreementCheckbox" 
-                        class="mt-1 h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded">
-                    <span class="ml-2 text-sm text-gray-600">
-                        已阅读并同意
-                        <a href="#" class="text-indigo-600 hover:text-indigo-800">《跨境收款服务协议》</a>
-                        和
-                        <a href="#" class="text-indigo-600 hover:text-indigo-800">《隐私协议》</a>
-                    </span>
-                </label>
-            </div>
-            
-            <div class="flex justify-end space-x-4">
-                <button type="button" id="cancelAcquiringService"
-                    class="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
-                    取消
-                </button>
-                <button type="button" id="confirmAcquiringService"
-                    class="px-4 py-2 text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                    确认开通
-                </button>
+            <div class="activity-content">
+                <h2 class="activity-title">用户体验问卷调查</h2>
+                <p class="activity-description">
+                    尊敬的Whalet用户，您好！<br>
+                    我们正在开展用户体验问卷调查，希望了解您的宝贵意见。<br>
+                    参与问卷调查仅需3分钟，您的反馈将帮助我们不断改进产品和服务。
+                </p>
+                
+                <div class="my-6 p-4 bg-blue-50 rounded-lg text-center">
+                    <i class="fa-solid fa-gift text-2xl text-orange-500 mb-2"></i>
+                    <p class="text-gray-700">完成问卷即有机会获得<span class="font-bold text-orange-500">精美礼品一份</span></p>
+                </div>
+                
+                <div class="activity-actions">
+                    <button class="activity-btn join-btn pulse-animation" id="submit-survey-btn">
+                        <i class="fa-solid fa-clipboard-list mr-2"></i>立即参与问卷
+                    </button>
+                    <button class="activity-btn close-btn" id="activity-close-btn">稍后再说</button>
+                </div>
             </div>
         </div>
     </div>
@@ -467,7 +736,8 @@
             'security': 'pages/security.html',
             'authentication-info': 'pages/authentication-info.html',
             'fees': 'pages/fees.html',
-            'coupons': 'pages/coupons.html'
+            'coupons': 'pages/coupons.html',
+            'my-invitation': 'pages/my-invitation.html'
         };
 
         // 加载页面内容
@@ -511,8 +781,14 @@
             document.querySelectorAll('.menu-item[data-page]').forEach(item => {
                 item.addEventListener('click', event => {
                     event.preventDefault();
-                    event.stopPropagation(); // 阻止事件冒泡
+                    event.stopPropagation();
                     const pageName = item.getAttribute('data-page');
+                    
+                    // 检查是否是收单相关页面
+                    if ((pageName === 'bill-collection' || pageName === 'transaction-list') && !isAcquiringServiceEnabled) {
+                        return; // 如果收单服务未开通，不进行页面跳转
+                    }
+                    
                     console.log('Menu item clicked:', pageName);
                     loadPage(pageName);
                 });
@@ -523,10 +799,22 @@
                 item.addEventListener('click', event => {
                     event.preventDefault();
                     const submenuId = item.getAttribute('data-toggle');
+                    
+                    // 如果是收单菜单且服务未开通，显示申请弹框
+                    if (submenuId === 'submenu-acquiring' && !isAcquiringServiceEnabled) {
+                        showAcquiringModal();
+                        return;
+                    }
+                    
                     const submenu = document.getElementById(submenuId);
                     
                     // 切换子菜单状态
                     if (submenu) {
+                        // 如果是收单菜单且服务未开通，不显示子菜单
+                        if (submenuId === 'submenu-acquiring' && !isAcquiringServiceEnabled) {
+                            return;
+                        }
+                        
                         // 关闭其他所有子菜单
                         document.querySelectorAll('.submenu').forEach(menu => {
                             if (menu !== submenu) {
@@ -704,78 +992,156 @@
             }
         }
 
-        // 收单服务开通弹框相关代码
+        // 活动弹框相关代码
         document.addEventListener('DOMContentLoaded', function() {
-            const acquiringMenuItem = document.querySelector('[data-toggle="submenu-acquiring"]');
-            const acquiringModal = document.getElementById('acquiringServiceModal');
-            const cancelButton = document.getElementById('cancelAcquiringService');
-            const confirmButton = document.getElementById('confirmAcquiringService');
-            const websiteUrlInput = document.getElementById('websiteUrl');
-            const agreementCheckbox = document.getElementById('agreementCheckbox');
-
-            // 点击收单菜单项时显示弹框
-            if (acquiringMenuItem) {
-                acquiringMenuItem.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    e.stopPropagation();
+            // 显示问卷调查弹框（页面加载0.5秒后）
+            setTimeout(() => {
+                document.getElementById('activity-modal').classList.remove('hidden');
+                
+                // 直接在这里绑定关闭按钮事件，确保在显示弹框后绑定
+                const closeX = document.getElementById('activity-close-x');
+                if (closeX) {
+                    closeX.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        console.log('关闭按钮被点击');
+                        closeActivityModal();
+                    });
+                }
+                
+                document.getElementById('activity-close-btn').addEventListener('click', closeActivityModal);
+                
+                // 参与问卷按钮事件
+                document.getElementById('submit-survey-btn').addEventListener('click', function() {
+                    // 这里可以添加打开问卷调查页面的代码
+                    // 例如：window.open('https://example.com/survey', '_blank');
                     
-                    // 如果服务未开通，显示弹框
-                    if (!isAcquiringServiceEnabled) {
-                        acquiringModal.classList.remove('hidden');
+                    alert('即将跳转到问卷调查页面，感谢您的参与！');
+                    closeActivityModal();
+                });
+                
+                // 点击弹框外部区域关闭弹框
+                document.getElementById('activity-modal').addEventListener('click', function(e) {
+                    if (e.target === document.getElementById('activity-modal')) {
+                        closeActivityModal();
                     }
                 });
+            }, 500);
+            
+            // 关闭弹框函数
+            function closeActivityModal() {
+                console.log('关闭弹框函数被调用');
+                document.getElementById('activity-modal').classList.add('hidden');
+                // 设置cookie，24小时内不再显示
+                document.cookie = "surveyPromptShown=true; max-age=86400; path=/";
             }
-
-            // 点击取消按钮关闭弹框
-            cancelButton.addEventListener('click', function() {
-                acquiringModal.classList.add('hidden');
-                // 重置表单
-                websiteUrlInput.value = '';
-                agreementCheckbox.checked = false;
-            });
-
-            // 点击确认按钮处理提交
-            confirmButton.addEventListener('click', function() {
-                if (!websiteUrlInput.value.trim()) {
-                    alert('请输入收单网站链接');
-                    return;
-                }
-                if (!agreementCheckbox.checked) {
-                    alert('请阅读并同意服务协议和隐私协议');
-                    return;
-                }
-                
-                // 设置服务开通状态
-                isAcquiringServiceEnabled = true;
-                
-                // 关闭弹框并展开子菜单
-                acquiringModal.classList.add('hidden');
-                const submenu = document.getElementById('submenu-acquiring');
-                if (submenu) {
-                    submenu.classList.add('open');
-                    const chevron = acquiringMenuItem.querySelector('.fa-chevron-down');
-                    if (chevron) {
-                        chevron.classList.replace('fa-chevron-down', 'fa-chevron-up');
+            
+            // 检查是否已经显示过弹框
+            function checkCookie() {
+                const cookies = document.cookie.split(';');
+                for (let cookie of cookies) {
+                    cookie = cookie.trim();
+                    if (cookie.startsWith('surveyPromptShown=')) {
+                        return true;
                     }
                 }
-                
-                // 重置表单
-                websiteUrlInput.value = '';
-                agreementCheckbox.checked = false;
-                
-                alert('申请已提交，我们会尽快处理您的申请');
-            });
+                return false;
+            }
+            
+            // 如果已经显示过，就不再显示
+            if (checkCookie()) {
+                document.getElementById('activity-modal').classList.add('hidden');
+            }
+        });
 
-            // 点击模态框外部区域关闭弹框
-            acquiringModal.addEventListener('click', function(e) {
-                if (e.target === acquiringModal) {
-                    acquiringModal.classList.add('hidden');
-                    // 重置表单
-                    websiteUrlInput.value = '';
-                    agreementCheckbox.checked = false;
+        // 收单服务相关函数
+        function showAcquiringModal() {
+            const modal = document.getElementById('acquiring-modal');
+            const submitBtn = document.getElementById('submit-acquiring');
+            const cancelBtn = document.getElementById('cancel-acquiring');
+            const termsCheckbox = document.getElementById('terms-checkbox');
+            const websiteInput = document.getElementById('website-url');
+            
+            // 显示弹框
+            modal.classList.remove('hidden');
+            
+            // 更新提交按钮状态
+            function updateSubmitButton() {
+                submitBtn.disabled = !termsCheckbox.checked || !websiteInput.value.trim();
+            }
+            
+            // 绑定事件
+            termsCheckbox.addEventListener('change', updateSubmitButton);
+            websiteInput.addEventListener('input', updateSubmitButton);
+            
+            // 初始化按钮状态
+            updateSubmitButton();
+            
+            // 取消按钮事件
+            cancelBtn.addEventListener('click', () => {
+                modal.classList.add('hidden');
+            });
+            
+            // 点击弹框外部关闭
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    modal.classList.add('hidden');
                 }
             });
-        });
+            
+            // 提交按钮事件
+            submitBtn.addEventListener('click', () => {
+                const urlError = document.getElementById('url-error');
+                
+                // 验证网站链接
+                if (!websiteInput.value.trim()) {
+                    urlError.classList.remove('hidden');
+                    websiteInput.classList.add('border-red-500');
+                    return;
+                } else {
+                    urlError.classList.add('hidden');
+                    websiteInput.classList.remove('border-red-500');
+                }
+                
+                if (termsCheckbox.checked && websiteInput.value.trim()) {
+                    // 启用收单服务
+                    isAcquiringServiceEnabled = true;
+                    
+                    // 更新菜单显示状态
+                    const submenu = document.getElementById('submenu-acquiring');
+                    if (submenu) {
+                        submenu.style.display = 'block';
+                        // 展开收单菜单
+                        submenu.classList.add('open');
+                        // 更新箭头方向
+                        const parentMenuItem = submenu.previousElementSibling;
+                        const chevron = parentMenuItem.querySelector('.submenu-toggle');
+                        if (chevron) {
+                            chevron.classList.replace('fa-chevron-down', 'fa-chevron-up');
+                        }
+                    }
+                    
+                    // 提示用户
+                    alert('申请已提交并审核通过，收单服务已开通！');
+                    modal.classList.add('hidden');
+                    
+                    // 清空表单
+                    websiteInput.value = '';
+                    termsCheckbox.checked = false;
+                }
+            });
+        }
+
+        // 更新收单菜单显示状态
+        function updateAcquiringMenu() {
+            const submenu = document.getElementById('submenu-acquiring');
+            if (submenu) {
+                submenu.style.display = isAcquiringServiceEnabled ? 'block' : 'none';
+            }
+        }
+
+        // 在页面加载时更新收单菜单状态
+        updateAcquiringMenu();
     </script>
 </body>
 </html> 

@@ -198,14 +198,18 @@
                                         <i class="fas fa-percentage w-5 text-gray-400"></i>
                                         <span class="ml-3">费率查询</span>
                                     </a>
-                                    <a href="coupons.html" class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                    <a href="coupons.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
                                         <i class="fas fa-gift w-5 text-gray-400"></i>
-                                        <span class="ml-3">我的优惠</span>
+                                        我的优惠
+                                    </a>
+                                    <a href="my-invitation.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                        <i class="fas fa-user-plus w-5 text-gray-400"></i>
+                                        我的邀请
                                     </a>
                                     <div class="border-t border-gray-100 my-1"></div>
-                                    <a href="logout.html" class="flex items-center px-4 py-2 text-sm text-red-600 hover:bg-gray-100">
+                                    <a href="logout.html" class="block px-4 py-2 text-sm text-red-600 hover:bg-gray-100">
                                         <i class="fas fa-sign-out-alt w-5"></i>
-                                        <span class="ml-3">退出</span>
+                                        退出
                                     </a>
                                 </div>
                             </div>
@@ -217,16 +221,20 @@
 
         <!-- 卡片管理内容区域 -->
         <div id="cardManageContent">
-            <!-- 处理中金额和开卡数统计 -->
+            <!-- 卡片总金额、已开卡数和可开卡数统计 -->
             <div class="mb-4">
                 <div class="balance-card p-6 text-white">
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                         <div>
-                            <p class="text-sm text-gray-200 mb-1">处理中金额</p>
-                            <p class="text-3xl font-bold">$ 0.00 <span class="text-gray-300 text-xl">USD</span></p>
+                            <p class="text-sm text-gray-200 mb-1">卡片总金额</p>
+                            <p class="text-3xl font-bold">$ 3,500.00 <span class="text-gray-300 text-xl">USD</span></p>
                         </div>
                         <div>
-                            <p class="text-sm text-gray-200 mb-1">剩余开卡数</p>
+                            <p class="text-sm text-gray-200 mb-1">已开卡数</p>
+                            <p class="text-3xl font-bold">3</p>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-200 mb-1">可开卡数</p>
                             <p class="text-3xl font-bold">10</p>
                         </div>
                     </div>
@@ -433,6 +441,70 @@
 
         <!-- 鲸卡交易内容区域 -->
         <div id="transactionContent" class="hidden">
+            <!-- 交易统计数据 -->
+            <div class="mb-4">
+                <div class="balance-card p-4 text-white">
+                    <div class="grid grid-cols-3 gap-4">
+                        <!-- 充值统计 -->
+                        <div class="flex items-center">
+                            <div class="bg-blue-500 bg-opacity-30 rounded-full p-2 mr-3">
+                                <i class="fas fa-arrow-down text-sm"></i>
+                            </div>
+                            <div>
+                                <div class="flex items-center">
+                                    <span class="text-sm font-medium">充值</span>
+                                    <span class="text-xs ml-2 text-gray-300">($10,500.00)</span>
+                                </div>
+                                <div class="flex items-center mt-1 text-xs">
+                                    <span class="mr-3">笔数: 42</span>
+                                    <div class="flex items-center">
+                                        <span>成功率: 98.5%</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- 消费统计 -->
+                        <div class="flex items-center">
+                            <div class="bg-red-500 bg-opacity-30 rounded-full p-2 mr-3">
+                                <i class="fas fa-shopping-cart text-sm"></i>
+                            </div>
+                            <div>
+                                <div class="flex items-center">
+                                    <span class="text-sm font-medium">消费</span>
+                                    <span class="text-xs ml-2 text-gray-300">($8,750.00)</span>
+                                </div>
+                                <div class="flex items-center mt-1 text-xs">
+                                    <span class="mr-3">笔数: 128</span>
+                                    <div class="flex items-center">
+                                        <span>成功率: 97.2%</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- 退款统计 -->
+                        <div class="flex items-center">
+                            <div class="bg-green-500 bg-opacity-30 rounded-full p-2 mr-3">
+                                <i class="fas fa-undo text-sm"></i>
+                            </div>
+                            <div>
+                                <div class="flex items-center">
+                                    <span class="text-sm font-medium">退款</span>
+                                    <span class="text-xs ml-2 text-gray-300">($1,280.00)</span>
+                                </div>
+                                <div class="flex items-center mt-1 text-xs">
+                                    <span class="mr-3">笔数: 16</span>
+                                    <div class="flex items-center">
+                                        <span>成功率: 94.8%</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
             <!-- 合并的交易记录 -->
             <div class="section-card p-6">
                 <div class="flex justify-between items-start mb-6">
@@ -444,12 +516,30 @@
                     
                     <!-- 右侧查询条件 -->
                     <div id="rechargeFilters" class="flex items-center space-x-3">
-                        <select class="px-3 py-1.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-blue-500 transition duration-200">
-                            <option>最近7天</option>
-                            <option>最近30天</option>
-                            <option>最近90天</option>
-                            <option>自定义</option>
+                        <select id="rechargeDateRange" class="px-3 py-1.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-blue-500 transition duration-200">
+                            <option value="7">最近7天</option>
+                            <option value="30">最近30天</option>
+                            <option value="90">最近90天</option>
+                            <option value="custom">自定义</option>
                         </select>
+                        <div id="rechargeDatePickers" class="hidden flex items-center space-x-2">
+                            <input 
+                                type="date" 
+                                id="rechargeStartDate" 
+                                class="px-3 py-1.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-blue-500 transition duration-200"
+                                style="width: 140px;"
+                            >
+                            <span class="text-gray-500">至</span>
+                            <input 
+                                type="date" 
+                                id="rechargeEndDate" 
+                                class="px-3 py-1.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-blue-500 transition duration-200"
+                                style="width: 140px;"
+                            >
+                            <button id="rechargeQueryBtn" class="ml-2 px-3 py-1.5 bg-blue-600 text-white rounded-lg text-sm hover:bg-blue-700 transition duration-200">
+                                查询
+                            </button>
+                        </div>
                         <select class="px-3 py-1.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-blue-500 transition duration-200">
                             <option>全部类型</option>
                             <option>在线充值</option>
@@ -465,12 +555,30 @@
                     </div>
 
                     <div id="usageFilters" class="flex items-center space-x-3 hidden">
-                        <select class="px-3 py-1.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-blue-500 transition duration-200">
-                            <option>最近7天</option>
-                            <option>最近30天</option>
-                            <option>最近90天</option>
-                            <option>自定义</option>
+                        <select id="usageDateRange" class="px-3 py-1.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-blue-500 transition duration-200">
+                            <option value="7">最近7天</option>
+                            <option value="30">最近30天</option>
+                            <option value="90">最近90天</option>
+                            <option value="custom">自定义</option>
                         </select>
+                        <div id="usageDatePickers" class="hidden flex items-center space-x-2">
+                            <input 
+                                type="date" 
+                                id="usageStartDate" 
+                                class="px-3 py-1.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-blue-500 transition duration-200"
+                                style="width: 140px;"
+                            >
+                            <span class="text-gray-500">至</span>
+                            <input 
+                                type="date" 
+                                id="usageEndDate" 
+                                class="px-3 py-1.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-blue-500 transition duration-200"
+                                style="width: 140px;"
+                            >
+                            <button id="usageQueryBtn" class="ml-2 px-3 py-1.5 bg-blue-600 text-white rounded-lg text-sm hover:bg-blue-700 transition duration-200">
+                                查询
+                            </button>
+                        </div>
                         <input 
                             type="text" 
                             placeholder="卡号后四位" 
@@ -604,6 +712,150 @@
             usageFilters.classList.remove('hidden');
             rechargeFilters.classList.add('hidden');
         });
+
+        // 自定义日期范围功能
+        const rechargeDateRange = document.getElementById('rechargeDateRange');
+        const rechargeDatePickers = document.getElementById('rechargeDatePickers');
+        const rechargeStartDate = document.getElementById('rechargeStartDate');
+        const rechargeEndDate = document.getElementById('rechargeEndDate');
+        const rechargeQueryBtn = document.getElementById('rechargeQueryBtn');
+
+        const usageDateRange = document.getElementById('usageDateRange');
+        const usageDatePickers = document.getElementById('usageDatePickers');
+        const usageStartDate = document.getElementById('usageStartDate');
+        const usageEndDate = document.getElementById('usageEndDate');
+        const usageQueryBtn = document.getElementById('usageQueryBtn');
+
+        // 设置初始日期值（默认为当天和7天前）
+        const today = new Date();
+        const formatDate = (date) => {
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            return `${year}-${month}-${day}`;
+        };
+
+        const setDefaultDates = () => {
+            const todayStr = formatDate(today);
+            const sevenDaysAgo = new Date();
+            sevenDaysAgo.setDate(today.getDate() - 7);
+            const sevenDaysAgoStr = formatDate(sevenDaysAgo);
+            
+            rechargeStartDate.value = sevenDaysAgoStr;
+            rechargeEndDate.value = todayStr;
+            usageStartDate.value = sevenDaysAgoStr;
+            usageEndDate.value = todayStr;
+        };
+        
+        setDefaultDates();
+
+        // 处理充值记录日期范围选择
+        rechargeDateRange.addEventListener('change', function() {
+            if (this.value === 'custom') {
+                rechargeDatePickers.classList.remove('hidden');
+            } else {
+                rechargeDatePickers.classList.add('hidden');
+                
+                // 根据选择设置日期范围
+                const endDate = new Date();
+                const startDate = new Date();
+                startDate.setDate(endDate.getDate() - parseInt(this.value));
+                
+                // 执行查询逻辑
+                executeRechargeQuery(startDate, endDate);
+            }
+        });
+
+        // 处理使用明细日期范围选择
+        usageDateRange.addEventListener('change', function() {
+            if (this.value === 'custom') {
+                usageDatePickers.classList.remove('hidden');
+            } else {
+                usageDatePickers.classList.add('hidden');
+                
+                // 根据选择设置日期范围
+                const endDate = new Date();
+                const startDate = new Date();
+                startDate.setDate(endDate.getDate() - parseInt(this.value));
+                
+                // 执行查询逻辑
+                executeUsageQuery(startDate, endDate);
+            }
+        });
+
+        // 充值记录查询按钮点击事件
+        rechargeQueryBtn.addEventListener('click', function() {
+            const startDate = new Date(rechargeStartDate.value);
+            const endDate = new Date(rechargeEndDate.value);
+            
+            if (isNaN(startDate.getTime()) || isNaN(endDate.getTime())) {
+                alert('请选择有效的日期范围');
+                return;
+            }
+            
+            if (startDate > endDate) {
+                alert('开始日期不能晚于结束日期');
+                return;
+            }
+            
+            executeRechargeQuery(startDate, endDate);
+        });
+
+        // 使用明细查询按钮点击事件
+        usageQueryBtn.addEventListener('click', function() {
+            const startDate = new Date(usageStartDate.value);
+            const endDate = new Date(usageEndDate.value);
+            
+            if (isNaN(startDate.getTime()) || isNaN(endDate.getTime())) {
+                alert('请选择有效的日期范围');
+                return;
+            }
+            
+            if (startDate > endDate) {
+                alert('开始日期不能晚于结束日期');
+                return;
+            }
+            
+            executeUsageQuery(startDate, endDate);
+        });
+
+        // 执行充值记录查询
+        function executeRechargeQuery(startDate, endDate) {
+            console.log('执行充值记录查询:', formatDate(startDate), '至', formatDate(endDate));
+            
+            // 这里可以实现实际的查询逻辑，例如发送AJAX请求到服务器
+            // 示例: 
+            // fetchRechargeData(formatDate(startDate), formatDate(endDate))
+            //   .then(data => updateRechargeTable(data))
+            //   .catch(error => console.error('查询失败:', error));
+            
+            // 模拟查询成功的提示
+            const toast = document.createElement('div');
+            toast.className = 'fixed bottom-4 right-4 bg-green-600 text-white px-4 py-2 rounded-lg shadow-lg';
+            toast.textContent = `查询成功: ${formatDate(startDate)} 至 ${formatDate(endDate)}`;
+            document.body.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.remove();
+            }, 3000);
+        }
+
+        // 执行使用明细查询
+        function executeUsageQuery(startDate, endDate) {
+            console.log('执行使用明细查询:', formatDate(startDate), '至', formatDate(endDate));
+            
+            // 这里可以实现实际的查询逻辑
+            
+            // 模拟查询成功的提示
+            const toast = document.createElement('div');
+            toast.className = 'fixed bottom-4 right-4 bg-green-600 text-white px-4 py-2 rounded-lg shadow-lg';
+            toast.textContent = `查询成功: ${formatDate(startDate)} 至 ${formatDate(endDate)}`;
+            document.body.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.remove();
+            }, 3000);
+        }
 
         // 用户中心下拉菜单
         const userCenterBtn = document.getElementById('userCenterBtn');

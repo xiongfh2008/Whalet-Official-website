@@ -11,30 +11,16 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <!-- 引入图标 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- 引入common.css -->
-    <link rel="stylesheet" href="../styles/common.css">
     <!-- 引入自定义样式 -->
     <link rel="stylesheet" href="../styles/my-assets.css">
     <style>
         body {
+            font-family: 'Inter', 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
             background-color: #f9fafb;
-            font-family: 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            color: #1f2937;
         }
-        .container {
-            max-width: 1280px;
-            margin: 0 auto;
-            padding: 1.5rem 1rem;
-        }
-        @media (min-width: 640px) {
-            .container {
-                padding: 1.5rem;
-            }
-        }
-        @media (min-width: 1024px) {
-            .container {
-                padding: 1.5rem 2rem;
-            }
-        }
+
+        /* 添加tab按钮样式 */
         .tab-btn {
             border-bottom: 2px solid transparent;
             color: #6b7280;
@@ -44,8 +30,8 @@
             border-bottom-color: #d1d5db;
         }
         .tab-btn.active {
-            border-bottom: 2px solid #4f46e5;
-            color: #4f46e5;
+            border-bottom: 2px solid #2563eb;
+            color: #2563eb;
         }
 
         /* 用户中心下拉菜单样式 */
@@ -203,11 +189,11 @@
         }
     </style>
 </head>
-<body class="bg-gray-50">
-    <div class="container mx-auto">
-        <!-- 将顶部导航和tab选项卡放在同一行 -->
-        <div class="bg-white rounded-lg shadow-sm mb-4">
-            <div class="border-b border-gray-200">
+<body class="min-h-screen bg-gray-50">
+    <main class="container mx-auto px-4 py-6">
+        <!-- 顶部导航 -->
+        <div class="nav-container">
+            <div class="nav-border">
                 <div class="flex justify-between items-center">
                     <nav class="flex justify-start -mb-px pl-6">
                         <button class="tab-btn active whitespace-nowrap py-4 px-8 border-b-2 text-center text-sm font-medium">
@@ -233,7 +219,7 @@
                             <button id="userCenterBtn" class="text-gray-600 hover:text-blue-600">
                                 <i class="fas fa-user-circle text-lg"></i>
                             </button>
-                            <div id="userCenterDropdown" class="absolute right-0 top-full mt-1 w-64 bg-white rounded-lg shadow-lg py-3 hidden z-10">
+                            <div id="userCenterDropdown" class="absolute right-0 top-full mt-1 w-64 bg-white rounded-lg shadow-lg py-3 hidden opacity-0 -translate-y-2 z-10">
                                 <!-- 用户信息部分 -->
                                 <div class="px-4 pb-3 border-b border-gray-100">
                                     <div class="flex items-center justify-between mb-2">
@@ -273,10 +259,6 @@
                                         <i class="fas fa-gift w-5 text-gray-400"></i>
                                         我的优惠
                                     </a>
-                                    <a href="my-invitation.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                                        <i class="fas fa-user-plus w-5 text-gray-400"></i>
-                                        我的邀请
-                                    </a>
                                     <div class="border-t border-gray-100 my-1"></div>
                                     <a href="logout.html" class="block px-4 py-2 text-sm text-red-600 hover:bg-gray-100">
                                         <i class="fas fa-sign-out-alt w-5"></i>
@@ -290,7 +272,6 @@
             </div>
         </div>
 
-        <!-- 资产内容 -->
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
             <!-- 总资产预估 -->
             <section class="lg:col-span-4 gradient-card rounded-xl p-5">
@@ -528,36 +509,15 @@
                 </div>
             </section>
         </div>
-    </div>
+    </main>
 
-    <!-- 引入 Chart.js -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
-    <!-- 引入 Tippy.js 和 Popper.js -->
+    <!-- 引入基础库 -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.0/dist/chart.min.js"></script>
     <script src="https://unpkg.com/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
     <script src="https://unpkg.com/tippy.js@6.3.7/dist/tippy-bundle.umd.min.js"></script>
     <link rel="stylesheet" href="https://unpkg.com/tippy.js@6.3.7/dist/tippy.css" />
     
-    <!-- 用户中心下拉菜单脚本 -->
-    <script>
-        // 用户中心下拉菜单
-        document.addEventListener('DOMContentLoaded', function() {
-            const userCenterBtn = document.getElementById('userCenterBtn');
-            const userCenterDropdown = document.getElementById('userCenterDropdown');
-            
-            userCenterBtn.addEventListener('click', function(e) {
-                e.stopPropagation();
-                userCenterDropdown.classList.toggle('hidden');
-            });
-            
-            document.addEventListener('click', function(e) {
-                if (!userCenterDropdown.contains(e.target) && e.target !== userCenterBtn) {
-                    userCenterDropdown.classList.add('hidden');
-                }
-            });
-        });
-    </script>
-    
     <!-- 引入自定义脚本 -->
-    <script src="../scripts/my-assets.js"></script>
+    <script src="../scripts/my-assets-fixed.js"></script>
 </body>
 </html> 

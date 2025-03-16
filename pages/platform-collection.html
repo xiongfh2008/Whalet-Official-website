@@ -105,6 +105,10 @@
                                         <i class="fas fa-gift w-5 text-gray-400"></i>
                                         我的优惠
                                     </a>
+                                    <a href="my-invitation.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                        <i class="fas fa-user-plus w-5 text-gray-400"></i>
+                                        我的邀请
+                                    </a>
                                     <div class="border-t border-gray-100 my-1"></div>
                                     <a href="logout.html" class="block px-4 py-2 text-sm text-red-600 hover:bg-gray-100">
                                         <i class="fas fa-sign-out-alt w-5"></i>
@@ -124,7 +128,7 @@
                 <div class="flex justify-between items-center">
                     <h2 class="text-xl font-semibold text-gray-800">收款账户</h2>
                     <div class="flex space-x-3">
-                        <button class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded text-sm font-medium">
+                        <button class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded text-sm font-medium" onclick="window.location.href='apply-collection-account.html'">
                             申请收款账户
                         </button>
                         <button class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded text-sm font-medium opacity-50 cursor-not-allowed" disabled>
@@ -497,8 +501,8 @@
                                             <a href="#" class="block px-4 py-2 text-sm text-red-600 hover:bg-gray-100">注销</a>
                                             <a href="#" class="block px-4 py-2 text-sm text-blue-600 hover:bg-gray-100">延长注销日期</a>
                                         </div>
-                </div>
-                </div>
+                                    </div>
+                                </div>
                             </td>
                         </tr>
                         <tr>
@@ -531,8 +535,8 @@
                                             <a href="#" class="block px-4 py-2 text-sm text-red-600 hover:bg-gray-100">注销</a>
                                             <a href="#" class="block px-4 py-2 text-sm text-blue-600 hover:bg-gray-100">延长注销日期</a>
                                         </div>
-                </div>
-                </div>
+                                    </div>
+                                </div>
                             </td>
                         </tr>
                     </tbody>
@@ -794,198 +798,186 @@
             <div class="p-6 border-b border-gray-200">
                 <div class="flex justify-between items-center">
                     <h2 class="text-xl font-semibold text-gray-800">订单管理</h2>
-                    <button class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded text-sm font-medium" id="upload-order-btn">
+                    <button class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded text-sm font-medium" onclick="window.location.href='upload-order.html'">
                         上传订单
-                        </button>
+                    </button>
                 </div>
             </div>
+
+            <!-- 提示信息 -->
+            <div class="p-4 bg-blue-50 mx-6 my-4 rounded">
+                <p class="text-sm text-gray-600">因银行监管制度，超过340天的订单额度将会失效，请及时使用。</p>
+            </div>
+
+            <!-- 查询条件 -->
             <div class="p-6 border-b border-gray-200">
                 <div class="flex flex-wrap gap-4">
                     <div class="flex items-center">
-                        <span class="mr-2 text-sm font-medium text-gray-700">下单时间:</span>
+                        <span class="mr-2 text-sm font-medium text-gray-700">日期:</span>
                         <input type="date" class="p-2 text-sm border border-gray-300 rounded-md" />
                         <span class="mx-2">至</span>
                         <input type="date" class="p-2 text-sm border border-gray-300 rounded-md" />
                     </div>
                     <div class="flex items-center">
-                        <span class="mr-2 text-sm font-medium text-gray-700">订单状态:</span>
+                        <span class="mr-2 text-sm font-medium text-gray-700">收款平台:</span>
                         <select class="p-2 text-sm border border-gray-300 rounded-md">
-                            <option>全部</option>
-                            <option>待付款</option>
-                            <option>已付款</option>
-                            <option>已完成</option>
-                            <option>已取消</option>
+                            <option value="">全部</option>
+                            <option value="selfbuilt">其他自建站</option>
+                            <option value="amazon">Amazon</option>
+                            <option value="shopify">Shopify</option>
+                            <option value="ebay">eBay</option>
                         </select>
                     </div>
                     <div class="flex items-center">
-                        <input type="text" placeholder="订单号/商品名称/收款账户" class="p-2 text-sm border border-gray-300 rounded-md w-64" />
-                        <button class="ml-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded text-sm font-medium">
+                        <span class="mr-2 text-sm font-medium text-gray-700">状态:</span>
+                        <select class="p-2 text-sm border border-gray-300 rounded-md">
+                            <option value="">全部</option>
+                            <option value="rejected">审核驳回</option>
+                            <option value="approved">审核通过</option>
+                            <option value="pending">待审核</option>
+                        </select>
+                    </div>
+                    <div class="flex items-center">
+                        <button class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded text-sm font-medium">
                             查询
+                        </button>
+                        <button class="ml-2 bg-white border border-gray-300 text-gray-700 px-4 py-2 rounded text-sm font-medium hover:bg-gray-50">
+                            重置
                         </button>
                     </div>
                 </div>
             </div>
+
+            <!-- 表格内容 -->
             <div class="overflow-x-auto">
                 <table class="min-w-full divide-y divide-gray-200">
                     <thead class="bg-gray-50">
                         <tr>
                             <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                订单编号
+                                店铺名称
                             </th>
                             <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                平台来源
+                                状态
                             </th>
                             <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                商品名称
+                                文件名
                             </th>
                             <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                金额
+                                订单金额
                             </th>
                             <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                币种
+                                审核通过订单数/订单数量
                             </th>
                             <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                收款状态
+                                可用额度
                             </th>
                             <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                下单时间
+                                平台名称
                             </th>
                             <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                完成时间
+                                上传时间
                             </th>
                             <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                操作
+                                备注
+                            </th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                校验失败订单
                             </th>
                         </tr>
                     </thead>
                     <tbody class="bg-white divide-y divide-gray-200">
                         <tr>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                ORD20230512001
-                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">selbuilt</td>
                             <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="flex items-center">
-                                    <img class="h-6 w-6 rounded-full" src="https://logo.clearbit.com/amazon.com" alt="">
-                                    <span class="ml-2 text-sm text-gray-900">Amazon</span>
-                                </div>
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                无线耳机
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                $129.99
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                USD
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                                    已完成
+                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
+                                    审核驳回
                                 </span>
                             </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                2023-05-12 14:30
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">fac60...</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">35,756.00 USD</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">0/53</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">0.00</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">其他自建站</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">2024-01-16 16:59:52</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900"></td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-blue-600">
+                                <a href="#" class="text-blue-600 hover:text-blue-900">预览</a>
                             </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                2023-05-12 15:45
+                        </tr>
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">selbuilt</td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
+                                    审核驳回
+                                </span>
                             </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                <a href="#" class="text-blue-600 hover:text-blue-900">详情</a>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">fac60...</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900"></td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">0/0</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">0.00</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">其他自建站</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">2024-01-16 15:51:12</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900"></td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-blue-600">
+                                <a href="#" class="text-blue-600 hover:text-blue-900">预览</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">selbuilt</td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
+                                    审核驳回
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">2023-...</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">88,078.98 USD</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">0/128</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">0.00</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">其他自建站</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">2023-12-19 09:23:29</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900"></td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-blue-600">
+                                <a href="#" class="text-blue-600 hover:text-blue-900">预览</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">selbuilt</td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
+                                    审核驳回
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">易购提款代...</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">1,036,900 JPY</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">0/196</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">0.00</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">其他自建站</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">2023-12-14 17:17:08</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900"></td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-blue-600">
+                                <a href="#" class="text-blue-600 hover:text-blue-900">预览</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">selbuilt</td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
+                                    审核驳回
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">订单上传通...</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">63,453.52 USD</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">0/2009</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">0.00</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">其他自建站</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">2023-11-06 13:58:05</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900"></td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-blue-600">
+                                <a href="#" class="text-blue-600 hover:text-blue-900">预览</a>
                             </td>
                         </tr>
                     </tbody>
                 </table>
-            </div>
-            <div class="px-6 py-4 border-t border-gray-200">
-                <div class="flex items-center justify-between">
-                    <div class="text-sm text-gray-500">
-                        显示 1 至 10 条，共 156 条
-                    </div>
-                    <div class="flex space-x-2">
-                        <button class="px-3 py-1 border border-gray-300 rounded-md text-sm text-gray-700 hover:bg-gray-50">
-                            上一页
-                        </button>
-                        <button class="px-3 py-1 border border-gray-300 rounded-md text-sm text-gray-700 hover:bg-gray-50">
-                            下一页
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- 上传订单弹窗 -->
-        <div id="upload-order-modal" class="fixed inset-0 z-50 hidden">
-            <div class="fixed inset-0 bg-black bg-opacity-50"></div>
-            <div class="relative z-10 flex items-center justify-center min-h-screen p-4">
-                <div class="bg-white rounded-lg shadow-xl w-full max-w-2xl">
-                    <div class="p-6 border-b border-gray-200">
-                        <div class="flex justify-between items-center">
-                            <h3 class="text-lg font-semibold text-gray-800">上传订单</h3>
-                            <button id="close-modal" class="text-gray-400 hover:text-gray-500">
-                                <i class="fas fa-times"></i>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="p-6">
-                        <div class="mb-6">
-                            <div class="flex items-center justify-between mb-2">
-                                <label class="block text-sm font-medium text-gray-700">选择模板</label>
-                                <a href="#" class="text-blue-600 text-sm hover:text-blue-800">下载模板</a>
-                            </div>
-                            <div class="grid grid-cols-3 gap-4">
-                                <div class="border border-gray-300 rounded-md p-3 cursor-pointer hover:border-blue-500 hover:bg-blue-50">
-                                    <div class="flex flex-col items-center justify-center">
-                                        <i class="fas fa-file-excel text-green-500 text-xl mb-2"></i>
-                                        <p class="text-sm text-gray-600">Amazon订单模板</p>
-                                    </div>
-                                </div>
-                                <div class="border border-gray-300 rounded-md p-3 cursor-pointer hover:border-blue-500 hover:bg-blue-50">
-                                    <div class="flex flex-col items-center justify-center">
-                                        <i class="fas fa-file-excel text-green-500 text-xl mb-2"></i>
-                                        <p class="text-sm text-gray-600">eBay订单模板</p>
-                                    </div>
-                                </div>
-                                <div class="border border-gray-300 rounded-md p-3 cursor-pointer hover:border-blue-500 hover:bg-blue-50">
-                                    <div class="flex flex-col items-center justify-center">
-                                        <i class="fas fa-file-excel text-green-500 text-xl mb-2"></i>
-                                        <p class="text-sm text-gray-600">Shopify订单模板</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="mb-6">
-                            <label class="block text-sm font-medium text-gray-700 mb-2">上传文件</label>
-                            <div class="border-2 border-dashed border-gray-300 rounded-md p-6 flex flex-col items-center justify-center">
-                                <i class="fas fa-cloud-upload-alt text-blue-500 text-3xl mb-3"></i>
-                                <p class="text-sm text-gray-600 mb-2">将文件拖放到此处，或</p>
-                                <button class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded text-sm font-medium">
-                                    选择文件
-                                </button>
-                                <p class="text-xs text-gray-500 mt-2">支持 .xlsx, .csv 格式，文件大小不超过10MB</p>
-                            </div>
-                        </div>
-                        <div class="mb-6">
-                            <label class="block text-sm font-medium text-gray-700 mb-2">关联收款账户</label>
-                            <select class="w-full p-2 border border-gray-300 rounded-md">
-                                <option>Amazon US Store - USD</option>
-                                <option>eBay UK Store - GBP</option>
-                                <option>Shopify Global - Multi-Currency</option>
-                            </select>
-                        </div>
-                        <div class="mb-6">
-                            <label class="block text-sm font-medium text-gray-700 mb-2">备注</label>
-                            <textarea class="w-full p-2 border border-gray-300 rounded-md" rows="3" placeholder="请输入备注信息（选填）"></textarea>
-                        </div>
-                    </div>
-                    <div class="p-6 border-t border-gray-200 flex justify-end space-x-4">
-                        <button id="cancel-upload" class="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50">
-                            取消
-                        </button>
-                        <button class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded text-sm font-medium">
-                            确认上传
-                        </button>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
@@ -996,44 +988,36 @@
             const tabButtons = document.querySelectorAll('.tab-btn');
             const tabContents = document.querySelectorAll('.tab-content');
             
+            function activateTab(tabId) {
+                // 移除所有按钮的活动状态
+                tabButtons.forEach(btn => btn.classList.remove('active'));
+                // 添加当前按钮的活动状态
+                const activeButton = document.querySelector(`[data-tab="${tabId}"]`);
+                if (activeButton) {
+                    activeButton.classList.add('active');
+                }
+                
+                // 隐藏所有内容
+                tabContents.forEach(content => content.classList.remove('active'));
+                // 显示当前内容
+                const activeContent = document.getElementById(tabId);
+                if (activeContent) {
+                    activeContent.classList.add('active');
+                }
+            }
+
+            // 检查是否需要激活特定标签页
+            const activeTab = localStorage.getItem('activeTab');
+            if (activeTab) {
+                activateTab(activeTab);
+                localStorage.removeItem('activeTab'); // 清除存储的标签页信息
+            }
+            
             tabButtons.forEach(button => {
                 button.addEventListener('click', () => {
                     const tabId = button.getAttribute('data-tab');
-                    
-                    // 移除所有按钮的活动状态
-                    tabButtons.forEach(btn => btn.classList.remove('active'));
-                    // 添加当前按钮的活动状态
-                    button.classList.add('active');
-                    
-                    // 隐藏所有内容
-                    tabContents.forEach(content => content.classList.remove('active'));
-                    // 显示当前内容
-                    document.getElementById(tabId).classList.add('active');
+                    activateTab(tabId);
                 });
-            });
-            
-            // 上传订单弹窗
-            const uploadOrderBtn = document.getElementById('upload-order-btn');
-            const uploadOrderModal = document.getElementById('upload-order-modal');
-            const closeModalBtn = document.getElementById('close-modal');
-            const cancelUploadBtn = document.getElementById('cancel-upload');
-            
-            uploadOrderBtn.addEventListener('click', () => {
-                uploadOrderModal.classList.remove('hidden');
-            });
-            
-            function closeModal() {
-                uploadOrderModal.classList.add('hidden');
-            }
-            
-            closeModalBtn.addEventListener('click', closeModal);
-            cancelUploadBtn.addEventListener('click', closeModal);
-            
-            // 点击弹窗外部关闭弹窗
-            uploadOrderModal.addEventListener('click', (e) => {
-                if (e.target === uploadOrderModal) {
-                    closeModal();
-                }
             });
             
             // 用户中心下拉菜单点击切换显示

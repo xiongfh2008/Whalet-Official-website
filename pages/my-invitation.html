@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>我的邀请</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/qrcode.js@1.0.0/qrcode.min.js"></script>
+    <style>
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+        }
+        
+        .tab-btn {
+            border-bottom: 2px solid transparent;
+            color: #6b7280;
+            transition: all 0.2s ease;
+        }
+        .tab-btn:hover {
+            color: #374151;
+            border-bottom-color: #d1d5db;
+        }
+        .tab-btn.active {
+            border-bottom: 2px solid #4f46e5;
+            color: #4f46e5;
+        }
+
+        .card {
+            background: white;
+            border: 1px solid #E5E7EB;
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            transition: all 0.2s ease;
+        }
+        .card:hover {
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+
+        .btn-primary {
+            background: #0066FF;
+            transition: all 0.2s ease;
+        }
+        .btn-primary:hover {
+            background: #0052CC;
+        }
+
+        .input-field {
+            transition: all 0.2s ease;
+        }
+        .input-field:focus {
+            border-color: #0066FF;
+            box-shadow: 0 0 0 2px rgba(0,102,255,0.1);
+        }
+
+        .qr-container {
+            background: linear-gradient(to bottom right, #F9FAFB, #F3F4F6);
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <div class="container mx-auto">
+        <!-- 顶部导航栏 -->
+        <div class="bg-white rounded-xl shadow-sm mb-4">
+            <div class="border-b border-gray-100">
+                <div class="flex justify-between items-center">
+                    <nav class="flex justify-start -mb-px pl-6">
+                        <button class="tab-btn active whitespace-nowrap py-4 px-8 border-b-2 text-center text-sm font-medium">
+                            我的邀请
+                        </button>
+                    </nav>
+                    <div class="flex items-center space-x-8 pr-6">
+                        <!-- 公告图标 -->
+                        <div class="relative">
+                            <a href="#" class="text-gray-600 hover:text-blue-600 transition-colors">
+                                <span class="relative">
+                                    <i class="fas fa-bell text-lg"></i>
+                                    <span class="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full"></span>
+                                </span>
+                            </a>
+                        </div>
+                        
+                        <!-- 帮助 -->
+                        <a href="#" class="text-gray-600 hover:text-blue-600 transition-colors text-sm font-medium">帮助</a>
+                        
+                        <!-- 用户中心 -->
+                        <div class="relative">
+                            <button id="userCenterBtn" class="text-gray-600 hover:text-blue-600 transition-colors">
+                                <i class="fas fa-user-circle text-xl"></i>
+                            </button>
+                            <div id="userDropdown" class="absolute right-0 top-full mt-2 w-72 bg-white rounded-xl shadow-lg py-3 hidden z-10 border border-gray-100">
+                                <!-- 用户信息部分 -->
+                                <div class="px-4 pb-3 border-b border-gray-100">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <h3 class="font-semibold text-gray-900">张珊珊</h3>
+                                        <a href="#" class="text-xs text-blue-600 hover:text-blue-700 font-medium">升级为企业</a>
+                                    </div>
+                                    <div class="flex items-center justify-between mb-2">
+                                        <div class="flex items-center">
+                                            <span class="text-sm text-gray-600">ZHANG SHANSHAN</span>
+                                            <button class="ml-2 text-gray-400 hover:text-gray-600 transition-colors">
+                                                <i class="fas fa-edit text-xs"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center justify-between">
+                                        <span class="text-sm text-gray-600">ID</span>
+                                        <button class="text-gray-400 hover:text-gray-600 transition-colors">
+                                            <i class="fas fa-copy text-xs"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <!-- 菜单选项 -->
+                                <div class="py-1">
+                                    <a href="security.html" class="flex items-center px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 transition-colors">
+                                        <i class="fas fa-shield-alt w-5 text-gray-400"></i>
+                                        <span class="ml-3">安全设置</span>
+                                    </a>
+                                    <a href="authentication-info.html" class="flex items-center px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 transition-colors">
+                                        <i class="fas fa-id-card w-5 text-gray-400"></i>
+                                        <span class="ml-3">认证信息</span>
+                                    </a>
+                                    <a href="fees.html" class="flex items-center px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 transition-colors">
+                                        <i class="fas fa-percentage w-5 text-gray-400"></i>
+                                        <span class="ml-3">费率查询</span>
+                                    </a>
+                                    <a href="coupons.html" class="flex items-center px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 transition-colors">
+                                        <i class="fas fa-gift w-5 text-gray-400"></i>
+                                        <span class="ml-3">我的优惠</span>
+                                    </a>
+                                    <a href="my-invitation.html" class="flex items-center px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 transition-colors">
+                                        <i class="fas fa-user-plus w-5 text-gray-400"></i>
+                                        <span class="ml-3">我的邀请</span>
+                                    </a>
+                                    <div class="border-t border-gray-100 my-1"></div>
+                                    <a href="logout.html" class="flex items-center px-4 py-2.5 text-sm text-red-600 hover:bg-gray-50 transition-colors">
+                                        <i class="fas fa-sign-out-alt w-5"></i>
+                                        <span class="ml-3">退出</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 主要内容 -->
+        <div class="max-w-7xl mx-auto px-8 py-6">
+            <!-- 页面标题和统计信息 -->
+            <div class="flex justify-between items-center mb-6">
+                <div class="flex items-center space-x-4">
+                    <h2 class="text-xl font-semibold text-gray-800">邀请分享</h2>
+                    <span class="text-gray-400">|</span>
+                    <div class="flex items-center">
+                        <span class="text-gray-500 text-base">已邀请人数</span>
+                        <div class="bg-blue-600 text-white px-4 py-1 ml-3 text-xl font-medium rounded-md">00</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 邀请内容 -->
+            <div class="grid grid-cols-2 gap-8">
+                <!-- 左列：邀请码和链接 -->
+                <div class="space-y-6">
+                    <!-- 邀请码 -->
+                    <div class="card p-6">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center space-x-4">
+                                <span class="text-gray-500 text-base">邀请码</span>
+                                <span class="text-gray-900 font-medium text-xl tracking-widest" id="inviteCode">2NU7X7ZX</span>
+                            </div>
+                            <button onclick="copyInviteCode()" class="text-blue-600 hover:text-blue-700 transition-colors">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- 链接邀请 -->
+                    <div class="card p-6">
+                        <h3 class="text-gray-900 text-lg font-semibold mb-4">链接邀请</h3>
+                        <div class="space-y-4">
+                            <div>
+                                <p class="text-gray-500 mb-3 text-base">我的邀请链接</p>
+                                <div class="flex items-center space-x-4">
+                                    <div class="flex-1 relative">
+                                        <input type="text" id="inviteLink" value="https://login.coralglobal.cn/#/register?rec=2NU7X7ZX" 
+                                               class="input-field w-full p-3 pr-12 border border-gray-200 rounded-lg text-gray-600 bg-gray-50 text-sm font-mono focus:outline-none" readonly>
+                                        <button onclick="copyInviteLink()" class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors">
+                                            <i class="fas fa-copy"></i>
+                                        </button>
+                                    </div>
+                                    <button onclick="copyInviteLink()" class="btn-primary text-white px-6 py-3 rounded-lg text-sm font-medium whitespace-nowrap flex items-center">
+                                        <i class="fas fa-share-alt mr-2"></i>
+                                        分享链接
+                                    </button>
+                                </div>
+                            </div>
+                            <p class="text-gray-400 text-sm flex items-center">
+                                <i class="fas fa-info-circle mr-2"></i>
+                                点击分享按钮，将您的专属邀请链接分享给好友
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 右列：二维码 -->
+                <div class="card p-6 h-fit">
+                    <h3 class="text-gray-900 text-lg font-semibold mb-4">二维码邀请</h3>
+                    <div>
+                        <p class="text-gray-500 mb-4 text-base">我的邀请二维码</p>
+                        <div class="flex flex-col items-center">
+                            <div class="qr-container p-6 rounded-xl mb-4">
+                                <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://login.coralglobal.cn/%23/register?rec=2NU7X7ZX" 
+                                     alt="邀请二维码" 
+                                     class="w-[200px] h-[200px]" />
+                            </div>
+                            <p class="text-gray-400 text-sm flex items-center">
+                                <i class="fas fa-qrcode mr-2"></i>
+                                将二维码分享给好友进行注册
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 复制邀请码
+        function copyInviteCode() {
+            const code = document.getElementById("inviteCode").textContent;
+            navigator.clipboard.writeText(code).then(() => {
+                showToast("邀请码已复制");
+            });
+        }
+
+        // 复制邀请链接
+        function copyInviteLink() {
+            const link = document.getElementById("inviteLink").value;
+            navigator.clipboard.writeText(link).then(() => {
+                showToast("链接已复制");
+            });
+        }
+
+        // 显示提示消息
+        function showToast(message) {
+            // 创建toast元素
+            const toast = document.createElement('div');
+            toast.className = 'fixed bottom-4 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white px-4 py-2 rounded-lg text-sm font-medium opacity-0 transition-opacity duration-300';
+            toast.textContent = message;
+            
+            // 添加到页面
+            document.body.appendChild(toast);
+            
+            // 显示动画
+            setTimeout(() => {
+                toast.style.opacity = '1';
+            }, 100);
+            
+            // 3秒后隐藏
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                setTimeout(() => {
+                    document.body.removeChild(toast);
+                }, 300);
+            }, 3000);
+        }
+
+        // 用户中心下拉菜单
+        const userCenterBtn = document.getElementById('userCenterBtn');
+        const userCenterDropdown = document.getElementById('userDropdown');
+        
+        userCenterBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            userCenterDropdown.classList.toggle('hidden');
+        });
+        
+        document.addEventListener('click', (e) => {
+            if (!userCenterDropdown.contains(e.target) && e.target !== userCenterBtn) {
+                userCenterDropdown.classList.add('hidden');
+            }
+        });
+    </script>
+</body>
+</html> 

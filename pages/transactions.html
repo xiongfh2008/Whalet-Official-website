@@ -220,6 +220,10 @@
                                         <i class="fas fa-gift w-5 text-gray-400"></i>
                                         我的优惠
                                     </a>
+                                    <a href="my-invitation.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                        <i class="fas fa-user-plus w-5 text-gray-400"></i>
+                                        我的邀请
+                                    </a>
                                     <div class="border-t border-gray-100 my-1"></div>
                                     <a href="logout.html" class="block px-4 py-2 text-sm text-red-600 hover:bg-gray-100">
                                         <i class="fas fa-sign-out-alt w-5"></i>
@@ -257,6 +261,12 @@
                     </div>
                     <button class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium">
                         查询
+                    </button>
+                    <button id="exportBtn" class="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg text-sm font-medium flex items-center export-button">
+                        <i class="fas fa-download mr-1"></i>导出
+                    </button>
+                    <button id="generateVoucherBtn" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium flex items-center hidden">
+                        <i class="fas fa-file-invoice mr-1"></i>选择记录生成凭证
                     </button>
                 </div>
             </div>
@@ -431,23 +441,51 @@
         document.addEventListener('DOMContentLoaded', function() {
             // 标签页切换逻辑
             const tabs = ['collection', 'withdrawal', 'payment', 'exchange', 'acquiring', 'other', 'voucher'];
+            const exportBtn = document.getElementById('exportBtn');
+            const generateVoucherBtn = document.getElementById('generateVoucherBtn');
+            
+            // 从URL获取tab参数，如果存在则激活对应标签
+            const urlParams = new URLSearchParams(window.location.search);
+            const activeTab = urlParams.get('tab');
+            
+            // 初始化激活标签页的函数
+            function activateTab(tabId) {
+                // 移除所有标签页的激活状态
+                tabs.forEach(t => {
+                    const tabButton = document.getElementById(`tab-${t}`);
+                    const tabContent = document.getElementById(`content-${t}`);
+                    if (tabButton) tabButton.classList.remove('active');
+                    if (tabContent) tabContent.classList.add('hidden');
+                });
+                
+                // 激活指定标签页
+                const button = document.getElementById(`tab-${tabId}`);
+                if (button) button.classList.add('active');
+                const content = document.getElementById(`content-${tabId}`);
+                if (content) content.classList.remove('hidden');
+
+                // 控制按钮的显示
+                if (exportBtn && generateVoucherBtn) {
+                    if (tabId === 'voucher') {
+                        exportBtn.style.display = 'none';
+                        generateVoucherBtn.style.display = 'flex';
+                    } else {
+                        exportBtn.style.display = 'flex';
+                        generateVoucherBtn.style.display = 'none';
+                    }
+                }
+            }
+            
+            // 设置初始激活的标签
+            if (activeTab && tabs.includes(activeTab)) {
+                activateTab(activeTab);
+            }
             
             tabs.forEach(tab => {
                 const button = document.getElementById(`tab-${tab}`);
                 if (button) {
                     button.addEventListener('click', () => {
-                        // 移除所有标签页的激活状态
-                        tabs.forEach(t => {
-                            const tabButton = document.getElementById(`tab-${t}`);
-                            const tabContent = document.getElementById(`content-${t}`);
-                            if (tabButton) tabButton.classList.remove('active');
-                            if (tabContent) tabContent.classList.add('hidden');
-                        });
-                        
-                        // 激活当前标签页
-                        button.classList.add('active');
-                        const content = document.getElementById(`content-${tab}`);
-                        if (content) content.classList.remove('hidden');
+                        activateTab(tab);
                     });
                 }
             });
