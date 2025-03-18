@@ -6,6 +6,7 @@
     <title>交易查询 - Whalet</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../styles/custom.css">
     <style>
         body {
             background-color: #f9fafb;
@@ -112,8 +113,11 @@
             transition: all 0.3s ease;
         }
         .tab-button.active {
-            color: #2563eb;
-            border-bottom: 2px solid #2563eb;
+            color: #7D33FF;
+            border-bottom: 2px solid #7D33FF;
+        }
+        .tab-button:hover {
+            color: #7D33FF;
         }
         .tag-success {
             background-color: #dcfce7;
@@ -126,6 +130,15 @@
         .tag-failed {
             background-color: #fee2e2;
             color: #991b1b;
+        }
+        /* 添加导出按钮样式 */
+        .export-btn {
+            background-color: white !important;
+            color: #7D33FF !important;
+            border: 1px solid #7D33FF !important;
+        }
+        .export-btn:hover {
+            background-color: #f9fafb !important;
         }
     </style>
 </head>
@@ -262,7 +275,7 @@
                     <button class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium">
                         查询
                     </button>
-                    <button id="exportBtn" class="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg text-sm font-medium flex items-center export-button">
+                    <button id="exportBtn" class="export-btn px-4 py-2 rounded-lg text-sm font-medium flex items-center">
                         <i class="fas fa-download mr-1"></i>导出
                     </button>
                     <button id="generateVoucherBtn" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium flex items-center hidden">

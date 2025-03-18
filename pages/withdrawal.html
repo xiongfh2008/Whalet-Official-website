@@ -9,9 +9,9 @@
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <style>
         :root {
-            --primary-blue: #2563eb;
-            --primary-light-blue: #3b82f6;
-            --secondary-blue: #dbeafe;
+            --primary-blue: #7D33FF;
+            --primary-light-blue: #6929CC;
+            --secondary-blue: #f5f3ff;
             --neutral-gray: #6b7280;
         }
         
@@ -96,7 +96,7 @@
         .input-group input:focus {
             outline: none;
             border-color: var(--primary-blue);
-            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+            box-shadow: 0 0 0 3px rgba(125, 51, 255, 0.1);
         }
         
         .input-group .currency-symbol {
@@ -315,7 +315,7 @@
         }
         
         .bank-card:hover {
-            border-color: #4f46e5;
+            border-color: var(--primary-blue);
         }
 
         .currency-tag {
@@ -339,15 +339,129 @@
         }
 
         .add-card-button:hover {
-            border-color: #2563eb;
+            border-color: var(--primary-blue);
             background-color: #f8fafc;
         }
 
-      
-
+        /* 导航栏悬停样式 */
+        .text-gray-600:hover,
+        .hover\:text-blue-600:hover,
+        button.text-gray-600:hover,
+        a.text-gray-600:hover,
+        .text-gray-400:hover {
+            color: #7D33FF !important;
+        }
         
+        /* 图标悬停样式 */
+        button:hover i,
+        a:hover i {
+            color: #7D33FF !important;
+        }
+        
+        /* 下拉菜单悬停样式 */
+        .hover\:bg-gray-100:hover {
+            color: #7D33FF !important;
+        }
 
-       
+        .text-blue-600 {
+            color: var(--primary-blue) !important;
+        }
+        
+        .text-blue-700 {
+            color: var(--primary-light-blue) !important;
+        }
+        
+        .bg-blue-600 {
+            background-color: var(--primary-blue) !important;
+        }
+        
+        .bg-blue-700 {
+            background-color: var(--primary-light-blue) !important;
+        }
+        
+        .hover\:text-blue-600:hover {
+            color: var(--primary-blue) !important;
+        }
+        
+        .hover\:text-blue-700:hover {
+            color: var(--primary-light-blue) !important;
+        }
+        
+        .hover\:bg-blue-600:hover {
+            background-color: var(--primary-blue) !important;
+        }
+        
+        .hover\:bg-blue-700:hover {
+            background-color: var(--primary-light-blue) !important;
+        }
+        
+        .focus\:ring-blue-500:focus {
+            --tw-ring-color: var(--primary-blue) !important;
+        }
+        
+        .focus\:border-blue-500:focus {
+            border-color: var(--primary-blue) !important;
+        }
+        
+        .hover\:border-blue-500:hover {
+            border-color: var(--primary-blue) !important;
+        }
+
+        .currency-flag {
+            width: 24px;
+            height: 16px;
+            object-fit: cover;
+            border-radius: 2px;
+        }
+
+        .currency-selector {
+            display: flex;
+            align-items: center;
+            position: relative;
+            min-width: 240px;
+        }
+
+        .currency-selector button {
+            background: white;
+            transition: all 0.2s ease;
+            width: 100%;
+        }
+
+        .currency-selector button:hover {
+            border-color: var(--primary-blue);
+        }
+
+        .currency-selector button:focus {
+            outline: none;
+            border-color: var(--primary-blue);
+            box-shadow: 0 0 0 3px rgba(125, 51, 255, 0.1);
+        }
+
+        .currency-selector .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            margin-top: 4px;
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            z-index: 50;
+            max-height: 250px;
+            overflow-y: auto;
+        }
+
+        .currency-selector .dropdown-menu button {
+            width: 100%;
+            padding: 0.5rem 1rem;
+            text-align: left;
+            transition: all 0.2s ease;
+        }
+
+        .currency-selector .dropdown-menu button:hover {
+            background-color: #f3f4f6;
+        }
     </style>
 </head>
 <body>
@@ -472,6 +586,8 @@
                 showFeeDetails: false,
                 isSubmitting: false,
                 formErrors: {},
+                showWithdrawalCurrencySelector: false,
+                showReceivingCurrencySelector: false,
                 
                 init() {
                     this.initializeForm();
@@ -606,7 +722,7 @@
                                             <template x-if="selectedBank">
                                                 <div class="flex items-center space-x-3 flex-1 min-w-0">
                                                     <div class="flex-shrink-0 w-8 h-8 bg-white rounded-lg flex items-center justify-center border border-gray-200 overflow-hidden">
-                                                        <img :src="`https://cdn.jsdelivr.net/gh/lipis/flag-icons/flags/4x3/${selectedBank.currency.toLowerCase() === 'usd' ? 'us' : selectedBank.currency.toLowerCase() === 'cny' ? 'cn' : selectedBank.currency.toLowerCase() === 'gbp' ? 'gb' : selectedBank.currency.toLowerCase()}.svg`"
+                                                        <img :src="`https://cdn.jsdelivr.net/gh/lipis/flag-icons/flags/4x3/${selectedBank.currency.toLowerCase() === 'usd' ? 'us' : selectedBank.currency.toLowerCase() === 'cny' ? 'cn' : selectedBank.currency.toLowerCase() === 'gbp' ? 'gb' : selectedBank.currency.toLowerCase() === 'eur' ? 'eu' : selectedBank.currency.toLowerCase()}.svg`"
                                                              :alt="selectedBank.currency"
                                                              class="w-6 h-6 object-contain"
                                                              onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJjdXJyZW50Q29sb3IiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBjbGFzcz0ibHVjaWRlIGx1Y2lkZS1idWlsZGluZy0yIj48cGF0aCBkPSJNNiAyMlY0YTIgMiAwIDAgMSAyLTJoOGEyIDIgMCAwIDEgMiAydjE4WiIvPjxwYXRoIGQ9Ik02IDEySDRhMiAyIDAgMCAwLTIgMnY2YTIgMiAwIDAgMCAyIDJoMiIvPjxwYXRoIGQ9Ik0xOCAxMmgyYTIgMiAwIDAgMSAyIDJ2NmEyIDIgMCAwIDEtMiAyaC0yIi8+PHBhdGggZD0iTTEwIDZoNCIvPjxwYXRoIGQ9Ik0xMCAxMGg0Ii8+PHBhdGggZD0iTTEwIDE0aDQiLz48cGF0aCBkPSJNMTAgMThoNCIvPjwvc3ZnPg=='">
@@ -628,8 +744,8 @@
                                         <div 
                                             x-show="showBankSelector"
                                             @click.away="showBankSelector = false"
-                                            class="absolute z-10 left-0 mt-1 w-full bg-white border border-gray-200 rounded-lg shadow-lg"
-                                                style="display: none;"
+                                            class="dropdown-menu"
+                                            style="display: none;"
                                         >
                                             <div class="p-1">
                                                 <template x-for="bank in banks" :key="bank.id">
@@ -638,7 +754,7 @@
                                                         class="w-full px-3 py-2 flex items-center space-x-3 hover:bg-gray-50 rounded-md group"
                                                     >
                                                         <div class="flex-shrink-0 w-8 h-8 bg-white rounded-lg flex items-center justify-center border border-gray-200 group-hover:border-blue-200 overflow-hidden">
-                                                            <img :src="`https://cdn.jsdelivr.net/gh/lipis/flag-icons/flags/4x3/${bank.currency.toLowerCase() === 'usd' ? 'us' : bank.currency.toLowerCase() === 'cny' ? 'cn' : bank.currency.toLowerCase() === 'gbp' ? 'gb' : bank.currency.toLowerCase()}.svg`"
+                                                            <img :src="`https://cdn.jsdelivr.net/gh/lipis/flag-icons/flags/4x3/${bank.currency.toLowerCase() === 'usd' ? 'us' : bank.currency.toLowerCase() === 'cny' ? 'cn' : bank.currency.toLowerCase() === 'gbp' ? 'gb' : bank.currency.toLowerCase() === 'eur' ? 'eu' : bank.currency.toLowerCase()}.svg`"
                                                                  :alt="bank.currency"
                                                                  class="w-6 h-6 object-contain"
                                                                  onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJjdXJyZW50Q29sb3IiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBjbGFzcz0ibHVjaWRlIGx1Y2lkZS1idWlsZGluZy0yIj48cGF0aCBkPSJNNiAyMlY0YTIgMiAwIDAgMSAyLTJoOGEyIDIgMCAwIDEgMiAydjE4WiIvPjxwYXRoIGQ9Ik02IDEySDRhMiAyIDAgMCAwLTIgMnY2YTIgMiAwIDAgMCAyIDJoMiIvPjxwYXRoIGQ9Ik0xOCAxMmgyYTIgMiAwIDAgMSAyIDJ2NmEyIDIgMCAwIDEtMiAyaC0yIi8+PHBhdGggZD0iTTEwIDZoNCIvPjxwYXRoIGQ9Ik0xMCAxMGg0Ii8+PHBhdGggZD0iTTEwIDE0aDQiLz48cGF0aCBkPSJNMTAgMThoNCIvPjwvc3ZnPg=='">
@@ -682,21 +798,46 @@
                                         </div>
                                     </div>
                                         <div class="relative">
-                                            <select
-                                                x-model="withdrawalCurrency"
-                                                    class="w-[220px] px-4 py-3 pr-8 border border-gray-300 rounded-lg bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:ring-opacity-50 appearance-none transition-colors"
-                                            >
-                                                <template x-for="currency in withdrawalCurrencies" :key="currency">
-                                                    <option :value="currency" class="py-2">
-                                                        <span x-text="currency"></span>
-                                                        <span x-text="` (${formatCurrency(balances[currency], currency)})`"></span>
-                                                    </option>
-                                                </template>
-                                            </select>
-                                            <div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
-                                                <i class="fas fa-chevron-down text-gray-400 text-xs"></i>
+                                            <div class="currency-selector">
+                                                <button
+                                                    @click="showWithdrawalCurrencySelector = !showWithdrawalCurrencySelector"
+                                                    class="w-[220px] px-4 py-3 border border-gray-300 rounded-lg bg-white flex items-center justify-between hover:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-colors"
+                                                >
+                                                    <div class="flex items-center space-x-3">
+                                                        <img :src="`https://cdn.jsdelivr.net/gh/lipis/flag-icons/flags/4x3/${withdrawalCurrency.toLowerCase() === 'usd' ? 'us' : withdrawalCurrency.toLowerCase() === 'cny' ? 'cn' : withdrawalCurrency.toLowerCase() === 'gbp' ? 'gb' : withdrawalCurrency.toLowerCase() === 'eur' ? 'eu' : withdrawalCurrency.toLowerCase()}.svg`"
+                                                            class="currency-flag"
+                                                            :alt="withdrawalCurrency"
+                                                        />
+                                                        <span class="font-medium" x-text="withdrawalCurrency === 'USD' ? '美元' : withdrawalCurrency === 'CNY' ? '人民币' : withdrawalCurrency === 'EUR' ? '欧元' : withdrawalCurrency === 'GBP' ? '英镑' : withdrawalCurrency"></span>
+                                                    </div>
+                                                    <i class="fas fa-chevron-down text-gray-400 text-xs"></i>
+                                                </button>
+                                                
+                                                <!-- 下拉选项 -->
+                                                <div 
+                                                    x-show="showWithdrawalCurrencySelector"
+                                                    @click.away="showWithdrawalCurrencySelector = false"
+                                                    class="dropdown-menu"
+                                                    style="display: none;"
+                                                >
+                                                    <div class="py-1">
+                                                        <template x-for="currency in withdrawalCurrencies" :key="currency">
+                                                            <button
+                                                                @click="withdrawalCurrency = currency; showWithdrawalCurrencySelector = false"
+                                                                class="w-full px-4 py-2 flex items-center space-x-3 hover:bg-gray-50"
+                                                                :class="{'bg-gray-50': currency === withdrawalCurrency}"
+                                                            >
+                                                                <img :src="`https://cdn.jsdelivr.net/gh/lipis/flag-icons/flags/4x3/${currency.toLowerCase() === 'usd' ? 'us' : currency.toLowerCase() === 'cny' ? 'cn' : currency.toLowerCase() === 'gbp' ? 'gb' : currency.toLowerCase() === 'eur' ? 'eu' : currency.toLowerCase()}.svg`"
+                                                                    class="currency-flag"
+                                                                    :alt="currency"
+                                                                />
+                                                                <span x-text="currency === 'USD' ? '美元' : currency === 'CNY' ? '人民币' : currency === 'EUR' ? '欧元' : currency === 'GBP' ? '英镑' : currency"></span>
+                                                            </button>
+                                                        </template>
+                                                    </div>
+                                                </div>
                                             </div>
-                                            <div class="absolute -bottom-5 right-0 text-xs text-gray-500">
+                                            <div class="text-xs text-gray-500 mt-1 text-right">
                                                 <span>可用：</span>
                                                 <span x-text="formatCurrency(balances[withdrawalCurrency], withdrawalCurrency)"></span>
                                             </div>
@@ -716,30 +857,37 @@
                                     <div class="form-field">
                                         <div class="bg-gray-50 rounded-lg p-3 space-y-2">
                                             <div class="flex items-center justify-between">
-                                            <span class="text-sm text-gray-600">手续费</span>
-                                            <span class="text-sm font-medium" x-text="formatCurrency(fee, withdrawalCurrency)"></span>
-                            </div>
+                                                <span class="text-sm text-gray-600">手续费</span>
+                                                <span class="text-sm font-medium" x-text="formatCurrency(fee, withdrawalCurrency)"></span>
+                                            </div>
                                             <div class="flex items-center justify-between">
-                                            <span class="text-sm text-gray-600">抵扣手续费</span>
-                                            <span class="text-sm font-medium text-green-600" x-text="'- ' + formatCurrency(discountFee, withdrawalCurrency)"></span>
-                            </div>
+                                                <span class="text-sm text-gray-600">抵扣手续费</span>
+                                                <span class="text-sm font-medium text-green-600" x-text="'- ' + formatCurrency(discountFee, withdrawalCurrency)"></span>
+                                            </div>
                                             <div class="flex items-center justify-between pb-2 border-b border-gray-200">
-                                            <span class="text-sm font-medium">实际手续费</span>
-                                            <span class="text-sm font-medium" x-text="formatCurrency(actualFee, withdrawalCurrency)"></span>
-                        </div>
-                                        <!-- 参考汇率 -->
-                                        <template x-if="withdrawalCurrency !== receivingCurrency">
-                                            <div class="flex items-center justify-between pt-2">
-                                                <span class="text-sm text-gray-600">参考汇率</span>
-                                                <div class="flex items-center space-x-2">
-                                                    <span class="text-sm" x-text="`1 ${withdrawalCurrency} = ${exchangeRate} ${receivingCurrency}`"></span>
-                                                        <span class="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded-md" x-text="countdown + '秒'"></span>
+                                                <span class="text-sm font-medium">实际手续费</span>
+                                                <span class="text-sm font-medium" x-text="formatCurrency(actualFee, withdrawalCurrency)"></span>
+                                            </div>
+                                            <!-- 查看明细链接 -->
+                                            <div class="pt-2 text-right">
+                                                <button class="text-sm text-blue-600 hover:text-blue-700 flex items-center justify-end w-full">
+                                                    <span>查看明细</span>
+                                                    <i class="fas fa-chevron-right ml-1 text-xs"></i>
+                                                </button>
+                                            </div>
+                                            <!-- 参考汇率 -->
+                                            <template x-if="withdrawalCurrency !== receivingCurrency">
+                                                <div class="flex items-center justify-between pt-2">
+                                                    <span class="text-sm text-gray-600">参考汇率</span>
+                                                    <div class="flex items-center space-x-2">
+                                                        <span class="text-sm" x-text="`1 ${withdrawalCurrency} = ${exchangeRate} ${receivingCurrency}`"></span>
+                                                            <span class="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded-md" x-text="countdown + '秒'"></span>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </template>
-                                            </div>
-                    </div>
-                </div>
+                                            </template>
+                                        </div>
+                                    </div>
+                                </div>
                 
                             <!-- 到账金额 -->
                                 <div class="form-group">
@@ -757,24 +905,48 @@
                                             >
                                                     </div>
                                         <div class="relative">
-                                            <select
-                                                x-model="receivingCurrency"
-                                                :disabled="selectedBank !== null"
-                                                :class="{'bg-gray-100 opacity-75': selectedBank !== null}"
-                                                    class="w-[220px] px-4 py-3 pr-8 border border-gray-300 rounded-lg bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:ring-opacity-50 appearance-none transition-colors"
-                                            >
-                                                <template x-for="currency in receivingCurrencies" :key="currency">
-                                                    <option :value="currency" x-text="currency"></option>
-                                                </template>
-                                            </select>
-                                            <div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
-                                                <i class="fas fa-chevron-down text-gray-400 text-xs"></i>
+                                            <div class="currency-selector">
+                                                <button
+                                                    @click="!selectedBank && (showReceivingCurrencySelector = !showReceivingCurrencySelector)"
+                                                    :class="{'opacity-75 cursor-not-allowed': selectedBank}"
+                                                    class="w-[220px] px-4 py-3 border border-gray-300 rounded-lg bg-white flex items-center justify-between hover:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-colors"
+                                                >
+                                                    <div class="flex items-center space-x-3">
+                                                        <img :src="`https://cdn.jsdelivr.net/gh/lipis/flag-icons/flags/4x3/${receivingCurrency.toLowerCase() === 'usd' ? 'us' : receivingCurrency.toLowerCase() === 'cny' ? 'cn' : receivingCurrency.toLowerCase() === 'gbp' ? 'gb' : receivingCurrency.toLowerCase() === 'eur' ? 'eu' : receivingCurrency.toLowerCase()}.svg`"
+                                                            class="currency-flag"
+                                                            :alt="receivingCurrency"
+                                                        />
+                                                        <span class="font-medium" x-text="receivingCurrency === 'USD' ? '美元' : receivingCurrency === 'CNY' ? '人民币' : receivingCurrency === 'EUR' ? '欧元' : receivingCurrency === 'GBP' ? '英镑' : receivingCurrency"></span>
+                                                    </div>
+                                                    <i class="fas fa-chevron-down text-gray-400 text-xs"></i>
+                                                </button>
+                                                
+                                                <!-- 下拉选项 -->
+                                                <div 
+                                                    x-show="showReceivingCurrencySelector && !selectedBank"
+                                                    @click.away="showReceivingCurrencySelector = false"
+                                                    class="dropdown-menu"
+                                                    style="display: none;"
+                                                >
+                                                    <div class="py-1">
+                                                        <template x-for="currency in receivingCurrencies" :key="currency">
+                                                            <button
+                                                                @click="receivingCurrency = currency; showReceivingCurrencySelector = false"
+                                                                class="w-full px-4 py-2 flex items-center space-x-3 hover:bg-gray-50"
+                                                                :class="{'bg-gray-50': currency === receivingCurrency}"
+                                                            >
+                                                                <img :src="`https://cdn.jsdelivr.net/gh/lipis/flag-icons/flags/4x3/${currency.toLowerCase() === 'usd' ? 'us' : currency.toLowerCase() === 'cny' ? 'cn' : currency.toLowerCase() === 'gbp' ? 'gb' : currency.toLowerCase() === 'eur' ? 'eu' : currency.toLowerCase()}.svg`"
+                                                                    class="currency-flag"
+                                                                    :alt="currency"
+                                                                />
+                                                                <span x-text="currency === 'USD' ? '美元' : currency === 'CNY' ? '人民币' : currency === 'EUR' ? '欧元' : currency === 'GBP' ? '英镑' : currency"></span>
+                                                            </button>
+                                                        </template>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                        <p x-show="selectedBank !== null" class="mt-1 text-xs text-blue-600">
-                                            <i class="fas fa-info-circle mr-1"></i> 到账币种已与所选银行卡同步
-                                        </p>
                                         <div class="mt-2 flex items-start space-x-2">
                                             <i class="fas fa-exclamation-circle text-yellow-500 mt-0.5"></i>
                                             <p class="text-sm text-gray-500">因银行假期影响，实际到账时间可能有所延迟，请留意当地银行假期安排。</p>

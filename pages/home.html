@@ -7,6 +7,7 @@
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <link rel="stylesheet" href="../styles/custom.css">
     <style>
         body {
             background-color: #f9fafb;
@@ -43,7 +44,7 @@
         }
         .calendar-day.today {
             background-color: #eef2ff;
-            color: #4f46e5;
+            color: #7D33FF;
             font-weight: 600;
             border-radius: 9999px;
         }
@@ -66,7 +67,7 @@
             background-color: #f3f4f6;
         }
         .timeRange.active {
-            background-color: #3b82f6;
+            background-color: #7D33FF;
             color: white;
         }
         #surveyModal {
@@ -101,6 +102,36 @@
                 opacity: 1;
             }
         }
+        .auth-button {
+            background-color: #7D33FF;
+            transition: background-color 0.2s ease;
+        }
+        .auth-button:hover {
+            background-color: rgba(125, 51, 255, 0.9);
+        }
+        .quick-nav-icon {
+            background-color: rgba(125, 51, 255, 0.1);
+            color: #7D33FF;
+        }
+        .quick-nav-hover:hover {
+            border-color: #7D33FF;
+        }
+        /* 添加自定义导航链接悬停样式 */
+        .nav-link-hover:hover {
+            color: #7D33FF !important;
+        }
+        /* 添加下拉菜单图标悬停样式 */
+        .dropdown-icon-hover:hover {
+            color: #7D33FF !important;
+        }
+        /* 添加企业升级链接样式 */
+        .enterprise-link {
+            color: #7D33FF !important;
+            transition: opacity 0.2s ease;
+        }
+        .enterprise-link:hover {
+            opacity: 0.8;
+        }
     </style>
 </head>
 <body>
@@ -115,7 +146,7 @@
             <div class="flex items-center space-x-6">
                 <!-- 公告图标 -->
                 <div class="relative">
-                    <a href="#" class="text-gray-600 hover:text-blue-600">
+                    <a href="#" class="text-gray-600 nav-link-hover">
                         <span class="relative">
                             <i class="fas fa-bell text-lg"></i>
                             <span class="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full"></span>
@@ -124,11 +155,11 @@
                 </div>
                 
                 <!-- 帮助中心 -->
-                <a href="#" class="text-gray-600 hover:text-blue-600 text-sm">帮助中心</a>
+                <a href="#" class="text-gray-600 nav-link-hover text-sm">帮助</a>
                 
                 <!-- 用户中心 -->
                 <div class="relative">
-                    <button id="userCenterBtn" class="text-gray-600 hover:text-blue-600">
+                    <button id="userCenterBtn" class="text-gray-600 nav-link-hover">
                         <i class="fas fa-user-circle text-lg"></i>
                     </button>
                     <div id="userCenterDropdown" class="absolute right-0 top-full mt-1 w-72 bg-white rounded-lg shadow-lg py-3 hidden z-10">
@@ -136,7 +167,7 @@
                         <div class="px-4 pb-3 border-b border-gray-100">
                             <div class="flex items-center justify-between mb-2">
                                 <div class="font-medium text-gray-900">张三</div>
-                                <a href="#" class="text-xs text-blue-600 hover:text-blue-800">升级为企业</a>
+                                <a href="#" class="text-xs enterprise-link">升级为企业</a>
                             </div>
                             <div class="flex items-center justify-between mb-2">
                                 <div class="text-sm text-gray-600">
@@ -148,30 +179,30 @@
                             </div>
                             <div class="flex items-center text-sm text-gray-500">
                                 <span>ID: WH78965412</span>
-                                <button class="ml-1 text-gray-400 hover:text-gray-600">
+                                <button class="ml-1 text-gray-400 dropdown-icon-hover">
                                     <i class="fas fa-copy text-xs"></i>
                                 </button>
                             </div>
                         </div>
                         <!-- 菜单选项 -->
                         <div class="px-4">
-                            <a href="security.html" class="flex items-center py-2 text-sm text-gray-700 hover:text-blue-600">
+                            <a href="security.html" class="flex items-center py-2 text-sm text-gray-700 nav-link-hover">
                                 <i class="fas fa-shield-alt w-5 text-center"></i>
                                 <span class="ml-2">安全设置</span>
                             </a>
-                            <a href="authentication-info.html" class="flex items-center py-2 text-sm text-gray-700 hover:text-blue-600">
+                            <a href="authentication-info.html" class="flex items-center py-2 text-sm text-gray-700 nav-link-hover">
                                 <i class="fas fa-id-card w-5 text-center"></i>
                                 <span class="ml-2">认证信息</span>
                             </a>
-                            <a href="fees.html" class="flex items-center py-2 text-sm text-gray-700 hover:text-blue-600">
+                            <a href="fees.html" class="flex items-center py-2 text-sm text-gray-700 nav-link-hover">
                                 <i class="fas fa-dollar-sign w-5 text-center"></i>
                                 <span class="ml-2">费率查询</span>
                             </a>
-                            <a href="coupons.html" class="flex items-center py-2 text-sm text-gray-700 hover:text-blue-600">
+                            <a href="coupons.html" class="flex items-center py-2 text-sm text-gray-700 nav-link-hover">
                                 <i class="fas fa-ticket-alt w-5 text-center"></i>
                                 <span class="ml-2">我的优惠</span>
                             </a>
-                            <a href="my-invitation.html" class="flex items-center py-2 text-sm text-gray-700 hover:text-blue-600">
+                            <a href="my-invitation.html" class="flex items-center py-2 text-sm text-gray-700 nav-link-hover">
                                 <i class="fas fa-user-plus w-5 text-center"></i>
                                 <span class="ml-2">我的邀请</span>
                             </a>
@@ -191,17 +222,17 @@
             <div class="bg-white rounded-lg shadow-sm overflow-hidden">
                 <div class="flex items-center px-4 py-2">
                     <div class="flex items-center flex-1">
-                        <span class="flex-shrink-0 w-6 h-6 bg-blue-50 rounded-full flex items-center justify-center">
-                            <i class="fas fa-bullhorn text-blue-500 text-sm"></i>
+                        <span class="flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center" style="background-color: rgba(125, 51, 255, 0.1)">
+                            <i class="fas fa-bullhorn text-sm" style="color: #7D33FF"></i>
                         </span>
                         <div class="ml-2 flex-1">
                             <div class="flex items-center">
-                                <span class="bg-blue-50 text-blue-600 text-xs px-1.5 py-0.5 rounded">最新公告</span>
+                                <span class="text-xs px-1.5 py-0.5 rounded" style="background-color: rgba(125, 51, 255, 0.1); color: #7D33FF">最新公告</span>
                                 <p class="ml-2 text-gray-600 text-sm">关于2024年春节期间收付款服务安排的通知</p>
                             </div>
                         </div>
                     </div>
-                    <a href="#" class="text-sm text-blue-600 hover:text-blue-700 whitespace-nowrap flex items-center">
+                    <a href="#" style="color: #7D33FF" class="hover:bg-[#7D33FF]/10 px-2 py-1 rounded text-sm font-medium flex items-center whitespace-nowrap">
                         查看详情
                         <i class="fas fa-chevron-right ml-1 text-xs"></i>
                     </a>
@@ -257,14 +288,14 @@
                     </div>
                     <div class="flex-1">
                         <div class="flex items-center mb-1">
-                            <h3 class="text-xl font-medium text-gray-900">完成whalet易鲸账户实名认证解锁更多功能</h3>
-                            <span class="ml-3 px-2 py-1 bg-blue-100 text-blue-600 text-xs font-medium rounded-full">未完成</span>
+                            <h3 class="text-xl font-medium text-gray-900 cursor-default">完成whalet易鲸账户实名认证解锁更多功能</h3>
+                            <span class="ml-3 px-2 py-1 rounded-full text-xs font-medium" style="color: #7D33FF !important; background-color: rgba(125, 51, 255, 0.05)">未完成</span>
                         </div>
-                        <p class="text-gray-600">填写您的实名认证资料以解锁账户功能，我们会自动保存您的进度，方便您随时继续。</p>
+                        <p class="text-gray-600 cursor-default">填写您的实名认证资料以解锁账户功能，我们会自动保存您的进度，方便您随时继续。</p>
                     </div>
                 </div>
                 <div class="ml-6">
-                    <button class="px-6 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium flex items-center">
+                    <button class="auth-button px-6 py-2.5 text-white rounded-lg font-medium flex items-center">
                         <span>立即认证</span>
                         <i class="fas fa-arrow-right ml-2"></i>
                     </button>
@@ -272,13 +303,13 @@
             </div>
         </div>
 
-        <!-- 快速导航 & 待办事项 (同一行) -->
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-4">
+        <!-- 快速导航 & 待办事项 & 推荐有礼 (同一行) -->
+        <div class="grid grid-cols-1 lg:grid-cols-4 gap-4 mb-4">
             <!-- 快速导航 -->
             <div class="lg:col-span-2 bg-white rounded-xl shadow-sm p-4">
                 <div class="flex justify-between items-center mb-3">
                     <h3 class="text-lg font-medium text-gray-800">快速导航</h3>
-                    <button id="manageQuickNav" class="text-blue-600 hover:bg-blue-50 px-2 py-1 rounded text-sm font-medium flex items-center">
+                    <button id="manageQuickNav" style="color: #7D33FF" class="hover:bg-[#7D33FF]/10 px-2 py-1 rounded text-sm font-medium flex items-center">
                         <i class="fas fa-cog mr-1"></i> 管理
                     </button>
                 </div>
@@ -292,9 +323,9 @@
                 <div class="flex justify-between items-center mb-3">
                     <div class="flex items-center">
                         <h3 class="text-lg font-medium text-gray-800">待办事项</h3>
-                        <span class="ml-2 px-2.5 py-1 text-white rounded-full text-xs font-bold animate-pulse shadow-sm shadow-red-300" style="background-color: #ed1941;">5</span>
+                        <span class="ml-2 px-2.5 py-1 text-white rounded-full text-xs font-bold animate-pulse shadow-sm" style="background-color: #FF4D4F;">5</span>
                     </div>
-                    <a href="#" class="text-blue-600 hover:bg-blue-50 px-2 py-1 rounded text-sm font-medium flex items-center">
+                    <a href="#" style="color: #7D33FF" class="hover:bg-[#7D33FF]/10 px-2 py-1 rounded text-sm font-medium flex items-center">
                         查看全部 <i class="fas fa-chevron-right ml-1 text-xs"></i>
                     </a>
                 </div>
@@ -304,7 +335,7 @@
                         <div class="flex-1">
                             <h4 class="text-sm font-medium text-gray-800">提交收款账户申请</h4>
                         </div>
-                        <div class="text-gray-400">
+                        <div class="text-[#7D33FF]">
                             <i class="fas fa-chevron-right text-xs"></i>
                         </div>
                     </div>
@@ -313,9 +344,24 @@
                         <div class="flex-1">
                             <h4 class="text-sm font-medium text-gray-800">核对本月交易记录</h4>
                         </div>
-                        <div class="text-gray-400">
+                        <div class="text-[#7D33FF]">
                             <i class="fas fa-chevron-right text-xs"></i>
                         </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 推荐有礼 -->
+            <div class="bg-white rounded-xl shadow-sm p-4 overflow-hidden relative group cursor-pointer" onclick="window.location.href='my-invitation.html'">
+                <img src="https://img.freepik.com/free-vector/gradient-chinese-new-year-sale-banner_23-2149177289.jpg" 
+                     alt="推荐有礼" 
+                     class="absolute inset-0 w-full h-full object-cover opacity-75 transition-transform duration-300 group-hover:scale-105">
+                <div class="relative z-10 h-full flex flex-col justify-between">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <h3 class="text-lg font-bold text-white mb-2 text-shadow">推荐有礼</h3>
+                        </div>
+                        <span class="bg-white/20 backdrop-blur-sm text-white px-2 py-1 rounded text-sm">邀请好友注册</span>
                     </div>
                 </div>
             </div>
@@ -350,7 +396,7 @@
             <div class="bg-white rounded-xl shadow-sm p-5 lg:col-span-1">
                 <div class="flex justify-between items-center mb-4">
                     <h3 class="text-lg font-medium text-gray-800">银行假期日历</h3>
-                    <select id="calendarMonthSelect" class="text-sm border-gray-300 rounded shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
+                    <select id="calendarMonthSelect" class="text-sm border-gray-300 rounded shadow-sm focus:border-[#7D33FF] focus:ring focus:ring-[#7D33FF]/20 focus:ring-opacity-50">
                         <!-- 月份选项将通过JavaScript动态生成 -->
                     </select>
                 </div>
@@ -446,7 +492,7 @@
                 </div>
             </div>
             <div class="p-5">
-                <p class="text-sm text-gray-600 mb-4">请选择要显示的快速导航入口（最多6个）</p>
+                <p class="text-sm text-gray-600 mb-4">请选择要显示的快速导航入口（最多5个）</p>
                 <div class="space-y-3" id="quickNavOptions">
                     <!-- Options will be dynamically populated by JavaScript -->
                 </div>
@@ -455,7 +501,7 @@
                 <button id="cancelQuickNav" class="px-4 py-2 text-sm text-gray-600 hover:text-gray-800">
                     取消
                 </button>
-                <button id="saveQuickNav" class="px-4 py-2 text-sm text-white bg-blue-600 rounded hover:bg-blue-700">
+                <button id="saveQuickNav" class="px-4 py-2 text-sm text-white rounded hover:opacity-90" style="background-color: #7D33FF">
                     保存
                 </button>
             </div>
@@ -533,19 +579,19 @@
             const exchangeRateData = {
                 USD: {
                     baseValue: 7.20,
-                    color: '#3b82f6' // 蓝色
+                    color: '#7D33FF' // 紫色
                 },
                 EUR: {
                     baseValue: 7.88,
-                    color: '#10b981' // 绿色
+                    color: '#7D33FF' // 紫色
                 },
                 GBP: {
                     baseValue: 9.11,
-                    color: '#f59e0b' // 黄色
+                    color: '#7D33FF' // 紫色
                 },
                 JPY: {
                     baseValue: 0.052,
-                    color: '#ef4444' // 红色
+                    color: '#7D33FF' // 紫色
                 }
             };
 
@@ -640,9 +686,14 @@
             // 处理时间范围切换
             document.querySelectorAll('.timeRange').forEach(button => {
                 button.addEventListener('click', function() {
-                    // 更新按钮样式
-                    document.querySelectorAll('.timeRange').forEach(btn => btn.classList.remove('active'));
+                    document.querySelectorAll('.timeRange').forEach(b => {
+                        b.classList.remove('active');
+                        b.classList.remove('bg-[#7D33FF]');
+                        b.classList.remove('text-white');
+                    });
                     this.classList.add('active');
+                    this.classList.add('bg-[#7D33FF]');
+                    this.classList.add('text-white');
                     
                     // 更新图表数据
                     currentRange = this.dataset.range;
@@ -718,50 +769,50 @@
             'platform-collection': {
                 title: '平台收款',
                 icon: 'fa-store',
-                bgColor: 'bg-blue-100',
-                textColor: 'text-blue-600',
+                bgColor: 'bg-[#7D33FF]/10',
+                textColor: 'text-[#7D33FF]',
                 link: 'platform-collection.html'
             },
             'trade-collection': {
                 title: '外贸收款',
                 icon: 'fa-globe',
-                bgColor: 'bg-indigo-100',
-                textColor: 'text-indigo-600',
+                bgColor: 'bg-[#7D33FF]/10',
+                textColor: 'text-[#7D33FF]',
                 link: 'trade-collection.html'
             },
             'withdrawal': {
                 title: '提现',
                 icon: 'fa-wallet',
-                bgColor: 'bg-red-100',
-                textColor: 'text-red-600',
+                bgColor: 'bg-[#7D33FF]/10',
+                textColor: 'text-[#7D33FF]',
                 link: 'withdrawal.html'
             },
             'payment': {
                 title: '付款',
                 icon: 'fa-paper-plane',
-                bgColor: 'bg-green-100',
-                textColor: 'text-green-600',
+                bgColor: 'bg-[#7D33FF]/10',
+                textColor: 'text-[#7D33FF]',
                 link: 'payment.html'
             },
             'forex': {
                 title: '外汇兑换',
                 icon: 'fa-exchange-alt',
-                bgColor: 'bg-purple-100',
-                textColor: 'text-purple-600',
+                bgColor: 'bg-[#7D33FF]/10',
+                textColor: 'text-[#7D33FF]',
                 link: 'forex.html'
             },
             'cards': {
                 title: '卡片',
                 icon: 'fa-credit-card',
-                bgColor: 'bg-yellow-100',
-                textColor: 'text-yellow-600',
+                bgColor: 'bg-[#7D33FF]/10',
+                textColor: 'text-[#7D33FF]',
                 link: 'cards.html'
             },
             'acquiring': {
                 title: '账单收款',
                 icon: 'fa-receipt',
-                bgColor: 'bg-pink-100',
-                textColor: 'text-pink-600',
+                bgColor: 'bg-[#7D33FF]/10',
+                textColor: 'text-[#7D33FF]',
                 link: 'bill-collection.html'
             }
         };
@@ -783,15 +834,35 @@
             selectedQuickNavItems.forEach(key => {
                 const item = quickNavItems[key];
                 const card = document.createElement('div');
-                card.className = 'card bg-white border border-gray-200 rounded-lg p-2 text-center hover:border-blue-500 cursor-pointer';
+                card.className = 'card bg-white border border-gray-200 rounded-lg p-2 text-center cursor-pointer';
+                card.style.transition = 'all 0.3s ease';
                 card.onclick = () => window.location.href = item.link;
                 
-                card.innerHTML = `
-                    <div class="${item.bgColor} ${item.textColor} rounded-full w-8 h-8 flex items-center justify-center mx-auto mb-1">
-                        <i class="fas ${item.icon}"></i>
-                    </div>
-                    <h4 class="text-xs font-medium text-gray-800">${item.title}</h4>
-                `;
+                const iconDiv = document.createElement('div');
+                iconDiv.className = 'rounded-full w-8 h-8 flex items-center justify-center mx-auto mb-1';
+                iconDiv.style.backgroundColor = 'rgba(125, 51, 255, 0.1)';
+                iconDiv.style.color = '#7D33FF';
+                
+                const icon = document.createElement('i');
+                icon.className = `fas ${item.icon}`;
+                iconDiv.appendChild(icon);
+                
+                const title = document.createElement('h4');
+                title.className = 'text-xs font-medium text-gray-800';
+                title.textContent = item.title;
+                
+                card.appendChild(iconDiv);
+                card.appendChild(title);
+                
+                card.addEventListener('mouseover', () => {
+                    card.style.borderColor = '#7D33FF';
+                    card.style.transform = 'translateY(-5px)';
+                });
+                
+                card.addEventListener('mouseout', () => {
+                    card.style.borderColor = '#e5e7eb';
+                    card.style.transform = 'translateY(0)';
+                });
                 
                 grid.appendChild(card);
             });
@@ -810,11 +881,11 @@
                 
                 option.innerHTML = `
                     <label class="flex items-center cursor-pointer w-full">
-                        <input type="checkbox" class="quick-nav-checkbox form-checkbox h-5 w-5 text-blue-600 rounded border-gray-300"
+                        <input type="checkbox" class="quick-nav-checkbox form-checkbox h-5 w-5 text-[#7D33FF] rounded border-gray-300"
                                value="${key}" ${isSelected ? 'checked' : ''}>
                         <div class="ml-3 flex items-center">
-                            <div class="${item.bgColor} ${item.textColor} rounded-full w-8 h-8 flex items-center justify-center mr-3">
-                                <i class="fas ${item.icon}"></i>
+                            <div class="w-8 h-8 flex items-center justify-center mr-3 rounded-full" style="background-color: rgba(125, 51, 255, 0.1)">
+                                <i class="fas ${item.icon}" style="color: #7D33FF"></i>
                             </div>
                             <span class="text-sm text-gray-700">${item.title}</span>
                         </div>
@@ -844,7 +915,7 @@
             const cancelBtn = document.getElementById('cancelQuickNav');
             const saveBtn = document.getElementById('saveQuickNav');
             
-            // 渲染初始快速导航
+            // 立即渲染初始快速导航
             renderQuickNavGrid();
             
             // 打开管理弹窗
@@ -869,7 +940,7 @@
                 }
                 
                 selectedQuickNavItems = Array.from(selectedCheckboxes).map(cb => cb.value);
-                renderQuickNavGrid();
+                renderQuickNavGrid(); // 重新渲染导航网格
                 modal.classList.add('hidden');
             });
             

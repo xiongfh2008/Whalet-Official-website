@@ -6,6 +6,7 @@
     <title>Whalet - 鲸卡管理</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../styles/custom.css">
     <style>
         body {
             font-family: 'Inter', sans-serif;
@@ -25,7 +26,7 @@
         }
 
         .balance-card {
-            background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+            background: linear-gradient(135deg, #7D33FF 0%, #6929CC 100%);
             border-radius: 16px;
             overflow: hidden;
             position: relative;
@@ -75,6 +76,11 @@
         .tab-button {
             transition: all 0.3s ease;
             position: relative;
+            cursor: pointer;
+        }
+
+        .tab-button.active {
+            color: #7D33FF !important;
         }
 
         .tab-button.active::after {
@@ -84,7 +90,21 @@
             left: 0;
             width: 100%;
             height: 2px;
-            background-color: #2563eb;
+            background-color: #7D33FF !important;
+        }
+
+        .tab-button:hover {
+            color: #7D33FF !important;
+        }
+
+        .tab-button:hover::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: #7D33FF !important;
         }
 
         .custom-scrollbar::-webkit-scrollbar {
@@ -110,16 +130,17 @@
         .tab-btn {
             position: relative;
             transition: all 0.3s ease;
+            cursor: pointer;
         }
 
         .tab-btn.active {
-            color: #2563eb;
-            border-bottom-color: #2563eb;
+            color: #7D33FF !important;
+            border-bottom-color: #7D33FF !important;
         }
 
-        .tab-btn:hover:not(.active) {
-            color: #4b5563;
-            border-bottom-color: #e5e7eb;
+        .tab-btn:hover {
+            color: #7D33FF !important;
+            border-bottom-color: #7D33FF !important;
         }
 
         .nav-container {
@@ -138,7 +159,7 @@
             <div class="border-b border-gray-200">
                 <div class="flex justify-between items-center px-6">
                     <nav class="flex space-x-8">
-                        <button id="cardManageMainTab" class="tab-btn whitespace-nowrap py-4 px-1 border-b-2 border-blue-600 text-blue-600 text-sm font-medium">卡片管理</button>
+                        <button id="cardManageMainTab" class="tab-btn whitespace-nowrap py-4 px-1 border-b-2 border-[#7D33FF] text-[#7D33FF] text-sm font-medium">卡片管理</button>
                         <button id="transactionMainTab" class="tab-btn whitespace-nowrap py-4 px-1 border-b-2 border-transparent text-gray-500 text-sm font-medium hover:text-gray-700 hover:border-gray-300">鲸卡交易</button>
                     </nav>
                     
@@ -242,10 +263,10 @@
             </div>
 
             <!-- 温馨提醒 -->
-            <div class="bg-blue-50 border border-blue-200 rounded-lg p-3 mb-4">
+            <div class="bg-[#f5f3ff] border border-[#e9d8fd] rounded-lg p-3 mb-4">
                 <div class="flex items-start">
-                    <i class="fas fa-info-circle text-blue-500 mt-0.5 mr-2 text-base"></i>
-                    <div class="text-sm text-blue-700">
+                    <i class="fas fa-info-circle text-[#7D33FF] mt-0.5 mr-2 text-base"></i>
+                    <div class="text-sm text-[#7D33FF]">
                         <span>亲爱的鲸卡用户：</span>
                         <span class="block mt-1">因发卡机构或扣款平台会存在系统推送账单延迟的可能，导致鲸卡余额非实时展示，请您确保鲸卡余额充足，并及时关注扣款明细情况，给您带来的不便，敬请谅解。</span>
                         <span class="block mt-1">如有疑问，请联系客服经理，感谢您对易鲸的支持！</span>
@@ -258,7 +279,7 @@
                 <div class="flex justify-between items-center mb-6">
                     <h2 class="text-xl font-semibold text-gray-800">卡片管理</h2>
                     <div class="flex items-center space-x-4">
-                        <button class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition duration-200">
+                        <button class="bg-[#7D33FF] hover:bg-[#6929CC] text-white px-4 py-2 rounded-lg text-sm font-medium transition duration-200">
                             <i class="fas fa-plus mr-2"></i>申请鲸卡
                         </button>
                     </div>
@@ -295,7 +316,7 @@
                 </div>
 
                 <div class="flex space-x-4 mb-6">
-                    <button class="tab-button px-4 py-2 text-sm font-medium text-blue-600 active">全部卡片</button>
+                    <button class="tab-button px-4 py-2 text-sm font-medium text-gray-500 active">全部卡片</button>
                     <button class="tab-button px-4 py-2 text-sm font-medium text-gray-500">使用中</button>
                     <button class="tab-button px-4 py-2 text-sm font-medium text-gray-500">已冻结</button>
                     <button class="tab-button px-4 py-2 text-sm font-medium text-gray-500">已注销</button>
@@ -649,7 +670,7 @@
                 <!-- 分页 -->
                 <div class="flex justify-center items-center space-x-2 mt-8">
                     <button class="px-3 py-1 rounded border border-gray-200 text-gray-600 hover:bg-gray-50 transition duration-200">&lt;</button>
-                    <button class="px-3 py-1 rounded bg-blue-600 text-white">1</button>
+                    <button class="px-3 py-1 rounded bg-[#7D33FF] text-white">1</button>
                     <button class="px-3 py-1 rounded border border-gray-200 text-gray-600 hover:bg-gray-50 transition duration-200">2</button>
                     <button class="px-3 py-1 rounded border border-gray-200 text-gray-600 hover:bg-gray-50 transition duration-200">3</button>
                     <button class="px-3 py-1 rounded border border-gray-200 text-gray-600 hover:bg-gray-50 transition duration-200">&gt;</button>
@@ -659,6 +680,43 @@
     </div>
 
     <script>
+        // 页面加载时设置默认状态
+        document.addEventListener('DOMContentLoaded', () => {
+            // 设置卡片管理为默认选中状态
+            cardManageMainTab.classList.add('active', 'text-[#7D33FF]', 'border-[#7D33FF]');
+            cardManageMainTab.classList.remove('text-gray-500', 'border-transparent');
+            transactionMainTab.classList.remove('active', 'text-[#7D33FF]', 'border-[#7D33FF]');
+            transactionMainTab.classList.add('text-gray-500', 'border-transparent');
+            cardManageContent.classList.remove('hidden');
+            transactionContent.classList.add('hidden');
+
+            // 设置"全部卡片" tab 为默认选中状态
+            const allCardsTab = document.querySelector('.tab-button');
+            if (allCardsTab) {
+                allCardsTab.classList.add('active');
+                allCardsTab.classList.remove('text-gray-500');
+                allCardsTab.classList.add('text-[#7D33FF]');
+            }
+
+            // 添加卡片管理板块 tab 按钮的点击事件处理
+            const tabButtons = document.querySelectorAll('.tab-button');
+            tabButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    // 移除所有 tab 的选中状态
+                    tabButtons.forEach(btn => {
+                        btn.classList.remove('active');
+                        btn.classList.remove('text-[#7D33FF]');
+                        btn.classList.add('text-gray-500');
+                    });
+
+                    // 设置当前点击的 tab 为选中状态
+                    button.classList.add('active');
+                    button.classList.remove('text-gray-500');
+                    button.classList.add('text-[#7D33FF]');
+                });
+            });
+        });
+
         // 主标签页切换
         const cardManageMainTab = document.getElementById('cardManageMainTab');
         const transactionMainTab = document.getElementById('transactionMainTab');
@@ -666,18 +724,18 @@
         const transactionContent = document.getElementById('transactionContent');
 
         cardManageMainTab.addEventListener('click', () => {
-            cardManageMainTab.classList.add('active', 'text-blue-600', 'border-blue-600');
+            cardManageMainTab.classList.add('active', 'text-[#7D33FF]', 'border-[#7D33FF]');
             cardManageMainTab.classList.remove('text-gray-500', 'border-transparent');
-            transactionMainTab.classList.remove('active', 'text-blue-600', 'border-blue-600');
+            transactionMainTab.classList.remove('active', 'text-[#7D33FF]', 'border-[#7D33FF]');
             transactionMainTab.classList.add('text-gray-500', 'border-transparent');
             cardManageContent.classList.remove('hidden');
             transactionContent.classList.add('hidden');
         });
 
         transactionMainTab.addEventListener('click', () => {
-            transactionMainTab.classList.add('active', 'text-blue-600', 'border-blue-600');
+            transactionMainTab.classList.add('active', 'text-[#7D33FF]', 'border-[#7D33FF]');
             transactionMainTab.classList.remove('text-gray-500', 'border-transparent');
-            cardManageMainTab.classList.remove('active', 'text-blue-600', 'border-blue-600');
+            cardManageMainTab.classList.remove('active', 'text-[#7D33FF]', 'border-[#7D33FF]');
             cardManageMainTab.classList.add('text-gray-500', 'border-transparent');
             transactionContent.classList.remove('hidden');
             cardManageContent.classList.add('hidden');

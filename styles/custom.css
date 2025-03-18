@@ -1,0 +1,182 @@
+/* 导航栏通用样式 */
+body .text-gray-600:hover,
+body .hover\:text-blue-600:hover,
+body .hover\:text-blue-700:hover,
+body .hover\:text-blue-800:hover,
+body .hover\:text-blue-900:hover,
+body .nav-link-hover:hover,
+body .hover\:text-gray-600:hover,
+body .hover\:text-gray-700:hover,
+body .hover\:text-gray-800:hover {
+    color: #7D33FF !important;
+}
+
+/* 导航栏链接和按钮样式 */
+body a.text-gray-600:hover,
+body button.text-gray-600:hover,
+body .text-gray-600 i:hover {
+    color: #7D33FF !important;
+}
+
+/* 导航栏弹框图标悬停颜色 */
+body .hover\:bg-gray-50:hover svg,
+body .dropdown-icon-hover:hover,
+body .nav-link-hover:hover i,
+body .hover\:text-gray-600 i:hover {
+    color: #7D33FF !important;
+}
+
+/* 升级为企业链接颜色和其他蓝色文本 */
+body .text-blue-600,
+body .enterprise-link,
+body .text-blue-700 {
+    color: #7D33FF !important;
+}
+
+/* 确保其他蓝色悬停效果也更新为新的紫色 */
+body .hover\:border-blue-500:hover {
+    border-color: #7D33FF !important;
+}
+
+/* 蓝色填充按钮样式 */
+body .bg-blue-600,
+body .bg-blue-700,
+body .btn-primary,
+body button[class*="bg-blue"],
+body a[class*="bg-blue"],
+body .bg-indigo-600 {
+    background-color: #7D33FF !important;
+}
+
+body .hover\:bg-blue-700:hover,
+body .hover\:bg-indigo-700:hover,
+body .btn-primary:hover {
+    background-color: #6929CC !important;
+}
+
+/* 蓝色背景和边框 */
+body .bg-blue-100 {
+    background-color: rgba(125, 51, 255, 0.1) !important;
+}
+
+body .bg-blue-50 {
+    background-color: rgba(125, 51, 255, 0.05) !important;
+}
+
+/* 按钮和交互元素 */
+body .text-blue-600.hover\:bg-blue-50 {
+    color: #7D33FF !important;
+}
+
+body .text-blue-600.hover\:bg-blue-50:hover {
+    background-color: rgba(125, 51, 255, 0.1) !important;
+}
+
+/* 确保所有带下划线的链接也使用新的颜色 */
+body a.underline:hover {
+    color: #7D33FF !important;
+}
+
+/* 导航栏特定样式 */
+body nav a:hover,
+body nav button:hover,
+body nav i:hover,
+body .nav-container a:hover,
+body .nav-container button:hover,
+body .nav-container i:hover {
+    color: #7D33FF !important;
+}
+
+/* 顶部导航栏图标悬停效果 */
+body .fas:hover,
+body i.fas:hover,
+body button:hover .fas,
+body a:hover .fas {
+    color: #7D33FF !important;
+}
+
+/* 下拉菜单项悬停效果 */
+body .dropdown-menu a:hover,
+body .dropdown-menu button:hover,
+body #userCenterDropdown a:hover,
+body #userCenterDropdown button:hover {
+    color: #7D33FF !important;
+}
+
+/* 确保SVG图标也使用正确的颜色 */
+body svg:hover,
+body button:hover svg,
+body a:hover svg {
+    color: #7D33FF !important;
+}
+
+/* 确保图标在链接或按钮悬停时也改变颜色 */
+body a:hover i,
+body button:hover i,
+body .text-gray-400:hover,
+body .hover\:text-gray-600:hover i {
+    color: #7D33FF !important;
+}
+
+/* 用户中心下拉菜单中的图标 */
+body .text-gray-400:hover,
+body button.text-gray-400:hover i,
+body a.text-gray-400:hover i {
+    color: #7D33FF !important;
+}
+
+/* Tab按钮激活状态 */
+body .tab-btn.active {
+    border-bottom-color: #7D33FF !important;
+    color: #7D33FF !important;
+}
+
+/* 确保所有页面的导航栏链接悬停效果一致 */
+body .hover\:bg-gray-100:hover {
+    background-color: rgba(125, 51, 255, 0.1) !important;
+    color: #7D33FF !important;
+}
+
+/* 直接针对导航栏容器 */
+body .container .flex.items-center.space-x-6 a:hover,
+body .container .flex.items-center.space-x-6 button:hover,
+body .container .flex.items-center.space-x-6 i:hover {
+    color: #7D33FF !important;
+}
+
+/* 强制覆盖任何其他样式，但排除cursor-default类 */
+body [class*="text-gray"]:not(.cursor-default):hover,
+body [class*="text-blue"]:not(.cursor-default):hover,
+body [class*="hover\:text"]:not(.cursor-default):hover {
+    color: #7D33FF !important;
+}
+
+/* 确保cursor-default类的元素不会改变颜色 */
+body .cursor-default,
+body .cursor-default:hover,
+body .text-gray-600.cursor-default:hover,
+body .text-gray-900.cursor-default:hover {
+    color: inherit !important;
+}
+
+/* 特别处理实名认证部分的文本 */
+body .text-gray-900.cursor-default,
+body .text-gray-900.cursor-default:hover {
+    color: #111827 !important;
+}
+
+body .text-gray-600.cursor-default,
+body .text-gray-600.cursor-default:hover {
+    color: #4B5563 !important;
+}
+
+/* 聚焦状态的按钮样式 */
+body .focus\:ring-blue-500:focus,
+body .focus\:ring-indigo-500:focus {
+    --tw-ring-color: #7D33FF !important;
+}
+
+body .focus\:border-blue-500:focus,
+body .focus\:border-indigo-500:focus {
+    border-color: #7D33FF !important;
+} 

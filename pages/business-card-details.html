@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>商务卡详情</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../styles/custom.css">
+    <style>
+        body {
+            background-color: #f9fafb;
+            font-family: 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+        }
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 1.5rem 1rem;
+        }
+        .business-card {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            overflow: hidden;
+        }
+        .transaction-item:hover {
+            background-color: #f9fafb;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <div class="container mx-auto">
+        <!-- 顶部导航栏 -->
+        <div class="bg-white rounded-lg shadow-sm mb-4">
+            <div class="border-b border-gray-200">
+                <div class="flex justify-between items-center">
+                    <nav class="flex justify-start -mb-px pl-6">
+                        <button class="tab-btn active whitespace-nowrap py-4 px-8 border-b-2 text-center text-sm font-medium">
+                            商务卡
+                        </button>
+                    </nav>
+                </div>
+            </div>
+        </div>
+
+        <!-- 主要内容区域 -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <!-- 左侧卡片信息 -->
+            <div class="lg:col-span-1">
+                <div class="business-card p-6">
+                    <div class="mb-8">
+                        <img src="../assets/images/whalet-logo.png" alt="Whalet" class="h-8">
+                    </div>
+                    <div class="space-y-4">
+                        <div class="bg-gradient-to-r from-indigo-500 to-purple-500 rounded-lg p-6 text-white">
+                            <div class="flex justify-between items-center mb-8">
+                                <div>
+                                    <h3 class="text-lg font-semibold">Whalet Business</h3>
+                                    <p class="text-sm opacity-80">Premium Card</p>
+                                </div>
+                                <i class="fas fa-wifi transform rotate-90 text-2xl"></i>
+                            </div>
+                            <div class="mb-4">
+                                <div class="text-lg tracking-wider">**** **** **** 1234</div>
+                            </div>
+                            <div class="flex justify-between items-end">
+                                <div>
+                                    <div class="text-xs opacity-80">持卡人</div>
+                                    <div class="text-sm">ZHANG SHANSHAN</div>
+                                </div>
+                                <div class="flex items-center space-x-2">
+                                    <div class="w-8">
+                                        <i class="fab fa-cc-mastercard text-2xl"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="space-y-4">
+                            <div class="flex justify-between text-sm">
+                                <span class="text-gray-600">可用额度</span>
+                                <span class="font-medium">$49,580.25</span>
+                            </div>
+                            <div class="flex justify-between text-sm">
+                                <span class="text-gray-600">总额度</span>
+                                <span class="font-medium">$50,000</span>
+                            </div>
+                            <div class="flex justify-between text-sm">
+                                <span class="text-gray-600">账单日</span>
+                                <span class="font-medium">每月3日</span>
+                            </div>
+                        </div>
+
+                        <div class="pt-4 space-y-3">
+                            <button class="w-full px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+                                <i class="fas fa-lock mr-2"></i>临时冻结
+                            </button>
+                            <button class="w-full px-4 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+                                <i class="fas fa-cog mr-2"></i>卡片管理
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 右侧交易记录 -->
+            <div class="lg:col-span-2">
+                <div class="bg-white rounded-lg shadow-sm p-6">
+                    <div class="flex justify-between items-center mb-6">
+                        <h2 class="text-lg font-semibold text-gray-900">近期交易</h2>
+                        <a href="#" class="text-indigo-600 hover:text-indigo-700 text-sm">查看全部</a>
+                    </div>
+
+                    <div class="space-y-4">
+                        <!-- 交易记录列表 -->
+                        <div class="transaction-item p-4 rounded-lg border border-gray-100">
+                            <div class="flex justify-between items-start">
+                                <div class="flex items-start space-x-4">
+                                    <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center">
+                                        <i class="fas fa-shopping-cart text-blue-500"></i>
+                                    </div>
+                                    <div>
+                                        <h3 class="font-medium text-gray-900">Amazon.com</h3>
+                                        <p class="text-sm text-gray-500">2024-03-17 15:30</p>
+                                    </div>
+                                </div>
+                                <div class="text-right">
+                                    <p class="font-medium text-gray-900">-$419.75</p>
+                                    <p class="text-sm text-gray-500">已完成</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="transaction-item p-4 rounded-lg border border-gray-100">
+                            <div class="flex justify-between items-start">
+                                <div class="flex items-start space-x-4">
+                                    <div class="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center">
+                                        <i class="fas fa-plane text-green-500"></i>
+                                    </div>
+                                    <div>
+                                        <h3 class="font-medium text-gray-900">United Airlines</h3>
+                                        <p class="text-sm text-gray-500">2024-03-15 09:45</p>
+                                    </div>
+                                </div>
+                                <div class="text-right">
+                                    <p class="font-medium text-gray-900">-$856.00</p>
+                                    <p class="text-sm text-gray-500">已完成</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="transaction-item p-4 rounded-lg border border-gray-100">
+                            <div class="flex justify-between items-start">
+                                <div class="flex items-start space-x-4">
+                                    <div class="w-10 h-10 rounded-full bg-purple-100 flex items-center justify-center">
+                                        <i class="fas fa-hotel text-purple-500"></i>
+                                    </div>
+                                    <div>
+                                        <h3 class="font-medium text-gray-900">Hilton Hotels</h3>
+                                        <p class="text-sm text-gray-500">2024-03-14 12:20</p>
+                                    </div>
+                                </div>
+                                <div class="text-right">
+                                    <p class="font-medium text-gray-900">-$325.50</p>
+                                    <p class="text-sm text-gray-500">已完成</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="transaction-item p-4 rounded-lg border border-gray-100">
+                            <div class="flex justify-between items-start">
+                                <div class="flex items-start space-x-4">
+                                    <div class="w-10 h-10 rounded-full bg-orange-100 flex items-center justify-center">
+                                        <i class="fas fa-utensils text-orange-500"></i>
+                                    </div>
+                                    <div>
+                                        <h3 class="font-medium text-gray-900">Restaurant Le Bernardin</h3>
+                                        <p class="text-sm text-gray-500">2024-03-13 20:15</p>
+                                    </div>
+                                </div>
+                                <div class="text-right">
+                                    <p class="font-medium text-gray-900">-$245.80</p>
+                                    <p class="text-sm text-gray-500">已完成</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 加载更多按钮 -->
+                    <div class="mt-6 text-center">
+                        <button class="px-4 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+                            加载更多
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 处理临时冻结按钮点击事件
+        document.querySelector('button:contains("临时冻结")').addEventListener('click', function() {
+            const isCurrentlyFrozen = this.classList.contains('bg-gray-500');
+            
+            if (isCurrentlyFrozen) {
+                this.classList.remove('bg-gray-500');
+                this.classList.add('bg-indigo-600', 'hover:bg-indigo-700');
+                this.innerHTML = '<i class="fas fa-lock mr-2"></i>临时冻结';
+                alert('卡片已解冻');
+            } else {
+                this.classList.remove('bg-indigo-600', 'hover:bg-indigo-700');
+                this.classList.add('bg-gray-500');
+                this.innerHTML = '<i class="fas fa-lock-open mr-2"></i>解除冻结';
+                alert('卡片已冻结');
+            }
+        });
+
+        // 处理卡片管理按钮点击事件
+        document.querySelector('button:contains("卡片管理")').addEventListener('click', function() {
+            // 这里可以添加跳转到卡片管理页面的逻辑
+            alert('即将跳转到卡片管理页面');
+        });
+
+        // 处理加载更多按钮点击事件
+        document.querySelector('button:contains("加载更多")').addEventListener('click', function() {
+            // 这里可以添加加载更多交易记录的逻辑
+            alert('加载更多交易记录');
+        });
+    </script>
+</body>
+</html> 

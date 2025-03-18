@@ -61,10 +61,11 @@
         }
         .menu-item:hover {
             background-color: #f3f4f6;
+            color: #7D33FF;
         }
         .menu-item.active {
-            background-color: #eef2ff;
-            color: #4f46e5;
+            background-color: #f3f2ff;
+            color: #7D33FF;
         }
         /* 二级菜单样式 */
         .submenu {
@@ -203,7 +204,7 @@
             margin-bottom: 16px;
         }
         .tour-tooltip button {
-            background: #4f46e5;
+            background: #7D33FF;
             color: white;
             padding: 8px 16px;
             border-radius: 4px;
@@ -211,7 +212,7 @@
             cursor: pointer;
         }
         .tour-tooltip button:hover {
-            background: #4338ca;
+            background: #6929D4;
         }
         /* 高亮菜单项样式 */
         .highlight-menu {
@@ -241,16 +242,16 @@
         .activity-container {
             width: 60%;
             max-width: 500px;
-            background: linear-gradient(135deg, #f0f7ff, #fff);
+            background: linear-gradient(135deg, #f5f3ff, #fff);
             border-radius: 16px;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            box-shadow: 0 25px 50px -12px rgba(125, 51, 255, 0.15);
             position: relative;
             overflow: hidden;
             animation: fadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
         }
         
         .activity-header {
-            background: linear-gradient(135deg, #4f46e5, #6366f1);
+            background: linear-gradient(135deg, #7D33FF, #9355FF);
             padding: 12px;
             color: white;
             text-align: center;
@@ -279,7 +280,7 @@
             font-size: 22px;
             font-weight: bold;
             margin-bottom: 10px;
-            color: #4f46e5;
+            color: #7D33FF;
             text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
         }
         
@@ -296,14 +297,14 @@
             align-items: center;
             margin: 10px 0;
             padding: 10px 15px;
-            background-color: #f9f9f9;
+            background-color: #f5f3ff;
             border-radius: 8px;
             width: 100%;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            box-shadow: 0 2px 4px rgba(125, 51, 255, 0.05);
         }
         
         .benefit-icon {
-            background-color: #ff7e5f;
+            background-color: #7D33FF;
             color: white;
             width: 40px;
             height: 40px;
@@ -337,15 +338,15 @@
         }
         
         .join-btn {
-            background-color: #4f46e5;
+            background-color: #7D33FF;
             color: white;
             border: none;
         }
         
         .join-btn:hover {
-            background-color: #4338ca;
+            background-color: #6929D4;
             transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(79, 70, 229, 0.3);
+            box-shadow: 0 4px 8px rgba(125, 51, 255, 0.3);
         }
         
         .close-btn {
@@ -355,14 +356,14 @@
         }
         
         .close-btn:hover {
-            background-color: #eef2ff;
+            background-color: #f5f3ff;
         }
         
         .absolute-close {
             position: absolute;
             top: 6px;
             right: 6px;
-            background-color: rgba(255, 255, 255, 0.2);
+            background-color: rgba(125, 51, 255, 0.2);
             width: 32px;
             height: 32px;
             border-radius: 50%;
@@ -377,14 +378,14 @@
         }
         
         .absolute-close:hover {
-            background-color: rgba(255, 255, 255, 0.4);
+            background-color: rgba(125, 51, 255, 0.4);
             transform: rotate(90deg);
         }
         
         .timer-section {
             margin: 15px 0;
             width: 100%;
-            background-color: #f3f4f6;
+            background-color: #f5f3ff;
             padding: 15px;
             border-radius: 8px;
             text-align: center;
@@ -403,7 +404,7 @@
         }
         
         .timer-unit {
-            background-color: #ff7e5f;
+            background-color: #7D33FF;
             color: white;
             border-radius: 6px;
             padding: 8px 12px;
@@ -456,6 +457,15 @@
                 width: 100%;
                 margin: 5px 0;
             }
+        }
+        
+        /* 礼品提示框背景色也调整 */
+        .my-6.p-4.bg-blue-50 {
+            background-color: #f5f3ff !important;
+        }
+        
+        .text-orange-500 {
+            color: #7D33FF !important;
         }
     </style>
 </head>
@@ -516,7 +526,7 @@
                 
                 <!-- 收单 -->
                 <li>
-                    <div class="menu-item" data-toggle="submenu-acquiring">
+                    <div class="menu-item" data-page="acquiring-service" data-toggle="submenu-acquiring">
                         <i class="fas fa-receipt w-5 text-center"></i>
                         <span class="ml-3 menu-text">收单</span>
                         <i class="fas fa-chevron-down ml-auto text-xs submenu-toggle"></i>
@@ -545,9 +555,9 @@
                 
                 <!-- 卡 -->
                 <li>
-                    <div class="menu-item" data-page="cards">
+                    <div class="menu-item" data-page="business-card">
                         <i class="fas fa-credit-card w-5 text-center"></i>
-                        <span class="ml-3 menu-text">卡</span>
+                        <span class="ml-3 menu-text">商务卡</span>
                     </div>
                 </li>
                 
@@ -629,57 +639,6 @@
         <iframe id="content-frame" src="pages/home.html" title="内容"></iframe>
     </main>
     
-    <!-- 收单服务申请弹框 -->
-    <div id="acquiring-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-        <div class="bg-white rounded-lg p-8 max-w-md w-full mx-4">
-            <h3 class="text-xl font-semibold mb-4">申请开通收单服务</h3>
-            <p class="text-gray-600 mb-6">尊敬的客户，在您开通全球收单产品前，请仔细阅读并同意以下服务协议及政策。</p>
-            
-            <div class="mb-6">
-                <label for="website-url" class="block text-sm font-medium text-gray-700 mb-2">
-                    收单网站链接 <span class="text-red-500">*</span>
-                </label>
-                <input type="url" 
-                    id="website-url" 
-                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500" 
-                    placeholder="请输入您的网站链接"
-                    required>
-                <p id="url-error" class="mt-1 text-sm text-red-500 hidden">请输入收单网站链接</p>
-            </div>
-            
-            <div class="mb-6">
-                <label class="flex items-start">
-                    <input type="checkbox" id="terms-checkbox" class="mt-1 mr-2">
-                    <span class="text-sm text-gray-600">
-                        已阅读并同意
-                        <a href="#" class="text-indigo-600 hover:text-indigo-800">《跨境收款服务协议》</a>
-                        <a href="#" class="text-indigo-600 hover:text-indigo-800">《隐私协议》</a>
-                    </span>
-                </label>
-            </div>
-            
-            <div class="flex justify-end space-x-4">
-                <button id="cancel-acquiring" class="px-4 py-2 text-gray-600 hover:text-gray-800">取消</button>
-                <button id="submit-acquiring" class="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed">
-                    提交申请
-                </button>
-            </div>
-        </div>
-    </div>
-    
-    <!-- 添加帮助按钮 -->
-    <button id="help-button">
-        <i class="fas fa-question-circle mr-2"></i>功能引导
-    </button>
-
-    <!-- 引导提示遮罩和提示框 -->
-    <div class="tour-overlay"></div>
-    <div class="tour-tooltip">
-        <h3></h3>
-        <p></p>
-        <button class="next-step">下一步</button>
-    </div>
-
     <!-- 活动弹框 -->
     <div id="activity-modal" class="hidden">
         <div class="activity-container">
@@ -712,6 +671,19 @@
         </div>
     </div>
 
+    <!-- 添加帮助按钮 -->
+    <button id="help-button">
+        <i class="fas fa-question-circle mr-2"></i>功能引导
+    </button>
+
+    <!-- 引导提示遮罩和提示框 -->
+    <div class="tour-overlay"></div>
+    <div class="tour-tooltip">
+        <h3></h3>
+        <p></p>
+        <button class="next-step">下一步</button>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/shepherd.js@10.0.1/dist/js/shepherd.min.js"></script>
     <script>
         // 存储当前活动页面
@@ -727,6 +699,9 @@
             'trade-collection': 'pages/trade-collection.html',
             'bill-collection': 'pages/bill-collection.html',
             'transaction-list': 'pages/transaction-list.html',
+            'acquiring-service': 'pages/acquiring-service.html', // 添加收单服务申请页面
+            'business-card': 'pages/business-card.html', // 添加商务卡申请页面
+            'business-card-details': 'pages/business-card-details.html', // 添加商务卡详情页面
             'forex': 'pages/forex.html',
             'cards': 'pages/cards.html',
             'withdrawal': 'pages/withdrawal.html',
@@ -783,13 +758,6 @@
                     event.preventDefault();
                     event.stopPropagation();
                     const pageName = item.getAttribute('data-page');
-                    
-                    // 检查是否是收单相关页面
-                    if ((pageName === 'bill-collection' || pageName === 'transaction-list') && !isAcquiringServiceEnabled) {
-                        return; // 如果收单服务未开通，不进行页面跳转
-                    }
-                    
-                    console.log('Menu item clicked:', pageName);
                     loadPage(pageName);
                 });
             });
@@ -799,34 +767,27 @@
                 item.addEventListener('click', event => {
                     event.preventDefault();
                     const submenuId = item.getAttribute('data-toggle');
+                    const submenu = document.getElementById(submenuId);
+                    const pageName = item.getAttribute('data-page');
                     
-                    // 如果是收单菜单且服务未开通，显示申请弹框
-                    if (submenuId === 'submenu-acquiring' && !isAcquiringServiceEnabled) {
-                        showAcquiringModal();
-                        return;
+                    // 如果有页面名称，加载对应页面
+                    if (pageName) {
+                        loadPage(pageName);
                     }
                     
-                    const submenu = document.getElementById(submenuId);
-                    
-                    // 切换子菜单状态
-                    if (submenu) {
-                        // 如果是收单菜单且服务未开通，不显示子菜单
-                        if (submenuId === 'submenu-acquiring' && !isAcquiringServiceEnabled) {
-                            return;
-                        }
-                        
-                        // 关闭其他所有子菜单
-                        document.querySelectorAll('.submenu').forEach(menu => {
-                            if (menu !== submenu) {
-                                menu.classList.remove('open');
-                                const toggle = menu.previousElementSibling.querySelector('.submenu-toggle');
-                                if (toggle) {
-                                    toggle.classList.replace('fa-chevron-up', 'fa-chevron-down');
-                                }
+                    // 关闭其他所有子菜单
+                    document.querySelectorAll('.submenu').forEach(menu => {
+                        if (menu !== submenu) {
+                            menu.classList.remove('open');
+                            const toggle = menu.previousElementSibling.querySelector('.submenu-toggle');
+                            if (toggle) {
+                                toggle.classList.replace('fa-chevron-up', 'fa-chevron-down');
                             }
-                        });
+                        }
+                    });
 
-                        // 切换当前子菜单
+                    // 切换当前子菜单
+                    if (submenu) {
                         submenu.classList.toggle('open');
                         const chevron = item.querySelector('.submenu-toggle');
                         if (chevron) {
@@ -1054,90 +1015,17 @@
             }
         });
 
-        // 收单服务相关函数
-        function showAcquiringModal() {
-            const modal = document.getElementById('acquiring-modal');
-            const submitBtn = document.getElementById('submit-acquiring');
-            const cancelBtn = document.getElementById('cancel-acquiring');
-            const termsCheckbox = document.getElementById('terms-checkbox');
-            const websiteInput = document.getElementById('website-url');
-            
-            // 显示弹框
-            modal.classList.remove('hidden');
-            
-            // 更新提交按钮状态
-            function updateSubmitButton() {
-                submitBtn.disabled = !termsCheckbox.checked || !websiteInput.value.trim();
-            }
-            
-            // 绑定事件
-            termsCheckbox.addEventListener('change', updateSubmitButton);
-            websiteInput.addEventListener('input', updateSubmitButton);
-            
-            // 初始化按钮状态
-            updateSubmitButton();
-            
-            // 取消按钮事件
-            cancelBtn.addEventListener('click', () => {
-                modal.classList.add('hidden');
-            });
-            
-            // 点击弹框外部关闭
-            modal.addEventListener('click', (e) => {
-                if (e.target === modal) {
-                    modal.classList.add('hidden');
-                }
-            });
-            
-            // 提交按钮事件
-            submitBtn.addEventListener('click', () => {
-                const urlError = document.getElementById('url-error');
-                
-                // 验证网站链接
-                if (!websiteInput.value.trim()) {
-                    urlError.classList.remove('hidden');
-                    websiteInput.classList.add('border-red-500');
-                    return;
-                } else {
-                    urlError.classList.add('hidden');
-                    websiteInput.classList.remove('border-red-500');
-                }
-                
-                if (termsCheckbox.checked && websiteInput.value.trim()) {
-                    // 启用收单服务
-                    isAcquiringServiceEnabled = true;
-                    
-                    // 更新菜单显示状态
-                    const submenu = document.getElementById('submenu-acquiring');
-                    if (submenu) {
-                        submenu.style.display = 'block';
-                        // 展开收单菜单
-                        submenu.classList.add('open');
-                        // 更新箭头方向
-                        const parentMenuItem = submenu.previousElementSibling;
-                        const chevron = parentMenuItem.querySelector('.submenu-toggle');
-                        if (chevron) {
-                            chevron.classList.replace('fa-chevron-down', 'fa-chevron-up');
-                        }
-                    }
-                    
-                    // 提示用户
-                    alert('申请已提交并审核通过，收单服务已开通！');
-                    modal.classList.add('hidden');
-                    
-                    // 清空表单
-                    websiteInput.value = '';
-                    termsCheckbox.checked = false;
-                }
-            });
-        }
-
         // 更新收单菜单显示状态
         function updateAcquiringMenu() {
-            const submenu = document.getElementById('submenu-acquiring');
-            if (submenu) {
-                submenu.style.display = isAcquiringServiceEnabled ? 'block' : 'none';
-            }
+            const menuItems = document.querySelectorAll('#submenu-acquiring .menu-item');
+            menuItems.forEach(item => {
+                // 移除所有服务状态相关的类和图标
+                item.classList.remove('service-not-enabled');
+                const statusIcon = item.querySelector('.service-status');
+                if (statusIcon) {
+                    statusIcon.remove();
+                }
+            });
         }
 
         // 在页面加载时更新收单菜单状态

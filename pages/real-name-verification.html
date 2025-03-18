@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>实名认证</title>
+    <link rel="stylesheet" href="../styles/main.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #7D33FF;
+            --primary-hover: #6929D4;
+            --primary-light: rgba(125, 51, 255, 0.1);
+            --bg-color: #FFFFFF;
+            --text-primary: #1F1F1F;
+            --text-secondary: #666666;
+            --border-color: #E5E5E5;
+            --success-color: #34C759;
+            --card-shadow: 0 2px 8px rgba(125, 51, 255, 0.08);
+            --transition: all 0.2s ease-in-out;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            color: var(--text-primary);
+            line-height: 1.5;
+            background-color: #F8F7FF;
+            margin: 0;
+            padding: 0;
+        }
+
+        .verification-container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 32px;
+            background: var(--bg-color);
+            border-radius: 12px;
+            box-shadow: var(--card-shadow);
+        }
+
+        h1 {
+            font-size: 28px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--text-primary);
+        }
+
+        .page-description {
+            color: var(--text-secondary);
+            font-size: 16px;
+            margin-bottom: 32px;
+        }
+
+        .verification-types {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            margin-bottom: 20px;
+            max-width: 100%;
+        }
+
+        .verification-type {
+            background: var(--bg-color);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            padding: 8px 12px;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            text-align: left;
+            min-height: 50px;
+            gap: 12px;
+        }
+
+        .verification-type:hover {
+            border-color: var(--primary-color);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(125, 51, 255, 0.12);
+            background-color: var(--primary-light);
+        }
+
+        .verification-type.selected {
+            border-color: var(--primary-color);
+            background-color: var(--primary-light);
+            box-shadow: 0 4px 12px rgba(125, 51, 255, 0.12);
+        }
+
+        .verification-type-icon {
+            font-size: 14px;
+            color: var(--primary-color);
+            height: 26px;
+            width: 26px;
+            min-width: 26px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--primary-light);
+            border-radius: 50%;
+        }
+
+        .verification-type-content {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .verification-type-title {
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 2px;
+            color: var(--text-primary);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .verification-type-desc {
+            font-size: 11px;
+            color: var(--text-secondary);
+            line-height: 1.2;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .document-requirements {
+            background-color: var(--bg-color);
+            padding: 24px;
+            border-radius: 12px;
+            margin-top: 24px;
+            border: 1px solid var(--border-color);
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .document-requirements h3 {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+        }
+
+        .document-requirements h3:before {
+            content: "";
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 4px;
+            height: 18px;
+            background-color: var(--primary-color);
+            border-radius: 2px;
+            margin-right: 12px;
+        }
+
+        .document-list {
+            list-style-type: none;
+            padding: 0;
+            margin: 0 0 0 16px;
+        }
+
+        .document-list li {
+            margin-bottom: 12px;
+            padding-left: 28px;
+            position: relative;
+            color: var(--text-secondary);
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+        }
+
+        .document-list li:last-child {
+            margin-bottom: 0;
+        }
+
+        .document-list li:before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 6px;
+            height: 6px;
+            background-color: var(--primary-color);
+            border-radius: 50%;
+        }
+
+        .example-btn {
+            padding: 4px 8px;
+            font-size: 12px;
+            color: var(--primary-color);
+            background: var(--primary-light);
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: var(--transition);
+            white-space: nowrap;
+        }
+
+        .example-btn:hover {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .upload-section {
+            margin-top: 32px;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        .upload-area {
+            border: 2px dashed var(--border-color);
+            border-radius: 8px;
+            padding: 32px;
+            text-align: center;
+            margin-top: 16px;
+            cursor: pointer;
+            transition: var(--transition);
+            background-color: #FAFAFA;
+        }
+
+        .upload-area:hover {
+            border-color: var(--primary-color);
+            background-color: var(--primary-light);
+        }
+
+        .upload-area i {
+            font-size: 32px;
+            color: var(--primary-color);
+            margin-bottom: 12px;
+        }
+
+        .upload-area p {
+            margin: 8px 0;
+            color: var(--text-secondary);
+        }
+
+        .button-group {
+            margin-top: 32px;
+            padding-top: 24px;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .agreement-checkbox {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+
+        .agreement-checkbox input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            cursor: pointer;
+            accent-color: var(--primary-color);
+        }
+
+        .agreement-checkbox a {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        .agreement-checkbox a:hover {
+            text-decoration: underline;
+        }
+
+        .submit-btn {
+            padding: 12px 32px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 500;
+            transition: var(--transition);
+            align-self: flex-start;
+            width: fit-content;
+        }
+
+        .submit-btn:hover {
+            background-color: var(--primary-hover);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(125, 51, 255, 0.2);
+        }
+
+        .submit-btn:disabled {
+            background-color: #B794FF;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        @media (max-width: 768px) {
+            .verification-types {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 6px;
+            }
+            
+            .verification-container {
+                margin: 16px;
+                padding: 16px;
+            }
+
+            .verification-type {
+                padding: 6px 10px;
+                min-height: 44px;
+                gap: 10px;
+            }
+
+            .verification-type-icon {
+                font-size: 12px;
+                height: 22px;
+                width: 22px;
+                min-width: 22px;
+            }
+
+            .verification-type-title {
+                font-size: 12px;
+                margin-bottom: 1px;
+            }
+
+            .verification-type-desc {
+                font-size: 10px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .verification-types {
+                grid-template-columns: 1fr;
+                max-width: 100%;
+            }
+        }
+
+        .document-list li span {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .document-list li .requirement-desc {
+            font-size: 12px;
+            color: #999;
+            margin-top: 4px;
+            display: block;
+        }
+
+        .download-link {
+            color: var(--primary-color);
+            text-decoration: underline;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="verification-container">
+        <h1>实名认证</h1>
+        <p class="page-description">请选择您的账户类型并提供相应的认证材料</p>
+
+        <div class="verification-types">
+            <div class="verification-type" onclick="selectType('mainland-personal')">
+                <div class="verification-type-icon">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="verification-type-content">
+                    <div class="verification-type-title">大陆个人账户</div>
+                    <div class="verification-type-desc">适用于中国大陆个人用户</div>
+                </div>
+            </div>
+            <div class="verification-type" onclick="selectType('mainland-business')">
+                <div class="verification-type-icon">
+                    <i class="fas fa-building"></i>
+                </div>
+                <div class="verification-type-content">
+                    <div class="verification-type-title">大陆企业账户</div>
+                    <div class="verification-type-desc">适用于中国大陆企业用户</div>
+                </div>
+            </div>
+            <div class="verification-type" onclick="selectType('hk-business')">
+                <div class="verification-type-icon">
+                    <i class="fas fa-landmark"></i>
+                </div>
+                <div class="verification-type-content">
+                    <div class="verification-type-title">香港企业账户</div>
+                    <div class="verification-type-desc">适用于香港企业用户</div>
+                </div>
+            </div>
+        </div>
+
+        <div id="mainland-personal-requirements" class="document-requirements" style="display: none;">
+            <h3>请准备以下材料照片</h3>
+            <ul class="document-list">
+                <li>
+                    <span>个人身份证人像页</span>
+                    <button class="example-btn" onclick="showExample('身份证人像页')">查看示例</button>
+                </li>
+                <li>
+                    <span>个人身份证国徽页</span>
+                    <button class="example-btn" onclick="showExample('身份证国徽页')">查看示例</button>
+                </li>
+            </ul>
+            <div class="button-group">
+                <label class="agreement-checkbox">
+                    <input type="checkbox" onchange="toggleSubmitButton('mainland-personal')">
+                    <span>本人已阅读、知晓并同意<a href="#" onclick="showAgreement()">《承诺函》</a>条款</span>
+                </label>
+                <button class="submit-btn" onclick="submitVerification()" disabled>
+                    <i class="fas fa-check"></i> 开始申请
+                </button>
+            </div>
+        </div>
+
+        <div id="mainland-business-requirements" class="document-requirements" style="display: none;">
+            <h3>请准备以下材料照片</h3>
+            <ul class="document-list">
+                <li>
+                    <span>营业执照影印件</span>
+                    <button class="example-btn" onclick="showExample('营业执照')">查看示例</button>
+                </li>
+                <li>
+                    <span>
+                        重要组成人员身份证明文件
+                        <span class="requirement-desc">
+                            说明：法定代表人、企业董事、实际控股人和持有股25%及以上的股东身份证正/反面、手持身份证(大陆）或法人护照、手持护照照片
+                        </span>
+                    </span>
+                    <button class="example-btn" onclick="showExample('身份证明')">查看示例</button>
+                </li>
+                <li>
+                    <span>
+                        手持开户申请表
+                        <span class="requirement-desc">
+                            请填写<span class="download-link" onclick="downloadForm()">开户申请表(点击下载)</span>表后加盖公司公章，需提供法人/董事手持开户申请表照片
+                        </span>
+                    </span>
+                    <button class="example-btn" onclick="showExample('开户申请表')">查看示例</button>
+                </li>
+            </ul>
+            <div class="button-group">
+                <label class="agreement-checkbox">
+                    <input type="checkbox" onchange="toggleSubmitButton('mainland-business')">
+                    <span>本人已阅读、知晓并同意<a href="#" onclick="showAgreement()">《承诺函》</a>条款</span>
+                </label>
+                <button class="submit-btn" onclick="submitVerification()" disabled>
+                    <i class="fas fa-check"></i> 开始申请
+                </button>
+            </div>
+        </div>
+
+        <div id="hk-business-requirements" class="document-requirements" style="display: none;">
+            <h3>请准备以下材料照片</h3>
+            <ul class="document-list">
+                <li>
+                    <span>
+                        企业证件
+                        <span class="requirement-desc">
+                            注册证书(CI)、商务登记证(BR)、法团成立表格(NC)、周年申请表(NARA1)
+                        </span>
+                    </span>
+                    <button class="example-btn" onclick="showExample('企业证件')">查看示例</button>
+                </li>
+                <li>
+                    <span>
+                        重要组成人员身份证明文件
+                        <span class="requirement-desc">
+                            企业董事、实际控股人和持股25%及以上的股东的身份证正/反面照片(或护照照片)
+                        </span>
+                    </span>
+                    <button class="example-btn" onclick="showExample('身份证明')">查看示例</button>
+                </li>
+                <li>
+                    <span>
+                        手持开户申请表
+                        <span class="requirement-desc">
+                            请填写<span class="download-link" onclick="downloadForm()">开户申请表(点击下载)</span>表后加盖公司公章，需提供法人/董事手持开户申请表照片
+                        </span>
+                    </span>
+                    <button class="example-btn" onclick="showExample('开户申请表')">查看示例</button>
+                </li>
+            </ul>
+            <div class="button-group">
+                <label class="agreement-checkbox">
+                    <input type="checkbox" onchange="toggleSubmitButton('hk-business')">
+                    <span>本人已阅读、知晓并同意<a href="#" onclick="showAgreement()">《承诺函》</a>条款</span>
+                </label>
+                <button class="submit-btn" onclick="submitVerification()" disabled>
+                    <i class="fas fa-check"></i> 开始申请
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function selectType(type) {
+            // Remove selected class from all types
+            document.querySelectorAll('.verification-type').forEach(el => {
+                el.classList.remove('selected');
+            });
+
+            // Hide all requirement sections with fade out effect
+            document.querySelectorAll('.document-requirements').forEach(el => {
+                el.style.opacity = '0';
+                setTimeout(() => {
+                    el.style.display = 'none';
+                }, 300);
+            });
+
+            // Show selected type's requirements with fade in effect
+            setTimeout(() => {
+                document.querySelector(`#${type}-requirements`).style.display = 'block';
+                requestAnimationFrame(() => {
+                    document.querySelector(`#${type}-requirements`).style.opacity = '1';
+                });
+            }, 300);
+
+            // Add selected class to clicked type
+            document.querySelector(`.verification-type:nth-child(${
+                type === 'mainland-personal' ? '1' : 
+                type === 'mainland-business' ? '2' : '3'
+            })`).classList.add('selected');
+        }
+
+        function submitVerification() {
+            const selectedType = document.querySelector('.verification-type.selected');
+            const typeIndex = Array.from(document.querySelectorAll('.verification-type')).indexOf(selectedType);
+            const btn = document.querySelector('.submit-btn');
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 提交中...';
+            
+            // Simulate API call
+            setTimeout(() => {
+                if (typeIndex === 0) { // Personal account
+                    window.location.href = './personal-verification.html';
+                } else {
+                    alert('提交认证申请成功！');
+                    btn.disabled = false;
+                    btn.innerHTML = '<i class="fas fa-check"></i> 开始申请';
+                }
+            }, 1500);
+        }
+
+        function showExample(type) {
+            alert(`这里将显示${type}的示例图片`);
+            // 这里可以实现弹窗显示对应类型的示例图片
+        }
+
+        function downloadForm() {
+            alert('开始下载开户申请表');
+            // 这里实现下载开户申请表的逻辑
+        }
+
+        function toggleSubmitButton(type) {
+            const container = document.getElementById(`${type}-requirements`);
+            const checkbox = container.querySelector('input[type="checkbox"]');
+            const submitBtn = container.querySelector('.submit-btn');
+            submitBtn.disabled = !checkbox.checked;
+        }
+
+        function showAgreement() {
+            alert('这里将显示承诺函内容');
+            // 这里实现显示承诺函的逻辑
+            return false; // 阻止链接默认行为
+        }
+
+        // 页面加载完成后自动选中第一个选项
+        document.addEventListener('DOMContentLoaded', () => {
+            selectType('mainland-personal');
+        });
+    </script>
+</body>
+</html> 

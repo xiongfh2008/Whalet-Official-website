@@ -7,6 +7,7 @@
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="../styles/common.css">
+    <link rel="stylesheet" href="../styles/custom.css">
     <style>
         body {
             background-color: #f9fafb;
@@ -84,7 +85,7 @@
         }
         
         .bank-card:hover {
-            border-color: #4f46e5;
+            border-color: #7D33FF;
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
         }
 
@@ -109,7 +110,7 @@
         }
 
         .add-card-button:hover {
-            border-color: #2563eb;
+            border-color: #7D33FF;
             background-color: #f8fafc;
         }
 
@@ -325,24 +326,33 @@
 
             <!-- 第三方账户内容 -->
             <div id="content-thirdparty" class="tab-content bg-white rounded-xl shadow-sm p-6">
+                <!-- 标题和添加按钮区 -->
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-lg font-medium text-gray-900">第三方账户</h2>
+                    <button id="addPayeeBtn" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium flex items-center">
+                        <i class="fas fa-plus mr-1"></i>
+                        添加收款人
+                    </button>
+                </div>
+
                 <!-- 搜索筛选区 -->
                 <div class="mb-6">
-                    <div class="flex flex-wrap items-end gap-4">
-                        <div class="flex-1 min-w-[200px]">
-                            <label class="block text-sm font-medium text-gray-700 mb-1">收款人名称或备注名称</label>
-                            <input type="text" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="支持模糊查询">
+                    <div class="flex flex-wrap items-center gap-4">
+                        <div class="flex items-center w-64">
+                            <label class="whitespace-nowrap text-sm font-medium text-gray-700 mr-2">收款人名称：</label>
+                            <input type="text" class="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="支持模糊查询">
                         </div>
-                        <div class="w-40">
-                            <label class="block text-sm font-medium text-gray-700 mb-1">类型</label>
-                            <select class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent appearance-none">
+                        <div class="flex items-center ml-8">
+                            <label class="whitespace-nowrap text-sm font-medium text-gray-700 mr-2">类型：</label>
+                            <select class="w-32 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent appearance-none">
                                 <option value="">全部</option>
                                 <option value="personal">个人</option>
                                 <option value="corporate">企业</option>
                             </select>
                         </div>
-                        <div class="w-40">
-                            <label class="block text-sm font-medium text-gray-700 mb-1">币种</label>
-                            <select class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent appearance-none">
+                        <div class="flex items-center">
+                            <label class="whitespace-nowrap text-sm font-medium text-gray-700 mr-2">币种：</label>
+                            <select class="w-32 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent appearance-none">
                                 <option value="">全部</option>
                                 <option value="USD">USD - 美元</option>
                                 <option value="EUR">EUR - 欧元</option>
@@ -360,24 +370,6 @@
                                 重置
                             </button>
                         </div>
-                    </div>
-                </div>
-
-                <!-- 操作按钮区 -->
-                <div class="mb-4 flex justify-between items-center">
-                    <button id="addPayeeBtn" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium flex items-center">
-                        <i class="fas fa-plus mr-1"></i>
-                        添加收款人
-                    </button>
-                    <div>
-                        <button class="px-4 py-2 border border-gray-300 hover:bg-gray-50 rounded-lg text-sm font-medium text-gray-700">
-                            <i class="fas fa-download mr-1"></i>
-                            导出
-                        </button>
-                        <button class="px-4 py-2 border border-gray-300 hover:bg-gray-50 rounded-lg text-sm font-medium text-gray-700 ml-2">
-                            <i class="fas fa-cog mr-1"></i>
-                            列表设置
-                        </button>
                     </div>
                 </div>
 
@@ -428,7 +420,7 @@
                                     <input type="checkbox" class="rounded text-blue-600">
                                 </td>
                                 <td class="px-2 py-4 whitespace-nowrap">
-                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
+                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-purple-100 text-purple-800">
                                         企业
                                     </span>
                                 </td>
@@ -470,7 +462,7 @@
                                     <input type="checkbox" class="rounded text-blue-600">
                                 </td>
                                 <td class="px-2 py-4 whitespace-nowrap">
-                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
+                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-purple-100 text-purple-800">
                                         企业
                                     </span>
                                 </td>
@@ -562,7 +554,7 @@
                                 <span class="sr-only">上一页</span>
                                 <i class="fas fa-chevron-left text-xs"></i>
                             </a>
-                            <a href="#" class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-blue-50 text-sm font-medium text-blue-600 hover:bg-blue-100">
+                            <a href="#" class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-purple-100 text-sm font-medium text-purple-600 hover:bg-purple-200">
                                 1
                             </a>
                             <a href="#" class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">

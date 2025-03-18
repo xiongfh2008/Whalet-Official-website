@@ -7,19 +7,151 @@
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        .platform-card {
+            transition: all 0.3s ease;
+        }
+        .platform-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+        /* 修改顶部导航栏样式 */
+        .tab-btn {
+            position: relative;
+            transition: all 0.3s ease;
+            border-bottom: 2px solid transparent;
+        }
+        .tab-btn.active {
+            border-bottom: 2px solid #7D33FF !important;
+            color: #7D33FF !important;
+        }
+        .tab-btn:hover {
+            color: #7D33FF !important;
+            border-bottom-color: #7D33FF !important;
+        }
         .tab-content {
             display: none;
         }
         .tab-content.active {
-            display: block;
+            display: block !important;
+        }
+        /* 添加按钮样式 */
+        .primary-btn {
+            background-color: #7D33FF !important;
+            color: white !important;
+        }
+        .primary-btn:hover {
+            background-color: #6929CC !important;
+        }
+        /* 添加图标悬停样式 */
+        .icon-hover:hover {
+            color: #7D33FF !important;
+        }
+        /* 添加链接样式 */
+        .link-primary {
+            color: #7D33FF !important;
+        }
+        .link-primary:hover {
+            color: #6929CC !important;
+        }
+        /* 添加查询按钮的样式 */
+        .search-btn {
+            background-color: #7D33FF !important;
+            color: white !important;
+        }
+        .search-btn:hover {
+            background-color: #6929CC !important;
+        }
+        /* 添加链接和按钮的样式 */
+        .action-link {
+            color: #7D33FF !important;
+        }
+        .action-link:hover {
+            color: #6929CC !important;
+        }
+        /* 添加上传订单按钮的样式 */
+        .upload-btn {
+            background-color: #7D33FF !important;
+            color: white !important;
+        }
+        .upload-btn:hover {
+            background-color: #6929CC !important;
         }
         .chart-container {
             height: 300px;
             position: relative;
         }
-        .tab-btn.active {
-            border-bottom: 2px solid #4f46e5;
-            color: #4f46e5;
+        /* 添加下拉菜单样式 */
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            right: 0;
+            top: 100%;
+            margin-top: 0.25rem;
+            background: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            z-index: 50;
+        }
+
+        .dropdown-menu.show {
+            display: block;
+        }
+
+        /* 添加菜单项悬停效果 */
+        .menu-item {
+            display: flex;
+            align-items: center;
+            padding: 0.5rem 1rem;
+            color: #374151;
+            transition: all 0.2s;
+        }
+
+        .menu-item:hover {
+            background-color: #F3F4F6;
+        }
+
+        .menu-item i {
+            width: 1.25rem;
+            margin-right: 0.5rem;
+            color: #9CA3AF;
+            transition: color 0.2s;
+        }
+
+        .menu-item:hover i {
+            color: #7D33FF;
+        }
+
+        /* 添加导航栏右侧图标和链接的悬停效果 */
+        .nav-icon {
+            color: #6B7280;
+            transition: all 0.3s ease;
+        }
+        .nav-icon:hover {
+            color: #7D33FF !important;
+        }
+        .nav-link {
+            color: #6B7280;
+            transition: all 0.3s ease;
+        }
+        .nav-link:hover {
+            color: #7D33FF !important;
+        }
+        /* 添加导出按钮样式 */
+        .export-btn {
+            background-color: white !important;
+            color: #7D33FF !important;
+            border: 1px solid #7D33FF !important;
+        }
+        .export-btn:hover {
+            background-color: #f9fafb !important;
+        }
+        /* 添加详情链接样式 */
+        .details-link {
+            color: #7D33FF !important;
+            transition: all 0.3s ease;
+        }
+        .details-link:hover {
+            color: #6929CC !important;
         }
     </style>
 </head>
@@ -33,17 +165,17 @@
                         <button class="tab-btn active whitespace-nowrap py-4 px-8 border-b-2 text-center text-sm font-medium mr-2" data-tab="collection-records">
                             外贸收款记录
                         </button>
-                        <button class="tab-btn whitespace-nowrap py-4 px-8 border-b-2 border-transparent text-center text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300 mr-2" data-tab="collection-accounts">
+                        <button class="tab-btn whitespace-nowrap py-4 px-8 border-b-2 border-transparent text-center text-sm font-medium text-gray-500 mr-2" data-tab="collection-accounts">
                             外贸收款账户
                         </button>
-                        <button class="tab-btn whitespace-nowrap py-4 px-8 border-b-2 border-transparent text-center text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300 mr-2" data-tab="trade-orders">
+                        <button class="tab-btn whitespace-nowrap py-4 px-8 border-b-2 border-transparent text-center text-sm font-medium text-gray-500 mr-2" data-tab="trade-orders">
                             外贸订单
                         </button>
                     </nav>
                     <div class="flex items-center space-x-6 pr-6">
                         <!-- 公告图标 -->
                         <div class="relative">
-                            <a href="#" class="text-gray-600 hover:text-blue-600">
+                            <a href="#" class="nav-icon">
                                 <span class="relative">
                                     <i class="fas fa-bell text-lg"></i>
                                     <span class="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full"></span>
@@ -52,60 +184,59 @@
                         </div>
                         
                         <!-- 帮助 -->
-                        <a href="#" class="text-gray-600 hover:text-blue-600 text-sm">帮助</a>
+                        <a href="#" class="nav-link text-sm">帮助</a>
                         
                         <!-- 用户中心 -->
                         <div class="relative">
-                            <button id="userCenterBtn" class="text-gray-600 hover:text-blue-600">
+                            <button id="userCenterBtn" class="nav-icon">
                                 <i class="fas fa-user-circle text-lg"></i>
                             </button>
-                            <div id="userCenterDropdown" class="absolute right-0 top-full mt-1 w-64 bg-white rounded-lg shadow-lg py-3 hidden z-10">
-                                <!-- 用户信息部分 -->
+                            <div id="userCenterDropdown" class="dropdown-menu w-64 py-3">
                                 <div class="px-4 pb-3 border-b border-gray-100">
                                     <div class="flex items-center justify-between mb-2">
                                         <h3 class="font-medium text-gray-900">张珊珊</h3>
-                                        <a href="#" class="text-xs text-blue-600 hover:text-blue-700">升级为企业</a>
+                                        <a href="#" class="text-xs link-primary">升级为企业</a>
                                     </div>
                                     <div class="flex items-center justify-between mb-2">
                                         <div class="flex items-center">
                                             <span class="text-sm text-gray-600">ZHANG SHANSHAN</span>
-                                            <button class="ml-2 text-gray-400 hover:text-gray-600">
+                                            <button class="ml-2 text-gray-400 hover:text-[#7D33FF]">
                                                 <i class="fas fa-edit text-xs"></i>
                                             </button>
                                         </div>
                                     </div>
                                     <div class="flex items-center justify-between">
                                         <span class="text-sm text-gray-600">ID</span>
-                                        <button class="text-gray-400 hover:text-gray-600">
+                                        <button class="text-gray-400 hover:text-[#7D33FF]">
                                             <i class="fas fa-copy text-xs"></i>
                                         </button>
                                     </div>
                                 </div>
                                 <!-- 菜单选项 -->
                                 <div class="py-1">
-                                    <a href="security.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                                        <i class="fas fa-shield-alt w-5 text-gray-400"></i>
+                                    <a href="security.html" class="menu-item">
+                                        <i class="fas fa-shield-alt"></i>
                                         安全设置
                                     </a>
-                                    <a href="authentication-info.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                                        <i class="fas fa-id-card w-5 text-gray-400"></i>
+                                    <a href="authentication-info.html" class="menu-item">
+                                        <i class="fas fa-id-card"></i>
                                         认证信息
                                     </a>
-                                    <a href="fees.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                                        <i class="fas fa-percentage w-5 text-gray-400"></i>
+                                    <a href="fees.html" class="menu-item">
+                                        <i class="fas fa-percentage"></i>
                                         费率查询
                                     </a>
-                                    <a href="coupons.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                                        <i class="fas fa-gift w-5 text-gray-400"></i>
+                                    <a href="coupons.html" class="menu-item">
+                                        <i class="fas fa-gift"></i>
                                         我的优惠
                                     </a>
-                                    <a href="my-invitation.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                                        <i class="fas fa-user-plus w-5 text-gray-400"></i>
+                                    <a href="my-invitation.html" class="menu-item">
+                                        <i class="fas fa-user-plus"></i>
                                         我的邀请
                                     </a>
                                     <div class="border-t border-gray-100 my-1"></div>
-                                    <a href="logout.html" class="block px-4 py-2 text-sm text-red-600 hover:bg-gray-100">
-                                        <i class="fas fa-sign-out-alt w-5"></i>
+                                    <a href="logout.html" class="menu-item text-red-600">
+                                        <i class="fas fa-sign-out-alt"></i>
                                         退出
                                     </a>
                                 </div>
@@ -122,10 +253,11 @@
                 <div class="flex justify-between items-center">
                     <h2 class="text-xl font-semibold text-gray-800">外贸收款记录</h2>
                     <div class="flex space-x-3">
-                        <button class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded text-sm font-medium">
+                        <button class="primary-btn px-4 py-2 rounded text-sm font-medium flex items-center">
+                            <i class="fas fa-plus mr-2"></i>
                             新建收款单
                         </button>
-                        <button class="bg-white border border-gray-300 text-gray-700 px-4 py-2 rounded text-sm font-medium hover:bg-gray-50">
+                        <button class="export-btn px-4 py-2 rounded text-sm font-medium flex items-center">
                             <i class="fas fa-download mr-2"></i>导出
                         </button>
                     </div>
@@ -166,7 +298,7 @@
                     </div>
                     <div class="flex items-center">
                         <input type="text" placeholder="收款账户/支持模糊查询" class="p-2 text-sm border border-gray-300 rounded-md w-64" />
-                        <button class="ml-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded text-sm font-medium">
+                        <button class="primary-btn px-4 py-2 rounded text-sm font-medium ml-3">
                             查询
                         </button>
                         <button class="ml-2 bg-white border border-gray-300 text-gray-700 px-4 py-2 rounded text-sm font-medium hover:bg-gray-50">
@@ -221,7 +353,7 @@
                                 </span>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                <a href="#" class="text-blue-600 hover:text-blue-900 mr-3">详情</a>
+                                <a href="#" class="details-link mr-3">详情</a>
                                 <div class="relative inline-block text-left">
                                     <button type="button" class="more-actions-btn text-gray-600 hover:text-gray-900">更多</button>
                                     <div class="more-actions-dropdown origin-top-right absolute right-0 mt-2 w-40 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none hidden z-20" style="overflow: visible; white-space: nowrap;">
@@ -253,7 +385,7 @@
                                 </span>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                <a href="#" class="text-blue-600 hover:text-blue-900 mr-3">详情</a>
+                                <a href="#" class="details-link mr-3">详情</a>
                                 <div class="relative inline-block text-left">
                                     <button type="button" class="more-actions-btn text-gray-600 hover:text-gray-900">更多</button>
                                     <div class="more-actions-dropdown origin-top-right absolute right-0 mt-2 w-40 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none hidden z-20" style="overflow: visible; white-space: nowrap;">
@@ -291,7 +423,7 @@
             <div class="p-6 border-b border-gray-200">
                 <div class="flex justify-between items-center">
                     <h2 class="text-xl font-semibold text-gray-800">收款账户管理</h2>
-                    <button class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded text-sm font-medium flex items-center">
+                    <button class="primary-btn px-4 py-2 rounded text-sm font-medium flex items-center">
                         <i class="fas fa-plus mr-2"></i>
                         申请收款账户
                     </button>
@@ -326,7 +458,7 @@
                             </div>
                         </div>
                         <div class="flex justify-end">
-                            <button class="text-blue-600 hover:text-blue-800 text-sm font-medium">
+                            <button class="details-link text-sm font-medium">
                                 <i class="fas fa-eye mr-1"></i>
                                 查看详情
                             </button>
@@ -360,7 +492,7 @@
                             </div>
                         </div>
                         <div class="flex justify-end">
-                            <button class="text-blue-600 hover:text-blue-800 text-sm font-medium">
+                            <button class="details-link text-sm font-medium">
                                 <i class="fas fa-eye mr-1"></i>
                                 查看详情
                             </button>
@@ -394,7 +526,7 @@
                             </div>
                         </div>
                         <div class="flex justify-end">
-                            <button class="text-blue-600 hover:text-blue-800 text-sm font-medium">
+                            <button class="details-link text-sm font-medium">
                                 <i class="fas fa-eye mr-1"></i>
                                 查看详情
                             </button>
@@ -409,7 +541,7 @@
             <div class="p-6 border-b border-gray-200">
                 <div class="flex justify-between items-center">
                     <h2 class="text-xl font-semibold text-gray-800">订单管理</h2>
-                    <button class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded text-sm font-medium flex items-center">
+                    <button class="primary-btn px-4 py-2 rounded text-sm font-medium flex items-center">
                         <i class="fas fa-plus mr-2"></i>
                         创建订单
                     </button>
@@ -448,7 +580,7 @@
                     </div>
                     <div class="flex items-center">
                         <input type="text" placeholder="商品名称/支持模糊查询" class="p-2 text-sm border border-gray-300 rounded-md w-64" />
-                        <button class="ml-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded text-sm font-medium">
+                        <button class="primary-btn px-4 py-2 rounded text-sm font-medium ml-4">
                             查询
                         </button>
                         <button class="ml-2 bg-white border border-gray-300 text-gray-700 px-4 py-2 rounded text-sm font-medium hover:bg-gray-50">
@@ -522,13 +654,13 @@
                                 </span>
                             </td>
                             <td class="px-4 py-4 whitespace-nowrap text-sm font-medium">
-                                <a href="#" class="text-blue-600 hover:text-blue-900 mr-3">查看</a>
+                                <a href="#" class="details-link mr-3">详情</a>
                                 <div class="relative inline-block text-left">
-                                    <button type="button" class="more-actions-btn text-gray-600 hover:text-gray-900">更多</button>
-                                    <div class="more-actions-dropdown origin-top-right absolute right-0 mt-2 w-40 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none hidden z-20" style="overflow: visible; white-space: nowrap;">
+                                    <button type="button" class="text-gray-600 hover:text-[#7D33FF]">更多</button>
+                                    <div class="more-actions-dropdown origin-top-right absolute right-0 mt-2 w-40 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none hidden z-20">
                                         <div>
-                                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">编辑</a>
-                                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">复制创建新订单</a>
+                                            <a href="#" class="block px-4 py-2 text-sm text-red-600 hover:bg-gray-100">注销</a>
+                                            <a href="#" class="block px-4 py-2 text-sm text-[#7D33FF] hover:bg-gray-100">延长注销日期</a>
                                         </div>
                                     </div>
                                 </div>
@@ -564,13 +696,13 @@
                                 </span>
                             </td>
                             <td class="px-4 py-4 whitespace-nowrap text-sm font-medium">
-                                <a href="#" class="text-blue-600 hover:text-blue-900 mr-3">查看</a>
+                                <a href="#" class="details-link mr-3">详情</a>
                                 <div class="relative inline-block text-left">
-                                    <button type="button" class="more-actions-btn text-gray-600 hover:text-gray-900">更多</button>
-                                    <div class="more-actions-dropdown origin-top-right absolute right-0 mt-2 w-40 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none hidden z-20" style="overflow: visible; white-space: nowrap;">
+                                    <button type="button" class="text-gray-600 hover:text-[#7D33FF]">更多</button>
+                                    <div class="more-actions-dropdown origin-top-right absolute right-0 mt-2 w-40 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none hidden z-20">
                                         <div>
-                                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">编辑</a>
-                                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">复制创建新订单</a>
+                                            <a href="#" class="block px-4 py-2 text-sm text-red-600 hover:bg-gray-100">注销</a>
+                                            <a href="#" class="block px-4 py-2 text-sm text-[#7D33FF] hover:bg-gray-100">延长注销日期</a>
                                         </div>
                                     </div>
                                 </div>
@@ -599,28 +731,19 @@
     
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // ----------------------------------------
             // 用户中心下拉菜单功能
-            // 功能说明：实现用户中心图标点击后显示下拉菜单
-            // 下拉菜单包含：安全设置、费率查询、优惠券、退出 选项
-            // ----------------------------------------
-            const userCenterBtn = document.getElementById('userCenterBtn');          // 获取用户中心按钮元素
-            const userCenterDropdown = document.getElementById('userCenterDropdown'); // 获取下拉菜单元素
+            const userCenterBtn = document.getElementById('userCenterBtn');
+            const userCenterDropdown = document.getElementById('userCenterDropdown');
             
-            if (userCenterBtn) {
-                // 用户点击用户中心图标时触发
+            if (userCenterBtn && userCenterDropdown) {
                 userCenterBtn.addEventListener('click', function(e) {
-                    e.preventDefault(); // 阻止默认点击行为
-                    userCenterDropdown.classList.toggle('hidden'); // 切换下拉菜单的显示/隐藏状态
+                    e.stopPropagation();
+                    userCenterDropdown.classList.toggle('show');
                 });
                 
-                // 当用户点击页面其他区域时，关闭下拉菜单
                 document.addEventListener('click', function(e) {
-                    // 判断点击的区域是否在用户中心按钮或下拉菜单之外
-                    if (userCenterBtn && userCenterDropdown &&
-                        !userCenterBtn.contains(e.target) && 
-                        !userCenterDropdown.contains(e.target)) {
-                        userCenterDropdown.classList.add('hidden'); // 隐藏下拉菜单
+                    if (!userCenterBtn.contains(e.target) && !userCenterDropdown.contains(e.target)) {
+                        userCenterDropdown.classList.remove('show');
                     }
                 });
             }
@@ -633,12 +756,31 @@
             const tabContents = document.querySelectorAll('.tab-content');
             
             if (tabBtns.length > 0) {
+                // 设置默认选中状态
+                const defaultTab = document.querySelector('.tab-btn[data-tab="collection-records"]');
+                if (defaultTab) {
+                    defaultTab.classList.add('active');
+                    defaultTab.classList.remove('text-gray-500');
+                    defaultTab.classList.add('text-[#7D33FF]');
+                    const defaultContent = document.getElementById('collection-records');
+                    if (defaultContent) {
+                        defaultContent.classList.add('active');
+                    }
+                }
+
                 tabBtns.forEach(btn => {
                     btn.addEventListener('click', function() {
                         // 移除所有按钮的活动状态
-                        tabBtns.forEach(b => b.classList.remove('active'));
+                        tabBtns.forEach(b => {
+                            b.classList.remove('active');
+                            b.classList.remove('text-[#7D33FF]');
+                            b.classList.add('text-gray-500');
+                        });
+                        
                         // 添加当前按钮的活动状态
                         this.classList.add('active');
+                        this.classList.remove('text-gray-500');
+                        this.classList.add('text-[#7D33FF]');
                         
                         // 隐藏所有内容区域
                         tabContents.forEach(content => content.classList.remove('active'));

@@ -6,6 +6,7 @@
     <title>平台收款 - Whalet</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../styles/custom.css">
     <style>
         .platform-card {
             transition: all 0.3s ease;
@@ -15,14 +16,40 @@
             box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
         }
         .tab-btn.active {
-            border-bottom: 2px solid #4f46e5;
-            color: #4f46e5;
+            border-bottom: 2px solid #7D33FF !important;
+            color: #7D33FF !important;
+        }
+        .tab-btn:hover {
+            color: #7D33FF !important;
+            border-bottom-color: #7D33FF !important;
         }
         .tab-content {
             display: none;
         }
         .tab-content.active {
-            display: block;
+            display: block !important;
+        }
+        /* 添加申请收款账户按钮的样式 */
+        .apply-btn {
+            background-color: #7D33FF !important;
+            color: white !important;
+            opacity: 1 !important;
+            z-index: 10;
+        }
+        .apply-btn:hover {
+            background-color: #6929CC !important;
+        }
+        /* 添加查询按钮的样式 */
+        .search-btn {
+            background-color: #7D33FF !important;
+            color: white !important;
+        }
+        .search-btn:hover {
+            background-color: #6929CC !important;
+        }
+        /* 添加用户中心下拉菜单的z-index */
+        #userCenterDropdown {
+            z-index: 50 !important;
         }
     </style>
 </head>
@@ -70,7 +97,7 @@
                                 <div class="px-4 pb-3 border-b border-gray-100">
                                     <div class="flex items-center justify-between mb-2">
                                         <h3 class="font-medium text-gray-900">张珊珊</h3>
-                                        <a href="#" class="text-xs text-blue-600 hover:text-blue-700">升级为企业</a>
+                                        <a href="#" class="text-xs text-[#7D33FF] hover:text-[#6929CC]">升级为企业</a>
                                     </div>
                                     <div class="flex items-center justify-between mb-2">
                                         <div class="flex items-center">
@@ -128,16 +155,16 @@
                 <div class="flex justify-between items-center">
                     <h2 class="text-xl font-semibold text-gray-800">收款账户</h2>
                     <div class="flex space-x-3">
-                        <button class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded text-sm font-medium" onclick="window.location.href='apply-collection-account.html'">
-                            申请收款账户
-                        </button>
+                        <a href="apply-collection-account.html" class="apply-btn px-4 py-2 rounded text-sm font-medium inline-flex items-center">
+                            <i class="fas fa-plus mr-2"></i>申请收款账户
+                        </a>
                         <button class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded text-sm font-medium opacity-50 cursor-not-allowed" disabled>
                             批量延长
                         </button>
                         <button class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded text-sm font-medium opacity-50 cursor-not-allowed" disabled>
                             批量注销
                         </button>
-                </div>
+                    </div>
                 </div>
             </div>
 
@@ -187,7 +214,7 @@
                         </div>
                     <div class="flex items-center">
                         <input type="text" placeholder="银行卡号/支持模糊查询" class="p-2 text-sm border border-gray-300 rounded-md w-64" />
-                        <button class="ml-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded text-sm font-medium">
+                        <button class="ml-2 search-btn px-4 py-2 rounded text-sm font-medium">
                             查询
                         </button>
                         <button class="ml-2 bg-white border border-gray-300 text-gray-700 px-4 py-2 rounded text-sm font-medium hover:bg-gray-50">
@@ -256,13 +283,13 @@
                                 <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">正常</span>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                <a href="#" class="text-blue-600 hover:text-blue-900 mr-3">查看</a>
+                                <a href="#" class="text-[#7D33FF] hover:text-[#6929CC] mr-3" style="color: #7D33FF !important;">查看</a>
                                 <div class="relative inline-block text-left">
-                                    <button type="button" class="more-actions-btn text-gray-600 hover:text-gray-900">更多</button>
-                                    <div class="more-actions-dropdown origin-top-right absolute right-0 mt-2 w-40 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none hidden z-20" style="overflow: visible; white-space: nowrap;">
+                                    <button type="button" class="more-actions-btn text-gray-600 hover:text-[#7D33FF]">更多</button>
+                                    <div class="more-actions-dropdown origin-top-right absolute right-0 mt-2 w-40 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none hidden z-20">
                                         <div>
                                             <a href="#" class="block px-4 py-2 text-sm text-red-600 hover:bg-gray-100">注销</a>
-                                            <a href="#" class="block px-4 py-2 text-sm text-blue-600 hover:bg-gray-100">延长注销日期</a>
+                                            <a href="#" class="block px-4 py-2 text-sm text-[#7D33FF] hover:bg-gray-100">延长注销日期</a>
                                         </div>
                                     </div>
                                 </div>
@@ -290,13 +317,13 @@
                                 <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">待审核</span>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                <a href="#" class="text-blue-600 hover:text-blue-900 mr-3">查看</a>
+                                <a href="#" class="text-[#7D33FF] hover:text-[#6929CC] mr-3" style="color: #7D33FF !important;">查看</a>
                                 <div class="relative inline-block text-left">
-                                    <button type="button" class="more-actions-btn text-gray-600 hover:text-gray-900">更多</button>
-                                    <div class="more-actions-dropdown origin-top-right absolute right-0 mt-2 w-40 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none hidden z-20" style="overflow: visible; white-space: nowrap;">
+                                    <button type="button" class="more-actions-btn text-gray-600 hover:text-[#7D33FF]">更多</button>
+                                    <div class="more-actions-dropdown origin-top-right absolute right-0 mt-2 w-40 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none hidden z-20">
                                         <div>
                                             <a href="#" class="block px-4 py-2 text-sm text-red-600 hover:bg-gray-100">注销</a>
-                                            <a href="#" class="block px-4 py-2 text-sm text-blue-600 hover:bg-gray-100">延长注销日期</a>
+                                            <a href="#" class="block px-4 py-2 text-sm text-[#7D33FF] hover:bg-gray-100">延长注销日期</a>
                                         </div>
                                     </div>
                                 </div>
@@ -324,13 +351,13 @@
                                 <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">正常</span>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                <a href="#" class="text-blue-600 hover:text-blue-900 mr-3">查看</a>
+                                <a href="#" class="text-[#7D33FF] hover:text-[#6929CC] mr-3" style="color: #7D33FF !important;">查看</a>
                                 <div class="relative inline-block text-left">
-                                    <button type="button" class="more-actions-btn text-gray-600 hover:text-gray-900">更多</button>
-                                    <div class="more-actions-dropdown origin-top-right absolute right-0 mt-2 w-40 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none hidden z-20" style="overflow: visible; white-space: nowrap;">
+                                    <button type="button" class="more-actions-btn text-gray-600 hover:text-[#7D33FF]">更多</button>
+                                    <div class="more-actions-dropdown origin-top-right absolute right-0 mt-2 w-40 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none hidden z-20">
                                         <div>
                                             <a href="#" class="block px-4 py-2 text-sm text-red-600 hover:bg-gray-100">注销</a>
-                                            <a href="#" class="block px-4 py-2 text-sm text-blue-600 hover:bg-gray-100">延长注销日期</a>
+                                            <a href="#" class="block px-4 py-2 text-sm text-[#7D33FF] hover:bg-gray-100">延长注销日期</a>
                                         </div>
                                     </div>
                                 </div>
@@ -358,12 +385,12 @@
                                 <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">已注销</span>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                <a href="#" class="text-blue-600 hover:text-blue-900 mr-3">查看</a>
+                                <a href="#" class="text-[#7D33FF] hover:text-[#6929CC] mr-3" style="color: #7D33FF !important;">查看</a>
                                 <div class="relative inline-block text-left">
-                                    <button type="button" class="more-actions-btn text-gray-600 hover:text-gray-900">更多</button>
-                                    <div class="more-actions-dropdown origin-top-right absolute right-0 mt-2 w-40 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none hidden z-20" style="overflow: visible; white-space: nowrap;">
+                                    <button type="button" class="more-actions-btn text-gray-600 hover:text-[#7D33FF]">更多</button>
+                                    <div class="more-actions-dropdown origin-top-right absolute right-0 mt-2 w-40 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none hidden z-20">
                                         <div>
-                                            <a href="#" class="block px-4 py-2 text-sm text-blue-600 hover:bg-gray-100">延长注销日期</a>
+                                            <a href="#" class="block px-4 py-2 text-sm text-[#7D33FF] hover:bg-gray-100">延长注销日期</a>
                                         </div>
                                     </div>
                                 </div>
@@ -391,13 +418,13 @@
                                 <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">正常</span>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                <a href="#" class="text-blue-600 hover:text-blue-900 mr-3">查看</a>
+                                <a href="#" class="text-[#7D33FF] hover:text-[#6929CC] mr-3" style="color: #7D33FF !important;">查看</a>
                                 <div class="relative inline-block text-left">
-                                    <button type="button" class="more-actions-btn text-gray-600 hover:text-gray-900">更多</button>
-                                    <div class="more-actions-dropdown origin-top-right absolute right-0 mt-2 w-40 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none hidden z-20" style="overflow: visible; white-space: nowrap;">
+                                    <button type="button" class="more-actions-btn text-gray-600 hover:text-[#7D33FF]">更多</button>
+                                    <div class="more-actions-dropdown origin-top-right absolute right-0 mt-2 w-40 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none hidden z-20">
                                         <div>
                                             <a href="#" class="block px-4 py-2 text-sm text-red-600 hover:bg-gray-100">注销</a>
-                                            <a href="#" class="block px-4 py-2 text-sm text-blue-600 hover:bg-gray-100">延长注销日期</a>
+                                            <a href="#" class="block px-4 py-2 text-sm text-[#7D33FF] hover:bg-gray-100">延长注销日期</a>
                                         </div>
                                     </div>
                                 </div>
@@ -425,13 +452,13 @@
                                 <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">已暂停</span>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                <a href="#" class="text-blue-600 hover:text-blue-900 mr-3">查看</a>
+                                <a href="#" class="text-[#7D33FF] hover:text-[#6929CC] mr-3" style="color: #7D33FF !important;">查看</a>
                                 <div class="relative inline-block text-left">
-                                    <button type="button" class="more-actions-btn text-gray-600 hover:text-gray-900">更多</button>
-                                    <div class="more-actions-dropdown origin-top-right absolute right-0 mt-2 w-40 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none hidden z-20" style="overflow: visible; white-space: nowrap;">
+                                    <button type="button" class="more-actions-btn text-gray-600 hover:text-[#7D33FF]">更多</button>
+                                    <div class="more-actions-dropdown origin-top-right absolute right-0 mt-2 w-40 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none hidden z-20">
                                         <div>
                                             <a href="#" class="block px-4 py-2 text-sm text-red-600 hover:bg-gray-100">注销</a>
-                                            <a href="#" class="block px-4 py-2 text-sm text-blue-600 hover:bg-gray-100">延长注销日期</a>
+                                            <a href="#" class="block px-4 py-2 text-sm text-[#7D33FF] hover:bg-gray-100">延长注销日期</a>
                                         </div>
                                     </div>
                                 </div>
@@ -459,13 +486,13 @@
                                 <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">正常</span>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                <a href="#" class="text-blue-600 hover:text-blue-900 mr-3">查看</a>
+                                <a href="#" class="text-[#7D33FF] hover:text-[#6929CC] mr-3" style="color: #7D33FF !important;">查看</a>
                                 <div class="relative inline-block text-left">
-                                    <button type="button" class="more-actions-btn text-gray-600 hover:text-gray-900">更多</button>
-                                    <div class="more-actions-dropdown origin-top-right absolute right-0 mt-2 w-40 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none hidden z-20" style="overflow: visible; white-space: nowrap;">
+                                    <button type="button" class="more-actions-btn text-gray-600 hover:text-[#7D33FF]">更多</button>
+                                    <div class="more-actions-dropdown origin-top-right absolute right-0 mt-2 w-40 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none hidden z-20">
                                         <div>
                                             <a href="#" class="block px-4 py-2 text-sm text-red-600 hover:bg-gray-100">注销</a>
-                                            <a href="#" class="block px-4 py-2 text-sm text-blue-600 hover:bg-gray-100">延长注销日期</a>
+                                            <a href="#" class="block px-4 py-2 text-sm text-[#7D33FF] hover:bg-gray-100">延长注销日期</a>
                                         </div>
                                     </div>
                                 </div>
@@ -493,13 +520,13 @@
                                 <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">正常</span>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                <a href="#" class="text-blue-600 hover:text-blue-900 mr-3">查看</a>
+                                <a href="#" class="text-[#7D33FF] hover:text-[#6929CC] mr-3" style="color: #7D33FF !important;">查看</a>
                                 <div class="relative inline-block text-left">
-                                    <button type="button" class="more-actions-btn text-gray-600 hover:text-gray-900">更多</button>
-                                    <div class="more-actions-dropdown origin-top-right absolute right-0 mt-2 w-40 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none hidden z-20" style="overflow: visible; white-space: nowrap;">
+                                    <button type="button" class="more-actions-btn text-gray-600 hover:text-[#7D33FF]">更多</button>
+                                    <div class="more-actions-dropdown origin-top-right absolute right-0 mt-2 w-40 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none hidden z-20">
                                         <div>
                                             <a href="#" class="block px-4 py-2 text-sm text-red-600 hover:bg-gray-100">注销</a>
-                                            <a href="#" class="block px-4 py-2 text-sm text-blue-600 hover:bg-gray-100">延长注销日期</a>
+                                            <a href="#" class="block px-4 py-2 text-sm text-[#7D33FF] hover:bg-gray-100">延长注销日期</a>
                                         </div>
                                     </div>
                                 </div>
@@ -527,13 +554,13 @@
                                 <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">正常</span>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                <a href="#" class="text-blue-600 hover:text-blue-900 mr-3">查看</a>
+                                <a href="#" class="text-[#7D33FF] hover:text-[#6929CC] mr-3" style="color: #7D33FF !important;">查看</a>
                                 <div class="relative inline-block text-left">
-                                    <button type="button" class="more-actions-btn text-gray-600 hover:text-gray-900">更多</button>
-                                    <div class="more-actions-dropdown origin-top-right absolute right-0 mt-2 w-40 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none hidden z-20" style="overflow: visible; white-space: nowrap;">
+                                    <button type="button" class="more-actions-btn text-gray-600 hover:text-[#7D33FF]">更多</button>
+                                    <div class="more-actions-dropdown origin-top-right absolute right-0 mt-2 w-40 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none hidden z-20">
                                         <div>
                                             <a href="#" class="block px-4 py-2 text-sm text-red-600 hover:bg-gray-100">注销</a>
-                                            <a href="#" class="block px-4 py-2 text-sm text-blue-600 hover:bg-gray-100">延长注销日期</a>
+                                            <a href="#" class="block px-4 py-2 text-sm text-[#7D33FF] hover:bg-gray-100">延长注销日期</a>
                                         </div>
                                     </div>
                                 </div>
@@ -643,7 +670,7 @@
                                 </span>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                <a href="#" class="text-blue-600 hover:text-blue-900 mr-3">查看</a>
+                                <a href="#" class="text-[#7D33FF] hover:text-[#6929CC] mr-3" style="color: #7D33FF !important;">查看</a>
                                 <a href="#" class="text-gray-600 hover:text-gray-900">编辑</a>
                             </td>
                         </tr>
@@ -769,7 +796,7 @@
                                 </span>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                <a href="#" class="text-blue-600 hover:text-blue-900 mr-3">查看</a>
+                                <a href="#" class="text-[#7D33FF] hover:text-[#6929CC] mr-3" style="color: #7D33FF !important;">查看</a>
                                 <a href="#" class="text-green-600 hover:text-green-900">补充资料</a>
                             </td>
                         </tr>
@@ -857,9 +884,6 @@
                                 店铺名称
                             </th>
                             <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                状态
-                            </th>
-                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                 文件名
                             </th>
                             <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -883,16 +907,14 @@
                             <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                 校验失败订单
                             </th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                状态
+                            </th>
                         </tr>
                     </thead>
                     <tbody class="bg-white divide-y divide-gray-200">
                         <tr>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">selbuilt</td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
-                                    审核驳回
-                                </span>
-                            </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">fac60...</td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">35,756.00 USD</td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">0/53</td>
@@ -900,17 +922,17 @@
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">其他自建站</td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">2024-01-16 16:59:52</td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900"></td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-blue-600">
-                                <a href="#" class="text-blue-600 hover:text-blue-900">预览</a>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm">
+                                <a href="#" class="text-[#7D33FF] hover:text-[#6929CC]" style="color: #7D33FF !important;">预览</a>
                             </td>
-                        </tr>
-                        <tr>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">selbuilt</td>
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
                                     审核驳回
                                 </span>
                             </td>
+                        </tr>
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">selbuilt</td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">fac60...</td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900"></td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">0/0</td>
@@ -918,17 +940,17 @@
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">其他自建站</td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">2024-01-16 15:51:12</td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900"></td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-blue-600">
-                                <a href="#" class="text-blue-600 hover:text-blue-900">预览</a>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm">
+                                <a href="#" class="text-[#7D33FF] hover:text-[#6929CC]" style="color: #7D33FF !important;">预览</a>
                             </td>
-                        </tr>
-                        <tr>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">selbuilt</td>
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
                                     审核驳回
                                 </span>
                             </td>
+                        </tr>
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">selbuilt</td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">2023-...</td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">88,078.98 USD</td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">0/128</td>
@@ -936,17 +958,17 @@
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">其他自建站</td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">2023-12-19 09:23:29</td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900"></td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-blue-600">
-                                <a href="#" class="text-blue-600 hover:text-blue-900">预览</a>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm">
+                                <a href="#" class="text-[#7D33FF] hover:text-[#6929CC]" style="color: #7D33FF !important;">预览</a>
                             </td>
-                        </tr>
-                        <tr>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">selbuilt</td>
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
                                     审核驳回
                                 </span>
                             </td>
+                        </tr>
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">selbuilt</td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">易购提款代...</td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">1,036,900 JPY</td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">0/196</td>
@@ -954,17 +976,17 @@
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">其他自建站</td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">2023-12-14 17:17:08</td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900"></td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-blue-600">
-                                <a href="#" class="text-blue-600 hover:text-blue-900">预览</a>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm">
+                                <a href="#" class="text-[#7D33FF] hover:text-[#6929CC]" style="color: #7D33FF !important;">预览</a>
                             </td>
-                        </tr>
-                        <tr>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">selbuilt</td>
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
                                     审核驳回
                                 </span>
                             </td>
+                        </tr>
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">selbuilt</td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">订单上传通...</td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">63,453.52 USD</td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">0/2009</td>
@@ -972,8 +994,13 @@
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">其他自建站</td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">2023-11-06 13:58:05</td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900"></td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-blue-600">
-                                <a href="#" class="text-blue-600 hover:text-blue-900">预览</a>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm">
+                                <a href="#" class="text-[#7D33FF] hover:text-[#6929CC]" style="color: #7D33FF !important;">预览</a>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
+                                    审核驳回
+                                </span>
                             </td>
                         </tr>
                     </tbody>
@@ -983,43 +1010,50 @@
     </div>
 
     <script>
-        // 选项卡切换功能
+        // Tab 切换功能
         document.addEventListener('DOMContentLoaded', function() {
-            const tabButtons = document.querySelectorAll('.tab-btn');
+            const tabBtns = document.querySelectorAll('.tab-btn');
             const tabContents = document.querySelectorAll('.tab-content');
+
+            // 从 localStorage 获取激活的标签页
+            const activeTab = localStorage.getItem('activeTab');
             
-            function activateTab(tabId) {
-                // 移除所有按钮的活动状态
-                tabButtons.forEach(btn => btn.classList.remove('active'));
-                // 添加当前按钮的活动状态
-                const activeButton = document.querySelector(`[data-tab="${tabId}"]`);
-                if (activeButton) {
-                    activeButton.classList.add('active');
-                }
+            // 如果有存储的标签页信息，激活对应标签页
+            if (activeTab) {
+                // 移除所有 active 类
+                tabBtns.forEach(b => b.classList.remove('active'));
+                tabContents.forEach(c => c.classList.remove('active'));
+
+                // 添加 active 类到指定的标签页
+                const targetBtn = document.querySelector(`.tab-btn[data-tab="${activeTab}"]`);
+                const targetContent = document.getElementById(activeTab);
                 
-                // 隐藏所有内容
-                tabContents.forEach(content => content.classList.remove('active'));
-                // 显示当前内容
-                const activeContent = document.getElementById(tabId);
-                if (activeContent) {
-                    activeContent.classList.add('active');
+                if (targetBtn && targetContent) {
+                    targetBtn.classList.add('active');
+                    targetContent.classList.add('active');
                 }
+
+                // 清除 localStorage 中的标签页信息
+                localStorage.removeItem('activeTab');
+            } else {
+                // 如果没有存储的标签页信息，设置默认标签页
+                document.querySelector('.tab-btn[data-tab="collection-account"]').classList.add('active');
+                document.getElementById('collection-account').classList.add('active');
             }
 
-            // 检查是否需要激活特定标签页
-            const activeTab = localStorage.getItem('activeTab');
-            if (activeTab) {
-                activateTab(activeTab);
-                localStorage.removeItem('activeTab'); // 清除存储的标签页信息
-            }
-            
-            tabButtons.forEach(button => {
-                button.addEventListener('click', () => {
-                    const tabId = button.getAttribute('data-tab');
-                    activateTab(tabId);
+            tabBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    // 移除所有 active 类
+                    tabBtns.forEach(b => b.classList.remove('active'));
+                    tabContents.forEach(c => c.classList.remove('active'));
+
+                    // 添加 active 类到当前选中的 tab
+                    btn.classList.add('active');
+                    const tabId = btn.getAttribute('data-tab');
+                    document.getElementById(tabId).classList.add('active');
                 });
             });
-            
+
             // 用户中心下拉菜单点击切换显示
             const userCenterBtn = document.getElementById('userCenterBtn');
             const userCenterDropdown = document.getElementById('userCenterDropdown');

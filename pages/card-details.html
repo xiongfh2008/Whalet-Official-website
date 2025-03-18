@@ -19,7 +19,7 @@
         }
 
         .credit-card {
-            background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+            background: linear-gradient(135deg, #6b21a8 0%, #9333ea 100%);
             border-radius: 16px;
             height: 100%;
             position: relative;
@@ -78,6 +78,18 @@
         .custom-scrollbar::-webkit-scrollbar-thumb:hover {
             background: #94a3b8;
         }
+
+        select:focus {
+            outline: 2px solid #7D33FF !important;
+            outline-offset: 2px !important;
+            border-color: #7D33FF !important;
+        }
+
+        select:focus-visible {
+            outline: 2px solid #7D33FF !important;
+            outline-offset: 2px !important;
+            border-color: #7D33FF !important;
+        }
     </style>
 </head>
 <body class="min-h-screen bg-gray-50">
@@ -98,7 +110,7 @@
                     <div class="credit-card h-full">
                         <div class="relative h-full flex flex-col justify-between text-white">
                             <div class="flex justify-between items-start">
-                                <img src="../assets/logo-white.png" alt="Whalet" class="h-5">
+                                <img src="../assets/images/whaletlogo2.png" alt="Whalet" class="h-5 w-auto object-contain filter brightness-0 invert">
                                 <span class="bg-white/20 px-2 py-0.5 rounded-full text-sm">使用中</span>
                             </div>
                             <div class="space-y-3">
@@ -128,7 +140,7 @@
                         <div class="space-y-2">
                             <div class="flex justify-between items-center">
                                 <span class="text-sm text-gray-600">当前余额</span>
-                                <span class="text-lg font-semibold text-blue-600">$ 1,000.00 USD</span>
+                                <span class="text-lg font-semibold text-purple-600">$ 1,000.00 USD</span>
                             </div>
                             <div class="flex justify-between items-center">
                                 <span class="text-sm text-gray-600">处理中金额</span>
@@ -151,7 +163,7 @@
                     
                     <div class="border-t pt-3">
                         <div class="flex space-x-3">
-                            <button class="w-20 bg-blue-600 hover:bg-blue-700 text-white px-3 py-1.5 rounded-lg text-sm font-medium transition duration-200">
+                            <button class="w-20 bg-purple-600 hover:bg-purple-700 text-white px-3 py-1.5 rounded-lg text-sm font-medium transition duration-200 focus:ring-2 focus:ring-purple-600 focus:ring-offset-2">
                                 充值
                             </button>
                             <button class="w-20 border border-gray-300 hover:border-gray-400 text-gray-700 px-3 py-1.5 rounded-lg text-sm font-medium transition duration-200">
@@ -173,19 +185,19 @@
                 
                 <!-- 筛选条件 -->
                 <div class="flex items-center space-x-2">
-                    <select class="px-2 py-1 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-blue-500 transition duration-200">
+                    <select class="px-2 py-1 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-purple-500 transition duration-200">
                         <option>最近7天</option>
                         <option>最近30天</option>
                         <option>最近90天</option>
                         <option>自定义</option>
                     </select>
-                    <select class="px-2 py-1 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-blue-500 transition duration-200">
+                    <select class="px-2 py-1 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-purple-500 transition duration-200">
                         <option>全部类型</option>
                         <option>消费</option>
                         <option>退款</option>
                         <option>调账</option>
                     </select>
-                    <select class="px-2 py-1 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-blue-500 transition duration-200">
+                    <select class="px-2 py-1 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-purple-500 transition duration-200">
                         <option>全部状态</option>
                         <option>交易成功</option>
                         <option>交易失败</option>
@@ -240,7 +252,7 @@
             <!-- 分页 -->
             <div class="flex justify-center items-center space-x-2 mt-4">
                 <button class="px-3 py-1 rounded border border-gray-200 text-gray-600 hover:bg-gray-50 transition duration-200">&lt;</button>
-                <button class="px-3 py-1 rounded bg-blue-600 text-white">1</button>
+                <button class="px-3 py-1 rounded bg-purple-600 text-white">1</button>
                 <button class="px-3 py-1 rounded border border-gray-200 text-gray-600 hover:bg-gray-50 transition duration-200">2</button>
                 <button class="px-3 py-1 rounded border border-gray-200 text-gray-600 hover:bg-gray-50 transition duration-200">3</button>
                 <button class="px-3 py-1 rounded border border-gray-200 text-gray-600 hover:bg-gray-50 transition duration-200">&gt;</button>
