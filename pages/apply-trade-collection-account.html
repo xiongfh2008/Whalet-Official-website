@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>申请外贸收款账户 - Whalet</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../styles/custom.css">
+    <link rel="stylesheet" href="../styles/apply-trade-collection.css">
+</head>
+<body class="bg-gray-50 text-gray-900">
+    <div class="container mx-auto px-4 py-8">
+        <!-- 主要内容区域 -->
+        <div class="max-w-7xl mx-auto">
+            <div class="bg-white rounded-xl shadow-sm">
+                <!-- 顶部标题栏 -->
+                <div class="px-8 py-6 border-b border-gray-200">
+                    <div class="flex items-center justify-between">
+                        <button class="text-gray-600 transition-colors" onclick="window.location.href='trade-collection.html'">
+                            <i class="fas fa-arrow-left"></i>
+                            <span class="ml-2 text-sm font-medium">返回</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="p-8">
+                    <form id="accountForm" class="space-y-8">
+                        <!-- 账户类型选择 -->
+                        <section>
+                            <h2 class="text-base font-medium text-gray-900 mb-4">选择账户类型</h2>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div class="custom-radio selected" data-type="global">
+                                    <div>
+                                        <h3 class="text-base font-semibold text-gray-900">全球收款账户</h3>
+                                        <p class="text-sm text-gray-500 mt-1">全球地区多币种收款</p>
+                                    </div>
+                                </div>
+                                <div class="custom-radio" data-type="local">
+                                    <div>
+                                        <h3 class="text-base font-semibold text-gray-900">本地收款账户</h3>
+                                        <p class="text-sm text-gray-500 mt-1">特定地区和币种，收款更便捷</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+
+                        <!-- 开户银行选择 -->
+                        <section>
+                            <h2 class="text-base font-medium text-gray-900 mb-4">选择开户银行</h2>
+                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                <!-- 德意志银行雅加达分行 -->
+                                <div class="bank-card group" data-bank="deutsche_indonesia">
+                                    <div class="p-5 border-b border-gray-200 bank-card-header flex items-center">
+                                        <div>
+                                            <h3 class="font-medium text-gray-900">德意志银行雅加达分行</h3>
+                                            <p class="text-sm text-gray-500 mt-0.5">印尼</p>
+                                        </div>
+                                    </div>
+                                    <div class="p-5">
+                                        <div class="info-list">
+                                            <div class="info-item">
+                                                <span class="info-label">付款地区</span>
+                                                <span class="info-value">
+                                                    <img src="https://flagcdn.com/w20/id.png" alt="印尼" 
+                                                         class="inline-block h-4 w-4 mr-2 align-middle"> 印尼
+                                                </span>
+                                            </div>
+                                            <div class="info-item">
+                                                <span class="info-label">收款币种</span>
+                                                <span class="info-value">印尼盾</span>
+                                            </div>
+                                            <div class="info-item">
+                                                <span class="info-label">开通时效</span>
+                                                <span class="info-value text-green-600">实时</span>
+                                            </div>
+                                            <div class="info-item">
+                                                <span class="info-label">收款方式</span>
+                                                <span class="info-value">仅支持印尼本地SKNBI/RTGS付款</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Banking Circle S.A. -->
+                                <div class="bank-card group" data-bank="banking_circle_german">
+                                    <div class="p-5 border-b border-gray-200 bank-card-header flex items-center">
+                                        <div>
+                                            <h3 class="font-medium text-gray-900">Banking Circle S.A.</h3>
+                                            <p class="text-sm text-gray-500 mt-0.5">German Branch</p>
+                                        </div>
+                                    </div>
+                                    <div class="p-5">
+                                        <div class="info-list">
+                                            <div class="info-item">
+                                                <span class="info-label">付款地区</span>
+                                                <span class="info-value">
+                                                    <img src="https://flagcdn.com/w20/eu.png" alt="欧元区" 
+                                                         class="inline-block h-4 w-4 mr-2 align-middle"> 欧元区
+                                                    <span class="block text-sm text-gray-500 mt-1">安道尔、希腊等40个国家</span>
+                                                </span>
+                                            </div>
+                                            <div class="info-item">
+                                                <span class="info-label">收款币种</span>
+                                                <span class="info-value">欧元</span>
+                                            </div>
+                                            <div class="info-item">
+                                                <span class="info-label">开通时效</span>
+                                                <span class="info-value">申请后15分钟内</span>
+                                            </div>
+                                            <div class="info-item">
+                                                <span class="info-label">收款方式</span>
+                                                <span class="info-value">仅接受SEPA Inst/SEPA SCT网络付款</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- 花旗银行悉尼分行 -->
+                                <div class="bank-card group" data-bank="citibank_australia">
+                                    <div class="p-5 border-b border-gray-200 bank-card-header flex items-center">
+                                        <div>
+                                            <h3 class="font-medium text-gray-900">花旗银行悉尼分行</h3>
+                                            <p class="text-sm text-gray-500 mt-0.5">澳大利亚</p>
+                                        </div>
+                                    </div>
+                                    <div class="p-5">
+                                        <div class="info-list">
+                                            <div class="info-item">
+                                                <span class="info-label">付款地区</span>
+                                                <span class="info-value">
+                                                    <img src="https://flagcdn.com/w20/au.png" alt="澳大利亚" 
+                                                         class="inline-block h-4 w-4 mr-2 align-middle"> 澳大利亚
+                                                </span>
+                                            </div>
+                                            <div class="info-item">
+                                                <span class="info-label">收款币种</span>
+                                                <span class="info-value">澳元</span>
+                                            </div>
+                                            <div class="info-item">
+                                                <span class="info-label">开通时效</span>
+                                                <span class="info-value text-green-600">实时</span>
+                                            </div>
+                                            <div class="info-item">
+                                                <span class="info-label">收款方式</span>
+                                                <span class="info-value">仅支持澳大利亚本地ACH付款</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+
+                        <!-- 贸易信息 -->
+                        <section>
+                            <h2 class="text-base font-medium text-gray-900 mb-4">填写贸易信息</h2>
+                            <div class="form-group">
+                                <div class="space-y-6">
+                                    <div>
+                                        <label for="accountName" class="block text-sm font-medium text-gray-700 mb-2">
+                                            账户名称 <span class="text-red-500">*</span>
+                                        </label>
+                                        <input type="text" id="accountName" name="accountName" required 
+                                               placeholder="请输入营业执照上的公司全称" class="form-input">
+                                    </div>
+                                    <div>
+                                        <label for="merchantCategory" class="block text-sm font-medium text-gray-700 mb-2">
+                                            经营类别 <span class="text-red-500">*</span>
+                                        </label>
+                                        <select id="merchantCategory" name="merchantCategory" required class="form-select">
+                                            <option value="">请选择经营类别</option>
+                                            <option value="1">服装鞋包</option>
+                                            <option value="2">家居用品</option>
+                                            <option value="3">电子产品</option>
+                                            <option value="4">美妆个护</option>
+                                            <option value="5">玩具/母婴</option>
+                                            <option value="6">汽车配件</option>
+                                            <option value="7">工业设备</option>
+                                            <option value="8">其他</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+
+                        <!-- 使用须知 -->
+                        <section>
+                            <h2 class="text-base font-medium text-gray-900 mb-4">使用须知</h2>
+                            <div class="form-group space-y-3">
+                                <div class="flex items-start space-x-3">
+                                    <span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-purple-100 text-purple-600 font-medium text-sm flex-shrink-0">1</span>
+                                    <p class="text-gray-700">全球收款账户信息仅适用于贵司收取货物贸易项下海外买家支付的货款</p>
+                                </div>
+                                <div class="flex items-start space-x-3">
+                                    <span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-purple-100 text-purple-600 font-medium text-sm flex-shrink-0">2</span>
+                                    <p class="text-gray-700">请勿将贵司名下其他银行（或第三方支付公司）账户的款项汇入该账户</p>
+                                </div>
+                                <div class="flex items-start space-x-3">
+                                    <span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-purple-100 text-purple-600 font-medium text-sm flex-shrink-0">3</span>
+                                    <p class="text-gray-700">请勿从伊朗、叙利亚、北朝鲜、古巴、克里米亚、塞瓦斯托波尔、苏丹以及南苏丹收汇至该账户</p>
+                                </div>
+                                <div class="flex items-start space-x-3">
+                                    <span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-purple-100 text-purple-600 font-medium text-sm flex-shrink-0">4</span>
+                                    <p class="text-gray-700">我司及合作银行有权对该账户进行反洗钱审核，收款人有义务配合提供相关资料以证明资金来源；未能通过反洗钱审核的，我司有权拒绝进行收款及提现事宜处理</p>
+                                </div>
+                                <div class="flex items-start space-x-3">
+                                    <span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-purple-100 text-purple-600 font-medium text-sm flex-shrink-0">5</span>
+                                    <p class="text-gray-700">如付款方为买家以外的第三方付款，须提供实际付款人与买家的关系说明，并提醒付款人在汇款时添加附言，附言需备注付款人和买家关系及invoice number等单据</p>
+                                </div>
+                            </div>
+                        </section>
+
+                        <!-- 按钮区域 -->
+                        <div class="flex flex-col items-center gap-4 pt-6 border-t border-gray-200 mt-6">
+                            <div class="flex items-center space-x-3">
+                                <input id="agreement" name="agreement" type="checkbox" required class="custom-checkbox">
+                                <label for="agreement" class="text-sm text-gray-700">
+                                    我已知晓收款账户使用条款，已阅读、知晓并同意 
+                                    <a href="#" class="text-purple-600 font-medium">《承诺函》</a>
+                                    条款, 同意开通使用
+                                </label>
+                            </div>
+                            <div class="flex items-center justify-center gap-4">
+                                <a href="trade-collection.html" class="inline-flex items-center justify-center w-32 px-8 py-3 text-sm font-medium text-purple-600 bg-white border-2 border-purple-600 rounded-lg transition-all duration-200">
+                                    返回
+                                </a>
+                                <button type="submit" class="inline-flex items-center justify-center w-32 px-8 py-3 text-sm font-medium text-white bg-purple-600 rounded-lg transition-all duration-200">
+                                    提交申请
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 账户类型选择
+            const accountTypeRadios = document.querySelectorAll('.custom-radio');
+            accountTypeRadios.forEach(radio => {
+                radio.addEventListener('click', function() {
+                    accountTypeRadios.forEach(r => r.classList.remove('selected'));
+                    this.classList.add('selected');
+                });
+            });
+
+            // 银行卡片选择
+            const bankCards = document.querySelectorAll('.bank-card');
+            let selectedBank = null;
+
+            bankCards.forEach(card => {
+                card.addEventListener('click', function() {
+                    // 移除所有卡片的选中状态
+                    bankCards.forEach(c => {
+                        c.classList.remove('selected');
+                        c.querySelector('.bank-card-header').classList.remove('selected');
+                    });
+                    
+                    // 为当前卡片添加选中状态
+                    this.classList.add('selected');
+                    this.querySelector('.bank-card-header').classList.add('selected');
+                    selectedBank = this.dataset.bank;
+                });
+            });
+
+            // 表单提交
+            document.getElementById('accountForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // 基本验证
+                const accountName = document.getElementById('accountName').value;
+                const merchantCategory = document.getElementById('merchantCategory').value;
+                const agreement = document.getElementById('agreement').checked;
+                
+                if (!accountName || !merchantCategory || !selectedBank || !agreement) {
+                    alert('请填写必填信息并同意承诺函');
+                    return;
+                }
+                
+                // 模拟表单提交，实际项目中应该通过API发送数据
+                alert('申请已提交，我们将尽快处理您的申请！');
+                window.location.href = 'trade-collection.html';
+            });
+        });
+    </script>
+</body>
+</html> 

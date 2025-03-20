@@ -1,0 +1,458 @@
+/* 验证容器 */
+.verification-container {
+    display: flex;
+    gap: 24px;
+    padding: 24px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* 进度条 */
+.progress-bar {
+    width: 240px;
+    flex-shrink: 0;
+}
+
+.progress-step {
+    display: flex;
+    gap: 12px;
+    padding: 16px;
+    position: relative;
+}
+
+.progress-step:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    left: 24px;
+    top: 48px;
+    bottom: 0;
+    width: 2px;
+    background-color: #E5E7EB;
+}
+
+.progress-step.completed:not(:last-child)::after {
+    background-color: #10B981;
+}
+
+.progress-step-number {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background-color: #E5E7EB;
+    color: #6B7280;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    flex-shrink: 0;
+}
+
+.progress-step.completed .progress-step-number,
+.progress-step.active .progress-step-number {
+    background-color: #10B981;
+    color: white;
+}
+
+.progress-step-content {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.progress-step-title {
+    font-weight: 600;
+    color: #111827;
+}
+
+.progress-step-desc {
+    font-size: 14px;
+    color: #6B7280;
+}
+
+.progress-step.active .progress-step-title {
+    color: #10B981;
+}
+
+/* 表单容器 */
+.form-container {
+    flex: 1;
+    background: white;
+    border-radius: 8px;
+    padding: 24px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.form-title {
+    font-size: 20px;
+    font-weight: 600;
+    color: #111827;
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid #E5E7EB;
+}
+
+/* 通知框 */
+.notice-box {
+    background-color: #F3F4F6;
+    border-radius: 6px;
+    padding: 12px 16px;
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: #4B5563;
+}
+
+.notice-box i {
+    color: #10B981;
+}
+
+/* 成员卡片 */
+.member-card {
+    background: #F9FAFB;
+    border-radius: 8px;
+    padding: 24px;
+    margin-bottom: 24px;
+}
+
+.member-card-header {
+    margin-bottom: 24px;
+}
+
+.member-card-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: #111827;
+}
+
+/* 表单组件 */
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-row {
+    display: flex;
+    gap: 24px;
+    margin-bottom: 20px;
+}
+
+.form-col {
+    flex: 1;
+}
+
+.form-label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: #374151;
+}
+
+.form-label.required::after {
+    content: '*';
+    color: #EF4444;
+    margin-left: 4px;
+}
+
+.form-input,
+.form-select {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid #D1D5DB;
+    border-radius: 6px;
+    font-size: 14px;
+    color: #111827;
+    transition: border-color 0.2s;
+}
+
+.form-input:focus,
+.form-select:focus {
+    outline: none;
+    border-color: #10B981;
+    box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.1);
+}
+
+.form-input::placeholder {
+    color: #9CA3AF;
+}
+
+.form-hint {
+    font-size: 12px;
+    color: #6B7280;
+    margin-top: 4px;
+}
+
+/* 单选框组 */
+.radio-group {
+    display: flex;
+    gap: 24px;
+}
+
+.radio-option {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+}
+
+.radio-option input[type="radio"] {
+    width: 16px;
+    height: 16px;
+    margin: 0;
+}
+
+/* 复选框组 */
+.checkbox-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+.checkbox-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+}
+
+.checkbox-item input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    margin: 0;
+}
+
+/* 上传区域 */
+.upload-area {
+    border: 2px dashed #D1D5DB;
+    border-radius: 6px;
+    padding: 16px;
+}
+
+.hk-upload-section,
+.mainland-upload-section {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 16px;
+}
+
+.upload-box {
+    flex: 1;
+    min-height: 160px;
+    border: 1px solid #E5E7EB;
+    border-radius: 6px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    cursor: pointer;
+    transition: border-color 0.2s;
+    padding: 16px;
+}
+
+.upload-box:hover {
+    border-color: #10B981;
+}
+
+.upload-box i {
+    font-size: 24px;
+    color: #10B981;
+}
+
+.upload-box p {
+    margin: 0;
+    text-align: center;
+    color: #6B7280;
+    font-size: 14px;
+}
+
+.upload-hint {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 8px;
+}
+
+.upload-hint p {
+    margin: 0;
+    font-size: 14px;
+    color: #6B7280;
+}
+
+.example-link {
+    color: #10B981;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.example-link:hover {
+    text-decoration: underline;
+}
+
+.upload-note {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 8px;
+    padding: 8px 12px;
+    background-color: #F3F4F6;
+    border-radius: 4px;
+    font-size: 14px;
+    color: #4B5563;
+}
+
+.upload-note.info i {
+    color: #10B981;
+}
+
+/* 输入框组 */
+.form-input-group {
+    position: relative;
+}
+
+.form-input-suffix {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #6B7280;
+    pointer-events: none;
+}
+
+/* 日期范围 */
+.date-range {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.date-separator {
+    color: #6B7280;
+}
+
+/* 添加成员按钮 */
+.add-member-section {
+    margin-bottom: 24px;
+}
+
+.btn-dashed {
+    width: 100%;
+    padding: 12px;
+    border: 2px dashed #D1D5DB;
+    border-radius: 6px;
+    background: none;
+    color: #6B7280;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.btn-dashed:hover {
+    border-color: #10B981;
+    color: #10B981;
+}
+
+.btn-dashed i {
+    font-size: 16px;
+}
+
+/* 底部按钮组 */
+.form-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 24px;
+    border-top: 1px solid var(--border-color);
+    margin-top: 24px;
+}
+
+.form-actions-left,
+.form-actions-right {
+    display: flex;
+    gap: 16px;
+}
+
+.btn {
+    height: 40px;
+    padding: 0 24px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    border: none;
+    outline: none;
+}
+
+.btn i {
+    margin-right: 8px;
+    font-size: 14px;
+}
+
+.btn-primary {
+    background-color: #7D33FF;
+    color: white;
+    border: none;
+}
+
+.btn-primary:hover {
+    background-color: #6929D4;
+}
+
+.btn-secondary {
+    background-color: rgba(125, 51, 255, 0.1);
+    color: #7D33FF;
+    border: 1px solid #E5E5E5;
+}
+
+.btn-secondary:hover {
+    background-color: rgba(125, 51, 255, 0.2);
+}
+
+/* 地址组 */
+.address-group {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+/* 响应式设计 */
+@media (max-width: 1024px) {
+    .verification-container {
+        flex-direction: column;
+    }
+
+    .progress-bar {
+        width: 100%;
+    }
+
+    .form-row {
+        flex-direction: column;
+        gap: 16px;
+    }
+}
+
+@media (max-width: 640px) {
+    .verification-container {
+        padding: 16px;
+    }
+
+    .form-container {
+        padding: 16px;
+    }
+
+    .member-card {
+        padding: 16px;
+    }
+
+    .upload-section {
+        flex-direction: column;
+    }
+} 

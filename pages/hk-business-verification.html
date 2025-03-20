@@ -1,0 +1,863 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>香港企业实名认证</title>
+    <link rel="stylesheet" href="../styles/main.css">
+    <link rel="stylesheet" href="../styles/header.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #7D33FF;
+            --primary-hover: #6929D4;
+            --primary-light: rgba(125, 51, 255, 0.1);
+            --bg-color: #FFFFFF;
+            --text-primary: #1F1F1F;
+            --text-secondary: #666666;
+            --border-color: #E5E5E5;
+            --success-color: #34C759;
+            --card-shadow: 0 2px 8px rgba(125, 51, 255, 0.08);
+            --transition: all 0.2s ease-in-out;
+            --header-height: 56px;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            color: var(--text-primary);
+            line-height: 1.5;
+            background-color: #F8F7FF;
+            margin: 0;
+            padding: 0;
+            padding-top: var(--header-height);
+        }
+
+        /* Header styles */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: var(--header-height);
+            background: white;
+            display: flex;
+            align-items: center;
+            padding: 0 24px;
+            box-shadow: 0 1px 0 rgba(0, 0, 0, 0.05);
+            z-index: 1000;
+        }
+
+        .header-logo {
+            height: 32px;
+            margin-right: 24px;
+            display: flex;
+            align-items: center;
+        }
+
+        .header-logo img {
+            height: 100%;
+            width: auto;
+        }
+
+        .header-divider {
+            width: 1px;
+            height: 16px;
+            background-color: var(--border-color);
+            margin: 0 16px;
+        }
+
+        .header-title {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-secondary);
+        }
+
+        .header-close {
+            margin-left: auto;
+            color: var(--text-secondary);
+            cursor: pointer;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 4px;
+            transition: var(--transition);
+        }
+
+        .header-close:hover {
+            background-color: rgba(0, 0, 0, 0.04);
+            color: var(--text-primary);
+        }
+
+        /* Main container */
+        .verification-container {
+            max-width: 1200px;
+            margin: 24px auto;
+            padding: 0 24px;
+            display: flex;
+            gap: 32px;
+        }
+
+        /* Progress tracker styles */
+        .progress-tracker {
+            width: 240px;
+            min-width: 240px;
+            background-color: #fff;
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: var(--card-shadow);
+            position: sticky;
+            top: calc(var(--header-height) + 24px);
+            align-self: flex-start;
+            height: fit-content;
+        }
+
+        .progress-step {
+            display: flex;
+            margin-bottom: 24px;
+            position: relative;
+            padding-left: 40px;
+        }
+
+        .progress-step:last-child {
+            margin-bottom: 0;
+        }
+
+        .progress-step::before {
+            content: "";
+            position: absolute;
+            left: 14px;
+            top: 24px;
+            bottom: -24px;
+            width: 2px;
+            background-color: var(--border-color);
+        }
+
+        .progress-step:last-child::before {
+            display: none;
+        }
+
+        .progress-step-number {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background-color: var(--bg-color);
+            border: 2px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            z-index: 1;
+        }
+
+        .progress-step.active .progress-step-number {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+            color: white;
+        }
+
+        .progress-step.completed .progress-step-number {
+            background-color: var(--success-color);
+            border-color: var(--success-color);
+            color: white;
+        }
+
+        .progress-step.completed .progress-step-number::after {
+            content: "✓";
+            font-size: 14px;
+        }
+
+        .progress-step-title {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            margin-bottom: 4px;
+        }
+
+        .progress-step.active .progress-step-title {
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        .progress-step.completed .progress-step-title {
+            color: var(--success-color);
+        }
+
+        .progress-step-desc {
+            font-size: 12px;
+            color: var(--text-secondary);
+            opacity: 0.8;
+        }
+
+        /* Form container styles */
+        .form-container {
+            flex: 1;
+            min-width: 0;
+            background-color: #fff;
+            border-radius: 12px;
+            padding: 32px 40px;
+            box-shadow: var(--card-shadow);
+        }
+
+        .form-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+        }
+
+        .form-title::before {
+            content: "";
+            display: inline-block;
+            width: 4px;
+            height: 20px;
+            background-color: var(--primary-color);
+            margin-right: 12px;
+            border-radius: 2px;
+        }
+
+        .form-section {
+            margin-bottom: 40px;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        .form-section:last-child {
+            margin-bottom: 0;
+        }
+
+        .form-section-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 24px;
+            color: var(--text-primary);
+        }
+
+        .form-group {
+            margin-bottom: 24px;
+        }
+
+        .form-group:last-child {
+            margin-bottom: 0;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 24px;
+            margin-bottom: 24px;
+            align-items: flex-start;
+        }
+
+        .form-row:last-child {
+            margin-bottom: 0;
+        }
+
+        .form-col {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 8px;
+            color: var(--text-primary);
+        }
+
+        .required::after {
+            content: "*";
+            color: #FF4D4F;
+            margin-left: 4px;
+        }
+
+        .form-input, .select-input {
+            width: 100%;
+            height: 40px;
+            padding: 0 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-size: 14px;
+            transition: var(--transition);
+            box-sizing: border-box;
+        }
+
+        .form-input:focus, .select-input:focus {
+            border-color: var(--primary-color);
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(125, 51, 255, 0.2);
+        }
+
+        .form-note {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-top: 4px;
+        }
+
+        .upload-box {
+            border: 1px dashed var(--border-color);
+            border-radius: 4px;
+            padding: 24px;
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition);
+            background-color: #FAFAFA;
+            margin-bottom: 8px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .upload-box:hover {
+            border-color: var(--primary-color);
+            background-color: var(--primary-light);
+        }
+
+        .upload-box i {
+            font-size: 24px;
+            color: var(--primary-color);
+            margin-bottom: 8px;
+        }
+
+        .upload-box p {
+            margin: 4px 0;
+            color: var(--text-secondary);
+            font-size: 13px;
+        }
+
+        .upload-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 8px;
+            padding: 0 4px;
+        }
+
+        .example-link {
+            font-size: 12px;
+            color: var(--primary-color);
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .example-link:hover {
+            text-decoration: underline;
+        }
+
+        .radio-group {
+            display: flex;
+            gap: 16px;
+        }
+
+        .radio-option {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .radio-option input[type="radio"] {
+            accent-color: var(--primary-color);
+        }
+
+        .recommend-link {
+            color: var(--primary-color);
+            font-size: 13px;
+            margin-left: auto;
+            text-decoration: none;
+            white-space: nowrap;
+            padding: 0 6px;
+        }
+
+        .recommend-link:hover {
+            text-decoration: underline;
+        }
+
+        .input-suffix {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .input-with-suffix {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .hidden-address {
+            display: none;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 1024px) {
+            .verification-container {
+                padding: 0 16px;
+                gap: 24px;
+            }
+
+            .form-container {
+                padding: 24px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .verification-container {
+                flex-direction: column;
+            }
+
+            .progress-tracker {
+                width: 100%;
+                min-width: auto;
+                position: static;
+            }
+
+            .form-row {
+                flex-direction: column;
+                gap: 24px;
+            }
+
+            .form-col {
+                width: 100%;
+            }
+        }
+
+        .form-actions {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 40px;
+            padding-top: 24px;
+            border-top: 1px solid var(--border-color);
+            gap: 16px;
+        }
+
+        .form-actions > div {
+            display: flex;
+            gap: 12px;
+        }
+
+        /* 按钮样式 */
+        .btn {
+            height: 40px;
+            padding: 0 24px;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border: none;
+            white-space: nowrap;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-hover);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(125, 51, 255, 0.2);
+        }
+
+        .btn-primary:active {
+            transform: translateY(0);
+            box-shadow: none;
+        }
+
+        .btn-secondary {
+            background-color: white;
+            color: var(--primary-color);
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--primary-light);
+            border-color: var(--primary-color);
+        }
+
+        .btn-secondary:active {
+            background-color: rgba(125, 51, 255, 0.2);
+        }
+
+        .btn-text {
+            background-color: transparent;
+            color: var(--primary-color);
+            padding: 0 16px;
+        }
+
+        .btn-text:hover {
+            background-color: var(--primary-light);
+        }
+
+        .btn-text:active {
+            background-color: rgba(125, 51, 255, 0.2);
+        }
+
+        .btn i {
+            margin-right: 8px;
+            font-size: 16px;
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- 实名认证顶部导航栏 -->
+    <div class="header">
+        <div class="header-logo">
+            <img src="../assets/images/whaletlogo2.png" alt="Whalet Logo">
+        </div>
+        <div class="header-divider"></div>
+        <span class="header-title">香港企业实名认证</span>
+        <i class="fas fa-times header-close" onclick="closeHeader()"></i>
+    </div>
+
+    <div class="verification-container">
+        <!-- 左侧进度条 -->
+        <div class="progress-tracker">
+            <div class="progress-step active">
+                <div class="progress-step-number">1</div>
+                <div class="progress-step-content">
+                    <div class="progress-step-title">企业信息</div>
+                    <div class="progress-step-desc">上传与填写企业基本资料</div>
+                </div>
+            </div>
+            <div class="progress-step">
+                <div class="progress-step-number">2</div>
+                <div class="progress-step-content">
+                    <div class="progress-step-title">重要成员</div>
+                    <div class="progress-step-desc">填写重要组成人员信息</div>
+                </div>
+            </div>
+            <div class="progress-step">
+                <div class="progress-step-number">3</div>
+                <div class="progress-step-content">
+                    <div class="progress-step-title">开户授权</div>
+                    <div class="progress-step-desc">提供开户申请表和授权书</div>
+                </div>
+            </div>
+            <div class="progress-step">
+                <div class="progress-step-number">4</div>
+                <div class="progress-step-content">
+                    <div class="progress-step-title">完成</div>
+                    <div class="progress-step-desc">提交成功，等待审核</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 右侧表单内容 -->
+        <div class="form-container">
+            <h2 class="form-title">企业基本资料</h2>
+
+            <div class="form-section">
+                <div class="form-row">
+                    <!-- 企业注册证书 -->
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label class="form-label required">企业注册证书（CI）</label>
+                            <div class="upload-box" onclick="triggerFileInput('ci-upload')">
+                                <i class="fas fa-cloud-upload-alt"></i>
+                                <p>点击或拖拽文件至此处上传</p>
+                                <p>支持 JPG、PNG、PDF 格式，文件大小不超过 5MB</p>
+                            </div>
+                            <input type="file" id="ci-upload" style="display: none" accept=".jpg,.jpeg,.png,.pdf">
+                            <div class="upload-actions">
+                                <span class="example-link" onclick="showExample('企业注册证书')">查看示例</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 商业登记证书 -->
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label class="form-label required">商业登记证书（BR）</label>
+                            <div class="upload-box" onclick="triggerFileInput('br-upload')">
+                                <i class="fas fa-cloud-upload-alt"></i>
+                                <p>点击或拖拽文件至此处上传</p>
+                                <p>支持 JPG、PNG、PDF 格式，文件大小不超过 5MB</p>
+                            </div>
+                            <input type="file" id="br-upload" style="display: none" accept=".jpg,.jpeg,.png,.pdf">
+                            <div class="upload-actions">
+                                <span class="example-link" onclick="showExample('商业登记证书')">查看示例</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <!-- 法团成立表格 -->
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label class="form-label required">法团成立表格（NC）</label>
+                            <div class="upload-box" onclick="triggerFileInput('nc-upload')">
+                                <i class="fas fa-cloud-upload-alt"></i>
+                                <p>点击或拖拽文件至此处上传</p>
+                                <p>支持 JPG、PNG、PDF 格式，文件大小不超过 5MB</p>
+                            </div>
+                            <input type="file" id="nc-upload" style="display: none" accept=".jpg,.jpeg,.png,.pdf">
+                            <div class="upload-actions">
+                                <span class="example-link" onclick="showExample('法团成立表格')">查看示例</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 周年申请表 -->
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label class="form-label">周年申请表（NAR1）<span class="form-note">企业成立满一周年为必填</span></label>
+                            <div class="upload-box" onclick="triggerFileInput('nar1-upload')">
+                                <i class="fas fa-cloud-upload-alt"></i>
+                                <p>点击或拖拽文件至此处上传</p>
+                                <p>支持 JPG、PNG、PDF 格式，文件大小不超过 5MB</p>
+                            </div>
+                            <input type="file" id="nar1-upload" style="display: none" accept=".jpg,.jpeg,.png,.pdf">
+                            <div class="upload-actions">
+                                <span class="example-link" onclick="showExample('周年申请表')">查看示例</span>
+                                <span class="form-note">请上传最近一年的完整周年申报表资料，成立满一周年企业必须上传</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-section">
+                <h2 class="form-title">企业信息</h2>
+                
+                <div class="form-row">
+                    <!-- 企业中文名 -->
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label class="form-label required">企业中文名</label>
+                            <input type="text" class="form-input" placeholder="请输入企业中文名称">
+                            <div class="form-note">若无中文名称可填英文名称</div>
+                        </div>
+                    </div>
+                    
+                    <!-- 企业英文名 -->
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label class="form-label required">企业英文名</label>
+                            <div style="display: flex; align-items: center; width: 100%;">
+                                <input type="text" class="form-input" placeholder="请输入企业英文名称">
+                                <a href="#" class="recommend-link">系统推荐</a>
+                            </div>
+                            <div class="form-note">英文名将作为收款账户名称，请务必与收款账户保持一致</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 企业注册编号 -->
+                <div class="form-group">
+                    <label class="form-label required">企业注册编号</label>
+                    <input type="text" class="form-input" placeholder="请输入企业注册编号">
+                    <div class="form-note">一般为公司注册证书CI右上角7位编号</div>
+                </div>
+
+                <!-- 企业注册地址 -->
+                <div class="form-group">
+                    <label class="form-label required">企业注册地址</label>
+                    <div class="form-row" style="margin-bottom: 8px;">
+                        <div class="form-col">
+                            <select class="select-input" disabled>
+                                <option selected>中国香港</option>
+                            </select>
+                        </div>
+                    </div>
+                    <input type="text" class="form-input" placeholder="请输入详细地址">
+                </div>
+
+                <!-- 实际经营地址 -->
+                <div class="form-group">
+                    <label class="form-label required">实际经营地址</label>
+                    <div class="radio-group">
+                        <label class="radio-option">
+                            <input type="radio" name="address-type" value="same" checked onchange="toggleAddress('same')">
+                            <span>与注册地址相同</span>
+                        </label>
+                        <label class="radio-option">
+                            <input type="radio" name="address-type" value="different" onchange="toggleAddress('different')">
+                            <span>与注册地址不同</span>
+                        </label>
+                    </div>
+                    <div id="different-address" class="hidden-address" style="margin-top: 12px;">
+                        <div class="form-row" style="margin-bottom: 8px;">
+                            <div class="form-col">
+                                <select class="select-input">
+                                    <option selected>中国香港</option>
+                                    <option>中国大陆</option>
+                                    <option>其他国家或地区</option>
+                                </select>
+                            </div>
+                        </div>
+                        <input type="text" class="form-input" placeholder="请输入详细地址">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <!-- 企业成立日期 -->
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label class="form-label required">企业成立日期</label>
+                            <input type="date" class="form-input">
+                        </div>
+                    </div>
+                    
+                    <!-- 届满日期 -->
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label class="form-label">届满日期</label>
+                            <input type="date" class="form-input">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 出口产品 -->
+                <div class="form-group">
+                    <label class="form-label required">出口产品</label>
+                    <select class="select-input">
+                        <option value="" disabled selected>请选择出口产品类型</option>
+                        <option>电子产品</option>
+                        <option>食品</option>
+                        <option>服装/饰品/鞋袜</option>
+                        <option>办公用品</option>
+                        <option>箱包</option>
+                        <option>玩具</option>
+                        <option>美容</option>
+                        <option>日化产品</option>
+                    </select>
+                </div>
+
+                <!-- 销售目的国/地区 -->
+                <div class="form-group">
+                    <label class="form-label required">销售目的国/地区</label>
+                    <select class="select-input">
+                        <option value="" disabled selected>请选择销售目的国/地区</option>
+                        <option>美国</option>
+                        <option>加拿大</option>
+                        <option>英国</option>
+                        <option>欧盟</option>
+                        <option>澳大利亚</option>
+                        <option>日本</option>
+                        <option>韩国</option>
+                        <option>东南亚</option>
+                    </select>
+                </div>
+
+                <!-- 企业人数 -->
+                <div class="form-group">
+                    <label class="form-label">企业人数</label>
+                    <select class="select-input">
+                        <option value="" disabled selected>请选择企业人数</option>
+                        <option>少于10人</option>
+                        <option>10-20人</option>
+                        <option>20-50人</option>
+                        <option>50人以上</option>
+                    </select>
+                </div>
+
+                <div class="form-row">
+                    <!-- 历史出口额 -->
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label class="form-label">历史出口额</label>
+                            <div class="input-suffix">
+                                <input type="number" class="form-input input-with-suffix" placeholder="请输入整数">
+                                <span class="input-suffix-text">万美元</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 预计年出口额 -->
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label class="form-label required">预计年出口额</label>
+                            <div class="input-suffix">
+                                <input type="number" class="form-input input-with-suffix" placeholder="请输入整数">
+                                <span class="input-suffix-text">万美元</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 添加表单按钮 -->
+            <div class="form-actions">
+                <div class="form-actions-left">
+                    <button type="button" class="btn btn-secondary" id="prevButton" onclick="window.location.href='./real-name-verification.html?type=hk-business'">
+                        <i class="fas fa-arrow-left" style="margin-right: 8px;"></i>
+                        上一步
+                    </button>
+                </div>
+                <div class="form-actions-right">
+                    <button type="button" class="btn btn-secondary" id="saveButton">
+                        <i class="fas fa-save" style="margin-right: 8px;"></i>
+                        暂存
+                    </button>
+                    <button type="button" class="btn btn-primary" onclick="window.location.href='./hk-business-verification-step2.html'">
+                        <i class="fas fa-arrow-right"></i>
+                        下一步
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function triggerFileInput(inputId) {
+            document.getElementById(inputId).click();
+        }
+
+        function showExample(type) {
+            alert(`这里将显示${type}的示例图片`);
+            // 这里可以实现弹窗显示对应类型的示例图片
+        }
+
+        function toggleAddress(type) {
+            const differentAddress = document.getElementById('different-address');
+            if (type === 'different') {
+                differentAddress.classList.remove('hidden-address');
+            } else {
+                differentAddress.classList.add('hidden-address');
+            }
+        }
+
+        function nextStep() {
+            // 这里实现下一步的逻辑，比如表单验证、跳转到下一步等
+            alert('跳转到下一步：重要成员');
+        }
+
+        function saveDraft() {
+            // 这里实现暂存功能
+            alert('已暂存当前填写内容');
+        }
+
+        function goBack() {
+            // 返回到实名认证页面
+            window.location.href = './real-name-verification.html';
+        }
+
+        function closeHeader() {
+            // 这里实现关闭header的逻辑
+            window.location.href = '../index.html';
+        }
+    </script>
+</body>
+</html> 

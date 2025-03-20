@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>实名认证</title>
     <link rel="stylesheet" href="../styles/main.css">
+    <link rel="stylesheet" href="../styles/header.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
@@ -19,6 +20,7 @@
             --success-color: #34C759;
             --card-shadow: 0 2px 8px rgba(125, 51, 255, 0.08);
             --transition: all 0.2s ease-in-out;
+            --header-height: 56px;
         }
 
         body {
@@ -28,50 +30,105 @@
             background-color: #F8F7FF;
             margin: 0;
             padding: 0;
+            padding-top: var(--header-height);
+        }
+
+        /* Header styles */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: var(--header-height);
+            background: white;
+            display: flex;
+            align-items: center;
+            padding: 0 24px;
+            box-shadow: 0 1px 0 rgba(0, 0, 0, 0.05);
+            z-index: 1000;
+        }
+
+        .header-logo {
+            height: 32px;
+            margin-right: 24px;
+            display: flex;
+            align-items: center;
+        }
+
+        .header-logo img {
+            height: 100%;
+            width: auto;
+        }
+
+        .header-divider {
+            width: 1px;
+            height: 16px;
+            background-color: var(--border-color);
+            margin: 0 16px;
+        }
+
+        .header-title {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-secondary);
+        }
+
+        .header-close {
+            margin-left: auto;
+            color: var(--text-secondary);
+            cursor: pointer;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 4px;
+            transition: var(--transition);
+        }
+
+        .header-close:hover {
+            background-color: rgba(0, 0, 0, 0.04);
+            color: var(--text-primary);
         }
 
         .verification-container {
             max-width: 1000px;
-            margin: 40px auto;
-            padding: 32px;
-            background: var(--bg-color);
-            border-radius: 12px;
-            box-shadow: var(--card-shadow);
+            margin: 24px auto;
+            padding: 0 24px;
         }
 
         h1 {
-            font-size: 28px;
+            font-size: 24px;
             font-weight: 600;
-            margin-bottom: 8px;
+            margin: 0 0 8px 0;
             color: var(--text-primary);
         }
 
         .page-description {
             color: var(--text-secondary);
-            font-size: 16px;
-            margin-bottom: 32px;
+            font-size: 14px;
+            margin: 0 0 32px 0;
         }
 
         .verification-types {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 8px;
-            margin-bottom: 20px;
-            max-width: 100%;
+            gap: 12px;
+            margin-bottom: 24px;
         }
 
         .verification-type {
             background: var(--bg-color);
             border: 1px solid var(--border-color);
-            border-radius: 4px;
-            padding: 8px 12px;
+            border-radius: 8px;
+            padding: 16px;
             cursor: pointer;
             transition: var(--transition);
             display: flex;
             flex-direction: row;
             align-items: center;
             text-align: left;
-            min-height: 50px;
+            min-height: 56px;
             gap: 12px;
         }
 
@@ -366,6 +423,16 @@
     </style>
 </head>
 <body>
+    <!--实名认证顶部导航栏-->
+    <div class="header">
+        <div class="header-logo">
+            <img src="../assets/images/whaletlogo2.png" alt="Whalet Logo">
+        </div>
+        <div class="header-divider"></div>
+        <span class="header-title">实名认证</span>
+        <i class="fas fa-times header-close" onclick="closeHeader()"></i>
+    </div>
+
     <div class="verification-container">
         <h1>实名认证</h1>
         <p class="page-description">请选择您的账户类型并提供相应的认证材料</p>
@@ -544,10 +611,10 @@
             setTimeout(() => {
                 if (typeIndex === 0) { // Personal account
                     window.location.href = './personal-verification.html';
-                } else {
-                    alert('提交认证申请成功！');
-                    btn.disabled = false;
-                    btn.innerHTML = '<i class="fas fa-check"></i> 开始申请';
+                } else if (typeIndex === 1) { // Mainland business account
+                    window.location.href = './mainland-business-verification.html';
+                } else { // Hong Kong business account
+                    window.location.href = './hk-business-verification.html';
                 }
             }, 1500);
         }
@@ -575,9 +642,62 @@
             return false; // 阻止链接默认行为
         }
 
-        // 页面加载完成后自动选中第一个选项
-        document.addEventListener('DOMContentLoaded', () => {
-            selectType('mainland-personal');
+        function closeHeader() {
+            // 这里实现关闭header的逻辑
+        }
+
+        // 页面加载时初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            // 获取所有认证类型选项
+            const verificationTypes = document.querySelectorAll('.verification-type');
+            const requirementsDivs = document.querySelectorAll('.document-requirements');
+            
+            // 获取URL参数
+            const urlParams = new URLSearchParams(window.location.search);
+            const type = urlParams.get('type');
+            
+            // 根据URL参数或默认选中第一个选项
+            let selectedIndex = 0;
+            if (type === 'mainland-business') {
+                selectedIndex = 1; // 大陆企业选项的索引
+            } else if (type === 'hk-business') {
+                selectedIndex = 2; // 香港企业选项的索引
+            }
+            
+            // 移除所有选中状态
+            verificationTypes.forEach(t => t.classList.remove('selected'));
+            // 添加选中状态
+            verificationTypes[selectedIndex].classList.add('selected');
+            
+            // 隐藏所有要求文档
+            requirementsDivs.forEach(div => div.style.display = 'none');
+            // 显示对应的要求文档
+            const requirements = [
+                'mainland-personal-requirements',
+                'mainland-business-requirements',
+                'hk-business-requirements'
+            ];
+            if (requirements[selectedIndex]) {
+                document.getElementById(requirements[selectedIndex]).style.display = 'block';
+            }
+
+            // 点击切换选项的事件处理
+            verificationTypes.forEach((type, index) => {
+                type.addEventListener('click', function() {
+                    // 移除所有选中状态
+                    verificationTypes.forEach(t => t.classList.remove('selected'));
+                    // 添加当前选中状态
+                    this.classList.add('selected');
+                    
+                    // 隐藏所有要求文档
+                    requirementsDivs.forEach(div => div.style.display = 'none');
+                    
+                    // 显示对应的要求文档
+                    if (requirements[index]) {
+                        document.getElementById(requirements[index]).style.display = 'block';
+                    }
+                });
+            });
         });
     </script>
 </body>

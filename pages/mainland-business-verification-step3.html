@@ -1,0 +1,979 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>企业实名认证 - 开户授权</title>
+    <link rel="stylesheet" href="../styles/main.css">
+    <link rel="stylesheet" href="../styles/header.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #7D33FF;
+            --primary-hover: #6929D4;
+            --primary-light: rgba(125, 51, 255, 0.1);
+            --bg-color: #FFFFFF;
+            --text-primary: #1F1F1F;
+            --text-secondary: #666666;
+            --border-color: #E5E5E5;
+            --success-color: #34C759;
+            --card-shadow: 0 2px 8px rgba(125, 51, 255, 0.08);
+            --transition: all 0.2s ease-in-out;
+            --spacing-xs: 4px;
+            --spacing-sm: 8px;
+            --spacing-md: 12px;
+            --spacing-lg: 16px;
+            --spacing-xl: 24px;
+            --radius-sm: 4px;
+            --radius-md: 6px;
+            --radius-lg: 8px;
+            --header-height: 56px;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            color: var(--text-primary);
+            line-height: 1.5;
+            background-color: #F8F7FF;
+            margin: 0;
+            padding: 0;
+            padding-top: var(--header-height);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        .verification-container {
+            max-width: 1200px;
+            margin: 24px auto;
+            padding: 0 24px;
+            display: flex;
+            gap: 32px;
+        }
+
+        .progress-tracker {
+            width: 240px;
+            min-width: 240px;
+            background-color: #fff;
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: var(--card-shadow);
+            position: sticky;
+            top: calc(var(--header-height) + 24px);
+            align-self: flex-start;
+            height: fit-content;
+        }
+
+        .progress-step {
+            display: flex;
+            margin-bottom: 24px;
+            position: relative;
+            padding-left: 40px;
+        }
+
+        .progress-step:last-child {
+            margin-bottom: 0;
+        }
+
+        .progress-step::before {
+            content: "";
+            position: absolute;
+            left: 14px;
+            top: 24px;
+            bottom: -24px;
+            width: 2px;
+            background-color: var(--border-color);
+            transition: var(--transition);
+        }
+
+        .progress-step:last-child::before {
+            display: none;
+        }
+
+        .progress-step.completed::before {
+            background-color: var(--primary-color);
+        }
+
+        .progress-step.active::before {
+            background-color: var(--border-color);
+        }
+
+        .progress-step-number {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background-color: var(--bg-color);
+            border: 2px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            z-index: 1;
+            transition: var(--transition);
+        }
+
+        .progress-step.active .progress-step-number {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+            color: white;
+        }
+
+        .progress-step.completed .progress-step-number {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+            color: white;
+        }
+
+        .progress-step-content {
+            flex: 1;
+        }
+
+        .progress-step-title {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            margin-bottom: 4px;
+        }
+
+        .progress-step.active .progress-step-title {
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        .progress-step.completed .progress-step-title {
+            color: var(--primary-color);
+        }
+
+        .progress-step-desc {
+            font-size: 12px;
+            color: var(--text-secondary);
+            opacity: 0.8;
+        }
+
+        .form-container {
+            flex: 1;
+            background: white;
+            border-radius: 12px;
+            padding: 32px;
+            border: 1px solid var(--border-color);
+        }
+
+        .form-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin: 0 0 24px 0;
+            color: var(--text-primary);
+        }
+
+        .form-section {
+            margin-bottom: 32px;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 24px;
+            margin-bottom: 24px;
+        }
+
+        .form-col {
+            flex: 1;
+        }
+
+        .form-group {
+            margin-bottom: 24px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 8px;
+            color: var(--text-primary);
+        }
+
+        .form-label.required::after {
+            content: '*';
+            color: #FF3B30;
+            margin-left: 4px;
+        }
+
+        .form-input {
+            width: 100%;
+            height: 40px;
+            padding: 0 12px;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            font-size: 14px;
+            transition: var(--transition);
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px var(--primary-light);
+        }
+
+        .form-note {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-top: 4px;
+        }
+
+        .form-note.info {
+            color: var(--primary-color);
+            background-color: var(--primary-light);
+            padding: 8px 12px;
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .upload-box {
+            border: 2px dashed var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 24px;
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .upload-box:hover {
+            border-color: var(--primary-color);
+            background-color: var(--primary-light);
+        }
+
+        .upload-box i {
+            font-size: 24px;
+            color: var(--primary-color);
+            margin-bottom: 12px;
+        }
+
+        .upload-box p {
+            margin: 4px 0;
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        .upload-actions {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 8px;
+        }
+
+        .example-link {
+            color: var(--primary-color);
+            font-size: 14px;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .example-link:hover {
+            text-decoration: underline;
+        }
+
+        .form-actions {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 32px;
+            padding-top: 24px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            height: 40px;
+            padding: 0 24px;
+            border-radius: var(--radius-md);
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            border: none;
+        }
+
+        .btn i {
+            margin-right: 8px;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-hover);
+        }
+
+        .btn-secondary {
+            background-color: var(--primary-light);
+            color: var(--primary-color);
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-secondary:hover {
+            background-color: rgba(125, 51, 255, 0.2);
+        }
+
+        .radio-group {
+            display: flex;
+            gap: 32px;
+            margin-top: 4px;
+        }
+
+        .radio-button {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .radio-button input[type="radio"] {
+            display: none;
+        }
+
+        .radio-dot {
+            width: 16px;
+            height: 16px;
+            border: 2px solid #999;
+            border-radius: 50%;
+            display: inline-block;
+            position: relative;
+            transition: all 0.2s ease;
+        }
+
+        .radio-dot::after {
+            content: '';
+            width: 8px;
+            height: 8px;
+            background: var(--primary-color);
+            border-radius: 50%;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            transition: all 0.2s ease;
+        }
+
+        .radio-button input[type="radio"]:checked + .radio-dot {
+            border-color: var(--primary-color);
+        }
+
+        .radio-button input[type="radio"]:checked + .radio-dot::after {
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        .radio-text {
+            font-size: 14px;
+            color: var(--text-primary);
+        }
+
+        .qr-code-container {
+            text-align: center;
+            padding: 32px;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            margin: 24px 0;
+        }
+
+        .qr-code-container img {
+            max-width: 200px;
+            margin-bottom: 16px;
+        }
+
+        .qr-code-container p {
+            color: var(--text-secondary);
+            font-size: 14px;
+            margin: 8px 0;
+        }
+
+        .agreement-checkbox {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin: 24px 0;
+        }
+
+        .agreement-checkbox input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            accent-color: var(--primary-color);
+        }
+
+        .agreement-checkbox span {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        .agreement-checkbox a {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        .agreement-checkbox a:hover {
+            text-decoration: underline;
+        }
+        
+        /* 提示框样式 */
+        .tooltip {
+            position: absolute;
+            background-color: #ffffff;
+            color: #333333;
+            padding: 10px 12px;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: normal;
+            z-index: 100;
+            max-width: 250px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s, visibility 0.3s;
+            text-align: left;
+            border: 1px solid #e8e8e8;
+        }
+        
+        .tooltip i {
+            margin-right: 6px;
+            color: #FF9500;
+        }
+        
+        .tooltip::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            right: -8px;
+            margin-top: -8px;
+            border-width: 8px 0 8px 8px;
+            border-style: solid;
+            border-color: transparent transparent transparent #ffffff;
+            z-index: 2;
+        }
+        
+        .tooltip::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            right: -9px;
+            margin-top: -8px;
+            border-width: 8px 0 8px 8px;
+            border-style: solid;
+            border-color: transparent transparent transparent #e8e8e8;
+            z-index: 1;
+        }
+        
+        .tooltip.right::before {
+            right: auto;
+            left: -8px;
+            border-width: 8px 8px 8px 0;
+            border-color: transparent #ffffff transparent transparent;
+        }
+        
+        .tooltip.right::after {
+            right: auto;
+            left: -9px;
+            border-width: 8px 8px 8px 0;
+            border-color: transparent #e8e8e8 transparent transparent;
+        }
+        
+        .tooltip.top::before,
+        .tooltip.top::after {
+            top: auto;
+            bottom: -8px;
+            left: 50%;
+            margin-left: -8px;
+            margin-top: 0;
+            border-width: 8px 8px 0 8px;
+        }
+        
+        .tooltip.top::before {
+            border-color: #ffffff transparent transparent transparent;
+            bottom: -7px;
+        }
+        
+        .tooltip.top::after {
+            border-color: #e8e8e8 transparent transparent transparent;
+        }
+        
+        .tooltip.bottom::before,
+        .tooltip.bottom::after {
+            bottom: auto;
+            top: -8px;
+            left: 50%;
+            margin-left: -8px;
+            margin-top: 0;
+            border-width: 0 8px 8px 8px;
+        }
+        
+        .tooltip.bottom::before {
+            border-color: transparent transparent #ffffff transparent;
+            top: -7px;
+        }
+        
+        .tooltip.bottom::after {
+            border-color: transparent transparent #e8e8e8 transparent;
+        }
+        
+        .tooltip.show {
+            opacity: 1;
+            visibility: visible;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="header-logo">
+            <img src="../assets/images/whaletlogo2.png" alt="Whalet Logo">
+        </div>
+        <div class="header-divider"></div>
+        <span class="header-title">大陆企业实名认证</span>
+        <i class="fas fa-times header-close" onclick="closeHeader()"></i>
+    </div>
+
+    <div class="verification-container">
+        <!-- 左侧进度条 -->
+        <div class="progress-tracker">
+            <div class="progress-step completed">
+                <div class="progress-step-number">1</div>
+                <div class="progress-step-content">
+                    <div class="progress-step-title">企业信息</div>
+                    <div class="progress-step-desc">填写企业基本信息</div>
+                </div>
+            </div>
+            <div class="progress-step completed">
+                <div class="progress-step-number">2</div>
+                <div class="progress-step-content">
+                    <div class="progress-step-title">重要成员</div>
+                    <div class="progress-step-desc">填写重要成员信息</div>
+                </div>
+            </div>
+            <div class="progress-step active">
+                <div class="progress-step-number">3</div>
+                <div class="progress-step-content">
+                    <div class="progress-step-title">开户授权</div>
+                    <div class="progress-step-desc">上传开户授权资料</div>
+                </div>
+            </div>
+            <div class="progress-step">
+                <div class="progress-step-number">4</div>
+                <div class="progress-step-content">
+                    <div class="progress-step-title">完成</div>
+                    <div class="progress-step-desc">提交成功，等待审核</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 右侧表单内容 -->
+        <div class="form-container">
+            <h2 class="form-title">开户授权</h2>
+
+            <div class="form-section">
+                <!-- 授权人选择 -->
+                <div class="form-group">
+                    <label class="form-label required">授权人</label>
+                    <select class="form-input" id="authorizer">
+                        <option value="">请选择授权人</option>
+                    </select>
+                </div>
+
+                <!-- 授权方式选择 -->
+                <div class="form-group">
+                    <label class="form-label required">授权方式</label>
+                    <div class="radio-group">
+                        <label class="radio-button">
+                            <input type="radio" name="auth_method" value="photo" checked onchange="handleAuthMethodChange()">
+                            <span class="radio-dot"></span>
+                            <span class="radio-text">手持拍照</span>
+                        </label>
+                        <label class="radio-button">
+                            <input type="radio" name="auth_method" value="face" onchange="handleAuthMethodChange()">
+                            <span class="radio-dot"></span>
+                            <span class="radio-text">人脸识别</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- 手持拍照上传区域 -->
+                <div id="photo-upload-section">
+                    <!-- 手持开户申请表照片上传 -->
+                    <div class="form-group">
+                        <label class="form-label required">手持开户申请表</label>
+                        <div class="upload-box" data-type="holding-photo" onclick="triggerFileUpload('holding-photo')">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                            <p>点击或拖拽文件至此处上传</p>
+                            <p>支持 JPG、PNG、PDF 格式，文件大小不超过 5MB</p>
+                        </div>
+                        <div class="upload-actions">
+                            <a href="#" class="example-link" onclick="showExample('holding')">
+                                <i class="fas fa-image"></i>
+                                查看示例
+                            </a>
+                            <a href="#" class="example-link" style="margin-left: 16px;" onclick="downloadTemplate()">
+                                <i class="fas fa-download"></i>
+                                下载开户申请表模版
+                            </a>
+                        </div>
+                        <div class="upload-note" style="margin-top: 12px; padding: 12px 16px; background: #F8F9FA; border-radius: 4px;">
+                            <p style="margin: 0 0 8px 0; color: var(--text-primary); font-size: 14px;">请填写<a href="#" style="color: var(--primary-color); text-decoration: none;" onclick="downloadTemplate()">开户申请表(点击下载)</a>，请加盖公章，上传法定代表人手持开户申请表照片</p>
+                            <p style="margin: 0; color: var(--text-secondary); font-size: 13px;">请注意以下事项：</p>
+                            <p style="margin: 4px 0 0 0; color: var(--text-secondary); font-size: 13px;">1. 开户申请表清晰可见</p>
+                            <p style="margin: 4px 0 0 0; color: var(--text-secondary); font-size: 13px;">2. 上半身完整可见</p>
+                        </div>
+                    </div>
+
+                    <!-- 开户申请表上传 -->
+                    <div class="form-group">
+                        <label class="form-label required">开户申请表</label>
+                        <div class="upload-box" data-type="application-form" onclick="triggerFileUpload('application-form')">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                            <p>点击或拖拽文件至此处上传</p>
+                            <p>支持 JPG、PNG、PDF 格式，文件大小不超过 5MB</p>
+                        </div>
+                        <div class="upload-note" style="margin-top: 12px; padding: 12px 16px; background: #F8F9FA; border-radius: 4px;">
+                            <p style="margin: 0; color: var(--text-primary); font-size: 14px;">请填写开户申请表，加盖公章，上传清晰的开户申请表原照或扫描件</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 人脸识别区域 -->
+                <div id="face-recognition-section" style="display: none;">
+                    <div class="form-note info" style="margin-bottom: 24px;">
+                        <i class="fas fa-info-circle"></i>
+                        温馨提示：部分银行开通收款账户时按照银行要求会需要提供纸质版
+                    </div>
+                    <div class="qr-code-container">
+                        <img src="../assets/images/qr-placeholder.png" alt="人脸识别二维码">
+                        <p>请使用手机扫描二维码进行人脸识别</p>
+                    </div>
+                </div>
+
+                <!-- 承诺函同意 -->
+                <div class="agreement-checkbox">
+                    <input type="checkbox" id="agreement" onchange="toggleSubmitButton()">
+                    <span>本人已阅读、知晓并同意<a href="#" onclick="showAgreement()">《承诺函》</a>条款</span>
+                </div>
+            </div>
+
+            <!-- 底部按钮 -->
+            <div class="form-actions">
+                <div>
+                    <button class="btn btn-secondary" onclick="prevStep()">
+                        <i class="fas fa-arrow-left"></i>
+                        上一步
+                    </button>
+                </div>
+                <div style="display: flex; gap: 16px;">
+                    <button class="btn btn-secondary" onclick="saveDraft()">
+                        <i class="fas fa-save"></i>
+                        暂存
+                    </button>
+                    <button class="btn btn-primary" id="submitBtn" onclick="submitForm()">
+                        <i class="fas fa-check"></i>
+                        提交
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Page loaded, initializing...');
+            loadAuthorizerOptions();
+            handleAuthMethodChange();
+            
+            // 直接在这里初始化提交按钮
+            const submitBtn = document.getElementById('submitBtn');
+            const agreement = document.getElementById('agreement');
+            
+            console.log('Setting up submit button:', submitBtn);
+            console.log('Agreement checkbox:', agreement);
+            
+            if (submitBtn && agreement) {
+                // 初始化按钮状态 - 不再禁用按钮
+                // 移除 submitBtn.disabled = !agreement.checked;
+            }
+            
+            // 设置承诺函复选框事件
+            if (agreement) {
+                agreement.onchange = function() {
+                    // 不再通过disabled属性控制按钮
+                    // 原代码: submitBtn.disabled = !this.checked;
+                };
+            }
+        });
+
+        function loadAuthorizerOptions() {
+            // 从localStorage获取第二步保存的成员信息，如果没有则使用默认成员
+            let members = JSON.parse(localStorage.getItem('business-members') || '[]');
+            
+            // 如果没有成员数据，添加默认成员
+            if (members.length === 0) {
+                members = [{
+                    id: '1',
+                    name: '张珊珊',
+                    position: '法定代表人',
+                    idType: '身份证',
+                    idNumber: '110101199001011234'
+                }];
+                // 保存到localStorage
+                localStorage.setItem('business-members', JSON.stringify(members));
+            }
+
+            const select = document.getElementById('authorizer');
+            // 清空现有选项
+            select.innerHTML = '<option value="">请选择授权人</option>';
+            
+            // 添加成员选项
+            members.forEach(member => {
+                const option = document.createElement('option');
+                option.value = member.id;
+                option.textContent = member.name;
+                select.appendChild(option);
+            });
+        }
+
+        function triggerFileUpload(type) {
+            // 创建隐藏的文件输入框
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = '.jpg,.jpeg,.png,.pdf';
+            input.style.display = 'none';
+            input.dataset.uploadType = type; // 添加标识符以区分不同的上传框
+            
+            input.onchange = function() {
+                const file = this.files[0];
+                if (file) {
+                    if (file.size > 5 * 1024 * 1024) {
+                        alert('文件大小不能超过5M');
+                        return;
+                    }
+
+                    // 创建上传文件的预览
+                    const uploadBox = this.dataset.uploadType === 'holding-photo' ? 
+                        document.querySelector('.upload-box[data-type="holding-photo"]') :
+                        document.querySelector('.upload-box[data-type="application-form"]');
+                    
+                    const previewDiv = document.createElement('div');
+                    previewDiv.className = 'uploaded-file';
+                    previewDiv.dataset.uploadType = this.dataset.uploadType; // 添加标识符
+                    previewDiv.style.marginTop = '12px';
+                    previewDiv.style.padding = '8px 12px';
+                    previewDiv.style.background = '#F8F9FA';
+                    previewDiv.style.borderRadius = '4px';
+                    previewDiv.style.display = 'flex';
+                    previewDiv.style.alignItems = 'center';
+                    previewDiv.style.justifyContent = 'space-between';
+                    
+                    previewDiv.innerHTML = `
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <i class="fas fa-file" style="color: var(--primary-color)"></i>
+                            <span style="color: var(--text-primary); font-size: 14px;">${file.name}</span>
+                        </div>
+                        <button onclick="removeFile(this)" style="background: none; border: none; color: var(--text-secondary); cursor: pointer;">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    `;
+                    
+                    // 移除之前的预览（如果有）
+                    const existingPreview = uploadBox.parentNode.querySelector(`.uploaded-file[data-upload-type="${this.dataset.uploadType}"]`);
+                    if (existingPreview) {
+                        existingPreview.remove();
+                    }
+                    
+                    uploadBox.parentNode.appendChild(previewDiv);
+                }
+            };
+            
+            input.click();
+        }
+
+        function removeFile(button) {
+            button.closest('.uploaded-file').remove();
+        }
+
+        function showExample(type) {
+            alert(`显示${type}示例图片`);
+        }
+
+        function downloadTemplate() {
+            alert('下载开户申请表模版');
+        }
+
+        function showAgreement() {
+            alert('显示承诺函内容');
+            return false;
+        }
+
+        function prevStep() {
+            window.location.href = './mainland-business-verification-step2.html';
+        }
+
+        function saveDraft() {
+            // 保存当前表单数据到localStorage
+            const formData = {
+                authorizer: document.getElementById('authorizer').value,
+                authMethod: document.querySelector('input[name="auth_method"]:checked')?.value
+            };
+            localStorage.setItem('business-auth-draft', JSON.stringify(formData));
+            alert('已暂存当前填写内容');
+        }
+
+        function closeHeader() {
+            window.location.href = '../index.html';
+        }
+
+        function handleAuthMethodChange() {
+            const photoMethod = document.querySelector('input[name="auth_method"]:checked');
+            const photoSection = document.getElementById('photo-upload-section');
+            const faceSection = document.getElementById('face-recognition-section');
+
+            if (photoMethod) {
+                photoSection.style.display = photoMethod.value === 'photo' ? 'block' : 'none';
+                faceSection.style.display = photoMethod.value === 'face' ? 'block' : 'none';
+            }
+        }
+
+        function toggleSubmitButton() {
+            // 不再设置disabled属性，让提交按钮始终可点击
+            // 之后通过showTooltip函数在点击时提示用户
+        }
+        
+        // 显示提示框
+        function showTooltip(targetElement, message, position = 'left') {
+            // 移除所有现有提示框
+            hideAllTooltips();
+            
+            // 创建新的提示框
+            const tooltip = document.createElement('div');
+            tooltip.className = `tooltip ${position}`;
+            tooltip.innerHTML = `<i class="fas fa-exclamation-triangle"></i> ${message}`;
+            document.body.appendChild(tooltip);
+            
+            // 计算位置
+            const rect = targetElement.getBoundingClientRect();
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            const scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
+            
+            // 根据不同位置计算偏移
+            if (position === 'right') {
+                // 将提示框放在元素的右侧
+                tooltip.style.left = `${rect.right + scrollLeft + 10}px`;
+                tooltip.style.top = `${rect.top + scrollTop + rect.height/2 - tooltip.offsetHeight/2}px`;
+            } else if (position === 'left') {
+                // 将提示框放在元素的左侧
+                tooltip.style.left = `${rect.left + scrollLeft - tooltip.offsetWidth - 10}px`;
+                tooltip.style.top = `${rect.top + scrollTop + rect.height/2 - tooltip.offsetHeight/2}px`;
+            } else if (position === 'top') {
+                // 将提示框放在元素的上方
+                tooltip.style.left = `${rect.left + scrollLeft + rect.width/2 - tooltip.offsetWidth/2}px`;
+                tooltip.style.top = `${rect.top + scrollTop - tooltip.offsetHeight - 10}px`;
+            } else if (position === 'bottom') {
+                // 将提示框放在元素的下方
+                tooltip.style.left = `${rect.left + scrollLeft + rect.width/2 - tooltip.offsetWidth/2}px`;
+                tooltip.style.top = `${rect.bottom + scrollTop + 10}px`;
+            }
+            
+            // 确保提示框不超出屏幕
+            setTimeout(() => {
+                const tooltipRect = tooltip.getBoundingClientRect();
+                // 处理左边界
+                if (tooltipRect.left < 10) {
+                    tooltip.style.left = '10px';
+                    // 如果是左侧定位，改为右侧定位
+                    if (position === 'left') {
+                        tooltip.className = 'tooltip right';
+                        tooltip.style.left = `${rect.right + scrollLeft + 10}px`;
+                    }
+                }
+                // 处理右边界
+                if (tooltipRect.right > window.innerWidth - 10) {
+                    tooltip.style.left = `${window.innerWidth - tooltipRect.width - 10}px`;
+                    // 如果是右侧定位，改为左侧定位
+                    if (position === 'right') {
+                        tooltip.className = 'tooltip left';
+                        tooltip.style.left = `${rect.left + scrollLeft - tooltip.offsetWidth - 10}px`;
+                    }
+                }
+                
+                // 显示提示框
+                tooltip.classList.add('show');
+            }, 10);
+            
+            // 3秒后自动隐藏
+            setTimeout(() => {
+                hideAllTooltips();
+            }, 3000);
+        }
+        
+        // 隐藏所有提示框
+        function hideAllTooltips() {
+            const tooltips = document.querySelectorAll('.tooltip');
+            tooltips.forEach(tooltip => {
+                tooltip.classList.remove('show');
+                setTimeout(() => {
+                    tooltip.remove();
+                }, 300);
+            });
+        }
+        
+        function submitForm() {
+            console.log('Submit button clicked');
+            
+            // 表单验证
+            const authorizer = document.getElementById('authorizer');
+            const authMethod = document.querySelector('input[name="auth_method"]:checked')?.value;
+            const agreement = document.getElementById('agreement');
+            const submitBtn = document.getElementById('submitBtn');
+            
+            if (!authorizer.value) {
+                // 特殊处理select元素的提示位置
+                const authorizerParent = authorizer.closest('.form-group');
+                showTooltip(authorizerParent, '请选择授权人', 'left');
+                // 高亮显示问题字段
+                authorizer.style.borderColor = '#ff6b6b';
+                setTimeout(() => {
+                    authorizer.style.borderColor = '';
+                }, 3000);
+                return;
+            }
+            
+            if (!authMethod) {
+                const authMethodGroup = document.querySelector('.radio-group');
+                showTooltip(authMethodGroup, '请选择授权方式', 'left');
+                return;
+            }
+            
+            if (!agreement.checked) {
+                const agreementParent = agreement.closest('.agreement-checkbox');
+                showTooltip(agreementParent, '请阅读并同意《承诺函》', 'left');
+                return;
+            }
+            
+            // 显示提交中状态，但不禁用按钮
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 提交中...';
+            
+            // 清除暂存数据
+            try {
+                localStorage.removeItem('business-auth-draft');
+            } catch (e) {
+                console.error('Failed to remove localStorage item:', e);
+            }
+            
+            // 延迟执行跳转，确保按钮状态变化可见
+            setTimeout(function() {
+                console.log('Redirecting to step 4...');
+                window.location.href = './mainland-business-verification-step4.html';
+            }, 100);
+        }
+    </script>
+</body>
+</html> 

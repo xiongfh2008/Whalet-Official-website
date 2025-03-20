@@ -1,0 +1,1533 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>大陆企业实名认证</title>
+    <link rel="stylesheet" href="../styles/main.css">
+    <link rel="stylesheet" href="../styles/header.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/themes/material_blue.css">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/zh.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/i18n/zh-CN.js"></script>
+    <style>
+        :root {
+            --primary-color: #7D33FF;
+            --primary-hover: #6929D4;
+            --primary-light: rgba(125, 51, 255, 0.1);
+            --bg-color: #FFFFFF;
+            --text-primary: #1F1F1F;
+            --text-secondary: #666666;
+            --border-color: #E5E5E5;
+            --success-color: #34C759;
+            --card-shadow: 0 2px 8px rgba(125, 51, 255, 0.08);
+            --transition: all 0.2s ease-in-out;
+            --spacing-xs: 4px;
+            --spacing-sm: 8px;
+            --spacing-md: 12px;
+            --spacing-lg: 16px;
+            --spacing-xl: 24px;
+            --radius-sm: 4px;
+            --radius-md: 6px;
+            --radius-lg: 8px;
+            --header-height: 56px;
+            --form-row-gap: 12px;
+            --form-group-margin: 8px;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            color: var(--text-primary);
+            line-height: 1.5;
+            background-color: #F8F7FF;
+            margin: 0;
+            padding: 0;
+            padding-top: var(--header-height);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: var(--header-height);
+            background: white;
+            display: flex;
+            align-items: center;
+            padding: 0 24px;
+            box-shadow: 0 1px 0 rgba(0, 0, 0, 0.05);
+            z-index: 1000;
+        }
+
+        .header-logo {
+            height: 32px;
+            margin-right: 24px;
+            display: flex;
+            align-items: center;
+        }
+
+        .header-logo img {
+            height: 100%;
+            width: auto;
+        }
+
+        .header-divider {
+            width: 1px;
+            height: 16px;
+            background-color: var(--border-color);
+            margin: 0 16px;
+        }
+
+        .header-title {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-secondary);
+        }
+
+        .header-close {
+            margin-left: auto;
+            color: var(--text-secondary);
+            cursor: pointer;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 4px;
+            transition: var(--transition);
+        }
+
+        .header-close:hover {
+            background-color: rgba(0, 0, 0, 0.04);
+            color: var(--text-primary);
+        }
+
+        .content {
+            margin-top: 24px;
+        }
+
+        .verification-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+            display: flex;
+            gap: 32px;
+        }
+
+        /* Progress tracker styles */
+        .progress-steps {
+            width: 240px;
+            min-width: 240px;
+            background-color: #fff;
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: var(--card-shadow);
+            position: sticky;
+            top: calc(var(--header-height) + 24px);
+            align-self: flex-start;
+            height: fit-content;
+        }
+
+        .step {
+            display: flex;
+            margin-bottom: 24px;
+            position: relative;
+            padding-left: 40px;
+        }
+
+        .step:last-child {
+            margin-bottom: 0;
+        }
+
+        .step::before {
+            content: "";
+            position: absolute;
+            left: 14px;
+            top: 24px;
+            bottom: -24px;
+            width: 2px;
+            background-color: var(--border-color);
+            transition: var(--transition);
+        }
+
+        .step:last-child::before {
+            display: none;
+        }
+
+        .step.active::before {
+            background-color: var(--primary-color);
+        }
+
+        .step-number {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background-color: var(--bg-color);
+            border: 2px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            z-index: 1;
+            transition: var(--transition);
+        }
+
+        .step.active .step-number {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+            color: white;
+        }
+
+        .step.completed .step-number {
+            background-color: var(--success-color);
+            border-color: var(--success-color);
+            color: white;
+        }
+
+        .step.completed .step-number::after {
+            content: "✓";
+            font-size: 14px;
+        }
+
+        .step-content {
+            flex: 1;
+        }
+
+        .step-title {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            margin-bottom: 4px;
+            transition: var(--transition);
+        }
+
+        .step.active .step-title {
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        .step.completed .step-title {
+            color: var(--success-color);
+        }
+
+        .step-desc {
+            font-size: 12px;
+            color: var(--text-secondary);
+            opacity: 0.8;
+            transition: var(--transition);
+        }
+
+        .form-container {
+            flex: 1;
+            max-width: 800px;
+            background: var(--bg-color);
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-lg);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+        }
+
+        .form-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: var(--spacing-lg);
+            padding-bottom: var(--spacing-sm);
+            border-bottom: 1px solid var(--border-color);
+            color: var(--text-primary);
+        }
+
+        .form-title::before {
+            display: none;
+        }
+
+        .form-col {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .form-col-half {
+            flex: 0 0 calc(50% - var(--spacing-xl) / 2);
+            min-width: 0;
+        }
+
+        .form-col-auto {
+            flex: 0 0 auto;
+            min-width: 0;
+        }
+
+        .form-row {
+            display: flex;
+            gap: var(--form-row-gap);
+            margin-bottom: var(--form-row-gap);
+        }
+
+        .form-group {
+            margin-bottom: var(--form-group-margin);
+            width: 100%;
+        }
+
+        .form-input-wrapper {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-md);
+            width: 100%;
+        }
+
+        .form-input-wrapper .form-input {
+            flex: 1;
+        }
+
+        .form-input-wrapper .recommend-link {
+            flex-shrink: 0;
+        }
+
+        .form-input-suffix {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-md);
+        }
+
+        .form-input-suffix .form-input {
+            flex: 1;
+        }
+
+        .form-input-suffix span {
+            color: var(--text-secondary);
+            font-size: 14px;
+            white-space: nowrap;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 4px;
+            font-weight: 500;
+            color: var(--text-primary);
+            font-size: 14px;
+        }
+
+        .form-label.required:after {
+            content: '*';
+            color: #D83B01;
+            margin-left: var(--spacing-xs);
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 8px var(--spacing-md);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            font-size: 14px;
+            transition: var(--transition);
+            color: var(--text-primary);
+            background: var(--bg-color);
+            box-sizing: border-box;
+            height: 36px;
+        }
+
+        .form-input:hover {
+            border-color: var(--primary-color);
+        }
+
+        .form-input:focus {
+            border-color: var(--primary-color);
+            outline: none;
+            box-shadow: 0 0 0 3px var(--primary-light);
+        }
+
+        .form-input:disabled {
+            background-color: var(--bg-secondary);
+            cursor: not-allowed;
+        }
+
+        .form-hint {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-top: 4px;
+        }
+
+        .upload-area {
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: var(--spacing-lg);
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition);
+            background: #FAFAFA;
+            position: relative;
+            overflow: hidden;
+            height: 160px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 4px;
+        }
+
+        .upload-area .upload-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            background: #FAFAFA;
+            transition: var(--transition);
+        }
+
+        .upload-area .preview-content {
+            display: none;
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            background: #fff;
+        }
+
+        .upload-area .preview-content img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .upload-area .preview-actions {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            display: flex;
+            gap: 8px;
+            opacity: 0;
+            transition: var(--transition);
+        }
+
+        .upload-area:hover .preview-actions {
+            opacity: 1;
+        }
+
+        .upload-area .preview-actions button {
+            width: 32px;
+            height: 32px;
+            padding: 0;
+            border-radius: 4px;
+            background: rgba(0, 0, 0, 0.5);
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .upload-area .preview-actions button:hover {
+            background: rgba(0, 0, 0, 0.7);
+        }
+
+        .upload-area .preview-actions i {
+            font-size: 14px;
+        }
+
+        .upload-area i {
+            font-size: 24px;
+            color: var(--primary-color);
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .upload-area p.upload-main-text {
+            font-size: 14px;
+            color: var(--text-primary);
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .upload-area p.upload-main-text strong {
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        .upload-area p.upload-sub-text {
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin: 0;
+        }
+
+        .checkbox-group {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            margin: 0;
+            height: 36px;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            accent-color: var(--primary-color);
+            margin: 0;
+        }
+
+        .checkbox-group label {
+            font-size: 14px;
+            color: var(--text-primary);
+        }
+
+        .address-group {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+
+        .form-actions {
+            display: flex;
+            justify-content: space-between;
+            margin-top: var(--spacing-lg);
+            padding-top: var(--spacing-md);
+            border-top: 1px solid var(--border-color);
+        }
+
+        .form-actions-right {
+            display: flex;
+            gap: var(--spacing-sm);
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 var(--spacing-lg);
+            border-radius: var(--radius-md);
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 14px;
+            height: 36px;
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-secondary {
+            background-color: #F3F4F6;
+            color: var(--primary-color);
+            border: 1px solid #E5E7EB;
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--primary-light);
+            border-color: var(--primary-color);
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-hover);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(125, 51, 255, 0.2);
+        }
+
+        .recommend-link {
+            color: var(--primary-color);
+            font-size: 13px;
+            text-decoration: none;
+            margin-left: var(--spacing-md);
+            white-space: nowrap;
+        }
+
+        .recommend-link:hover {
+            text-decoration: underline;
+        }
+
+        select.form-input {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23666' d='M6 8.825L1.175 4 2.238 2.938 6 6.7l3.763-3.763L10.825 4z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+            padding-right: 32px;
+        }
+
+        @media (max-width: 1024px) {
+            .verification-container {
+                padding: 0 16px;
+                gap: 24px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .verification-container {
+                flex-direction: column;
+            }
+
+            .progress-steps {
+                width: 100%;
+                min-width: auto;
+                position: static;
+            }
+        }
+
+        .example-link {
+            display: inline-flex;
+            align-items: center;
+            color: var(--primary-color);
+            font-size: 13px;
+            text-decoration: none;
+            margin-bottom: var(--form-group-margin);
+        }
+
+        .example-link:hover {
+            text-decoration: underline;
+        }
+
+        .example-link i {
+            margin-right: var(--spacing-xs);
+            font-size: 14px;
+        }
+
+        #actualAddress {
+            margin-top: 8px !important;
+        }
+
+        .radio-group {
+            display: flex;
+            gap: 24px;
+            margin-bottom: 8px;
+        }
+
+        .radio-option {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .radio-option input[type="radio"] {
+            width: 16px;
+            height: 16px;
+            accent-color: var(--primary-color);
+            margin: 0;
+        }
+
+        .radio-option label {
+            font-size: 14px;
+            color: var(--text-primary);
+        }
+
+        /* 添加拖拽相关样式 */
+        .upload-area.dragover {
+            border-color: var(--primary-color);
+            background-color: var(--primary-light);
+            border-style: dashed;
+        }
+
+        .upload-area.dragover .upload-icon,
+        .upload-area.dragover .upload-main-text strong {
+            color: var(--primary-color);
+        }
+
+        #preview-container {
+            display: flex;
+            align-items: flex-start;
+            margin-top: 12px;
+            gap: 12px;
+        }
+
+        .preview-wrapper {
+            position: relative;
+            width: 120px;
+            height: 160px;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            background: #fff;
+        }
+
+        #preview-image {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            background: #fff;
+        }
+
+        .preview-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .preview-actions .btn {
+            padding: 0 12px;
+        }
+
+        .preview-actions .btn i {
+            margin-right: 4px;
+        }
+
+        /* Flatpickr 自定义样式 */
+        .flatpickr-calendar {
+            background: #fff;
+            border-radius: var(--radius-lg);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+            font-family: inherit;
+        }
+
+        .flatpickr-day.selected,
+        .flatpickr-day.selected:hover {
+            background: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+
+        .flatpickr-day.today {
+            border-color: var(--primary-color);
+        }
+
+        .flatpickr-day:hover {
+            background: var(--primary-light);
+        }
+
+        .flatpickr-current-month .flatpickr-monthDropdown-months {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23666' d='M6 8.825L1.175 4 2.238 2.938 6 6.7l3.763-3.763L10.825 4z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+            padding-right: 32px;
+        }
+
+        .form-input[disabled] {
+            background-color: #f3f4f6;
+            cursor: not-allowed;
+        }
+
+        /* Select2 自定义样式 */
+        .select2-container {
+            width: 100% !important;
+        }
+
+        .select2-container .select2-selection--multiple,
+        .select2-container .select2-selection--single {
+            min-height: 36px;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 2px 8px;
+        }
+
+        .select2-container .select2-selection--multiple {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 4px;
+        }
+
+        .select2-container--default .select2-selection--multiple .select2-selection__rendered {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            padding: 0;
+            margin: 0;
+        }
+
+        .select2-container--default .select2-selection--multiple .select2-selection__choice {
+            background-color: var(--primary-light);
+            border: 1px solid var(--primary-color);
+            color: var(--primary-color);
+            border-radius: var(--radius-sm);
+            padding: 2px 8px;
+            margin: 2px;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+        }
+
+        .select2-container--default .select2-selection--multiple .select2-selection__choice__remove {
+            color: var(--primary-color);
+            margin-right: 6px;
+            font-size: 16px;
+            border: none;
+            background: none;
+            padding: 0 2px;
+            order: -1;
+        }
+
+        .select2-container--default .select2-selection--multiple .select2-selection__choice__remove:hover {
+            color: var(--primary-hover);
+            background: none;
+        }
+
+        .select2-container--default .select2-search--inline {
+            margin: 0;
+            flex: 1;
+            min-width: 100px;
+        }
+
+        .select2-container--default .select2-search--inline .select2-search__field {
+            margin: 0;
+            padding: 4px;
+            font-size: 14px;
+            height: 24px;
+        }
+
+        .select2-container--default.select2-container--focus .select2-selection--multiple {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px var(--primary-light);
+        }
+
+        .select2-dropdown {
+            border-color: var(--border-color);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+            border-radius: var(--radius-md);
+            margin-top: 2px;
+        }
+
+        .select2-container--default .select2-results__option--highlighted[aria-selected] {
+            background-color: var(--primary-color);
+        }
+
+        .select2-container--default .select2-results__option[aria-selected=true] {
+            background-color: var(--primary-light);
+            color: var(--primary-color);
+        }
+
+        .select2-container--default .select2-results__option {
+            padding: 8px 12px;
+        }
+
+        .select2-container--default .select2-results__group {
+            padding: 8px 12px;
+            font-weight: 600;
+            color: var(--text-secondary);
+        }
+
+        .select2-container--default.select2-container--disabled .select2-selection--multiple {
+            background-color: #f3f4f6;
+            cursor: not-allowed;
+        }
+
+        /* 修复选择框的清除按钮位置 */
+        .select2-container--default .select2-selection--multiple .select2-selection__clear {
+            margin: 0 8px;
+            font-size: 16px;
+            color: var(--text-secondary);
+            cursor: pointer;
+        }
+
+        .select2-container--default .select2-selection--multiple .select2-selection__clear:hover {
+            color: var(--text-primary);
+        }
+
+        /* 添加上传提示相关样式 */
+        .d-flex {
+            display: flex !important;
+        }
+
+        .justify-content-between {
+            justify-content: space-between !important;
+        }
+
+        .align-items-center {
+            align-items: center !important;
+        }
+
+        .mt-2 {
+            margin-top: 8px !important;
+        }
+
+        .mr-1 {
+            margin-right: 4px !important;
+        }
+
+        .upload-hint {
+            padding: 6px 10px;
+            background-color: var(--primary-light);
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            font-size: 12px;
+            color: var(--primary-color);
+            max-width: 300px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="header-logo">
+            <img src="../assets/images/whaletlogo2.png" alt="Whalet Logo">
+        </div>
+        <div class="header-divider"></div>
+        <span class="header-title">大陆企业实名认证</span>
+        <i class="fas fa-times header-close" onclick="closeHeader()"></i>
+    </div>
+
+    <div class="content">
+        <div class="verification-container">
+            <div class="progress-steps">
+                <div class="step active">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <div class="step-title">企业信息</div>
+                        <div class="step-desc">填写企业基本信息</div>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <div class="step-title">重要成员</div>
+                        <div class="step-desc">填写重要成员信息</div>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <div class="step-title">开户授权</div>
+                        <div class="step-desc">上传开户授权资料</div>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <div class="step-content">
+                        <div class="step-title">完成</div>
+                        <div class="step-desc">提交成功，等待审核</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-container">
+                <h2 class="form-title">企业信息</h2>
+                <form id="businessForm" onsubmit="return handleSubmit(event)">
+                    <!-- 营业执照照片 -->
+                    <div class="form-group">
+                        <label class="form-label required">营业执照照片</label>
+                        <div class="upload-area" id="uploadArea" 
+                            ondrop="handleDrop(event)" 
+                            ondragover="handleDragOver(event)"
+                            ondragleave="handleDragLeave(event)"
+                            onclick="triggerFileUpload()">
+                            <div class="upload-content" id="uploadContent">
+                                <i class="fas fa-cloud-upload-alt upload-icon"></i>
+                                <p class="upload-main-text"><strong>请上传最新营业执照</strong></p>
+                                <p class="upload-sub-text">点击或拖拽上传，支持jpg、png、jpeg、bmp，文件不超过5M</p>
+                                <input type="file" id="licenseUpload" style="display: none" accept="image/jpeg,image/png,image/bmp" onchange="handleFileSelect(this)">
+                            </div>
+                            <div class="preview-content" id="previewContent">
+                                <img id="preview-image" alt="营业执照预览">
+                                <div class="preview-actions">
+                                    <button type="button" onclick="removeImage(event)" title="删除">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </button>
+                                    <button type="button" onclick="triggerFileUpload()" title="重新上传">
+                                        <i class="fas fa-upload"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center mt-2">
+                            <div class="upload-hint" id="uploadHint" style="display: none;">
+                                <i class="fas fa-info-circle mr-1"></i>
+                                <span>上传证件照后自动识别信息，如有错误请调整修改</span>
+                            </div>
+                            <a href="javascript:void(0)" class="example-link" style="font-size: 13px; color: #7D33FF;" onclick="showExample('营业执照')">
+                                <i class="fas fa-image mr-1"></i>
+                                查看示例
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- 企业名称和英文名 -->
+                    <div class="form-row">
+                        <div class="form-col-half">
+                            <div class="form-group">
+                                <label class="form-label required">企业名称</label>
+                                <input type="text" class="form-input" required>
+                            </div>
+                        </div>
+                        <div class="form-col-half">
+                            <div class="form-group">
+                                <label class="form-label required">企业英文名</label>
+                                <div class="form-input-wrapper">
+                                    <input type="text" class="form-input" required>
+                                    <a href="#" class="recommend-link" onclick="showRecommendation()">系统推荐</a>
+                                </div>
+                                <div class="form-hint">英文名将作为收款账户名称,请务必与收款账户保持一致</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 统一社会信用代码 -->
+                    <div class="form-row">
+                        <div class="form-col">
+                            <div class="form-group">
+                                <label class="form-label required">统一社会信用代码</label>
+                                <input type="text" class="form-input" maxlength="18" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 企业注册地址 -->
+                    <div class="form-row">
+                        <div class="form-col">
+                            <div class="form-group">
+                                <label class="form-label required">企业注册地址</label>
+                                <div class="address-group">
+                                    <select class="form-input" id="province" required>
+                                        <option value="">选择省份</option>
+                                    </select>
+                                    <select class="form-input" id="city" required>
+                                        <option value="">选择城市</option>
+                                    </select>
+                                    <select class="form-input" id="district" required>
+                                        <option value="">选择区县</option>
+                                    </select>
+                                </div>
+                                <input type="text" class="form-input" placeholder="详细地址" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 实际经营地址 -->
+                    <div class="form-row">
+                        <div class="form-col">
+                            <div class="form-group">
+                                <label class="form-label">实际经营地址</label>
+                                <div class="radio-group">
+                                    <div class="radio-option">
+                                        <input type="radio" id="sameAddress" name="addressType" value="same" checked>
+                                        <label for="sameAddress">与注册地址相同</label>
+                                    </div>
+                                    <div class="radio-option">
+                                        <input type="radio" id="differentAddress" name="addressType" value="different">
+                                        <label for="differentAddress">与注册地址不同</label>
+                                    </div>
+                                </div>
+                                <div id="actualAddress" style="display: none; margin-top: 8px;">
+                                    <div class="address-group">
+                                        <select class="form-input">
+                                            <option value="">选择省份</option>
+                                        </select>
+                                        <select class="form-input">
+                                            <option value="">选择城市</option>
+                                        </select>
+                                        <select class="form-input">
+                                            <option value="">选择区县</option>
+                                        </select>
+                                    </div>
+                                    <input type="text" class="form-input" placeholder="详细地址">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 企业成立日期和到期日期 -->
+                    <div class="form-row">
+                        <div class="form-col-half">
+                            <div class="form-group">
+                                <label class="form-label required">企业成立日期</label>
+                                <input type="text" class="form-input date-picker" id="establishDate" required placeholder="请选择成立日期" readonly>
+                            </div>
+                        </div>
+                        <div class="form-col-half">
+                            <div class="form-group">
+                                <label class="form-label">企业到期日期</label>
+                                <div class="form-input-wrapper">
+                                    <input type="text" class="form-input date-picker" id="expiryDate" placeholder="请选择到期日期" readonly>
+                                <div class="checkbox-group">
+                                        <input type="checkbox" id="longTerm" onchange="toggleExpiryDate()">
+                                    <label for="longTerm">长期</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 出口产品和销售目的国 -->
+                    <div class="form-row">
+                        <div class="form-col-half">
+                            <div class="form-group">
+                                <label class="form-label required">出口产品</label>
+                                <select class="form-input" id="products" multiple="multiple" required>
+                                    <option value="electronics">电子产品/数码产品</option>
+                                    <option value="mobile">手机及配件</option>
+                                    <option value="computer">电脑及配件</option>
+                                    <option value="fashion">服装/纺织品</option>
+                                    <option value="shoes">鞋类</option>
+                                    <option value="bags">箱包/皮具</option>
+                                    <option value="accessories">饰品/配件</option>
+                                    <option value="beauty">美妆/护肤品</option>
+                                    <option value="toys">玩具</option>
+                                    <option value="sports">运动用品</option>
+                                    <option value="home">家居用品</option>
+                                    <option value="kitchen">厨房用品</option>
+                                    <option value="auto">汽车配件</option>
+                                    <option value="lighting">照明/灯具</option>
+                                    <option value="tools">工具/五金</option>
+                                    <option value="machinery">机械设备</option>
+                                    <option value="medical">医疗器械</option>
+                                    <option value="office">办公用品</option>
+                                    <option value="gifts">礼品/工艺品</option>
+                                    <option value="food">食品</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-col-half">
+                            <div class="form-group">
+                                <label class="form-label required">销售目的国/地区</label>
+                                <select class="form-input" id="countries" multiple="multiple" required>
+                                    <optgroup label="热门">
+                                        <option value="US">美国</option>
+                                        <option value="GB">英国</option>
+                                        <option value="DE">德国</option>
+                                        <option value="FR">法国</option>
+                                        <option value="IT">意大利</option>
+                                        <option value="ES">西班牙</option>
+                                        <option value="CA">加拿大</option>
+                                        <option value="AU">澳大利亚</option>
+                                        <option value="JP">日本</option>
+                                        <option value="KR">韩国</option>
+                                    </optgroup>
+                                    <optgroup label="欧洲">
+                                        <option value="NL">荷兰</option>
+                                        <option value="BE">比利时</option>
+                                        <option value="SE">瑞典</option>
+                                        <option value="CH">瑞士</option>
+                                        <option value="AT">奥地利</option>
+                                        <option value="DK">丹麦</option>
+                                        <option value="FI">芬兰</option>
+                                        <option value="NO">挪威</option>
+                                        <option value="IE">爱尔兰</option>
+                                        <option value="PL">波兰</option>
+                                    </optgroup>
+                                    <optgroup label="亚洲">
+                                        <option value="SG">新加坡</option>
+                                        <option value="MY">马来西亚</option>
+                                        <option value="TH">泰国</option>
+                                        <option value="VN">越南</option>
+                                        <option value="ID">印度尼西亚</option>
+                                        <option value="PH">菲律宾</option>
+                                        <option value="AE">阿联酋</option>
+                                        <option value="SA">沙特阿拉伯</option>
+                                    </optgroup>
+                                    <optgroup label="美洲">
+                                        <option value="MX">墨西哥</option>
+                                        <option value="BR">巴西</option>
+                                        <option value="CL">智利</option>
+                                        <option value="AR">阿根廷</option>
+                                    </optgroup>
+                                    <optgroup label="大洋洲">
+                                        <option value="NZ">新西兰</option>
+                                    </optgroup>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 企业人数和出口额 -->
+                    <div class="form-row">
+                        <div class="form-col">
+                            <div class="form-group">
+                                <label class="form-label">企业人数</label>
+                                <select class="form-input">
+                                    <option value="">请选择</option>
+                                    <option value="<10">少于10人</option>
+                                    <option value="10-20">10-20人</option>
+                                    <option value="20-50">20-50人</option>
+                                    <option value=">50">50人以上</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-col-half">
+                            <div class="form-group">
+                                <label class="form-label">历史出口额</label>
+                                <div class="form-input-suffix">
+                                    <input type="number" class="form-input" min="0" step="1">
+                                    <span>万美元</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-col-half">
+                            <div class="form-group">
+                                <label class="form-label required">预计年出口额</label>
+                                <div class="form-input-suffix">
+                                    <input type="number" class="form-input" min="0" step="1" required>
+                                    <span>万美元</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 按钮组 -->
+                    <div class="form-actions">
+                        <div class="form-actions-left">
+                            <button type="button" class="btn btn-secondary" id="prevButton" onclick="goBack()">
+                                <i class="fas fa-arrow-left" style="margin-right: 8px;"></i>
+                                上一步
+                            </button>
+                        </div>
+                        <div class="form-actions-right">
+                            <button type="button" class="btn btn-secondary" id="saveButton" onclick="saveForm()">
+                                <i class="fas fa-save" style="margin-right: 8px;"></i>
+                                暂存
+                            </button>
+                            <button type="submit" class="btn btn-primary" id="submitButton">
+                                <i class="fas fa-check" style="margin-right: 8px;"></i>
+                                下一步
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function goBack() {
+            // 返回实名认证主页面并选中大陆企业选项
+            window.location.href = './real-name-verification.html?type=mainland-business';
+        }
+
+        function saveForm() {
+            // 暂存表单数据到本地存储
+            const formData = new FormData(document.getElementById('businessForm'));
+            const formObject = {};
+            formData.forEach((value, key) => {
+                formObject[key] = value;
+            });
+            localStorage.setItem('mainland-business-form', JSON.stringify(formObject));
+            alert('表单数据已暂存');
+        }
+
+        function handleSubmit(event) {
+            event.preventDefault();
+            // 表单验证
+            if (validateForm()) {
+                // 保存当前步骤的数据
+                saveForm();
+                // 跳转到第2步
+                window.location.href = './mainland-business-verification-step2.html';
+            }
+            return false;
+        }
+
+        function validateForm() {
+            // 在这里添加表单验证逻辑
+            const form = document.getElementById('businessForm');
+            return form.checkValidity();
+        }
+
+        function triggerFileUpload() {
+            document.getElementById('licenseUpload').click();
+        }
+
+        function showRecommendation() {
+            // 实现系统推荐企业英文名的逻辑
+            alert('系统推荐功能开发中...');
+        }
+
+        function showExample(type) {
+            // 实现查看示例图片的逻辑
+            alert(`查看${type}示例图片`);
+        }
+
+        function toggleExpiryDate() {
+            const expiryDate = document.getElementById('expiryDate');
+            const longTerm = document.getElementById('longTerm');
+            
+            if (longTerm.checked) {
+                expiryDate.value = '长期';
+                expiryDate.disabled = true;
+                if (window.expiryDatePicker) {
+                    window.expiryDatePicker.destroy();
+                }
+            } else {
+                expiryDate.value = '';
+                expiryDate.disabled = false;
+                // 重新初始化日期选择器
+                window.expiryDatePicker = flatpickr('#expiryDate', {
+                    locale: 'zh',
+                    dateFormat: 'Y-m-d',
+                    allowInput: true,
+                    disableMobile: false,
+                    minDate: document.getElementById('establishDate').value || 'today'
+                });
+            }
+        }
+
+        function handleDragOver(event) {
+            event.preventDefault();
+            event.stopPropagation();
+            const uploadArea = document.getElementById('uploadArea');
+            uploadArea.classList.add('dragover');
+        }
+
+        function handleDragLeave(event) {
+            event.preventDefault();
+            event.stopPropagation();
+            const uploadArea = document.getElementById('uploadArea');
+            uploadArea.classList.remove('dragover');
+        }
+
+        function handleDrop(event) {
+            event.preventDefault();
+            event.stopPropagation();
+            
+            const uploadArea = document.getElementById('uploadArea');
+            uploadArea.classList.remove('dragover');
+            
+            const files = event.dataTransfer.files;
+            if (files.length > 0) {
+                const file = files[0];
+                handleFile(file);
+            }
+        }
+
+        function handleFileSelect(input) {
+            if (input.files && input.files[0]) {
+                handleFile(input.files[0]);
+            }
+        }
+
+        function handleFile(file) {
+            // 检查文件类型
+            const validTypes = ['image/jpeg', 'image/png', 'image/bmp'];
+            if (!validTypes.includes(file.type)) {
+                alert('请上传jpg、png或bmp格式的图片');
+                return;
+            }
+
+            // 检查文件大小（5MB）
+            if (file.size > 5 * 1024 * 1024) {
+                alert('文件大小不能超过5MB');
+                return;
+            }
+
+            // 预览图片
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const uploadContent = document.getElementById('uploadContent');
+                const previewContent = document.getElementById('previewContent');
+                const previewImage = document.getElementById('preview-image');
+                const uploadHint = document.getElementById('uploadHint');
+                
+                // 创建一个临时图片对象来获取图片的原始尺寸
+                const img = new Image();
+                img.onload = function() {
+                    previewImage.src = e.target.result;
+                    uploadContent.style.display = 'none';
+                    previewContent.style.display = 'block';
+                    
+                    // 显示提示信息
+                    uploadHint.style.display = 'flex';
+                    
+                    // 模拟自动识别过程
+                    console.log('自动识别营业执照信息...');
+                    // 这里可以添加真实的OCR识别逻辑
+                };
+                img.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function removeImage(event) {
+            event.stopPropagation(); // 阻止事件冒泡到上传区域
+            
+            // 清除预览
+            const uploadContent = document.getElementById('uploadContent');
+            const previewContent = document.getElementById('previewContent');
+            const previewImage = document.getElementById('preview-image');
+            const uploadHint = document.getElementById('uploadHint');
+            
+            previewImage.src = '';
+            uploadContent.style.display = 'flex';
+            previewContent.style.display = 'none';
+            uploadHint.style.display = 'none'; // 隐藏提示信息
+            
+            // 清除文件输入
+            const fileInput = document.getElementById('licenseUpload');
+            fileInput.value = '';
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // 初始化日期选择器
+            const dateConfig = {
+                locale: 'zh',
+                dateFormat: 'Y-m-d',
+                allowInput: true,
+                disableMobile: false
+            };
+
+            // 企业成立日期
+            const establishDatePicker = flatpickr('#establishDate', {
+                ...dateConfig,
+                maxDate: 'today',
+                onChange: function(selectedDates) {
+                    // 更新到期日期的最小值
+                    if (selectedDates[0]) {
+                        expiryDatePicker.set('minDate', selectedDates[0]);
+                    }
+                }
+            });
+
+            // 企业到期日期
+            let expiryDatePicker = flatpickr('#expiryDate', {
+                ...dateConfig,
+                minDate: document.getElementById('establishDate').value || 'today'
+            });
+
+            // 省市区数据
+            const areaData = {
+                "北京市": {
+                    "北京市": ["东城区", "西城区", "朝阳区", "丰台区", "石景山区", "海淀区", "门头沟区", "房山区", "通州区", "顺义区", "昌平区", "大兴区", "怀柔区", "平谷区", "密云区", "延庆区"]
+                },
+                "天津市": {
+                    "天津市": ["和平区", "河东区", "河西区", "南开区", "河北区", "红桥区", "东丽区", "西青区", "津南区", "北辰区", "武清区", "宝坻区", "滨海新区", "宁河区", "静海区", "蓟州区"]
+                },
+                "河北省": {
+                    "石家庄市": ["长安区", "桥西区", "新华区", "井陉矿区", "裕华区", "藁城区", "鹿泉区", "栾城区"],
+                    "唐山市": ["路南区", "路北区", "古冶区", "开平区", "丰南区", "丰润区", "曹妃甸区"],
+                    "秦皇岛市": ["海港区", "山海关区", "北戴河区", "抚宁区"],
+                    "邯郸市": ["邯山区", "丛台区", "复兴区", "峰峰矿区", "肥乡区", "永年区"]
+                },
+                "山西省": {
+                    "太原市": ["小店区", "迎泽区", "杏花岭区", "尖草坪区", "万柏林区", "晋源区", "清徐县", "阳曲县", "娄烦县"],
+                    "大同市": ["平城区", "云冈区", "新荣区", "云州区"],
+                    "阳泉市": ["城区", "矿区", "郊区", "平定县", "盂县"]
+                },
+                "内蒙古自治区": {
+                    "呼和浩特市": ["新城区", "回民区", "玉泉区", "赛罕区", "土默特左旗", "托克托县"],
+                    "包头市": ["东河区", "昆都仑区", "青山区", "石拐区", "白云鄂博矿区", "九原区"],
+                    "乌海市": ["海勃湾区", "海南区", "乌达区"]
+                },
+                "辽宁省": {
+                    "沈阳市": ["和平区", "沈河区", "大东区", "皇姑区", "铁西区", "苏家屯区", "浑南区", "沈北新区", "于洪区"],
+                    "大连市": ["中山区", "西岗区", "沙河口区", "甘井子区", "旅顺口区", "金州区", "普兰店区", "长海县"],
+                    "鞍山市": ["铁东区", "铁西区", "立山区", "千山区", "台安县", "岫岩满族自治县"]
+                }
+                // 这里只列举了部分省市区数据，实际使用时应该包含全部数据
+            };
+
+            // 获取省市区选择器
+            const provinceSelect = document.getElementById('province');
+            const citySelect = document.getElementById('city');
+            const districtSelect = document.getElementById('district');
+
+            // 初始化省份数据
+            provinceSelect.innerHTML = '<option value="">选择省份</option>';
+            for (const province in areaData) {
+                provinceSelect.innerHTML += `<option value="${province}">${province}</option>`;
+            }
+
+            // 省份选择事件
+            provinceSelect.addEventListener('change', function() {
+                const selectedProvince = this.value;
+                citySelect.innerHTML = '<option value="">选择城市</option>';
+                districtSelect.innerHTML = '<option value="">选择区县</option>';
+
+                if (selectedProvince) {
+                    const cities = areaData[selectedProvince];
+                    for (const city in cities) {
+                        citySelect.innerHTML += `<option value="${city}">${city}</option>`;
+                    }
+                }
+            });
+
+            // 城市选择事件
+            citySelect.addEventListener('change', function() {
+                const selectedProvince = provinceSelect.value;
+                const selectedCity = this.value;
+                districtSelect.innerHTML = '<option value="">选择区县</option>';
+
+                if (selectedCity) {
+                    const districts = areaData[selectedProvince][selectedCity];
+                    districts.forEach(district => {
+                        districtSelect.innerHTML += `<option value="${district}">${district}</option>`;
+                    });
+                }
+            });
+            
+            // 实际经营地址单选按钮事件监听
+            document.querySelectorAll('input[name="addressType"]').forEach(function(radio) {
+                radio.addEventListener('change', function() {
+                    const actualAddress = document.getElementById('actualAddress');
+                    actualAddress.style.display = this.value === 'different' ? 'block' : 'none';
+
+                    if (this.value === 'different') {
+                        // 初始化实际经营地址的省市区选择器
+                        const actualProvinceSelect = actualAddress.querySelector('select:nth-child(1)');
+                        actualProvinceSelect.innerHTML = provinceSelect.innerHTML;
+
+                        // 添加实际经营地址的省市区联动事件
+                        actualProvinceSelect.addEventListener('change', function() {
+                            const selectedProvince = this.value;
+                            const actualCitySelect = actualAddress.querySelector('select:nth-child(2)');
+                            const actualDistrictSelect = actualAddress.querySelector('select:nth-child(3)');
+                            
+                            actualCitySelect.innerHTML = '<option value="">选择城市</option>';
+                            actualDistrictSelect.innerHTML = '<option value="">选择区县</option>';
+
+                            if (selectedProvince) {
+                                const cities = areaData[selectedProvince];
+                                for (const city in cities) {
+                                    actualCitySelect.innerHTML += `<option value="${city}">${city}</option>`;
+                                }
+                            }
+                        });
+
+                        const actualCitySelect = actualAddress.querySelector('select:nth-child(2)');
+                        actualCitySelect.addEventListener('change', function() {
+                            const selectedProvince = actualProvinceSelect.value;
+                            const selectedCity = this.value;
+                            const actualDistrictSelect = actualAddress.querySelector('select:nth-child(3)');
+                            
+                            actualDistrictSelect.innerHTML = '<option value="">选择区县</option>';
+
+                            if (selectedCity) {
+                                const districts = areaData[selectedProvince][selectedCity];
+                                districts.forEach(district => {
+                                    actualDistrictSelect.innerHTML += `<option value="${district}">${district}</option>`;
+                                });
+                            }
+                        });
+                    }
+                });
+            });
+
+            // 初始化Select2
+            $('#products').select2({
+                language: 'zh-CN',
+                placeholder: '请选择出口产品（可多选）',
+                allowClear: true,
+                closeOnSelect: false,
+                width: '100%'
+            });
+
+            $('#countries').select2({
+                language: 'zh-CN',
+                placeholder: '请选择销售目的国/地区（可多选）',
+                allowClear: true,
+                closeOnSelect: false,
+                width: '100%'
+            });
+
+            // 监听Select2的change事件来处理表单验证
+            $('#products, #countries').on('change', function() {
+                if ($(this).val() && $(this).val().length > 0) {
+                    $(this).removeClass('is-invalid');
+                } else {
+                    $(this).addClass('is-invalid');
+                }
+            });
+        });
+    </script>
+</body>
+</html> 

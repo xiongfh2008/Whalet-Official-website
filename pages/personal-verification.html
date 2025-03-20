@@ -3,23 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>个人用户实名认证</title>
+    <title>个人实名认证</title>
     <link rel="stylesheet" href="../styles/main.css">
+    <link rel="stylesheet" href="../styles/header.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root {
-            --primary-color: #7C3AED;
-            --primary-hover: #6D28D9;
-            --primary-light: rgba(124, 58, 237, 0.1);
+            --primary-color: #7D33FF;
+            --primary-hover: #6929D4;
+            --primary-light: rgba(125, 51, 255, 0.1);
             --bg-color: #FFFFFF;
-            --bg-secondary: #F5F3FF;
-            --text-primary: #1F1937;
-            --text-secondary: #6B7280;
-            --border-color: #E5E7EB;
-            --success-color: #059669;
-            --card-shadow: 0 4px 12px rgba(124, 58, 237, 0.08);
-            --transition: all 0.15s ease-in-out;
+            --text-primary: #1F1F1F;
+            --text-secondary: #666666;
+            --border-color: #E5E5E5;
+            --success-color: #34C759;
+            --card-shadow: 0 2px 8px rgba(125, 51, 255, 0.08);
+            --transition: all 0.2s ease-in-out;
             --spacing-xs: 4px;
             --spacing-sm: 8px;
             --spacing-md: 12px;
@@ -28,80 +28,110 @@
             --radius-sm: 4px;
             --radius-md: 6px;
             --radius-lg: 8px;
+            --header-height: 56px;
         }
 
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
             color: var(--text-primary);
             line-height: 1.5;
-            background-color: var(--bg-secondary);
+            background-color: #F8F7FF;
             margin: 0;
             padding: 0;
+            padding-top: var(--header-height);
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
         }
 
-        .verification-container {
-            max-width: 1000px;
-            margin: var(--spacing-xl) auto;
-            padding: var(--spacing-xl);
-            display: flex;
-            gap: var(--spacing-xl);
+        .content {
+            margin-top: 0;
         }
 
+        .verification-container {
+            max-width: 1200px;
+            margin: 24px auto;
+            padding: 0 24px;
+            display: flex;
+            gap: 32px;
+        }
+
+        /* Progress tracker styles */
         .progress-steps {
             width: 240px;
-            background: var(--bg-color);
-            border-radius: var(--radius-lg);
-            padding: var(--spacing-lg);
+            min-width: 240px;
+            background-color: #fff;
+            border-radius: 12px;
+            padding: 24px;
             box-shadow: var(--card-shadow);
             position: sticky;
-            top: var(--spacing-xl);
+            top: calc(var(--header-height) + 24px);
+            align-self: flex-start;
             height: fit-content;
         }
 
         .step {
             display: flex;
-            align-items: flex-start;
-            padding: var(--spacing-md) 0;
+            margin-bottom: 24px;
             position: relative;
-            transition: var(--transition);
+            padding-left: 40px;
         }
 
-        .step:not(:last-child):after {
-            content: '';
+        .step:last-child {
+            margin-bottom: 0;
+        }
+
+        .step::before {
+            content: "";
             position: absolute;
-            left: 15px;
-            top: 40px;
-            bottom: 0;
+            left: 14px;
+            top: 24px;
+            bottom: -24px;
             width: 2px;
             background-color: var(--border-color);
             transition: var(--transition);
         }
 
-        .step.active:not(:last-child):after {
+        .step:last-child::before {
+            display: none;
+        }
+
+        .step.active::before {
+            background-color: var(--primary-color);
+        }
+
+        .step.completed::before {
             background-color: var(--primary-color);
         }
 
         .step-number {
-            width: 32px;
-            height: 32px;
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 28px;
+            height: 28px;
             border-radius: 50%;
-            background-color: var(--border-color);
-            color: var(--text-secondary);
+            background-color: var(--bg-color);
+            border: 2px solid var(--border-color);
             display: flex;
             align-items: center;
             justify-content: center;
+            font-size: 14px;
             font-weight: 600;
-            margin-right: var(--spacing-md);
-            flex-shrink: 0;
+            color: var(--text-secondary);
+            z-index: 1;
             transition: var(--transition);
         }
 
         .step.active .step-number {
             background-color: var(--primary-color);
+            border-color: var(--primary-color);
             color: white;
-            box-shadow: 0 0 0 4px var(--primary-light);
+        }
+
+        .step.completed .step-number {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+            color: white;
         }
 
         .step-content {
@@ -109,10 +139,11 @@
         }
 
         .step-title {
-            font-weight: 600;
-            margin-bottom: var(--spacing-xs);
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            margin-bottom: 4px;
             transition: var(--transition);
-            color: var(--text-primary);
         }
 
         .step.active .step-title {
@@ -120,10 +151,35 @@
             font-weight: 600;
         }
 
+        .step.completed .step-title {
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
         .step-desc {
-            font-size: 14px;
+            font-size: 12px;
             color: var(--text-secondary);
+            opacity: 0.8;
             transition: var(--transition);
+        }
+
+        @media (max-width: 1024px) {
+            .verification-container {
+                padding: 0 16px;
+                gap: 24px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .verification-container {
+                flex-direction: column;
+            }
+
+            .progress-steps {
+                width: 100%;
+                min-width: auto;
+                position: static;
+            }
         }
 
         .form-container {
@@ -486,244 +542,537 @@
             outline: none;
             box-shadow: 0 0 0 2px var(--primary-light);
         }
+
+        .address-selectors .input-group {
+            display: flex;
+            gap: var(--spacing-md);
+        }
+
+        .address-selectors .input-group .form-group {
+            flex: 1;
+        }
+
+        .address-selectors .form-select {
+            width: 100%;
+        }
+
+        /* 添加模态框样式 */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: var(--bg-color);
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-xl);
+            max-width: 800px;
+            width: 90%;
+            position: relative;
+            box-shadow: var(--card-shadow);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--spacing-lg);
+            padding-bottom: var(--spacing-md);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .modal-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .modal-close {
+            cursor: pointer;
+            color: var(--text-secondary);
+            transition: var(--transition);
+            padding: var(--spacing-xs);
+        }
+
+        .modal-close:hover {
+            color: var(--text-primary);
+        }
+
+        .modal-body {
+            display: flex;
+            gap: var(--spacing-xl);
+        }
+
+        .example-image-container {
+            flex: 1;
+        }
+
+        .example-image {
+            width: 100%;
+            height: 200px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .example-image-title {
+            font-size: 14px;
+            color: var(--text-primary);
+            text-align: center;
+            margin-top: var(--spacing-sm);
+        }
+
+        .upload-alert {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-xs);
+            margin-top: var(--spacing-xs);
+            padding: var(--spacing-sm) var(--spacing-xl);
+            background-color: var(--primary-light);
+            border-radius: var(--radius-sm);
+            font-size: 12px;
+            color: var(--text-primary);
+            width: calc(100% + var(--spacing-xl));
+            margin-left: calc(-1 * var(--spacing-sm));
+            box-sizing: border-box;
+        }
     </style>
 </head>
 <body>
-    <div class="verification-container">
-        <!-- 左侧进度条 -->
-        <div class="progress-steps">
-            <div class="step active">
-                <div class="step-number">1</div>
-                <div class="step-content">
-                    <div class="step-title">个人信息</div>
-                    <div class="step-desc">填写个人身份信息</div>
-                </div>
-            </div>
-            <div class="step">
-                <div class="step-number">2</div>
-                <div class="step-content">
-                    <div class="step-title">审核中</div>
-                    <div class="step-desc">预计1-3个工作日</div>
-                </div>
-            </div>
-            <div class="step">
-                <div class="step-number">3</div>
-                <div class="step-content">
-                    <div class="step-title">完成</div>
-                    <div class="step-desc">认证审核完成</div>
-                </div>
-            </div>
+    <!--使用通用顶部导航栏-->
+    <div class="header">
+        <div class="header-logo">
+            <img src="../assets/images/whaletlogo2.png" alt="Whalet Logo">
         </div>
+        <div class="header-divider"></div>
+        <span class="header-title">个人实名认证</span>
+        <i class="fas fa-times header-close" onclick="closeHeader()"></i>
+    </div>
 
-        <!-- 右侧表单 -->
-        <div class="form-container">
-            <h2 class="form-title">个人信息</h2>
-            <form id="verificationForm">
-                <!-- 证件类型 -->
-                <div class="form-row">
-                    <div class="form-col">
-                        <div class="form-group">
-                            <label class="form-label required">证件类型</label>
-                            <select class="form-select" disabled>
-                                <option value="mainland_id" selected>中国大陆第二代身份证</option>
-                            </select>
-                        </div>
+    <div class="content">
+        <div class="verification-container">
+            <!-- 左侧进度条 -->
+            <div class="progress-steps">
+                <div class="step active">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <div class="step-title">个人信息</div>
+                        <div class="step-desc">填写个人身份信息</div>
                     </div>
                 </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <div class="step-title">完成</div>
+                        <div class="step-desc">提交成功，等待审核</div>
+                    </div>
+                </div>
+            </div>
 
-                <!-- 证件照片 -->
-                <div class="form-row">
-                    <div class="form-col-half">
-                        <div class="form-group">
-                            <label class="form-label required">证件照片</label>
-                            <div class="upload-area" onclick="uploadImage('front')">
-                                <i class="fas fa-upload"></i>
-                                <p>上传身份证人像面</p>
+            <!-- 右侧表单 -->
+            <div class="form-container">
+                <h2 class="form-title">个人信息</h2>
+                <form id="verificationForm">
+                    <!-- 证件类型 -->
+                    <div class="form-row">
+                        <div class="form-col">
+                            <div class="form-group">
+                                <label class="form-label required">证件类型</label>
+                                <select class="form-select" disabled>
+                                    <option value="mainland_id" selected>中国大陆第二代身份证</option>
+                                </select>
                             </div>
                         </div>
                     </div>
-                    <div class="form-col-half">
-                        <div class="form-group">
-                            <label class="form-label">&nbsp;</label>
-                            <div class="upload-area" onclick="uploadImage('back')">
-                                <i class="fas fa-upload"></i>
-                                <p>上传身份证国徽面</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
 
-                <!-- 姓名 -->
-                <div class="form-row">
-                    <div class="form-col-half">
-                        <div class="form-group">
-                            <label class="form-label required">真实姓名</label>
-                            <div class="input-group">
-                                <div class="form-group">
-                                    <input type="text" class="form-input" placeholder="姓氏" id="lastName">
+                    <!-- 证件照片 -->
+                    <div class="form-row">
+                        <div class="form-col-half">
+                            <div class="form-group">
+                                <label class="form-label required">证件照片</label>
+                                <div class="upload-area" onclick="uploadImage('front')">
+                                    <i class="fas fa-upload"></i>
+                                    <p>上传身份证人像面</p>
+                                    <p style="font-size: 12px; color: var(--text-secondary); margin-top: 4px;">点击或拖拽上传</p>
                                 </div>
-                                <div class="form-group">
-                                    <input type="text" class="form-input" placeholder="名字" id="firstName">
+                                <div id="frontUploadAlert" class="upload-alert" style="display: none;">
+                                    <i class="fas fa-info-circle" style="color: var(--primary-color);"></i>
+                                    <span>上传证件照后自动识别信息，如有错误请调整修改</span>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="form-col-half">
-                        <div class="form-group">
-                            <label class="form-label required">英文名称</label>
-                            <input type="text" class="form-input" id="englishName" readonly>
-                            <div class="form-tip">英文名将作为收款账户名称</div>
+                        <div class="form-col-half">
+                            <div class="form-group">
+                                <label class="form-label">&nbsp;</label>
+                                <div class="upload-area" onclick="uploadImage('back')">
+                                    <i class="fas fa-upload"></i>
+                                    <p>上传身份证国徽面</p>
+                                    <p style="font-size: 12px; color: var(--text-secondary); margin-top: 4px;">点击或拖拽上传</p>
+                                </div>
+                                <div id="backUploadAlert" class="upload-alert" style="display: none;">
+                                    <i class="fas fa-info-circle" style="color: var(--primary-color);"></i>
+                                    <span>上传证件照后自动识别信息，如有错误请调整修改</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
-
-                <!-- 证件号码 -->
-                <div class="form-row">
-                    <div class="form-col">
-                        <div class="form-group">
-                            <label class="form-label required">证件号码</label>
-                            <input type="text" class="form-input" placeholder="请输入18位身份证号码">
+                    <div class="form-row" style="margin-top: -8px;">
+                        <div class="form-col">
+                            <div class="form-tip" style="display: flex; align-items: center; gap: var(--spacing-sm);">
+                                <span>请确认信息无误，证件图片清晰可见，图片支持jpg、png、jpeg、bmp，文件不超过5M</span>
+                                <span style="color: var(--text-secondary);">|</span>
+                                <a href="#" onclick="showExample()" style="color: var(--primary-color); text-decoration: none;">查看示例</a>
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <!-- 证件有效期 -->
-                <div class="form-row">
-                    <div class="form-col">
-                        <div class="form-group">
-                            <label class="form-label required">证件有效期</label>
-                            <div class="input-group">
-                                <div class="form-group">
-                                    <input type="date" class="form-input" placeholder="开始日期">
+                    <!-- 姓名 -->
+                    <div class="form-row">
+                        <div class="form-col-half">
+                            <div class="form-group">
+                                <label class="form-label required">真实姓名</label>
+                                <div class="input-group">
+                                    <div class="form-group">
+                                        <input type="text" class="form-input" placeholder="姓氏" id="lastName">
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="text" class="form-input" placeholder="名字" id="firstName">
+                                    </div>
                                 </div>
-                                <div class="form-group">
-                                    <input type="date" class="form-input" placeholder="结束日期">
-                                </div>
-                                <div class="form-col-auto">
-                                    <div class="checkbox-group">
-                                        <input type="checkbox" id="longTerm" onchange="toggleEndDate()">
-                                        <label for="longTerm">长期</label>
+                            </div>
+                        </div>
+                        <div class="form-col-half">
+                            <div class="form-group">
+                                <label class="form-label required">英文名称</label>
+                                <input type="text" class="form-input" id="englishName" readonly>
+                                <div class="form-tip">英文名将作为收款账户名称</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 证件号码 -->
+                    <div class="form-row">
+                        <div class="form-col">
+                            <div class="form-group">
+                                <label class="form-label required">证件号码</label>
+                                <input type="text" class="form-input" placeholder="请输入18位身份证号码">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 证件有效期 -->
+                    <div class="form-row">
+                        <div class="form-col">
+                            <div class="form-group">
+                                <label class="form-label required">证件有效期</label>
+                                <div class="input-group">
+                                    <div class="form-group">
+                                        <input type="date" class="form-input" placeholder="开始日期">
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="date" class="form-input" placeholder="结束日期">
+                                    </div>
+                                    <div class="form-col-auto">
+                                        <div class="checkbox-group">
+                                            <input type="checkbox" id="longTerm" onchange="toggleEndDate()">
+                                            <label for="longTerm">长期</label>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
 
-                <!-- 性别和出生日期 -->
-                <div class="form-row">
-                    <div class="form-col-half">
-                        <div class="form-group">
-                            <label class="form-label required">性别</label>
-                            <div class="radio-group">
-                                <label class="radio-option">
-                                    <input type="radio" name="gender" value="male">
-                                    <span>男</span>
-                                </label>
-                                <label class="radio-option">
-                                    <input type="radio" name="gender" value="female">
-                                    <span>女</span>
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-col-half">
-                        <div class="form-group">
-                            <label class="form-label required">出生日期</label>
-                            <input type="date" class="form-input">
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 身份证地址 -->
-                <div class="form-row">
-                    <div class="form-col">
-                        <div class="form-group">
-                            <label class="form-label">身份证地址</label>
-                            <input type="text" class="form-input" placeholder="请输入身份证上的地址">
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 居住地址 -->
-                <div class="form-row">
-                    <div class="form-col">
-                        <div class="form-group">
-                            <label class="form-label">居住地址</label>
-                            <div class="radio-group">
-                                <label class="radio-option">
-                                    <input type="radio" name="addressType" value="same" onchange="toggleAddress('same')">
-                                    <span>与证件地址相同</span>
-                                </label>
-                                <label class="radio-option">
-                                    <input type="radio" name="addressType" value="different" onchange="toggleAddress('different')">
-                                    <span>与证件地址不同</span>
-                                </label>
-                            </div>
-                            <div class="address-input" id="differentAddress">
-                                <input type="text" class="form-input" placeholder="请输入现居住地址">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 验证方式 -->
-                <div class="form-row">
-                    <div class="form-col">
-                        <div class="form-group">
-                            <label class="form-label required">验证方式</label>
-                            <div class="radio-group">
-                                <label class="radio-option">
-                                    <input type="radio" name="verifyMethod" value="photo" onchange="toggleVerifyMethod('photo')">
-                                    <span>手持拍照</span>
-                                </label>
-                                <label class="radio-option">
-                                    <input type="radio" name="verifyMethod" value="face" onchange="toggleVerifyMethod('face')">
-                                    <span>人脸识别</span>
-                                </label>
-                            </div>
-                            
-                            <div class="verification-method" id="photoMethod">
-                                <div class="upload-area">
-                                    <i class="fas fa-camera"></i>
-                                    <p>上传手持身份证照片</p>
+                    <!-- 性别和出生日期 -->
+                    <div class="form-row">
+                        <div class="form-col-half">
+                            <div class="form-group">
+                                <label class="form-label required">性别</label>
+                                <div class="radio-group">
+                                    <label class="radio-option">
+                                        <input type="radio" name="gender" value="male">
+                                        <span>男</span>
+                                    </label>
+                                    <label class="radio-option">
+                                        <input type="radio" name="gender" value="female">
+                                        <span>女</span>
+                                    </label>
                                 </div>
                             </div>
-                            
-                            <div class="verification-method" id="faceMethod">
-                                <div class="qr-code">
-                                    <i class="fas fa-qrcode fa-3x"></i>
-                                </div>
-                                <p style="text-align: center; color: var(--text-secondary);">请使用手机扫描二维码进行人脸识别</p>
+                        </div>
+                        <div class="form-col-half">
+                            <div class="form-group">
+                                <label class="form-label required">出生日期</label>
+                                <input type="date" class="form-input">
                             </div>
                         </div>
                     </div>
-                </div>
 
-                <!-- 添加表单按钮 -->
-                <div class="form-actions">
-                    <div class="form-actions-left">
-                        <button type="button" class="btn btn-secondary">
-                            <i class="fas fa-arrow-left" style="margin-right: 8px;"></i>
-                            上一步
-                        </button>
+                    <!-- 身份证地址 -->
+                    <div class="form-row">
+                        <div class="form-col">
+                            <div class="form-group">
+                                <label class="form-label required">身份证地址</label>
+                                <div class="address-selectors">
+                                    <div class="input-group">
+                                        <div class="form-group">
+                                            <select class="form-select" id="idCardProvince" onchange="handleProvinceChange('idCard')">
+                                                <option value="">选择省份</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <select class="form-select" id="idCardCity" onchange="handleCityChange('idCard')">
+                                                <option value="">选择城市</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <select class="form-select" id="idCardDistrict">
+                                                <option value="">选择区县</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group" style="margin-top: var(--spacing-md);">
+                                        <input type="text" class="form-input" id="idCardDetailAddress" placeholder="请输入详细地址（街道、门牌号等）">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="form-actions-right">
-                        <button type="button" class="btn btn-secondary">
-                            <i class="fas fa-save" style="margin-right: 8px;"></i>
-                            暂存
-                        </button>
-                        <button type="submit" class="btn btn-primary">
-                            <i class="fas fa-check" style="margin-right: 8px;"></i>
-                            提交
-                        </button>
+
+                    <!-- 居住地址 -->
+                    <div class="form-row">
+                        <div class="form-col">
+                            <div class="form-group">
+                                <label class="form-label required">居住地址</label>
+                                <div class="radio-group">
+                                    <label class="radio-option">
+                                        <input type="radio" name="addressType" value="same" onchange="toggleAddress('same')" checked>
+                                        <span>与证件地址相同</span>
+                                    </label>
+                                    <label class="radio-option">
+                                        <input type="radio" name="addressType" value="different" onchange="toggleAddress('different')">
+                                        <span>与证件地址不同</span>
+                                    </label>
+                                </div>
+                                <div class="address-input" id="differentAddress">
+                                    <div class="address-selectors">
+                                        <div class="input-group">
+                                            <div class="form-group">
+                                                <select class="form-select" id="residenceProvince" onchange="handleProvinceChange('residence')">
+                                                    <option value="">选择省份</option>
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <select class="form-select" id="residenceCity" onchange="handleCityChange('residence')">
+                                                    <option value="">选择城市</option>
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <select class="form-select" id="residenceDistrict">
+                                                    <option value="">选择区县</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group" style="margin-top: var(--spacing-md);">
+                                            <input type="text" class="form-input" id="residenceDetailAddress" placeholder="请输入详细地址（街道、门牌号等）">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
+
+                    <!-- 验证方式 -->
+                    <div class="form-row">
+                        <div class="form-col">
+                            <div class="form-group">
+                                <label class="form-label required">验证方式</label>
+                                <div class="radio-group">
+                                    <label class="radio-option">
+                                        <input type="radio" name="verifyMethod" value="photo" onchange="toggleVerifyMethod('photo')">
+                                        <span>手持拍照</span>
+                                    </label>
+                                    <label class="radio-option">
+                                        <input type="radio" name="verifyMethod" value="face" onchange="toggleVerifyMethod('face')">
+                                        <span>人脸识别</span>
+                                    </label>
+                                </div>
+                                
+                                <div class="verification-method" id="photoMethod">
+                                    <div class="upload-area">
+                                        <i class="fas fa-camera"></i>
+                                        <p>上传手持身份证照片</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="verification-method" id="faceMethod">
+                                    <div class="qr-code">
+                                        <i class="fas fa-qrcode fa-3x"></i>
+                                    </div>
+                                    <p style="text-align: center; color: var(--text-secondary);">请使用手机扫描二维码进行人脸识别</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 添加表单按钮 -->
+                    <div class="form-actions">
+                        <div class="form-actions-left">
+                            <button type="button" class="btn btn-secondary" id="prevButton" onclick="window.location.href='./real-name-verification.html?type=mainland-personal'">
+                                <i class="fas fa-arrow-left" style="margin-right: 8px;"></i>
+                                上一步
+                            </button>
+                        </div>
+                        <div class="form-actions-right">
+                            <button type="button" class="btn btn-secondary" id="saveButton">
+                                <i class="fas fa-save" style="margin-right: 8px;"></i>
+                                暂存
+                            </button>
+                            <button type="submit" class="btn btn-primary" id="submitButton">
+                                <i class="fas fa-check" style="margin-right: 8px;"></i>
+                                提交
+                            </button>
+                        </div>
+                    </div>
+                </form>
+
+                <!-- 第二步：审核中 -->
+                <div id="verificationStep2" style="display: none; text-align: center; padding: var(--spacing-xl) 0;">
+                    <div style="font-size: 24px; font-weight: 600; color: var(--text-primary); margin-bottom: var(--spacing-lg);">
+                        <i class="fas fa-clock" style="color: var(--primary-color); margin-right: var(--spacing-sm);"></i>
+                        认证提交成功，待审核
+                    </div>
+                    <p style="color: var(--text-secondary); font-size: 16px; margin-bottom: var(--spacing-lg);">
+                        我们会对您的资料进行审核，最快 1 小时完成，<br>
+                        请留意短信或邮件通知
+                    </p>
+                    <a href="#" style="color: var(--primary-color); text-decoration: none; display: inline-flex; align-items: center;">
+                        <i class="fas fa-eye" style="margin-right: 8px;"></i>
+                        查看已提交的认证资料
+                    </a>
                 </div>
-            </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- 添加模态框 -->
+    <div class="modal" id="exampleModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title">身份证照片示例</div>
+                <div class="modal-close" onclick="closeExample()">
+                    <i class="fas fa-times"></i>
+                </div>
+            </div>
+            <div class="modal-body">
+                <div class="example-image-container">
+                    <div class="example-image">
+                        <i class="fas fa-id-card fa-3x" style="color: var(--text-secondary);"></i>
+                    </div>
+                    <div class="example-image-title">身份证人像面示例</div>
+                </div>
+                <div class="example-image-container">
+                    <div class="example-image">
+                        <i class="fas fa-id-card-alt fa-3x" style="color: var(--text-secondary);"></i>
+                    </div>
+                    <div class="example-image-title">身份证国徽面示例</div>
+                </div>
+            </div>
         </div>
     </div>
 
     <script>
+        // 省市区数据（这里只是示例数据，实际使用时需要完整的数据）
+        const addressData = {
+            provinces: [
+                { code: "11", name: "北京市" },
+                { code: "31", name: "上海市" },
+                { code: "44", name: "广东省" },
+                // ... 其他省份
+            ],
+            cities: {
+                "44": [
+                    { code: "4401", name: "广州市" },
+                    { code: "4403", name: "深圳市" },
+                    // ... 其他城市
+                ],
+                // ... 其他省份的城市
+            },
+            districts: {
+                "4401": [
+                    { code: "440103", name: "荔湾区" },
+                    { code: "440104", name: "越秀区" },
+                    // ... 其他区县
+                ],
+                // ... 其他城市的区县
+            }
+        };
+
+        // 初始化省份选择器
+        function initProvinceSelectors() {
+            const provinces = addressData.provinces;
+            const idCardProvince = document.getElementById('idCardProvince');
+            const residenceProvince = document.getElementById('residenceProvince');
+            
+            provinces.forEach(province => {
+                const option = new Option(province.name, province.code);
+                idCardProvince.add(option.cloneNode(true));
+                residenceProvince.add(option);
+            });
+        }
+
+        // 处理省份变化
+        function handleProvinceChange(type) {
+            const provinceSelect = document.getElementById(`${type}Province`);
+            const citySelect = document.getElementById(`${type}City`);
+            const districtSelect = document.getElementById(`${type}District`);
+            
+            // 清空城市和区县选择器
+            citySelect.innerHTML = '<option value="">选择城市</option>';
+            districtSelect.innerHTML = '<option value="">选择区县</option>';
+            
+            const provinceCode = provinceSelect.value;
+            if (!provinceCode) return;
+            
+            const cities = addressData.cities[provinceCode] || [];
+            cities.forEach(city => {
+                citySelect.add(new Option(city.name, city.code));
+            });
+        }
+
+        // 处理城市变化
+        function handleCityChange(type) {
+            const citySelect = document.getElementById(`${type}City`);
+            const districtSelect = document.getElementById(`${type}District`);
+            
+            // 清空区县选择器
+            districtSelect.innerHTML = '<option value="">选择区县</option>';
+            
+            const cityCode = citySelect.value;
+            if (!cityCode) return;
+            
+            const districts = addressData.districts[cityCode] || [];
+            districts.forEach(district => {
+                districtSelect.add(new Option(district.name, district.code));
+            });
+        }
+
         // 切换地址输入显示
         function toggleAddress(type) {
             const addressInput = document.getElementById('differentAddress');
@@ -731,6 +1080,20 @@
                 addressInput.classList.add('active');
             } else {
                 addressInput.classList.remove('active');
+                // 复制身份证地址到居住地址
+                copyIdCardAddress();
+            }
+        }
+
+        // 复制身份证地址到居住地址
+        function copyIdCardAddress() {
+            if (document.querySelector('input[name="addressType"]:checked').value === 'same') {
+                document.getElementById('residenceProvince').value = document.getElementById('idCardProvince').value;
+                handleProvinceChange('residence');
+                document.getElementById('residenceCity').value = document.getElementById('idCardCity').value;
+                handleCityChange('residence');
+                document.getElementById('residenceDistrict').value = document.getElementById('idCardDistrict').value;
+                document.getElementById('residenceDetailAddress').value = document.getElementById('idCardDetailAddress').value;
             }
         }
 
@@ -750,7 +1113,7 @@
 
         // 切换证件有效期结束日期
         function toggleEndDate() {
-            const endDateInput = document.querySelector('input[type="date"]:last-of-type');
+            const endDateInput = document.querySelector('.input-group .form-group:nth-child(2) input[type="date"]');
             const longTerm = document.getElementById('longTerm');
             endDateInput.disabled = longTerm.checked;
             if (longTerm.checked) {
@@ -760,8 +1123,39 @@
 
         // 上传图片
         function uploadImage(type) {
+            // 模拟上传成功
+            const frontAlert = document.getElementById('frontUploadAlert');
+            const backAlert = document.getElementById('backUploadAlert');
+            
+            // 显示当前上传图片对应的预警信息
+            if (type === 'front') {
+                frontAlert.style.display = 'flex';
+                backAlert.style.display = 'none';
+            } else {
+                frontAlert.style.display = 'none';
+                backAlert.style.display = 'flex';
+            }
+            
+            // 这里可以添加实际的上传逻辑
             alert(`上传${type === 'front' ? '人像面' : '国徽面'}照片`);
         }
+
+        // 显示示例图片
+        function showExample() {
+            document.getElementById('exampleModal').classList.add('active');
+        }
+
+        // 关闭示例图片
+        function closeExample() {
+            document.getElementById('exampleModal').classList.remove('active');
+        }
+
+        // 点击模态框外部关闭
+        document.getElementById('exampleModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeExample();
+            }
+        });
 
         // 自动生成拼音
         document.getElementById('lastName').addEventListener('input', updatePinyin);
@@ -778,8 +1172,27 @@
         // 添加表单提交处理
         document.getElementById('verificationForm').addEventListener('submit', function(e) {
             e.preventDefault();
-            // 这里添加表单验证和提交逻辑
-            alert('表单提交成功！');
+            
+            // 隐藏第一步内容
+            const form = document.getElementById('verificationForm');
+            const step2 = document.getElementById('verificationStep2');
+            const formTitle = document.querySelector('.form-title');
+            const prevButton = document.getElementById('prevButton');
+            
+            if (form && step2) {
+                form.style.display = 'none';
+                step2.style.display = 'block';
+                
+                // 更新进度条状态
+                const steps = document.querySelectorAll('.progress-steps .step');
+                steps[0].classList.remove('active');
+                steps[0].classList.add('completed');  // 将第1步标记为completed
+                steps[1].classList.add('active');
+                
+                // 隐藏表单标题和返回按钮
+                if (formTitle) formTitle.style.display = 'none';
+                if (prevButton) prevButton.style.display = 'none';
+            }
         });
 
         // 添加输入框焦点效果
@@ -811,6 +1224,16 @@
                 // 这里添加文件上传处理逻辑
             });
         });
+
+        // 页面加载时初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            initProvinceSelectors();
+        });
+
+        function closeHeader() {
+            // 实现关闭header的逻辑
+            window.history.back();
+        }
     </script>
 </body>
 </html> 

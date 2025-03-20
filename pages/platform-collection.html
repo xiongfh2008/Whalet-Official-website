@@ -51,6 +51,155 @@
         #userCenterDropdown {
             z-index: 50 !important;
         }
+        /* 穿梭框样式 */
+        .transfer-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+        }
+        .transfer-modal.active {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .transfer-container {
+            background: white;
+            border-radius: 8px;
+            width: 900px;
+            display: flex;
+            flex-direction: column;
+            max-height: 90vh;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+        .transfer-header {
+            padding: 16px 24px;
+            border-bottom: 1px solid #e5e7eb;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .transfer-header h3 {
+            font-size: 18px;
+            color: #111827;
+            font-weight: 600;
+            line-height: 1.5;
+        }
+        .transfer-box {
+            display: flex;
+            gap: 16px;
+            padding: 24px;
+            flex: 1;
+            min-height: 480px;
+        }
+        .transfer-list {
+            flex: 1;
+            border: 1px solid #e5e7eb;
+            border-radius: 6px;
+            display: flex;
+            flex-direction: column;
+            background-color: #ffffff;
+        }
+        .transfer-list-header {
+            padding: 12px 16px;
+            border-bottom: 1px solid #e5e7eb;
+            background-color: #f9fafb;
+            font-size: 14px;
+            color: #374151;
+            font-weight: 500;
+        }
+        .transfer-list-content {
+            padding: 8px;
+            flex: 1;
+            overflow-y: auto;
+        }
+        .transfer-search {
+            width: 100%;
+            padding: 6px 12px;
+            border: 1px solid #e5e7eb;
+            border-radius: 4px;
+            font-size: 14px;
+            color: #374151;
+            margin-bottom: 8px;
+        }
+        .transfer-search::placeholder {
+            color: #9ca3af;
+        }
+        .transfer-item {
+            padding: 10px 12px;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            border-radius: 4px;
+            margin-bottom: 4px;
+        }
+        .transfer-item:hover {
+            background-color: #f3f4f6;
+        }
+        .transfer-item input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            margin-right: 12px;
+        }
+        .transfer-buttons {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 12px;
+            padding: 0 8px;
+        }
+        .transfer-button {
+            padding: 8px;
+            border: none;
+            background-color: #7D33FF;
+            color: white;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+        .transfer-button:hover:not(:disabled) {
+            background-color: #6929CC;
+        }
+        .transfer-button:disabled {
+            background-color: #e5e7eb;
+            cursor: not-allowed;
+        }
+        .transfer-footer {
+            padding: 16px 24px;
+            border-top: 1px solid #e5e7eb;
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+            background-color: #f9fafb;
+        }
+        /* 筛选条件样式 */
+        .filter-section {
+            margin-bottom: 8px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        .filter-section .flex {
+            margin-bottom: 4px;
+        }
+        .filter-section .flex:last-child {
+            margin-bottom: 0;
+        }
+        .filter-label {
+            color: #374151;
+            font-size: 14px;
+            font-weight: 500;
+            width: 60px;
+        }
     </style>
 </head>
 <body class="bg-gray-50">
@@ -158,10 +307,10 @@
                         <a href="apply-collection-account.html" class="apply-btn px-4 py-2 rounded text-sm font-medium inline-flex items-center">
                             <i class="fas fa-plus mr-2"></i>申请收款账户
                         </a>
-                        <button class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded text-sm font-medium opacity-50 cursor-not-allowed" disabled>
+                        <button class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded text-sm font-medium">
                             批量延长
                         </button>
-                        <button class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded text-sm font-medium opacity-50 cursor-not-allowed" disabled>
+                        <button class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded text-sm font-medium">
                             批量注销
                         </button>
                     </div>
@@ -228,9 +377,6 @@
                 <table class="min-w-full divide-y divide-gray-200">
                     <thead class="bg-gray-50">
                         <tr>
-                            <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                <input type="checkbox" class="form-checkbox h-4 w-4 text-blue-600 rounded border-gray-300" id="select-all">
-                            </th>
                             <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                 创建时间
                             </th>
@@ -262,9 +408,6 @@
                     </thead>
                     <tbody class="bg-white divide-y divide-gray-200">
                         <tr>
-                            <td class="px-4 py-4 whitespace-nowrap">
-                                <input type="checkbox" class="form-checkbox h-4 w-4 text-blue-600 rounded border-gray-300">
-                            </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">2023-06-20</td>
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <div class="flex items-center">
@@ -296,9 +439,6 @@
                             </td>
                         </tr>
                         <tr>
-                            <td class="px-4 py-4 whitespace-nowrap">
-                                <input type="checkbox" class="form-checkbox h-4 w-4 text-blue-600 rounded border-gray-300">
-                            </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">2023-07-15</td>
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <div class="flex items-center">
@@ -330,9 +470,6 @@
                             </td>
                         </tr>
                         <tr>
-                            <td class="px-4 py-4 whitespace-nowrap">
-                                <input type="checkbox" class="form-checkbox h-4 w-4 text-blue-600 rounded border-gray-300">
-                            </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">2023-08-05</td>
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <div class="flex items-center">
@@ -364,9 +501,6 @@
                             </td>
                         </tr>
                         <tr>
-                            <td class="px-4 py-4 whitespace-nowrap">
-                                <input type="checkbox" class="form-checkbox h-4 w-4 text-blue-600 rounded border-gray-300">
-                            </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">2023-09-18</td>
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <div class="flex items-center">
@@ -397,9 +531,6 @@
                             </td>
                         </tr>
                         <tr>
-                            <td class="px-4 py-4 whitespace-nowrap">
-                                <input type="checkbox" class="form-checkbox h-4 w-4 text-blue-600 rounded border-gray-300">
-                            </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">2023-10-01</td>
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <div class="flex items-center">
@@ -431,9 +562,6 @@
                             </td>
                         </tr>
                         <tr>
-                            <td class="px-4 py-4 whitespace-nowrap">
-                                <input type="checkbox" class="form-checkbox h-4 w-4 text-blue-600 rounded border-gray-300">
-                            </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">2023-10-25</td>
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <div class="flex items-center">
@@ -465,9 +593,6 @@
                             </td>
                         </tr>
                         <tr>
-                            <td class="px-4 py-4 whitespace-nowrap">
-                                <input type="checkbox" class="form-checkbox h-4 w-4 text-blue-600 rounded border-gray-300">
-                            </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">2023-11-12</td>
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <div class="flex items-center">
@@ -499,9 +624,6 @@
                             </td>
                         </tr>
                         <tr>
-                            <td class="px-4 py-4 whitespace-nowrap">
-                                <input type="checkbox" class="form-checkbox h-4 w-4 text-blue-600 rounded border-gray-300">
-                            </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">2023-12-30</td>
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <div class="flex items-center">
@@ -533,9 +655,6 @@
                             </td>
                         </tr>
                         <tr>
-                            <td class="px-4 py-4 whitespace-nowrap">
-                                <input type="checkbox" class="form-checkbox h-4 w-4 text-blue-600 rounded border-gray-300">
-                            </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">2024-01-15</td>
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <div class="flex items-center">
@@ -1009,6 +1128,86 @@
         </div>
     </div>
 
+    <!-- 添加穿梭框模态窗口 -->
+    <div id="transferModal" class="transfer-modal">
+        <div class="transfer-container">
+            <div class="transfer-header">
+                <h3>批量延长注销日期</h3>
+                <button id="closeTransferModal" class="text-gray-500 hover:text-gray-700">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="transfer-box">
+                <div class="transfer-list">
+                    <div class="transfer-list-header">
+                        <div class="flex justify-between items-center">
+                            <span>待选账户（1）</span>
+                        </div>
+                    </div>
+                    <div class="transfer-list-content">
+                        <div class="filter-section">
+                            <div class="flex items-center">
+                                <span class="filter-label">收款平台</span>
+                                <select class="flex-1 p-1 text-sm border border-gray-300 rounded-md">
+                                    <option value="">全部</option>
+                                    <option value="amazon">Amazon</option>
+                                    <option value="shopify">Shopify</option>
+                                    <option value="ebay">eBay</option>
+                                    <option value="paypal">PayPal</option>
+                                    <option value="stripe">Stripe</option>
+                                </select>
+                            </div>
+                            <div class="flex items-center">
+                                <span class="filter-label">注销时间</span>
+                                <div class="flex-1 flex items-center space-x-1">
+                                    <input type="date" class="flex-1 p-1 text-sm border border-gray-300 rounded-md" />
+                                    <span class="text-gray-500">至</span>
+                                    <input type="date" class="flex-1 p-1 text-sm border border-gray-300 rounded-md" />
+                                </div>
+                            </div>
+                        </div>
+                        <input type="text" class="transfer-search" placeholder="搜索账户">
+                        <div class="transfer-item">
+                            <input type="checkbox" class="rounded border-gray-300 text-[#7D33FF] focus:ring-[#7D33FF]">
+                            <div>
+                                <div class="text-sm font-medium text-gray-700">*****5121</div>
+                                <div class="text-xs text-gray-500">MU DAI FANG</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="transfer-buttons">
+                    <button class="transfer-button" disabled>
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                    <button class="transfer-button" disabled>
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                </div>
+                <div class="transfer-list">
+                    <div class="transfer-list-header">
+                        <div class="flex justify-between items-center">
+                            <span>已选账户（0）</span>
+                            <span class="text-xs text-gray-500">单次最多600个</span>
+                        </div>
+                    </div>
+                    <div class="transfer-list-content">
+                        <input type="text" class="transfer-search" placeholder="搜索账户">
+                        <div class="text-center text-gray-500 mt-4">暂无数据</div>
+                    </div>
+                </div>
+            </div>
+            <div class="transfer-footer">
+                <button id="cancelTransfer" class="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50">
+                    取消
+                </button>
+                <button id="confirmTransfer" class="px-4 py-2 rounded-md text-sm font-medium text-white" style="background-color: #7D33FF;">
+                    确定并前往付费
+                </button>
+            </div>
+        </div>
+    </div>
+
     <script>
         // Tab 切换功能
         document.addEventListener('DOMContentLoaded', function() {
@@ -1100,8 +1299,63 @@
             // 批量操作相关功能
             const selectAllCheckbox = document.getElementById('select-all');
             const rowCheckboxes = document.querySelectorAll('#collection-account tbody input[type="checkbox"]');
-            const batchExtendBtn = document.querySelector('button.bg-green-600');
-            const batchCancelBtn = document.querySelector('button.bg-red-600');
+            const batchExtendBtn = document.querySelector('.bg-green-600');
+            const batchCancelBtn = document.querySelector('.bg-red-600');
+            const transferModal = document.getElementById('transferModal');
+            const closeTransferModal = document.getElementById('closeTransferModal');
+            const cancelTransfer = document.getElementById('cancelTransfer');
+            const confirmTransfer = document.getElementById('confirmTransfer');
+
+            // 打开穿梭框
+            if (batchExtendBtn) {
+                batchExtendBtn.addEventListener('click', function() {
+                    if (transferModal) {
+                        transferModal.classList.add('active');
+                    }
+                });
+            }
+
+            // 关闭穿梭框
+            function closeModal() {
+                if (transferModal) {
+                    transferModal.classList.remove('active');
+                }
+            }
+
+            if (closeTransferModal) {
+                closeTransferModal.addEventListener('click', closeModal);
+            }
+            if (cancelTransfer) {
+                cancelTransfer.addEventListener('click', closeModal);
+            }
+
+            // 点击模态窗口外部关闭
+            if (transferModal) {
+                transferModal.addEventListener('click', function(e) {
+                    if (e.target === transferModal) {
+                        closeModal();
+                    }
+                });
+            }
+
+            // 穿梭框项目选择逻辑
+            const transferItems = document.querySelectorAll('.transfer-item');
+            const transferButtons = document.querySelectorAll('.transfer-button');
+
+            transferItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    const checkbox = this.querySelector('input[type="checkbox"]');
+                    checkbox.checked = !checkbox.checked;
+                    updateTransferButtonsState();
+                });
+            });
+
+            function updateTransferButtonsState() {
+                const hasChecked = Array.from(document.querySelectorAll('.transfer-item input[type="checkbox"]')).some(cb => cb.checked);
+                transferButtons.forEach(button => {
+                    button.disabled = !hasChecked;
+                });
+            }
 
             // 全选/取消全选功能
             selectAllCheckbox.addEventListener('change', function() {

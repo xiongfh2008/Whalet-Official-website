@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>企业实名认证 - 完成</title>
+    <link rel="stylesheet" href="../styles/main.css">
+    <link rel="stylesheet" href="../styles/header.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #7D33FF;
+            --primary-hover: #6929D4;
+            --primary-light: rgba(125, 51, 255, 0.1);
+            --bg-color: #FFFFFF;
+            --text-primary: #1F1F1F;
+            --text-secondary: #666666;
+            --border-color: #E5E5E5;
+            --success-color: #34C759;
+            --card-shadow: 0 2px 8px rgba(125, 51, 255, 0.08);
+            --transition: all 0.2s ease-in-out;
+            --spacing-xs: 4px;
+            --spacing-sm: 8px;
+            --spacing-md: 12px;
+            --spacing-lg: 16px;
+            --spacing-xl: 24px;
+            --radius-sm: 4px;
+            --radius-md: 6px;
+            --radius-lg: 8px;
+            --header-height: 56px;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            color: var(--text-primary);
+            line-height: 1.5;
+            background-color: #F8F7FF;
+            margin: 0;
+            padding: 0;
+            padding-top: var(--header-height);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        .verification-container {
+            max-width: 1200px;
+            margin: 24px auto;
+            padding: 0 24px;
+            display: flex;
+            gap: 32px;
+        }
+
+        .progress-tracker {
+            width: 240px;
+            min-width: 240px;
+            background-color: #fff;
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: var(--card-shadow);
+            position: sticky;
+            top: calc(var(--header-height) + 24px);
+            align-self: flex-start;
+            height: fit-content;
+        }
+
+        .progress-step {
+            display: flex;
+            margin-bottom: 24px;
+            position: relative;
+            padding-left: 40px;
+        }
+
+        .progress-step:last-child {
+            margin-bottom: 0;
+        }
+
+        .progress-step::before {
+            content: "";
+            position: absolute;
+            left: 14px;
+            top: 24px;
+            bottom: -24px;
+            width: 2px;
+            background-color: var(--border-color);
+            transition: var(--transition);
+        }
+
+        .progress-step:last-child::before {
+            display: none;
+        }
+
+        .progress-step.completed::before {
+            background-color: var(--primary-color);
+        }
+
+        .progress-step.active::before {
+            background-color: var(--border-color);
+        }
+
+        .progress-step-number {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background-color: var(--bg-color);
+            border: 2px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            z-index: 1;
+            transition: var(--transition);
+        }
+
+        .progress-step.active .progress-step-number {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+            color: white;
+        }
+
+        .progress-step.completed .progress-step-number {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+            color: white;
+        }
+
+        .progress-step-content {
+            flex: 1;
+        }
+
+        .progress-step-title {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            margin-bottom: 4px;
+        }
+
+        .progress-step.active .progress-step-title {
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        .progress-step.completed .progress-step-title {
+            color: var(--primary-color);
+        }
+
+        .progress-step-desc {
+            font-size: 12px;
+            color: var(--text-secondary);
+            opacity: 0.8;
+        }
+
+        .completion-container {
+            flex: 1;
+            background: white;
+            border-radius: 12px;
+            padding: 32px;
+            border: 1px solid var(--border-color);
+            text-align: center;
+        }
+
+        .completion-icon {
+            font-size: 48px;
+            color: var(--primary-color);
+            margin-bottom: 24px;
+        }
+
+        .completion-title {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            color: var(--text-primary);
+        }
+
+        .completion-message {
+            font-size: 16px;
+            color: var(--text-secondary);
+            margin-bottom: 32px;
+        }
+
+        .view-details-link {
+            display: inline-block;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+
+        .view-details-link:hover {
+            color: var(--primary-hover);
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <!-- 实名认证顶部导航栏 -->
+    <div class="header">
+        <div class="header-logo">
+            <img src="../assets/images/whaletlogo2.png" alt="Whalet Logo">
+        </div>
+        <div class="header-divider"></div>
+        <span class="header-title">大陆企业实名认证</span>
+        <i class="fas fa-times header-close" onclick="closeHeader()"></i>
+    </div>
+
+    <div class="verification-container">
+        <div class="progress-tracker">
+            <div class="progress-step completed">
+                <div class="progress-step-number">1</div>
+                <div class="progress-step-content">
+                    <div class="progress-step-title">填写基本信息</div>
+                    <div class="progress-step-desc">企业基本信息</div>
+                </div>
+            </div>
+            <div class="progress-step completed">
+                <div class="progress-step-number">2</div>
+                <div class="progress-step-content">
+                    <div class="progress-step-title">上传证明材料</div>
+                    <div class="progress-step-desc">营业执照等资料</div>
+                </div>
+            </div>
+            <div class="progress-step completed">
+                <div class="progress-step-number">3</div>
+                <div class="progress-step-content">
+                    <div class="progress-step-title">开户授权</div>
+                    <div class="progress-step-desc">签署授权书</div>
+                </div>
+            </div>
+            <div class="progress-step active">
+                <div class="progress-step-number">4</div>
+                <div class="progress-step-content">
+                    <div class="progress-step-title">完成</div>
+                    <div class="progress-step-desc">提交成功，等待审核</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="completion-container">
+            <div class="completion-icon">
+                <i class="fas fa-check-circle"></i>
+            </div>
+            <h1 class="completion-title">认证提交成功，待审核</h1>
+            <p class="completion-message">我们会对您的资料进行审核，最快 1 小时完成，请留意短信或邮件通知</p>
+            <a href="#" class="view-details-link">查看已提交的认证资料</a>
+        </div>
+    </div>
+    
+    <script>
+        function closeHeader() {
+            window.location.href = '../index.html';
+        }
+    </script>
+</body>
+</html> 
