@@ -253,7 +253,7 @@
                 <div class="flex justify-between items-center">
                     <h2 class="text-xl font-semibold text-gray-800">外贸收款记录</h2>
                     <div class="flex space-x-3">
-                        <button class="primary-btn px-4 py-2 rounded text-sm font-medium flex items-center">
+                        <button onclick="window.location.href='create-collection-order.html'" class="primary-btn px-4 py-2 rounded text-sm font-medium flex items-center">
                             <i class="fas fa-plus mr-2"></i>
                             新建收款单
                         </button>
@@ -434,7 +434,7 @@
                     <!-- 美国账户 -->
                     <div class="border border-gray-200 rounded-lg p-5 hover:shadow-md transition-shadow">
                         <div class="flex justify-between items-start mb-4">
-                            <h4 class="font-medium text-gray-800 text-lg">美国账户</h4>
+                            <h4 class="font-medium text-gray-800 text-lg">Bank of America</h4>
                             <span class="px-2 py-1 text-xs font-medium rounded-full bg-green-100 text-green-800">
                                 正常
                             </span>
@@ -449,8 +449,8 @@
                                 <span class="text-gray-900 text-sm">Whalet Inc.</span>
                             </div>
                             <div class="flex items-center">
-                                <span class="text-gray-500 text-sm w-20">银行:</span>
-                                <span class="text-gray-900 text-sm">Bank of America</span>
+                                <span class="text-gray-500 text-sm w-20">币种:</span>
+                                <span class="text-gray-900 text-sm">USD, EUR, GBP, JPY, CAD...</span>
                             </div>
                             <div class="flex items-center">
                                 <span class="text-gray-500 text-sm w-20">类型:</span>
@@ -458,7 +458,7 @@
                             </div>
                         </div>
                         <div class="flex justify-end">
-                            <button class="details-link text-sm font-medium">
+                            <button class="details-link text-sm font-medium" onclick="window.location.href='foreign-trade-account-details.html'">
                                 <i class="fas fa-eye mr-1"></i>
                                 查看详情
                             </button>
@@ -468,7 +468,7 @@
                     <!-- 欧洲账户 -->
                     <div class="border border-gray-200 rounded-lg p-5 hover:shadow-md transition-shadow">
                         <div class="flex justify-between items-start mb-4">
-                            <h4 class="font-medium text-gray-800 text-lg">欧洲账户</h4>
+                            <h4 class="font-medium text-gray-800 text-lg">HSBC</h4>
                             <span class="px-2 py-1 text-xs font-medium rounded-full bg-green-100 text-green-800">
                                 正常
                             </span>
@@ -483,8 +483,8 @@
                                 <span class="text-gray-900 text-sm">Whalet Europe Ltd.</span>
                             </div>
                             <div class="flex items-center">
-                                <span class="text-gray-500 text-sm w-20">银行:</span>
-                                <span class="text-gray-900 text-sm">HSBC</span>
+                                <span class="text-gray-500 text-sm w-20">币种:</span>
+                                <span class="text-gray-900 text-sm">EUR, USD, GBP, CHF, SEK...</span>
                             </div>
                             <div class="flex items-center">
                                 <span class="text-gray-500 text-sm w-20">类型:</span>
@@ -492,7 +492,7 @@
                             </div>
                         </div>
                         <div class="flex justify-end">
-                            <button class="details-link text-sm font-medium">
+                            <button class="details-link text-sm font-medium" onclick="window.location.href='foreign-trade-account-details.html'">
                                 <i class="fas fa-eye mr-1"></i>
                                 查看详情
                             </button>
@@ -502,7 +502,7 @@
                     <!-- 国内账户 -->
                     <div class="border border-gray-200 rounded-lg p-5 hover:shadow-md transition-shadow">
                         <div class="flex justify-between items-start mb-4">
-                            <h4 class="font-medium text-gray-800 text-lg">国内账户</h4>
+                            <h4 class="font-medium text-gray-800 text-lg">中国银行</h4>
                             <span class="px-2 py-1 text-xs font-medium rounded-full bg-green-100 text-green-800">
                                 正常
                             </span>
@@ -517,8 +517,8 @@
                                 <span class="text-gray-900 text-sm">上海威来贸易有限公司</span>
                             </div>
                             <div class="flex items-center">
-                                <span class="text-gray-500 text-sm w-20">银行:</span>
-                                <span class="text-gray-900 text-sm">中国银行</span>
+                                <span class="text-gray-500 text-sm w-20">币种:</span>
+                                <span class="text-gray-900 text-sm">CNY</span>
                             </div>
                             <div class="flex items-center">
                                 <span class="text-gray-500 text-sm w-20">类型:</span>
@@ -526,7 +526,7 @@
                             </div>
                         </div>
                         <div class="flex justify-end">
-                            <button class="details-link text-sm font-medium">
+                            <button class="details-link text-sm font-medium" onclick="window.location.href='foreign-trade-account-details.html'">
                                 <i class="fas fa-eye mr-1"></i>
                                 查看详情
                             </button>
@@ -731,6 +731,54 @@
     
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            // 标签页切换功能
+            const tabButtons = document.querySelectorAll('.tab-btn');
+            const tabContents = document.querySelectorAll('.tab-content');
+
+            function switchTab(tabId) {
+                // 移除所有标签页的激活状态
+                tabButtons.forEach(btn => {
+                    btn.classList.remove('active', 'text-purple-600', 'border-purple-600');
+                    btn.classList.add('text-gray-500', 'border-transparent');
+                });
+                tabContents.forEach(content => {
+                    content.classList.remove('active');
+                    content.style.display = 'none';
+                });
+
+                // 激活选中的标签页
+                const selectedButton = document.querySelector(`[data-tab="${tabId}"]`);
+                const selectedContent = document.getElementById(tabId);
+                
+                if (selectedButton && selectedContent) {
+                    selectedButton.classList.remove('text-gray-500', 'border-transparent');
+                    selectedButton.classList.add('active', 'text-purple-600', 'border-purple-600');
+                    selectedContent.style.display = 'block';
+                }
+            }
+
+            // 为每个标签按钮添加点击事件
+            tabButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const tabId = button.getAttribute('data-tab');
+                    switchTab(tabId);
+                    // 更新 URL hash
+                    window.location.hash = tabId;
+                });
+            });
+
+            // 根据 URL hash 切换标签页
+            function handleHashChange() {
+                const hash = window.location.hash.slice(1) || 'collection-records';
+                switchTab(hash);
+            }
+
+            // 监听 hash 变化
+            window.addEventListener('hashchange', handleHashChange);
+
+            // 页面加载时处理 hash
+            handleHashChange();
+
             // 用户中心下拉菜单功能
             const userCenterBtn = document.getElementById('userCenterBtn');
             const userCenterDropdown = document.getElementById('userCenterDropdown');
@@ -745,53 +793,6 @@
                     if (!userCenterBtn.contains(e.target) && !userCenterDropdown.contains(e.target)) {
                         userCenterDropdown.classList.remove('show');
                     }
-                });
-            }
-
-            // ----------------------------------------
-            // 选项卡切换功能
-            // 功能说明：点击选项卡按钮时切换显示对应的内容区域
-            // ----------------------------------------
-            const tabBtns = document.querySelectorAll('.tab-btn');
-            const tabContents = document.querySelectorAll('.tab-content');
-            
-            if (tabBtns.length > 0) {
-                // 设置默认选中状态
-                const defaultTab = document.querySelector('.tab-btn[data-tab="collection-records"]');
-                if (defaultTab) {
-                    defaultTab.classList.add('active');
-                    defaultTab.classList.remove('text-gray-500');
-                    defaultTab.classList.add('text-[#7D33FF]');
-                    const defaultContent = document.getElementById('collection-records');
-                    if (defaultContent) {
-                        defaultContent.classList.add('active');
-                    }
-                }
-
-                tabBtns.forEach(btn => {
-                    btn.addEventListener('click', function() {
-                        // 移除所有按钮的活动状态
-                        tabBtns.forEach(b => {
-                            b.classList.remove('active');
-                            b.classList.remove('text-[#7D33FF]');
-                            b.classList.add('text-gray-500');
-                        });
-                        
-                        // 添加当前按钮的活动状态
-                        this.classList.add('active');
-                        this.classList.remove('text-gray-500');
-                        this.classList.add('text-[#7D33FF]');
-                        
-                        // 隐藏所有内容区域
-                        tabContents.forEach(content => content.classList.remove('active'));
-                        
-                        // 显示当前选中的内容区域
-                        const tabId = this.getAttribute('data-tab');
-                        const activeContent = document.getElementById(tabId);
-                        if (activeContent) {
-                            activeContent.classList.add('active');
-                        }
-                    });
                 });
             }
 

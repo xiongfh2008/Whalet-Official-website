@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>外贸收款 - Whalet</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .tab-btn.active {
+            border-bottom: 2px solid #7D33FF !important;
+            color: #7D33FF !important;
+        }
+        .tab-btn:hover {
+            color: #7D33FF !important;
+            border-bottom-color: #7D33FF !important;
+        }
+        /* 用户中心下拉菜单样式 */
+        .user-dropdown {
+            display: none;
+            position: absolute;
+            right: 0;
+            top: 100%;
+            width: 200px;
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            z-index: 50;
+        }
+        .user-dropdown.show {
+            display: block;
+        }
+        .menu-item {
+            display: flex;
+            align-items: center;
+            padding: 0.5rem 1rem;
+            color: #374151;
+            transition: all 0.2s;
+        }
+        .menu-item:hover {
+            background-color: #f3f4f6;
+        }
+        .menu-item i {
+            width: 1.25rem;
+            margin-right: 0.75rem;
+            color: #9ca3af;
+        }
+        /* 通知图标样式 */
+        .notification-dot {
+            position: absolute;
+            top: -1px;
+            right: -1px;
+            width: 8px;
+            height: 8px;
+            background-color: #EF4444;
+            border-radius: 50%;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <div class="container mx-auto px-4 py-6">
+        <!-- 顶部导航栏 -->
+        <div class="bg-white rounded-lg shadow-sm mb-6">
+            <div class="border-b border-gray-200">
+                <div class="flex justify-between items-center">
+                    <nav class="flex justify-start -mb-px pl-6">
+                        <button class="tab-btn active whitespace-nowrap py-4 px-8 border-b-2 text-center text-sm font-medium text-[#7D33FF]">
+                            外贸收款
+                        </button>
+                    </nav>
+                    <div class="flex items-center space-x-6 pr-6">
+                        <!-- 公告图标 -->
+                        <div class="relative">
+                            <a href="#" class="text-gray-600 hover:text-blue-600">
+                                <span class="relative">
+                                    <i class="fas fa-bell text-lg"></i>
+                                    <span class="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full"></span>
+                                </span>
+                            </a>
+                        </div>
+                        
+                        <!-- 帮助 -->
+                        <a href="#" class="text-gray-600 hover:text-blue-600 text-sm">帮助</a>
+                        
+                        <!-- 用户中心 -->
+                        <div class="relative">
+                            <button id="userCenterBtn" class="text-gray-600 hover:text-blue-600">
+                                <i class="fas fa-user-circle text-lg"></i>
+                            </button>
+                            <div id="userCenterDropdown" class="absolute right-0 top-full mt-1 w-64 bg-white rounded-lg shadow-lg py-3 hidden z-10">
+                                <!-- 用户信息部分 -->
+                                <div class="px-4 pb-3 border-b border-gray-100">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <h3 class="font-medium text-gray-900">张珊珊</h3>
+                                        <a href="#" class="text-xs text-[#7D33FF] hover:text-[#6929CC]">升级为企业</a>
+                                    </div>
+                                </div>
+                                <!-- 菜单选项 -->
+                                <div class="py-1">
+                                    <a href="security.html" class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                        <i class="fas fa-shield-alt w-5 text-gray-400"></i>
+                                        安全设置
+                                    </a>
+                                    <a href="authentication-info.html" class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                        <i class="fas fa-id-card w-5 text-gray-400"></i>
+                                        认证信息
+                                    </a>
+                                    <a href="fees.html" class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                        <i class="fas fa-percentage w-5 text-gray-400"></i>
+                                        费率查询
+                                    </a>
+                                    <a href="coupons.html" class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                        <i class="fas fa-gift w-5 text-gray-400"></i>
+                                        我的优惠
+                                    </a>
+                                    <a href="my-invitation.html" class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                        <i class="fas fa-user-plus w-5 text-gray-400"></i>
+                                        我的邀请
+                                    </a>
+                                    <div class="border-t border-gray-100 my-1"></div>
+                                    <a href="logout.html" class="flex items-center px-4 py-2 text-sm text-red-600 hover:bg-gray-100">
+                                        <i class="fas fa-sign-out-alt w-5"></i>
+                                        退出
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="max-w-lg mx-auto">
+            <!-- 个人用户提示卡片 -->
+            <div class="bg-white rounded-xl shadow-sm p-8">
+                <div class="text-center mb-8">
+                    <i class="fas fa-exclamation-circle text-4xl text-purple-600"></i>
+                </div>
+                <h2 class="text-xl font-medium text-center mb-6">张珊珊，您好</h2>
+                <p class="text-gray-600 text-center mb-8 text-sm leading-relaxed">
+                    外贸收款服务仅支持企业用户开通业务，请使用企业信息进行注册。<br>
+                    您可以升级为企业账户，如有疑问请咨询你的客户经理或客服人员。
+                </p>
+                <div class="flex justify-center">
+                    <button class="px-6 py-3 bg-purple-600 text-white rounded-lg text-sm font-medium hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 transition-colors">
+                        升级为企业账户
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 切换用户类型按钮 -->
+        <div class="text-center mt-4">
+            <button id="switchToEnterprise" class="text-sm text-gray-500 hover:text-gray-700">
+                切换到企业用户（开发请忽略）
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // 用户中心下拉菜单功能
+        const userCenterBtn = document.getElementById('userCenterBtn');
+        const userCenterDropdown = document.getElementById('userCenterDropdown');
+
+        userCenterBtn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            userCenterDropdown.classList.toggle('show');
+        });
+
+        // 点击其他地方关闭下拉菜单
+        document.addEventListener('click', function() {
+            userCenterDropdown.classList.remove('show');
+        });
+
+        // 阻止下拉菜单内部点击事件冒泡
+        userCenterDropdown.addEventListener('click', function(e) {
+            e.stopPropagation();
+        });
+
+        // 菜单按钮点击事件
+        const tabButtons = document.querySelectorAll('.tab-btn');
+        tabButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                // 移除所有按钮的active类
+                tabButtons.forEach(btn => btn.classList.remove('active'));
+                // 为当前点击的按钮添加active类
+                this.classList.add('active');
+            });
+        });
+
+        // 切换到企业用户按钮点击事件
+        document.getElementById('switchToEnterprise').addEventListener('click', function() {
+            window.location.href = 'trade-collection.html';
+        });
+    </script>
+</body>
+</html> 

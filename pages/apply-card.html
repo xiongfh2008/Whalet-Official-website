@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Whalet - 申请新卡片</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../styles/custom.css">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+        }
+
+        .section-card {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .tab-btn {
+            position: relative;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            color: #6B7280;
+        }
+
+        .tab-btn.active {
+            color: #7D33FF;
+            border-bottom-color: #7D33FF;
+            font-weight: 500;
+        }
+
+        .tab-btn:hover {
+            color: #7D33FF;
+        }
+
+        .tab-btn:not(.active) {
+            color: #6B7280;
+            border-bottom-color: transparent;
+        }
+
+        .custom-radio-card {
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            padding: 1.25rem;
+        }
+
+        .custom-radio-card:hover {
+            border-color: #7D33FF;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        .custom-radio-card.selected {
+            border-color: #7D33FF;
+            box-shadow: 0 0 0 1px #7D33FF;
+        }
+
+        .custom-radio-card.selected .check-mark {
+            display: flex;
+        }
+
+        .check-mark {
+            display: none;
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            width: 20px;
+            height: 20px;
+            background-color: #7D33FF;
+            border-radius: 50%;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+
+        .badge {
+            font-size: 0.75rem;
+            padding: 0.125rem 0.5rem;
+            border-radius: 9999px;
+        }
+
+        .badge-success {
+            background-color: #dcfce7;
+            color: #166534;
+        }
+
+        .badge-info {
+            background-color: #dbeafe;
+            color: #1e40af;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 0.625rem 0.75rem;
+            border: 1px solid #e5e7eb;
+            border-radius: 0.375rem;
+            font-size: 0.875rem;
+            transition: all 0.2s ease;
+            background-color: #fff;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+        }
+
+        select.form-input {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12' fill='none'%3E%3Cpath d='M2.5 4.5L6 8L9.5 4.5' stroke='%236B7280' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 0.75rem center;
+            padding-right: 2.5rem;
+            cursor: pointer;
+        }
+
+        .contact-select select,
+        .currency-select select {
+            min-width: 6rem;
+            border-top-right-radius: 0;
+            border-bottom-right-radius: 0;
+            border-right: none;
+            padding-right: 2rem;
+            background-position: right 0.5rem center;
+        }
+
+        .contact-input,
+        .currency-input {
+            border-top-left-radius: 0;
+            border-bottom-left-radius: 0;
+        }
+
+        select.form-input:focus {
+            outline: none;
+            border-color: #7D33FF;
+            box-shadow: 0 0 0 1px #7D33FF;
+        }
+
+        select.form-input::-ms-expand {
+            display: none;
+        }
+
+        .form-label {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: #374151;
+            margin-bottom: 0.375rem;
+        }
+
+        .required::after {
+            content: '*';
+            color: #ef4444;
+            margin-left: 0.25rem;
+        }
+
+        .tooltip {
+            position: relative;
+            display: inline-block;
+        }
+
+        .tooltip .tooltip-text {
+            visibility: hidden;
+            width: 200px;
+            background-color: #374151;
+            color: #fff;
+            text-align: center;
+            border-radius: 6px;
+            padding: 8px;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            transform: translateX(-50%);
+            opacity: 0;
+            transition: opacity 0.3s;
+            font-size: 0.75rem;
+            line-height: 1.25;
+        }
+
+        .tooltip:hover .tooltip-text {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        .purple-btn {
+            color: #7D33FF;
+            transition: all 0.3s ease;
+        }
+        
+        .purple-btn:hover {
+            color: #6929CC;
+        }
+
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            font-size: 0.875rem;
+            color: #7D33FF;
+            transition: all 0.2s ease;
+        }
+
+        .back-btn:hover {
+            color: #6929CC;
+        }
+
+        .back-btn i {
+            margin-right: 0.5rem;
+        }
+
+        .page-title {
+            font-size: 1.25rem;
+            font-weight: 500;
+            color: #111827;
+        }
+
+        .header-container {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .header-container .back-btn {
+            margin-right: 1rem;
+        }
+
+        .page-subtitle {
+            font-size: 0.875rem;
+            color: #6B7280;
+        }
+
+        .section-title {
+            position: relative;
+            padding-left: 12px;
+            margin-bottom: 1.25rem;
+            color: #1f2937;
+        }
+
+        .section-title::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 4px;
+            height: 20px;
+            width: 4px;
+            background-color: #7D33FF;
+            border-radius: 2px;
+        }
+
+        .form-section {
+            margin-bottom: 1.5rem;
+            padding: 1.25rem;
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+        }
+
+        .mb-6 {
+            margin-bottom: 1rem;
+        }
+
+        .mb-8 {
+            margin-bottom: 1.5rem;
+        }
+
+        .mb-4 {
+            margin-bottom: 0.75rem;
+        }
+
+        .mt-8 {
+            margin-top: 1.5rem;
+        }
+
+        .mt-6 {
+            margin-top: 1rem;
+        }
+
+        .p-8 {
+            padding: 1.5rem;
+        }
+
+        .p-6 {
+            padding: 1.25rem;
+        }
+
+        .p-5 {
+            padding: 1rem;
+        }
+
+        .py-8 {
+            padding-top: 1.5rem;
+            padding-bottom: 1.5rem;
+        }
+
+        .px-8 {
+            padding-left: 1.5rem;
+            padding-right: 1.5rem;
+        }
+
+        .pt-8 {
+            padding-top: 1.5rem;
+        }
+
+        .pb-4 {
+            padding-bottom: 1rem;
+        }
+
+        .gap-8 {
+            gap: 1.5rem;
+        }
+
+        .gap-6 {
+            gap: 1rem;
+        }
+
+        .gap-5 {
+            gap: 1rem;
+        }
+
+        .gap-4 {
+            gap: 0.75rem;
+        }
+
+        .card-info {
+            display: inline-flex;
+            align-items: center;
+            gap: 1rem;
+            color: #6B7280;
+            font-size: 0.875rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .card-info-divider {
+            color: #D1D5DB;
+            margin: 0 0.5rem;
+        }
+
+        .card-limit {
+            font-size: 0.75rem;
+            color: #6B7280;
+        }
+
+        [x-cloak] { display: none !important; }
+
+        /* 按钮基础样式 */
+        .btn-return {
+            background-color: white;
+            border: 1px solid #7D33FF;
+            color: #7D33FF;
+            padding: 0.625rem 1.5rem;
+            border-radius: 0.5rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            min-width: 100px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-return:hover {
+            color: #6929CC;
+            border-color: #6929CC;
+        }
+
+        /* 修改按钮样式 */
+        button.btn-confirm {
+            background-color: #7D33FF !important;
+            color: white !important;
+            padding: 0.625rem 1.5rem;
+            border-radius: 0.5rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            min-width: 100px;
+            transition: all 0.3s ease;
+            border: none;
+        }
+
+        button.btn-confirm:hover:not(:disabled) {
+            background-color: #6929CC !important;
+        }
+
+        button.btn-confirm:disabled {
+            background-color: #7D33FF !important;
+            color: white !important;
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        button.btn-confirm:disabled:hover {
+            background-color: #7D33FF !important;
+        }
+
+        /* 明细链接样式 */
+        .detail-link {
+            color: #7D33FF !important;
+            font-size: 0.75rem;
+            transition: color 0.3s ease;
+        }
+
+        .detail-link:hover {
+            color: #6929CC !important;
+        }
+    </style>
+    <script src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+</head>
+<body class="min-h-screen bg-gray-50">
+    <div class="container mx-auto px-4 py-6 max-w-7xl">
+        <!-- 主内容区域 -->
+        <div class="section-card" x-data="{ tab: 'single' }">
+            <!-- 页面头部 -->
+            <div class="px-6 pt-6 pb-4">
+                <div class="header-container">
+                    <a href="cards.html" class="back-btn text-[#7D33FF] hover:text-[#6929CC]">
+                        <i class="fas fa-arrow-left"></i>
+                        返回
+                    </a>
+                    <h1 class="page-title">申请新卡片</h1>
+                </div>
+            </div>
+
+            <!-- 选项卡 -->
+            <div class="px-6 border-b border-gray-200 mb-6">
+                <div class="flex space-x-12">
+                    <button 
+                        @click="tab = 'single'" 
+                        :class="{ 'active': tab === 'single' }"
+                        class="tab-btn whitespace-nowrap py-4 px-1 border-b-2 text-sm">
+                        单张开通
+                    </button>
+                    <button 
+                        @click="tab = 'batch'" 
+                        :class="{ 'active': tab === 'batch' }"
+                        class="tab-btn whitespace-nowrap py-4 px-1 border-b-2 text-sm">
+                        批量开通
+                    </button>
+                </div>
+            </div>
+
+            <!-- 单笔开通表单 -->
+            <div x-show="tab === 'single'" x-cloak>
+                <div class="form-section">
+                    <h3 class="section-title text-lg font-medium">卡段选择</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                        <!-- 卡段选项1 -->
+                        <div class="custom-radio-card relative selected" x-data="{ selected: true }">
+                            <div class="check-mark">
+                                <i class="fas fa-check text-xs"></i>
+                            </div>
+                            <div class="flex items-center mb-3">
+                                <input type="radio" name="cardType" id="cardType1" class="hidden" checked>
+                                <label for="cardType1" class="text-lg font-medium text-gray-800 cursor-pointer">222929</label>
+                                <span class="badge badge-success ml-2">推荐</span>
+                            </div>
+                            <div>
+                                <div class="card-info">
+                                    国家/地区: 美国
+                                    <span class="card-info-divider">|</span>
+                                    卡组织: Mastercard
+                                    <span class="card-info-divider">|</span>
+                                    AVS验证: 支持
+                                </div>
+                                <div class="card-limit">单卡累计支付上限: 50,000.00USD</div>
+                            </div>
+                        </div>
+
+                        <!-- 卡段选项2 -->
+                        <div class="custom-radio-card relative" x-data="{ selected: false }">
+                            <div class="check-mark">
+                                <i class="fas fa-check text-xs"></i>
+                            </div>
+                            <div class="flex items-center mb-3">
+                                <input type="radio" name="cardType" id="cardType2" class="hidden">
+                                <label for="cardType2" class="text-lg font-medium text-gray-800 cursor-pointer">422742</label>
+                                <span class="badge badge-info ml-2">新卡段</span>
+                            </div>
+                            <div>
+                                <div class="card-info">
+                                    国家/地区: 英国
+                                    <span class="card-info-divider">|</span>
+                                    卡组织: Visa
+                                    <span class="card-info-divider">|</span>
+                                    AVS验证: 支持
+                                </div>
+                                <div class="card-limit">单卡累计支付上限: 100,000.00USD</div>
+                            </div>
+                        </div>
+
+                        <!-- 卡段选项3 -->
+                        <div class="custom-radio-card relative" x-data="{ selected: false }">
+                            <div class="check-mark">
+                                <i class="fas fa-check text-xs"></i>
+                            </div>
+                            <div class="flex items-center mb-3">
+                                <input type="radio" name="cardType" id="cardType3" class="hidden">
+                                <label for="cardType3" class="text-lg font-medium text-gray-800 cursor-pointer">514920</label>
+                            </div>
+                            <div>
+                                <div class="card-info">
+                                    国家/地区: 加拿大
+                                    <span class="card-info-divider">|</span>
+                                    卡组织: Mastercard
+                                    <span class="card-info-divider">|</span>
+                                    AVS验证: 支持
+                                </div>
+                                <div class="card-limit">单卡累计支付上限: 30,000.00USD</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 卡片信息填写 -->
+                <div class="form-section">
+                    <h3 class="section-title text-lg font-medium">卡片信息填写</h3>
+                    
+                    <!-- 持卡人姓名 -->
+                    <div class="mb-6 md:w-1/2">
+                        <label class="form-label required">持卡人姓名</label>
+                        <div class="flex gap-4">
+                            <div class="flex-1">
+                                <input type="text" class="form-input" placeholder="姓氏 (Last Name)">
+                            </div>
+                            <div class="flex-1">
+                                <input type="text" class="form-input" placeholder="名称 (First Name)">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 卡片地址 -->
+                    <div class="mb-6">
+                        <div class="flex items-center justify-between mb-2">
+                            <label class="form-label required">卡片地址</label>
+                            <button class="text-sm text-[#7D33FF] hover:text-[#6929CC] flex items-center transition">
+                                <i class="fas fa-check-circle mr-1"></i> 使用默认地址
+                            </button>
+                        </div>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                            <div>
+                                <label class="text-xs text-gray-500 mb-1 block">国家/地区</label>
+                                <select class="form-input">
+                                    <option value="US">美国 (United States)</option>
+                                    <option value="GB">英国 (United Kingdom)</option>
+                                    <option value="CA">加拿大 (Canada)</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="text-xs text-gray-500 mb-1 block">州/省/地区</label>
+                                <select class="form-input">
+                                    <option value="CA">加利福尼亚州 (California)</option>
+                                    <option value="NY">纽约州 (New York)</option>
+                                    <option value="TX">德克萨斯州 (Texas)</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="grid grid-cols-2 gap-4 mb-4">
+                            <div>
+                                <label class="text-xs text-gray-500 mb-1 block">地址行1</label>
+                                <input type="text" class="form-input" placeholder="Street address, apartment number">
+                            </div>
+                            <div>
+                                <label class="text-xs text-gray-500 mb-1 block">地址行2 (可选)</label>
+                                <input type="text" class="form-input" placeholder="Suite, unit, building, floor, etc.">
+                            </div>
+                        </div>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="text-xs text-gray-500 mb-1 block">城市</label>
+                                <input type="text" class="form-input" placeholder="City">
+                            </div>
+                            <div>
+                                <label class="text-xs text-gray-500 mb-1 block">邮政编码</label>
+                                <input type="text" class="form-input" placeholder="ZIP / Postal code">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 联系信息分组 -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- 手机号码 -->
+                        <div>
+                            <label class="form-label required">手机号码</label>
+                            <div class="flex">
+                                <div class="contact-select">
+                                    <select class="form-input">
+                                        <option value="+1">+1</option>
+                                        <option value="+44">+44</option>
+                                        <option value="+86">+86</option>
+                                    </select>
+                                </div>
+                                <input type="text" class="form-input contact-input flex-1" placeholder="请输入手机号码">
+                            </div>
+                        </div>
+
+                        <!-- 邮箱 -->
+                        <div>
+                            <label class="form-label required">邮箱</label>
+                            <input type="email" class="form-input" placeholder="请输入电子邮箱地址">
+                        </div>
+                    </div>
+
+                    <!-- 备注名称 -->
+                    <div class="mt-6">
+                        <div class="flex items-center gap-2">
+                            <label class="form-label">备注名称</label>
+                            <span class="text-xs text-gray-500">(选填)</span>
+                        </div>
+                        <div class="relative max-w-xs">
+                            <input type="text" class="form-input pr-10" placeholder="备注名不超过10个字符" maxlength="10">
+                            <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-gray-400">
+                                <span class="text-xs">0/10</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 充值信息 -->
+                <div class="form-section">
+                    <h3 class="section-title text-lg font-medium">充值信息</h3>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div>
+                            <!-- 开卡数量 -->
+                            <div class="mb-6">
+                                <label class="form-label">开卡数量</label>
+                                <div class="text-base text-gray-700 font-medium">1张</div>
+                            </div>
+                            
+                            <!-- 充值金额 -->
+                            <div class="mb-8">
+                                <label class="form-label required">充值金额</label>
+                                <div class="flex w-full border border-gray-200 rounded-lg overflow-hidden">
+                                    <input type="text" class="form-input border-none rounded-none flex-1" placeholder="请输入充值金额">
+                                    <div class="bg-gray-50 px-4 flex items-center font-medium text-gray-700">
+                                        USD
+                                    </div>
+                                </div>
+                                <p class="text-xs text-gray-500 mt-2">最小充值金额：7.00USD</p>
+                            </div>
+
+                            <!-- 提交按钮 -->
+                            <div class="flex items-center gap-4">
+                                <button class="btn-return">返回</button>
+                                <button class="btn-confirm">确认开卡</button>
+                            </div>
+                        </div>
+                        
+                        <!-- 费用信息 -->
+                        <div class="bg-gray-50 rounded-lg p-6">
+                            <h4 class="text-base font-medium text-gray-800 mb-4">费用明细</h4>
+                            <div class="space-y-4">
+                                <div class="flex justify-between items-center">
+                                    <div class="text-sm text-gray-600">开卡费</div>
+                                    <div class="text-sm font-medium text-gray-800">1.00 USD</div>
+                                </div>
+                                
+                                <div class="flex justify-between items-center">
+                                    <div class="text-sm text-gray-600 flex items-center gap-1">
+                                        <span>年费</span>
+                                        <div class="tooltip">
+                                            <i class="fas fa-question-circle text-gray-400 text-xs"></i>
+                                            <span class="tooltip-text">每年固定收取年费，鲸卡在每年度内消费成功大于等于6笔且消费成功总金额大于等于300USD则免收年费</span>
+                                        </div>
+                                    </div>
+                                    <div class="text-sm font-medium text-gray-800">0.00 USD</div>
+                                </div>
+                                
+                                <div class="flex justify-between items-center">
+                                    <div class="text-sm text-gray-600 flex items-center gap-2">
+                                        <span>手续费</span>
+                                        <a href="#" class="detail-link">明细</a>
+                                    </div>
+                                    <div class="text-sm font-medium text-gray-800">2.00 USD</div>
+                                </div>
+                                
+                                <div class="flex justify-between items-center pt-4 mt-4 border-t border-gray-200">
+                                    <div class="text-base font-medium text-gray-800">支付金额</div>
+                                    <div class="text-lg font-medium text-[#7D33FF]">3.00 USD</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 批量开通表单 -->
+            <div x-show="tab === 'batch'" x-cloak>
+                <div class="form-section">
+                    <h3 class="section-title text-lg font-medium">批量开卡上传</h3>
+                    
+                    <!-- 文件上传区域 -->
+                    <div class="mb-8">
+                        <!-- 文件模板下载 -->
+                        <div class="mb-6">
+                            <label class="form-label">下载模板</label>
+                            <div class="flex items-center">
+                                <a href="#" class="flex items-center text-[#7D33FF] hover:text-[#6929CC] transition-colors">
+                                    <i class="fas fa-file-excel mr-2"></i>
+                                    <span>批量开卡信息模板.xlsx</span>
+                                </a>
+                            </div>
+                        </div>
+                        
+                        <!-- 文件上传 -->
+                        <div>
+                            <label class="form-label required">上传文件</label>
+                            <div class="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center hover:border-[#7D33FF] transition-colors">
+                                <div class="mb-4">
+                                    <i class="fas fa-cloud-upload-alt text-[#7D33FF] text-4xl"></i>
+                                </div>
+                                <p class="text-sm text-gray-600 mb-2">点击或拖拽文件至此处上传</p>
+                                <p class="text-xs text-gray-500 mb-4">支持 .xlsx 格式，文件大小不超过 5MB</p>
+                                <input type="file" class="hidden" accept=".xlsx">
+                                <button class="px-4 py-2 bg-white border border-[#7D33FF] text-[#7D33FF] rounded-lg text-sm font-medium hover:bg-gray-50 transition-colors">
+                                    选择文件
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 充值信息 -->
+                    <div>
+                        <h3 class="section-title text-lg font-medium">充值信息</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                            <div>
+                                <!-- 开卡数量 -->
+                                <div class="mb-6">
+                                    <label class="form-label">开卡数量</label>
+                                    <div class="text-base text-gray-700 font-medium">请先上传文件</div>
+                                </div>
+                                
+                                <!-- 每卡充值金额 -->
+                                <div class="mb-8">
+                                    <label class="form-label required">每卡充值金额</label>
+                                    <div class="flex w-full border border-gray-200 rounded-lg overflow-hidden">
+                                        <input type="text" class="form-input border-none rounded-none flex-1" placeholder="请输入每卡充值金额">
+                                        <div class="bg-gray-50 px-4 flex items-center font-medium text-gray-700">
+                                            USD
+                                        </div>
+                                    </div>
+                                    <p class="text-xs text-gray-500 mt-2">最小充值金额：7.00USD/卡</p>
+                                </div>
+
+                                <!-- 提交按钮 -->
+                                <div class="flex items-center gap-4">
+                                    <button class="btn-return">返回</button>
+                                    <button class="btn-confirm" disabled>确认开卡</button>
+                                </div>
+                            </div>
+                            
+                            <!-- 费用信息 -->
+                            <div class="bg-gray-50 rounded-lg p-6">
+                                <h4 class="text-base font-medium text-gray-800 mb-4">费用明细</h4>
+                                <div class="space-y-4">
+                                    <div class="flex justify-between items-center">
+                                        <div class="text-sm text-gray-600">开卡费</div>
+                                        <div class="text-sm font-medium text-gray-800">--</div>
+                                    </div>
+                                    
+                                    <div class="flex justify-between items-center">
+                                        <div class="text-sm text-gray-600 flex items-center gap-1">
+                                            <span>年费</span>
+                                            <div class="tooltip">
+                                                <i class="fas fa-question-circle text-gray-400 text-xs"></i>
+                                                <span class="tooltip-text">每年固定收取年费，鲸卡在每年度内消费成功大于等于6笔且消费成功总金额大于等于300USD则免收年费</span>
+                                            </div>
+                                        </div>
+                                        <div class="text-sm font-medium text-gray-800">--</div>
+                                    </div>
+                                    
+                                    <div class="flex justify-between items-center">
+                                        <div class="text-sm text-gray-600 flex items-center gap-2">
+                                            <span>手续费</span>
+                                            <a href="#" class="detail-link">明细</a>
+                                        </div>
+                                        <div class="text-sm font-medium text-gray-800">--</div>
+                                    </div>
+                                    
+                                    <div class="flex justify-between items-center pt-4 mt-4 border-t border-gray-200">
+                                        <div class="text-base font-medium text-gray-800">支付金额</div>
+                                        <div class="text-lg font-medium text-[#7D33FF]">--</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 卡段选择功能
+            const cardOptions = document.querySelectorAll('.custom-radio-card');
+            cardOptions.forEach(card => {
+                card.addEventListener('click', function() {
+                    // 移除所有选中状态
+                    cardOptions.forEach(c => {
+                        c.classList.remove('selected');
+                        c.querySelector('input[type="radio"]').checked = false;
+                    });
+                    
+                    // 设置当前选中状态
+                    this.classList.add('selected');
+                    this.querySelector('input[type="radio"]').checked = true;
+                });
+            });
+
+            // 备注名字符计数
+            const remarkInput = document.querySelector('input[placeholder="备注名不超过10个字符"]');
+            const charCount = document.querySelector('.absolute span');
+            
+            if(remarkInput && charCount) {
+                remarkInput.addEventListener('input', function() {
+                    const length = this.value.length;
+                    charCount.textContent = `${length}/10`;
+                });
+            }
+
+            // 文件上传按钮
+            const fileButton = document.querySelector('button:contains("选择文件")');
+            const fileInput = document.querySelector('input[type="file"]');
+            
+            if(fileButton && fileInput) {
+                fileButton.addEventListener('click', function() {
+                    fileInput.click();
+                });
+            }
+        });
+    </script>
+</body>
+</html> 

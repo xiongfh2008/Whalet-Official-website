@@ -9,6 +9,137 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../styles/custom.css">
     <link rel="stylesheet" href="../styles/apply-trade-collection.css">
+    <style>
+        .info-label i:hover + .tooltip-content {
+            visibility: visible;
+            opacity: 1;
+            pointer-events: auto;
+        }
+        
+        /* 添加已开通银行卡的样式 */
+        .bank-card.opacity-50:hover {
+            opacity: 0.5 !important;
+            cursor: not-allowed !important;
+        }
+        
+        .bank-card.opacity-50 * {
+            pointer-events: none;
+        }
+
+        /* 修复提示框样式 */
+        .info-label {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+        }
+
+        .info-label i {
+            margin-left: 0.5rem;
+            color: #9CA3AF;
+            cursor: help;
+        }
+
+        .tooltip-content {
+            position: absolute;
+            left: 100%;
+            top: 50%;
+            transform: translateY(-50%);
+            margin-left: 0.75rem;
+            z-index: 50;
+            min-width: 18rem;
+            padding: 0.75rem;
+            background-color: #111827;
+            color: white;
+            border-radius: 0.5rem;
+            font-size: 0.75rem;
+            line-height: 1.25;
+            visibility: hidden;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        .tooltip-content::before {
+            content: '';
+            position: absolute;
+            right: 100%;
+            top: 50%;
+            transform: translateY(-50%);
+            border-width: 6px;
+            border-style: solid;
+            border-color: transparent #111827 transparent transparent;
+        }
+
+        /* 添加展开/收缩动画效果 */
+        .bank-cards-container {
+            position: relative;
+        }
+
+        .initial-cards,
+        .hidden-cards {
+            transition: opacity 0.3s ease-in-out;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        #toggleCardsBtn {
+            transition: all 0.3s ease;
+        }
+
+        #toggleCardsBtn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .show-more-icon,
+        .show-less-icon {
+            transition: transform 0.3s ease;
+        }
+
+        #toggleCardsBtn:hover .show-more-icon {
+            transform: translateY(2px);
+        }
+
+        #toggleCardsBtn:hover .show-less-icon {
+            transform: translateY(-2px);
+        }
+
+        select.form-select {
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+            background-position: right 0.5rem center;
+            background-repeat: no-repeat;
+            background-size: 1.5em 1.5em;
+            padding-right: 2.5rem;
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+        }
+        
+        /* 修复输入框样式 */
+        .form-input {
+            width: 100%;
+            padding-left: 1rem;
+            padding-right: 1rem;
+            padding-top: 0.5rem;
+            padding-bottom: 0.5rem;
+            font-size: 0.875rem;
+            line-height: 1.25rem;
+            color: #111827;
+            background-color: #ffffff;
+            border: 1px solid #7C3AED;
+            border-radius: 0.375rem;
+            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            height: 2.75rem;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #7C3AED;
+            box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.1);
+        }
+    </style>
 </head>
 <body class="bg-gray-50 text-gray-900">
     <div class="container mx-auto px-4 py-8">
@@ -17,11 +148,12 @@
             <div class="bg-white rounded-xl shadow-sm">
                 <!-- 顶部标题栏 -->
                 <div class="px-8 py-6 border-b border-gray-200">
-                    <div class="flex items-center justify-between">
-                        <button class="text-gray-600 transition-colors" onclick="window.location.href='trade-collection.html'">
+                    <div class="flex items-center">
+                        <button class="text-purple-600 hover:text-purple-700 transition-colors flex items-center" onclick="window.location.href='trade-collection.html'">
                             <i class="fas fa-arrow-left"></i>
                             <span class="ml-2 text-sm font-medium">返回</span>
                         </button>
+                        <h1 class="text-xl font-medium text-gray-900 ml-4">申请外贸收款账户</h1>
                     </div>
                 </div>
 
@@ -29,7 +161,11 @@
                     <form id="accountForm" class="space-y-8">
                         <!-- 账户类型选择 -->
                         <section>
-                            <h2 class="text-base font-medium text-gray-900 mb-4">选择账户类型</h2>
+                            <h2 class="text-base font-medium text-gray-900 mb-3 pl-3 relative">
+                                <div class="absolute left-0 top-0 w-1 h-5 bg-purple-600 rounded-full"></div>
+                                选择账户类型
+                                <span class="text-red-500 ml-0.5">*</span>
+                            </h2>
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div class="custom-radio selected" data-type="global">
                                     <div>
@@ -48,127 +184,386 @@
 
                         <!-- 开户银行选择 -->
                         <section>
-                            <h2 class="text-base font-medium text-gray-900 mb-4">选择开户银行</h2>
-                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                                <!-- 德意志银行雅加达分行 -->
-                                <div class="bank-card group" data-bank="deutsche_indonesia">
-                                    <div class="p-5 border-b border-gray-200 bank-card-header flex items-center">
-                                        <div>
-                                            <h3 class="font-medium text-gray-900">德意志银行雅加达分行</h3>
-                                            <p class="text-sm text-gray-500 mt-0.5">印尼</p>
-                                        </div>
-                                    </div>
-                                    <div class="p-5">
-                                        <div class="info-list">
-                                            <div class="info-item">
-                                                <span class="info-label">付款地区</span>
-                                                <span class="info-value">
-                                                    <img src="https://flagcdn.com/w20/id.png" alt="印尼" 
-                                                         class="inline-block h-4 w-4 mr-2 align-middle"> 印尼
-                                                </span>
-                                            </div>
-                                            <div class="info-item">
-                                                <span class="info-label">收款币种</span>
-                                                <span class="info-value">印尼盾</span>
-                                            </div>
-                                            <div class="info-item">
-                                                <span class="info-label">开通时效</span>
-                                                <span class="info-value text-green-600">实时</span>
-                                            </div>
-                                            <div class="info-item">
-                                                <span class="info-label">收款方式</span>
-                                                <span class="info-value">仅支持印尼本地SKNBI/RTGS付款</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- Banking Circle S.A. -->
-                                <div class="bank-card group" data-bank="banking_circle_german">
-                                    <div class="p-5 border-b border-gray-200 bank-card-header flex items-center">
-                                        <div>
-                                            <h3 class="font-medium text-gray-900">Banking Circle S.A.</h3>
-                                            <p class="text-sm text-gray-500 mt-0.5">German Branch</p>
-                                        </div>
-                                    </div>
-                                    <div class="p-5">
-                                        <div class="info-list">
-                                            <div class="info-item">
-                                                <span class="info-label">付款地区</span>
-                                                <span class="info-value">
-                                                    <img src="https://flagcdn.com/w20/eu.png" alt="欧元区" 
-                                                         class="inline-block h-4 w-4 mr-2 align-middle"> 欧元区
-                                                    <span class="block text-sm text-gray-500 mt-1">安道尔、希腊等40个国家</span>
-                                                </span>
-                                            </div>
-                                            <div class="info-item">
-                                                <span class="info-label">收款币种</span>
-                                                <span class="info-value">欧元</span>
-                                            </div>
-                                            <div class="info-item">
-                                                <span class="info-label">开通时效</span>
-                                                <span class="info-value">申请后15分钟内</span>
-                                            </div>
-                                            <div class="info-item">
-                                                <span class="info-label">收款方式</span>
-                                                <span class="info-value">仅接受SEPA Inst/SEPA SCT网络付款</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
+                            <h2 class="text-base font-medium text-gray-900 mb-3 pl-3 relative">
+                                <div class="absolute left-0 top-0 w-1 h-5 bg-purple-600 rounded-full"></div>
+                                选择开户银行
+                                <span class="text-red-500 ml-0.5">*</span>
+                            </h2>
+                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                                 <!-- 花旗银行悉尼分行 -->
                                 <div class="bank-card group" data-bank="citibank_australia">
-                                    <div class="p-5 border-b border-gray-200 bank-card-header flex items-center">
+                                    <div class="p-2 border-b border-gray-200 bank-card-header flex items-center">
                                         <div>
-                                            <h3 class="font-medium text-gray-900">花旗银行悉尼分行</h3>
-                                            <p class="text-sm text-gray-500 mt-0.5">澳大利亚</p>
+                                            <h3 class="font-medium text-gray-900 text-sm">花旗银行悉尼分行</h3>
+                                            <p class="text-xs text-gray-500 mt-0.5">澳大利亚</p>
                                         </div>
                                     </div>
-                                    <div class="p-5">
-                                        <div class="info-list">
-                                            <div class="info-item">
-                                                <span class="info-label">付款地区</span>
-                                                <span class="info-value">
-                                                    <img src="https://flagcdn.com/w20/au.png" alt="澳大利亚" 
-                                                         class="inline-block h-4 w-4 mr-2 align-middle"> 澳大利亚
+                                    <div class="p-2">
+                                        <div class="info-list space-y-1">
+                                            <div class="info-item flex justify-between items-center">
+                                                <span class="info-label flex items-center text-sm">
+                                                    收款币种
+                                                    <div class="relative ml-2">
+                                                        <i class="fas fa-info-circle text-gray-400 hover:text-gray-600 cursor-help"></i>
+                                                        <div class="tooltip-content invisible opacity-0 absolute z-50 w-72 p-3 bg-gray-900 text-white text-xs rounded-lg right-0 top-0 transform translate-x-2 -translate-y-1/2 shadow-lg transition-all duration-200 pointer-events-none">
+                                                            <div class="font-medium mb-0.5">收款账户回收:</div>
+                                                            <div class="text-gray-200 leading-snug">
+                                                                在符合回收规则的情况下收款账户均会被注销回收。注销回收规则为：开卡成功后未激活时，开卡成功后<span class="text-red-400">90天</span>仍然未激活则系统自动注销收款卡。如有疑问可联系客户经理或客服。
+                                                            </div>
+                                                            <div class="absolute left-0 top-1/2 transform -translate-x-1/2 -translate-y-1/2 text-gray-900">
+                                                                <svg width="8" height="16" viewBox="0 0 8 16" fill="none">
+                                                                    <path d="M8 0L0 8L8 16V0Z" fill="currentColor"/>
+                                                                </svg>
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                 </span>
+                                                <span class="info-value text-sm">澳元</span>
                                             </div>
-                                            <div class="info-item">
-                                                <span class="info-label">收款币种</span>
-                                                <span class="info-value">澳元</span>
+                                            <div class="info-item flex justify-between items-center">
+                                                <span class="info-label text-sm">付款地区</span>
+                                                <span class="info-value text-sm">澳大利亚</span>
                                             </div>
-                                            <div class="info-item">
-                                                <span class="info-label">开通时效</span>
-                                                <span class="info-value text-green-600">实时</span>
+                                            <div class="info-item flex justify-between items-center">
+                                                <span class="info-label text-sm">开通时效</span>
+                                                <span class="info-value text-sm">1-2个工作日</span>
                                             </div>
-                                            <div class="info-item">
-                                                <span class="info-label">收款方式</span>
-                                                <span class="info-value">仅支持澳大利亚本地ACH付款</span>
+                                            <div class="info-item flex justify-between items-center">
+                                                <span class="info-label text-sm">收款方式</span>
+                                                <span class="info-value text-sm">ACH</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- 渣打银行新加坡分行 -->
+                                <div class="bank-card group" data-bank="standard_chartered_singapore">
+                                    <div class="p-2 border-b border-gray-200 bank-card-header flex items-center">
+                                        <div>
+                                            <h3 class="font-medium text-gray-900 text-sm">渣打银行新加坡分行</h3>
+                                            <p class="text-xs text-gray-500 mt-0.5">新加坡</p>
+                                        </div>
+                                    </div>
+                                    <div class="p-2">
+                                        <div class="info-list space-y-1">
+                                            <div class="info-item flex justify-between items-center">
+                                                <span class="info-label flex items-center text-sm">
+                                                    收款币种
+                                                    <div class="relative ml-2">
+                                                        <i class="fas fa-info-circle text-gray-400 hover:text-gray-600 cursor-help"></i>
+                                                        <div class="tooltip-content invisible opacity-0 absolute z-50 w-72 p-3 bg-gray-900 text-white text-xs rounded-lg right-0 top-0 transform translate-x-2 -translate-y-1/2 shadow-lg transition-all duration-200 pointer-events-none">
+                                                            <div class="font-medium mb-0.5">收款账户回收:</div>
+                                                            <div class="text-gray-200 leading-snug">
+                                                                在符合回收规则的情况下收款账户均会被注销回收。注销回收规则为：开卡成功后未激活时，开卡成功后<span class="text-red-400">90天</span>仍然未激活则系统自动注销收款卡。如有疑问可联系客户经理或客服。
+                                                            </div>
+                                                            <div class="absolute left-0 top-1/2 transform -translate-x-1/2 -translate-y-1/2 text-gray-900">
+                                                                <svg width="8" height="16" viewBox="0 0 8 16" fill="none">
+                                                                    <path d="M8 0L0 8L8 16V0Z" fill="currentColor"/>
+                                                                </svg>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </span>
+                                                <span class="info-value text-sm">新加坡元</span>
+                                            </div>
+                                            <div class="info-item flex justify-between items-center">
+                                                <span class="info-label text-sm">付款地区</span>
+                                                <span class="info-value text-sm">新加坡</span>
+                                            </div>
+                                            <div class="info-item flex justify-between items-center">
+                                                <span class="info-label text-sm">开通时效</span>
+                                                <span class="info-value text-sm">1-2个工作日</span>
+                                            </div>
+                                            <div class="info-item flex justify-between items-center">
+                                                <span class="info-label text-sm">收款方式</span>
+                                                <span class="info-value text-sm">FAST, GIRO</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- 汇丰银行香港分行 -->
+                                <div class="bank-card group" data-bank="hsbc_hongkong">
+                                    <div class="p-2 border-b border-gray-200 bank-card-header flex items-center">
+                                        <div>
+                                            <h3 class="font-medium text-gray-900 text-sm">汇丰银行香港分行</h3>
+                                            <p class="text-xs text-gray-500 mt-0.5">香港</p>
+                                        </div>
+                                    </div>
+                                    <div class="p-2">
+                                        <div class="info-list space-y-1">
+                                            <div class="info-item flex justify-between items-center">
+                                                <span class="info-label flex items-center text-sm">
+                                                    收款币种
+                                                    <div class="relative ml-2">
+                                                        <i class="fas fa-info-circle text-gray-400 hover:text-gray-600 cursor-help"></i>
+                                                        <div class="tooltip-content invisible opacity-0 absolute z-50 w-72 p-3 bg-gray-900 text-white text-xs rounded-lg right-0 top-0 transform translate-x-2 -translate-y-1/2 shadow-lg transition-all duration-200 pointer-events-none">
+                                                            <div class="font-medium mb-0.5">收款账户回收:</div>
+                                                            <div class="text-gray-200 leading-snug">
+                                                                在符合回收规则的情况下收款账户均会被注销回收。注销回收规则为：开卡成功后未激活时，开卡成功后<span class="text-red-400">90天</span>仍然未激活则系统自动注销收款卡。如有疑问可联系客户经理或客服。
+                                                            </div>
+                                                            <div class="absolute left-0 top-1/2 transform -translate-x-1/2 -translate-y-1/2 text-gray-900">
+                                                                <svg width="8" height="16" viewBox="0 0 8 16" fill="none">
+                                                                    <path d="M8 0L0 8L8 16V0Z" fill="currentColor"/>
+                                                                </svg>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </span>
+                                                <span class="info-value text-sm">港币</span>
+                                            </div>
+                                            <div class="info-item flex justify-between items-center">
+                                                <span class="info-label text-sm">付款地区</span>
+                                                <span class="info-value text-sm">香港</span>
+                                            </div>
+                                            <div class="info-item flex justify-between items-center">
+                                                <span class="info-label text-sm">开通时效</span>
+                                                <span class="info-value text-sm">1-2个工作日</span>
+                                            </div>
+                                            <div class="info-item flex justify-between items-center">
+                                                <span class="info-label text-sm">收款方式</span>
+                                                <span class="info-value text-sm">FPS, CHATS</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- 三菱UFJ银行东京分行 -->
+                                <div class="bank-card group hidden expandable-card" data-bank="mufg_tokyo">
+                                    <div class="p-2 border-b border-gray-200 bank-card-header flex items-center">
+                                        <div>
+                                            <h3 class="font-medium text-gray-900 text-sm">三菱UFJ银行东京分行</h3>
+                                            <p class="text-xs text-gray-500 mt-0.5">日本</p>
+                                        </div>
+                                    </div>
+                                    <div class="p-2">
+                                        <div class="info-list space-y-1">
+                                            <div class="info-item flex justify-between items-center">
+                                                <span class="info-label flex items-center text-sm">
+                                                    收款币种
+                                                    <div class="relative ml-2">
+                                                        <i class="fas fa-info-circle text-gray-400 hover:text-gray-600 cursor-help"></i>
+                                                        <div class="tooltip-content invisible opacity-0 absolute z-50 w-72 p-3 bg-gray-900 text-white text-xs rounded-lg right-0 top-0 transform translate-x-2 -translate-y-1/2 shadow-lg transition-all duration-200 pointer-events-none">
+                                                            <div class="font-medium mb-0.5">收款账户回收:</div>
+                                                            <div class="text-gray-200 leading-snug">
+                                                                在符合回收规则的情况下收款账户均会被注销回收。注销回收规则为：开卡成功后未激活时，开卡成功后<span class="text-red-400">90天</span>仍然未激活则系统自动注销收款卡。如有疑问可联系客户经理或客服。
+                                                            </div>
+                                                            <div class="absolute left-0 top-1/2 transform -translate-x-1/2 -translate-y-1/2 text-gray-900">
+                                                                <svg width="8" height="16" viewBox="0 0 8 16" fill="none">
+                                                                    <path d="M8 0L0 8L8 16V0Z" fill="currentColor"/>
+                                                                </svg>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </span>
+                                                <span class="info-value text-sm">日元</span>
+                                            </div>
+                                            <div class="info-item flex justify-between items-center">
+                                                <span class="info-label text-sm">付款地区</span>
+                                                <span class="info-value text-sm">日本</span>
+                                            </div>
+                                            <div class="info-item flex justify-between items-center">
+                                                <span class="info-label text-sm">开通时效</span>
+                                                <span class="info-value text-sm">1-2个工作日</span>
+                                            </div>
+                                            <div class="info-item flex justify-between items-center">
+                                                <span class="info-label text-sm">收款方式</span>
+                                                <span class="info-value text-sm">Zengin, FXYCS</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- 韩亚银行首尔分行 -->
+                                <div class="bank-card group hidden expandable-card" data-bank="hana_seoul">
+                                    <div class="p-2 border-b border-gray-200 bank-card-header flex items-center">
+                                        <div>
+                                            <h3 class="font-medium text-gray-900 text-sm">韩亚银行首尔分行</h3>
+                                            <p class="text-xs text-gray-500 mt-0.5">韩国</p>
+                                        </div>
+                                    </div>
+                                    <div class="p-2">
+                                        <div class="info-list space-y-1">
+                                            <div class="info-item flex justify-between items-center">
+                                                <span class="info-label flex items-center text-sm">
+                                                    收款币种
+                                                    <div class="relative ml-2">
+                                                        <i class="fas fa-info-circle text-gray-400 hover:text-gray-600 cursor-help"></i>
+                                                        <div class="tooltip-content invisible opacity-0 absolute z-50 w-72 p-3 bg-gray-900 text-white text-xs rounded-lg right-0 top-0 transform translate-x-2 -translate-y-1/2 shadow-lg transition-all duration-200 pointer-events-none">
+                                                            <div class="font-medium mb-0.5">收款账户回收:</div>
+                                                            <div class="text-gray-200 leading-snug">
+                                                                在符合回收规则的情况下收款账户均会被注销回收。注销回收规则为：开卡成功后未激活时，开卡成功后<span class="text-red-400">90天</span>仍然未激活则系统自动注销收款卡。如有疑问可联系客户经理或客服。
+                                                            </div>
+                                                            <div class="absolute left-0 top-1/2 transform -translate-x-1/2 -translate-y-1/2 text-gray-900">
+                                                                <svg width="8" height="16" viewBox="0 0 8 16" fill="none">
+                                                                    <path d="M8 0L0 8L8 16V0Z" fill="currentColor"/>
+                                                                </svg>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </span>
+                                                <span class="info-value text-sm">韩元</span>
+                                            </div>
+                                            <div class="info-item flex justify-between items-center">
+                                                <span class="info-label text-sm">付款地区</span>
+                                                <span class="info-value text-sm">韩国</span>
+                                            </div>
+                                            <div class="info-item flex justify-between items-center">
+                                                <span class="info-label text-sm">开通时效</span>
+                                                <span class="info-value text-sm">1-2个工作日</span>
+                                            </div>
+                                            <div class="info-item flex justify-between items-center">
+                                                <span class="info-label text-sm">收款方式</span>
+                                                <span class="info-value text-sm">EFT, BOK-Wire</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Banking Circle S.A. (Global Account) -->
+                                <div class="bank-card group opacity-50 cursor-not-allowed relative hidden expandable-card" data-bank="banking_circle_global">
+                                    <div class="absolute top-2 right-2 px-2 py-0.5 bg-gray-200 text-gray-600 text-xs rounded">已开通</div>
+                                    <div class="p-2 border-b border-gray-200 bank-card-header flex items-center">
+                                        <div>
+                                            <h3 class="font-medium text-gray-900 text-sm">Banking Circle S.A.</h3>
+                                            <p class="text-xs text-gray-500 mt-0.5">Global Account</p>
+                                        </div>
+                                    </div>
+                                    <div class="p-2">
+                                        <div class="info-list space-y-1">
+                                            <div class="info-item flex justify-between items-center">
+                                                <span class="info-label flex items-center text-sm">
+                                                    收款币种
+                                                    <div class="relative ml-2">
+                                                        <i class="fas fa-info-circle text-gray-400 hover:text-gray-600 cursor-help"></i>
+                                                        <div class="tooltip-content invisible opacity-0 absolute z-50 w-72 p-3 bg-gray-900 text-white text-xs rounded-lg right-0 top-0 transform translate-x-2 -translate-y-1/2 shadow-lg transition-all duration-200 pointer-events-none">
+                                                            <div class="font-medium mb-0.5">收款账户回收:</div>
+                                                            <div class="text-gray-200 leading-snug">
+                                                                在符合回收规则的情况下收款账户均会被注销回收。注销回收规则为：开卡成功后未激活时，开卡成功后<span class="text-red-400">90天</span>仍然未激活则系统自动注销收款卡。如有疑问可联系客户经理或客服。
+                                                            </div>
+                                                            <div class="absolute left-0 top-1/2 transform -translate-x-1/2 -translate-y-1/2 text-gray-900">
+                                                                <svg width="8" height="16" viewBox="0 0 8 16" fill="none">
+                                                                    <path d="M8 0L0 8L8 16V0Z" fill="currentColor"/>
+                                                                </svg>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </span>
+                                                <span class="info-value text-sm">USD, EUR, GBP, JPY, AUD</span>
+                                            </div>
+                                            <div class="info-item flex justify-between items-center">
+                                                <span class="info-label text-sm">付款地区</span>
+                                                <span class="info-value text-sm">全球</span>
+                                            </div>
+                                            <div class="info-item flex justify-between items-center">
+                                                <span class="info-label text-sm">开通时效</span>
+                                                <span class="info-value text-sm">1-2个工作日</span>
+                                            </div>
+                                            <div class="info-item flex justify-between items-center">
+                                                <span class="info-label text-sm">收款方式</span>
+                                                <span class="info-value text-sm">SWIFT, SEPA, ACH, Wire Transfer</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- 德意志银行雅加达分行 -->
+                                <div class="bank-card group opacity-50 cursor-not-allowed relative hidden expandable-card" data-bank="deutsche_indonesia">
+                                    <div class="absolute top-2 right-2 px-2 py-0.5 bg-gray-200 text-gray-600 text-xs rounded">已开通</div>
+                                    <div class="p-2 border-b border-gray-200 bank-card-header flex items-center">
+                                        <div>
+                                            <h3 class="font-medium text-gray-900 text-sm">德意志银行雅加达分行</h3>
+                                            <p class="text-xs text-gray-500 mt-0.5">印尼</p>
+                                        </div>
+                                    </div>
+                                    <div class="p-2">
+                                        <div class="info-list space-y-1">
+                                            <div class="info-item flex justify-between items-center">
+                                                <span class="info-label flex items-center text-sm">
+                                                    收款币种
+                                                    <div class="relative ml-2">
+                                                        <i class="fas fa-info-circle text-gray-400 hover:text-gray-600 cursor-help"></i>
+                                                        <div class="tooltip-content invisible opacity-0 absolute z-50 w-72 p-3 bg-gray-900 text-white text-xs rounded-lg right-0 top-0 transform translate-x-2 -translate-y-1/2 shadow-lg transition-all duration-200 pointer-events-none">
+                                                            <div class="font-medium mb-0.5">收款账户回收:</div>
+                                                            <div class="text-gray-200 leading-snug">
+                                                                在符合回收规则的情况下收款账户均会被注销回收。注销回收规则为：开卡成功后未激活时，开卡成功后<span class="text-red-400">90天</span>仍然未激活则系统自动注销收款卡。如有疑问可联系客户经理或客服。
+                                                            </div>
+                                                            <div class="absolute left-0 top-1/2 transform -translate-x-1/2 -translate-y-1/2 text-gray-900">
+                                                                <svg width="8" height="16" viewBox="0 0 8 16" fill="none">
+                                                                    <path d="M8 0L0 8L8 16V0Z" fill="currentColor"/>
+                                                                </svg>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </span>
+                                                <span class="info-value text-sm">印尼盾</span>
+                                            </div>
+                                            <div class="info-item flex justify-between items-center">
+                                                <span class="info-label text-sm">付款地区</span>
+                                                <span class="info-value text-sm">印尼</span>
+                                            </div>
+                                            <div class="info-item flex justify-between items-center">
+                                                <span class="info-label text-sm">开通时效</span>
+                                                <span class="info-value text-sm">1-2个工作日</span>
+                                            </div>
+                                            <div class="info-item flex justify-between items-center">
+                                                <span class="info-label text-sm">收款方式</span>
+                                                <span class="info-value text-sm">SKNBI/RTGS</span>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+                            
+                            <!-- Show more/less button -->
+                            <div class="col-span-full flex justify-center mt-4">
+                                <button type="button" id="toggleCardsBtn" class="inline-flex items-center px-4 py-2 text-sm font-medium text-purple-600 bg-white border border-purple-600 rounded-lg hover:bg-purple-50 transition-colors duration-200">
+                                    <span class="show-more-text">显示更多银行</span>
+                                    <span class="show-less-text hidden">收起银行列表</span>
+                                    <i class="fas fa-chevron-down ml-2 show-more-icon"></i>
+                                    <i class="fas fa-chevron-up ml-2 show-less-icon hidden"></i>
+                                </button>
+                            </div>
                         </section>
 
                         <!-- 贸易信息 -->
                         <section>
-                            <h2 class="text-base font-medium text-gray-900 mb-4">填写贸易信息</h2>
+                            <h2 class="text-base font-medium text-gray-900 mb-2 pl-3 relative">
+                                <div class="absolute left-0 top-0 w-1 h-5 bg-purple-600 rounded-full"></div>
+                                填写贸易信息
+                            </h2>
+                            <p class="text-sm text-gray-500 mb-6">避免收款账户激活失败，请填写正确信息.</p>
                             <div class="form-group">
                                 <div class="space-y-6">
                                     <div>
                                         <label for="accountName" class="block text-sm font-medium text-gray-700 mb-2">
-                                            账户名称 <span class="text-red-500">*</span>
+                                            账户名称
                                         </label>
-                                        <input type="text" id="accountName" name="accountName" required 
-                                               placeholder="请输入营业执照上的公司全称" class="form-input">
+                                        <div class="relative">
+                                            <div class="text-sm text-gray-900 py-1">Wahaha Group (Chongqing) branch company</div>
+                                            <p class="mt-1 text-xs text-gray-500">请以实际开通的账户名称为准，具体内容见账户详情</p>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <label for="shopName" class="block text-sm font-medium text-gray-700 mb-2">
+                                            店铺/平台名称 <span class="text-red-500">*</span>
+                                        </label>
+                                        <input type="text" id="shopName" name="shopName" required 
+                                               class="form-input h-8">
+                                    </div>
+                                    <div>
+                                        <label for="shopUrl" class="block text-sm font-medium text-gray-700 mb-2">
+                                            店铺/平台地址 <span class="text-red-500">*</span>
+                                        </label>
+                                        <input type="text" id="shopUrl" name="shopUrl" required 
+                                               placeholder="请填写您的店铺地址或销售平台网址(网址地址填写，如:www.amazon.com)"
+                                               class="form-input h-8">
                                     </div>
                                     <div>
                                         <label for="merchantCategory" class="block text-sm font-medium text-gray-700 mb-2">
-                                            经营类别 <span class="text-red-500">*</span>
+                                            经营类别 <span class="text-red-500 ml-0.5">*</span>
                                         </label>
-                                        <select id="merchantCategory" name="merchantCategory" required class="form-select">
+                                        <select id="merchantCategory" name="merchantCategory" required class="form-select h-11 w-full px-4 py-2 text-sm text-gray-900 bg-white border border-purple-600 rounded-md shadow-sm focus:border-purple-600 focus:ring focus:ring-purple-200 focus:ring-opacity-50 appearance-none">
                                             <option value="">请选择经营类别</option>
                                             <option value="1">服装鞋包</option>
                                             <option value="2">家居用品</option>
@@ -186,27 +581,27 @@
 
                         <!-- 使用须知 -->
                         <section>
-                            <h2 class="text-base font-medium text-gray-900 mb-4">使用须知</h2>
-                            <div class="form-group space-y-3">
-                                <div class="flex items-start space-x-3">
-                                    <span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-purple-100 text-purple-600 font-medium text-sm flex-shrink-0">1</span>
-                                    <p class="text-gray-700">全球收款账户信息仅适用于贵司收取货物贸易项下海外买家支付的货款</p>
+                            <h2 class="text-base font-medium text-gray-900 mb-2">使用须知</h2>
+                            <div class="space-y-2 text-sm text-gray-700">
+                                <div class="flex items-start space-x-2">
+                                    <span class="flex-shrink-0 inline-flex items-center justify-center w-5 h-5 rounded-full bg-purple-100 text-purple-600 text-xs">1</span>
+                                    <p class="flex-1">全球收款账户信息仅适用于贵司收取货物贸易项下海外买家支付的货款；</p>
                                 </div>
-                                <div class="flex items-start space-x-3">
-                                    <span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-purple-100 text-purple-600 font-medium text-sm flex-shrink-0">2</span>
-                                    <p class="text-gray-700">请勿将贵司名下其他银行（或第三方支付公司）账户的款项汇入该账户</p>
+                                <div class="flex items-start space-x-2">
+                                    <span class="flex-shrink-0 inline-flex items-center justify-center w-5 h-5 rounded-full bg-purple-100 text-purple-600 text-xs">2</span>
+                                    <p class="flex-1">请勿将贵司名下其他银行（或第三方支付公司）账户的款项汇入该账户；</p>
                                 </div>
-                                <div class="flex items-start space-x-3">
-                                    <span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-purple-100 text-purple-600 font-medium text-sm flex-shrink-0">3</span>
-                                    <p class="text-gray-700">请勿从伊朗、叙利亚、北朝鲜、古巴、克里米亚、塞瓦斯托波尔、苏丹以及南苏丹收汇至该账户</p>
+                                <div class="flex items-start space-x-2">
+                                    <span class="flex-shrink-0 inline-flex items-center justify-center w-5 h-5 rounded-full bg-purple-100 text-purple-600 text-xs">3</span>
+                                    <p class="flex-1">请勿从伊朗、叙利亚、北朝鲜、古巴、克里米亚、塞瓦斯托波尔、苏丹以及南苏丹收汇至该账户；</p>
                                 </div>
-                                <div class="flex items-start space-x-3">
-                                    <span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-purple-100 text-purple-600 font-medium text-sm flex-shrink-0">4</span>
-                                    <p class="text-gray-700">我司及合作银行有权对该账户进行反洗钱审核，收款人有义务配合提供相关资料以证明资金来源；未能通过反洗钱审核的，我司有权拒绝进行收款及提现事宜处理</p>
+                                <div class="flex items-start space-x-2">
+                                    <span class="flex-shrink-0 inline-flex items-center justify-center w-5 h-5 rounded-full bg-purple-100 text-purple-600 text-xs">4</span>
+                                    <p class="flex-1">我司及合作银行有权对该账户进行反洗钱审核，收款人有义务配合提供相关资料以证明资金来源；未能通过反洗钱审核的，我司有权拒绝进行收款及提现事宜处理；</p>
                                 </div>
-                                <div class="flex items-start space-x-3">
-                                    <span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-purple-100 text-purple-600 font-medium text-sm flex-shrink-0">5</span>
-                                    <p class="text-gray-700">如付款方为买家以外的第三方付款，须提供实际付款人与买家的关系说明，并提醒付款人在汇款时添加附言，附言需备注付款人和买家关系及invoice number等单据</p>
+                                <div class="flex items-start space-x-2">
+                                    <span class="flex-shrink-0 inline-flex items-center justify-center w-5 h-5 rounded-full bg-purple-100 text-purple-600 text-xs">5</span>
+                                    <p class="flex-1">如付款方为买家以外的第三方付款，须提供实际付款人与买家的关系说明，并提醒付款人在汇款时添加附言，附言需备注付款人和买家关系及invoice number等单据；</p>
                                 </div>
                             </div>
                         </section>
@@ -248,11 +643,23 @@
             });
 
             // 银行卡片选择
-            const bankCards = document.querySelectorAll('.bank-card');
+            const bankCards = document.querySelectorAll('.bank-card:not(.opacity-50)');
             let selectedBank = null;
+
+            // 默认选中第一个未开通的银行卡片
+            if (bankCards.length > 0) {
+                bankCards[0].classList.add('selected');
+                bankCards[0].querySelector('.bank-card-header').classList.add('selected');
+                selectedBank = bankCards[0].dataset.bank;
+            }
 
             bankCards.forEach(card => {
                 card.addEventListener('click', function() {
+                    // 如果是已开通的银行卡，不执行任何操作
+                    if (this.classList.contains('opacity-50')) {
+                        return;
+                    }
+                    
                     // 移除所有卡片的选中状态
                     bankCards.forEach(c => {
                         c.classList.remove('selected');
@@ -283,6 +690,43 @@
                 // 模拟表单提交，实际项目中应该通过API发送数据
                 alert('申请已提交，我们将尽快处理您的申请！');
                 window.location.href = 'trade-collection.html';
+            });
+
+            // Show more/less functionality
+            const toggleCardsBtn = document.getElementById('toggleCardsBtn');
+            const expandableCards = document.querySelectorAll('.expandable-card');
+            const showMoreText = document.querySelector('.show-more-text');
+            const showLessText = document.querySelector('.show-less-text');
+            const showMoreIcon = document.querySelector('.show-more-icon');
+            const showLessIcon = document.querySelector('.show-less-icon');
+
+            // 如果没有更多卡片可以展开，隐藏"显示更多"按钮
+            if (expandableCards.length === 0) {
+                toggleCardsBtn.style.display = 'none';
+            }
+
+            toggleCardsBtn.addEventListener('click', function() {
+                const isExpanded = !expandableCards[0].classList.contains('hidden');
+                
+                expandableCards.forEach(card => {
+                    if (isExpanded) {
+                        card.classList.add('hidden');
+                    } else {
+                        card.classList.remove('hidden');
+                    }
+                });
+
+                if (isExpanded) {
+                    showMoreText.classList.remove('hidden');
+                    showMoreIcon.classList.remove('hidden');
+                    showLessText.classList.add('hidden');
+                    showLessIcon.classList.add('hidden');
+                } else {
+                    showMoreText.classList.add('hidden');
+                    showMoreIcon.classList.add('hidden');
+                    showLessText.classList.remove('hidden');
+                    showLessIcon.classList.remove('hidden');
+                }
             });
         });
     </script>

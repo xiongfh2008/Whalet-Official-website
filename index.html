@@ -58,14 +58,18 @@
             border-radius: 8px;
             margin: 4px 8px;
             color: #4b5563;
+            transition: all 0.2s ease;
         }
         .menu-item:hover {
-            background-color: #f3f4f6;
+            background-color: #f3f2ff;
             color: #7D33FF;
         }
         .menu-item.active {
             background-color: #f3f2ff;
-            color: #7D33FF;
+            color: #7D33FF !important;
+        }
+        .menu-item.active i {
+            color: #7D33FF !important;
         }
         /* 二级菜单样式 */
         .submenu {
@@ -512,12 +516,12 @@
                     </div>
                     <ul class="submenu" id="submenu-collection">
                         <li>
-                            <div class="menu-item" data-page="platform-collection">
+                            <div class="menu-item" data-page="pages/platform-collection.html">
                                 <span class="menu-text">平台收款</span>
                             </div>
                         </li>
                         <li>
-                            <div class="menu-item" data-page="trade-collection">
+                            <div class="menu-item" data-page="pages/trade-collection-notice.html">
                                 <span class="menu-text">外贸收款</span>
                             </div>
                         </li>
@@ -690,6 +694,8 @@
         let currentPage = 'home';
         // 添加收单服务开通状态标志
         let isAcquiringServiceEnabled = false; // 默认未开通
+        // 获取内容框架元素
+        const mainContent = document.getElementById('content-frame');
 
         // 页面URL映射
         const pageUrls = {
@@ -697,17 +703,17 @@
             'my-assets': 'pages/my-assets.html',
             'platform-collection': 'pages/platform-collection.html',
             'trade-collection': 'pages/trade-collection.html',
+            'trade-collection-notice': 'pages/trade-collection-notice.html',
             'bill-collection': 'pages/bill-collection.html',
             'transaction-list': 'pages/transaction-list.html',
-            'acquiring-service': 'pages/acquiring-service.html', // 添加收单服务申请页面
-            'business-card': 'pages/business-card.html', // 添加商务卡申请页面
-            'business-card-details': 'pages/business-card-details.html', // 添加商务卡详情页面
+            'acquiring-service': 'pages/acquiring-service.html',
             'forex': 'pages/forex.html',
+            'business-card': 'pages/business-card.html',
             'cards': 'pages/cards.html',
             'withdrawal': 'pages/withdrawal.html',
             'payment': 'pages/payment.html',
             'payee-management': 'pages/payee-management.html',
-            'transactions': 'pages/transactions.html',  // 确保有这个映射
+            'transactions': 'pages/transactions.html',
             'security': 'pages/security.html',
             'authentication-info': 'pages/authentication-info.html',
             'fees': 'pages/fees.html',
@@ -716,87 +722,85 @@
         };
 
         // 加载页面内容
-        function loadPage(pageName) {
-            console.log('Loading page:', pageName);
-            if (pageUrls[pageName]) {
-                const iframe = document.getElementById('content-frame');
-                iframe.src = pageUrls[pageName];
-                currentPage = pageName;
-                
-                // 更新活动菜单状态
-                document.querySelectorAll('.menu-item').forEach(item => {
-                    item.classList.remove('active');
-                    if (item.getAttribute('data-page') === pageName) {
-                        item.classList.add('active');
-                        
-                        // 如果是子菜单项，展开父菜单
-                        const submenu = item.closest('.submenu');
-                        if (submenu) {
-                            submenu.classList.add('open');
-                            const parentMenuItem = submenu.previousElementSibling;
-                            if (parentMenuItem) {
-                                const chevron = parentMenuItem.querySelector('.submenu-toggle');
-                                if (chevron) {
-                                    chevron.classList.replace('fa-chevron-down', 'fa-chevron-up');
-                                }
+        function loadPage(page) {
+            if (!mainContent) {
+                console.error('Content frame not found');
+                return;
+            }
+
+            currentPage = page;
+            
+            // 如果是完整的页面路径，直接使用
+            if (page.endsWith('.html')) {
+                mainContent.src = page;
+            } else if (pageUrls[page]) {
+                mainContent.src = pageUrls[page];
+            }
+            
+            // 更新活动菜单状态
+            document.querySelectorAll('.menu-item').forEach(item => {
+                item.classList.remove('active');
+                if (item.getAttribute('data-page') === page) {
+                    item.classList.add('active');
+                    
+                    // 如果是子菜单项，展开父菜单
+                    const submenu = item.closest('.submenu');
+                    if (submenu) {
+                        submenu.classList.add('open');
+                        const parentMenuItem = submenu.previousElementSibling;
+                        if (parentMenuItem) {
+                            const chevron = parentMenuItem.querySelector('.submenu-toggle');
+                            if (chevron) {
+                                chevron.classList.replace('fa-chevron-down', 'fa-chevron-up');
                             }
                         }
                     }
-                });
-                
-                console.log('Page loaded:', iframe.src);
-            } else {
-                console.error('Page URL not found:', pageName);
-            }
+                }
+            });
         }
 
         // 初始化事件监听
         document.addEventListener('DOMContentLoaded', () => {
             // 处理菜单项点击
-            document.querySelectorAll('.menu-item[data-page]').forEach(item => {
-                item.addEventListener('click', event => {
+            document.querySelectorAll('.menu-item').forEach(item => {
+                item.addEventListener('click', function(event) {
                     event.preventDefault();
                     event.stopPropagation();
-                    const pageName = item.getAttribute('data-page');
-                    loadPage(pageName);
-                });
-            });
-
-            // 处理子菜单切换
-            document.querySelectorAll('[data-toggle]').forEach(item => {
-                item.addEventListener('click', event => {
-                    event.preventDefault();
-                    const submenuId = item.getAttribute('data-toggle');
-                    const submenu = document.getElementById(submenuId);
-                    const pageName = item.getAttribute('data-page');
                     
-                    // 如果有页面名称，加载对应页面
-                    if (pageName) {
-                        loadPage(pageName);
+                    const page = this.getAttribute('data-page');
+                    const toggleId = this.getAttribute('data-toggle');
+                    
+                    // 如果有子菜单，处理子菜单的展开/折叠
+                    if (toggleId) {
+                        const submenu = document.getElementById(toggleId);
+                        if (submenu) {
+                            // 关闭其他所有子菜单
+                            document.querySelectorAll('.submenu').forEach(menu => {
+                                if (menu !== submenu) {
+                                    menu.classList.remove('open');
+                                    const toggle = menu.previousElementSibling.querySelector('.submenu-toggle');
+                                    if (toggle) {
+                                        toggle.classList.replace('fa-chevron-up', 'fa-chevron-down');
+                                    }
+                                }
+                            });
+
+                            // 切换当前子菜单
+                            submenu.classList.toggle('open');
+                            const chevron = this.querySelector('.submenu-toggle');
+                            if (chevron) {
+                                if (submenu.classList.contains('open')) {
+                                    chevron.classList.replace('fa-chevron-down', 'fa-chevron-up');
+                                } else {
+                                    chevron.classList.replace('fa-chevron-up', 'fa-chevron-down');
+                                }
+                            }
+                        }
                     }
                     
-                    // 关闭其他所有子菜单
-                    document.querySelectorAll('.submenu').forEach(menu => {
-                        if (menu !== submenu) {
-                            menu.classList.remove('open');
-                            const toggle = menu.previousElementSibling.querySelector('.submenu-toggle');
-                            if (toggle) {
-                                toggle.classList.replace('fa-chevron-up', 'fa-chevron-down');
-                            }
-                        }
-                    });
-
-                    // 切换当前子菜单
-                    if (submenu) {
-                        submenu.classList.toggle('open');
-                        const chevron = item.querySelector('.submenu-toggle');
-                        if (chevron) {
-                            if (submenu.classList.contains('open')) {
-                                chevron.classList.replace('fa-chevron-down', 'fa-chevron-up');
-                            } else {
-                                chevron.classList.replace('fa-chevron-up', 'fa-chevron-down');
-                            }
-                        }
+                    // 如果有页面链接，加载页面
+                    if (page) {
+                        loadPage(page);
                     }
                 });
             });

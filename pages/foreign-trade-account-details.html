@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>外贸收款账户详情 - Whalet</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-gray-50">
+    <div class="container mx-auto px-4 py-8">
+        <div class="max-w-7xl mx-auto bg-white rounded-lg shadow-sm">
+            <!-- 头部 -->
+            <div class="p-6 border-b border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center">
+                        <a href="trade-collection.html#collection-accounts" class="text-purple-600 hover:text-purple-700 mr-2">
+                            <i class="fas fa-arrow-left"></i>
+                        </a>
+                        <a href="trade-collection.html#collection-accounts" class="text-purple-600 hover:text-purple-700 mr-4">返回</a>
+                        <h1 class="text-xl font-semibold text-gray-800">外贸收款账户详情</h1>
+                    </div>
+                    <a href="trade-collection.html#collection-accounts" class="text-gray-500 hover:text-gray-700">
+                        <i class="fas fa-times"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="p-6 space-y-6">
+                <!-- 重要提示 -->
+                <div class="bg-purple-400 border border-purple-300 p-4 rounded-md text-white flex items-start">
+                    <i class="fas fa-exclamation-circle mt-0.5 mr-3"></i>
+                    <span>为确保收款顺畅，请务必与您的买家确认付款方式、付款币种及付款地区是否在此收款账户的支持范围内。</span>
+                </div>
+
+                <!-- 账户信息 -->
+                <div class="bg-white border border-gray-200 rounded-lg p-6 relative">
+                    <div class="flex justify-between items-start mb-6">
+                        <h2 class="text-lg font-semibold text-gray-800">账户信息</h2>
+                        <div class="flex items-center">
+                            <span class="px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm flex items-center">
+                                <i class="fas fa-check-circle mr-1"></i>
+                                正常使用中
+                            </span>
+                            <button class="ml-4 px-4 py-1 bg-purple-600 text-white text-sm rounded hover:bg-purple-700 transition-colors flex items-center" onclick="copyAccountInfo()">
+                                <i class="fas fa-copy mr-1"></i>
+                                复制收款账户信息
+                            </button>
+                        </div>
+                    </div>
+                    <div class="space-y-4">
+                        <div class="flex border-b border-gray-100 pb-4">
+                            <div class="w-48">
+                                <div class="text-gray-600">银行名称</div>
+                                <div class="text-gray-500 text-sm">Bank Name</div>
+                            </div>
+                            <div class="flex-1 text-gray-900">Sample Bank</div>
+                        </div>
+                        <div class="flex border-b border-gray-100 pb-4">
+                            <div class="w-48">
+                                <div class="text-gray-600">账户号码</div>
+                                <div class="text-gray-500 text-sm">Account Number</div>
+                            </div>
+                            <div class="flex-1 text-gray-900">1234567890</div>
+                        </div>
+                        <div class="flex border-b border-gray-100 pb-4">
+                            <div class="w-48">
+                                <div class="text-gray-600">账户名称</div>
+                                <div class="text-gray-500 text-sm">Account Name</div>
+                            </div>
+                            <div class="flex-1 text-gray-900">SAMPLE COMPANY LIMITED</div>
+                        </div>
+                        <div class="flex border-b border-gray-100 pb-4">
+                            <div class="w-48">
+                                <div class="text-gray-600">银行名称</div>
+                                <div class="text-gray-500 text-sm">Bank Name</div>
+                            </div>
+                            <div class="flex-1 text-gray-900">SAMPLE BANK INTERNATIONAL</div>
+                        </div>
+                        <div class="flex border-b border-gray-100 pb-4">
+                            <div class="w-48">
+                                <div class="text-gray-600">国家/地区</div>
+                                <div class="text-gray-500 text-sm">Country/Region</div>
+                            </div>
+                            <div class="flex-1 text-gray-900">Hong Kong</div>
+                        </div>
+                        <div class="flex border-b border-gray-100 pb-4">
+                            <div class="w-48">
+                                <div class="text-gray-600">备注</div>
+                                <div class="text-gray-500 text-sm">Remark</div>
+                            </div>
+                            <div class="flex-1 text-gray-900">For international trade only</div>
+                        </div>
+                        <div class="flex border-b border-gray-100 pb-4">
+                            <div class="w-48">
+                                <div class="text-gray-600">汇款附言</div>
+                                <div class="text-gray-500 text-sm">Payment Message</div>
+                            </div>
+                            <div class="flex-1 text-gray-900">请在付款时向收款人包含以下附言/信息：[买家姓名] [发票/合同编号] [产品]</div>
+                        </div>
+                    </div>
+                    <div class="mt-4 p-4 bg-gray-50 rounded-md text-sm text-gray-600 flex items-start">
+                        <i class="fas fa-info-circle mt-0.5 mr-2"></i>
+                        <span>提示：建议您的买家在汇款附言中按照表格内要求的格式填写，以确保款项顺利入账。</span>
+                    </div>
+                </div>
+
+                <!-- 贸易信息 -->
+                <div class="bg-white border border-gray-200 rounded-lg p-6">
+                    <h2 class="text-lg font-semibold text-gray-800 mb-4">贸易信息</h2>
+                    <div class="space-y-4">
+                        <div class="flex border-b border-gray-100 pb-4">
+                            <div class="w-48 text-gray-600">店铺/平台名称</div>
+                            <div class="flex-1 text-gray-900">Sample Store</div>
+                        </div>
+                        <div class="flex border-b border-gray-100 pb-4">
+                            <div class="w-48 text-gray-600">店铺/平台地址</div>
+                            <div class="flex-1 text-gray-900">www.sample-store.com</div>
+                        </div>
+                        <div class="flex">
+                            <div class="w-48 text-gray-600">经营类别</div>
+                            <div class="flex-1 text-gray-900">电子产品</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 可收币种 -->
+                <div class="bg-white border border-gray-200 rounded-lg p-6">
+                    <h2 class="text-lg font-semibold text-gray-800 mb-4">可收币种</h2>
+                    <div class="flex flex-wrap gap-4">
+                        <div class="flex items-center px-4 py-2 bg-gray-50 rounded-md">
+                            <img src="../assets/usd.png" alt="USD" class="w-6 h-6 mr-2">
+                            <span class="text-gray-900">USD</span>
+                        </div>
+                        <div class="flex items-center px-4 py-2 bg-gray-50 rounded-md">
+                            <img src="../assets/eur.png" alt="EUR" class="w-6 h-6 mr-2">
+                            <span class="text-gray-900">EUR</span>
+                        </div>
+                        <div class="flex items-center px-4 py-2 bg-gray-50 rounded-md">
+                            <img src="../assets/gbp.png" alt="GBP" class="w-6 h-6 mr-2">
+                            <span class="text-gray-900">GBP</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 买家付款地区 -->
+                <div class="bg-white border border-gray-200 rounded-lg p-6">
+                    <h2 class="text-lg font-semibold text-gray-800 mb-4">买家付款地区</h2>
+                    <div class="text-gray-900">
+                        美国、加拿大、欧盟、英国、澳大利亚、新西兰、日本、韩国、新加坡、香港
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function copyAccountInfo() {
+            const accountInfo = `银行名称/Bank Name: SAMPLE BANK INTERNATIONAL
+账户号码/Account Number: 1234567890
+账户名称/Account Name: SAMPLE COMPANY LIMITED
+国家地区/Country/Region: Hong Kong
+备注/Remark: For international trade only
+汇款附言/Payment Message: [买家姓名] [发票/合同编号] [产品]`;
+            
+            navigator.clipboard.writeText(accountInfo).then(() => {
+                const notification = document.createElement('div');
+                notification.className = 'fixed top-4 right-4 bg-green-500 text-white px-6 py-3 rounded-md shadow-lg transition-opacity duration-300 flex items-center';
+                notification.innerHTML = '<i class="fas fa-check-circle mr-2"></i>账户信息已复制到剪贴板';
+                document.body.appendChild(notification);
+                
+                setTimeout(() => {
+                    notification.style.opacity = '0';
+                    setTimeout(() => notification.remove(), 300);
+                }, 2000);
+            }).catch(err => {
+                console.error('复制失败:', err);
+                alert('复制失败，请手动复制');
+            });
+        }
+    </script>
+</body>
+</html> 
