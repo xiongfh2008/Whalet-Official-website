@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Preview - Whalet</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            background-color: #f5f5f5;
+            font-family: 'Segoe UI', sans-serif;
+        }
+        .header-gradient {
+            background: linear-gradient(135deg, #7D33FF 0%, #6929D9 100%);
+            color: white;
+        }
+        .header-gradient select {
+            color: white;
+            background: transparent;
+        }
+        .header-gradient select option {
+            color: #333;
+            background: white;
+        }
+        .header-gradient .amount {
+            color: white;
+        }
+        .header-gradient .transaction-details {
+            color: rgba(255, 255, 255, 0.8);
+        }
+        .header-gradient .logo-text {
+            color: white;
+        }
+        .header-gradient .logo-image {
+            border-color: white;
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        .payment-option {
+            transition: all 0.2s ease;
+            border: 1px solid transparent;
+            padding: 1rem;
+            cursor: pointer;
+            margin: 0;
+            border-bottom: 1px solid #eee;
+        }
+        .payment-option:hover {
+            background-color: #f8f9fa;
+        }
+        .payment-option.selected {
+            background-color: #f8f9fa;
+            border: 1px solid #7D33FF;
+            border-radius: 4px;
+            margin: 0.25rem 0;
+        }
+        .payment-options-container {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            max-height: 300px;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+        .payment-options-container.expanded {
+            max-height: 2000px;
+        }
+        .expand-button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.5rem;
+            color: #7D33FF;
+            cursor: pointer;
+            font-weight: 500;
+            margin-top: 0.5rem;
+            transition: all 0.2s ease;
+            font-size: 14px;
+        }
+        .expand-button:hover {
+            color: #6929D9;
+        }
+        .expand-button i {
+            margin-left: 0.5rem;
+            transition: transform 0.3s ease;
+        }
+        .expand-button.expanded i {
+            transform: rotate(180deg);
+        }
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .logo-image {
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .logo-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+        .logo-text {
+            font-size: 18px;
+            font-weight: 600;
+        }
+        @media (max-width: 1024px) {
+            .layout-container {
+                flex-direction: column;
+            }
+            .layout-left, .layout-right {
+                width: 100%;
+            }
+        }
+        .pay-button {
+            background-color: #7D33FF;
+            color: white;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            width: 100%;
+            text-align: center;
+            font-weight: 600;
+            transition: all 0.2s ease;
+        }
+        .pay-button:hover {
+            background-color: #6929D9;
+        }
+        .amount-container {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            position: relative;
+        }
+        .amount {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #333;
+        }
+        .transaction-details {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #666;
+            font-size: 0.875rem;
+            cursor: pointer;
+        }
+        .tooltip {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background-color: white;
+            border: 1px solid #eee;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            width: 250px;
+            z-index: 10;
+            display: none;
+        }
+        .tooltip.show {
+            display: block;
+        }
+        .tooltip-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+            color: #666;
+            font-size: 0.875rem;
+        }
+        .tooltip-row:last-child {
+            margin-top: 0.5rem;
+            padding-top: 0.5rem;
+            border-top: 1px solid #eee;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body class="min-h-screen py-8">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="bg-white rounded-lg shadow-sm overflow-hidden">
+            <!-- Header -->
+            <div class="header-gradient">
+                <div class="flex justify-between items-center h-16 px-6">
+                    <div class="flex items-center space-x-4">
+                        <div class="logo-container">
+                            <div class="logo-image">
+                                <img src="../images/LOGO_white.png" alt="Whalet">
+                            </div>
+                            <span class="logo-text">whalet</span>
+                        </div>
+                        <span class="text-white opacity-80">mdiandian@gmail.com</span>
+                    </div>
+                    <div class="flex items-center space-x-6">
+                        <select class="text-sm border-none focus:ring-0">
+                            <option value="en">English</option>
+                        </select>
+                        <div class="amount-container">
+                            <div class="amount">NGN 372,132.65</div>
+                            <div class="transaction-details">
+                                <span>Transaction details</span>
+                                <i class="fas fa-info-circle"></i>
+                            </div>
+                            <div class="tooltip">
+                                <div class="tooltip-row">
+                                    <span>Amount</span>
+                                    <span>EUR 15.00</span>
+                                </div>
+                                <div class="tooltip-row">
+                                    <span>Rate</span>
+                                    <span>COP 4,561.4608</span>
+                                </div>
+                                <div class="tooltip-row">
+                                    <span>Total</span>
+                                    <span>COP 68,421.91</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Content -->
+            <div class="flex layout-container">
+                <!-- Left Side - Payment Information -->
+                <div class="w-3/5 layout-left p-8 border-r border-gray-100">
+                    <div class="max-w-lg mx-auto">
+                        <h2 class="text-gray-600 text-lg mb-8 text-center">Please click the button below to pay with Mercado Pago</h2>
+                        
+                        <div class="space-y-6">
+                            <div class="space-y-2">
+                                <label class="text-gray-500 text-sm block">NAME</label>
+                                <input type="text" value="Alex xiong" class="w-full p-2 border border-gray-200 rounded" readonly>
+                            </div>
+                            
+                            <div class="space-y-2">
+                                <label class="text-gray-500 text-sm block">PHONE NUMBER</label>
+                                <input type="text" placeholder="Enter your document number" class="w-full p-2 border border-gray-200 rounded">
+                            </div>
+
+                            <div class="pt-4">
+                                <button class="pay-button">
+                                    Pay NGN 372,132.65
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Side - Payment Options -->
+                <div class="w-2/5 layout-right bg-gray-50">
+                    <div class="p-6">
+                        <h3 class="text-lg font-medium text-gray-900 mb-6">PAYMENT OPTIONS</h3>
+                        
+                        <div class="payment-options-container">
+                            <!-- USSD -->
+                            <div class="payment-option flex items-center justify-between" data-payment="ussd">
+                                <div class="flex items-center">
+                                    <div class="w-8 h-8 flex items-center justify-center">
+                                        <i class="fas fa-mobile-alt text-gray-600"></i>
+                                    </div>
+                                    <span class="ml-3 text-gray-900">USSD</span>
+                                </div>
+                            </div>
+
+                            <!-- Bank -->
+                            <div class="payment-option flex items-center justify-between" data-payment="bank">
+                                <div class="flex items-center">
+                                    <div class="w-8 h-8 flex items-center justify-center">
+                                        <i class="fas fa-university text-gray-600"></i>
+                                    </div>
+                                    <span class="ml-3 text-gray-900">Bank</span>
+                                </div>
+                            </div>
+
+                            <!-- Bank Transfer -->
+                            <div class="payment-option flex items-center justify-between" data-payment="bank-transfer">
+                                <div class="flex items-center">
+                                    <div class="w-8 h-8 flex items-center justify-center">
+                                        <i class="fas fa-exchange-alt text-gray-600"></i>
+                                    </div>
+                                    <span class="ml-3 text-gray-900">Bank Transfer</span>
+                                </div>
+                            </div>
+
+                            <!-- Mobile Money -->
+                            <div class="payment-option flex items-center justify-between" data-payment="mobile-money">
+                                <div class="flex items-center">
+                                    <div class="w-8 h-8 flex items-center justify-center">
+                                        <i class="fas fa-wallet text-gray-600"></i>
+                                    </div>
+                                    <span class="ml-3 text-gray-900">Mobile Money</span>
+                                </div>
+                            </div>
+
+                            <!-- Apple Pay -->
+                            <div class="payment-option flex items-center justify-between" data-payment="apple-pay">
+                                <div class="flex items-center">
+                                    <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/apple.svg" class="w-6 h-6" alt="Apple Pay">
+                                    <span class="ml-3 text-gray-900">Apple Pay</span>
+                                </div>
+                            </div>
+
+                            <!-- Google Pay -->
+                            <div class="payment-option flex items-center justify-between" data-payment="google-pay">
+                                <div class="flex items-center">
+                                    <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/googlepay.svg" class="w-6 h-6" alt="Google Pay">
+                                    <span class="ml-3 text-gray-900">Google Pay</span>
+                                </div>
+                            </div>
+
+                            <!-- RapiPago -->
+                            <div class="payment-option flex items-center justify-between" data-payment="rapipago">
+                                <div class="flex items-center">
+                                    <div class="w-8 h-8 flex items-center justify-center">
+                                        <i class="fas fa-money-bill-wave text-gray-600"></i>
+                                    </div>
+                                    <span class="ml-3 text-gray-900">RapiPago</span>
+                                </div>
+                            </div>
+
+                            <!-- Pagofacil -->
+                            <div class="payment-option flex items-center justify-between" data-payment="pagofacil">
+                                <div class="flex items-center">
+                                    <div class="w-8 h-8 flex items-center justify-center">
+                                        <i class="fas fa-money-check-alt text-gray-600"></i>
+                                    </div>
+                                    <span class="ml-3 text-gray-900">Pagofacil</span>
+                                </div>
+                            </div>
+
+                            <!-- Mercado Pago -->
+                            <div class="payment-option flex items-center justify-between" data-payment="mercado-pago">
+                                <div class="flex items-center">
+                                    <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/mercadopago.svg" class="w-6 h-6" alt="Mercado Pago">
+                                    <span class="ml-3 text-gray-900">Mercado Pago</span>
+                                </div>
+                            </div>
+
+                            <!-- Pagosnet -->
+                            <div class="payment-option flex items-center justify-between selected" data-payment="pagosnet">
+                                <div class="flex items-center">
+                                    <div class="w-8 h-8 flex items-center justify-center">
+                                        <i class="fas fa-credit-card text-gray-600"></i>
+                                    </div>
+                                    <span class="ml-3 text-gray-900">Pagosnet</span>
+                                </div>
+                            </div>
+
+                            <!-- Pix -->
+                            <div class="payment-option flex items-center justify-between" data-payment="pix">
+                                <div class="flex items-center">
+                                    <div class="w-8 h-8 flex items-center justify-center">
+                                        <i class="fas fa-qrcode text-gray-600"></i>
+                                    </div>
+                                    <span class="ml-3 text-gray-900">Pix</span>
+                                </div>
+                            </div>
+
+                            <!-- Pisp -->
+                            <div class="payment-option flex items-center justify-between" data-payment="pisp">
+                                <div class="flex items-center">
+                                    <div class="w-8 h-8 flex items-center justify-center">
+                                        <i class="fas fa-money-bill text-gray-600"></i>
+                                    </div>
+                                    <span class="ml-3 text-gray-900">Pisp</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="expand-button">
+                            <span class="expand-text">Show More</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Payment method selection
+            const paymentOptions = document.querySelectorAll('.payment-option');
+            const expandButton = document.querySelector('.expand-button');
+            const expandText = expandButton.querySelector('.expand-text');
+            const optionsContainer = document.querySelector('.payment-options-container');
+            
+            // Expand/collapse functionality
+            expandButton.addEventListener('click', function() {
+                const isExpanded = optionsContainer.classList.contains('expanded');
+                optionsContainer.classList.toggle('expanded');
+                expandButton.classList.toggle('expanded');
+                expandText.textContent = isExpanded ? 'Show More' : 'Show Less';
+            });
+
+            // Set initial selected state
+            const defaultSelected = document.querySelector('[data-payment="pagosnet"]');
+            if (defaultSelected) {
+                defaultSelected.classList.add('selected');
+            }
+            
+            paymentOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    // Remove selected state from other options
+                    paymentOptions.forEach(opt => {
+                        opt.classList.remove('selected');
+                    });
+                    // Add selected state to current option
+                    this.classList.add('selected');
+                });
+
+                // Add hover effect
+                option.addEventListener('mouseenter', function() {
+                    if (!this.classList.contains('selected')) {
+                        this.style.backgroundColor = '#f8f9fa';
+                    }
+                });
+
+                option.addEventListener('mouseleave', function() {
+                    if (!this.classList.contains('selected')) {
+                        this.style.backgroundColor = '';
+                    }
+                });
+            });
+
+            // Transaction details tooltip
+            const detailsButton = document.querySelector('.transaction-details');
+            const tooltip = document.querySelector('.tooltip');
+
+            detailsButton.addEventListener('mouseenter', function() {
+                tooltip.classList.add('show');
+            });
+
+            detailsButton.addEventListener('mouseleave', function() {
+                tooltip.classList.remove('show');
+            });
+        });
+    </script>
+</body>
+</html> 

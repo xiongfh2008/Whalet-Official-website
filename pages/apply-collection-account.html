@@ -47,11 +47,11 @@
                 <div class="p-4 border-b border-gray-200">
                     <div class="flex items-center justify-between">
                         <div class="flex items-center">
-                            <button class="mr-4 text-indigo-600 hover:text-indigo-900" onclick="window.location.href='platform-collection.html'">
+                            <button class="mr-4 text-indigo-600 hover:text-indigo-900" onclick="window.location.href='independent-site.html'">
                                 <i class="fas fa-arrow-left"></i>
                                 <span class="ml-1 text-sm">返回</span>
                             </button>
-                            <h1 class="text-xl font-medium text-gray-900">申请平台收款账户</h1>
+                            <h1 class="text-xl font-medium text-gray-900">申请独立站收款账户</h1>
                         </div>
                         <div class="relative">
                             <input type="text" id="platform-search" placeholder="搜索平台" class="w-80 pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm">
@@ -63,38 +63,17 @@
                 <div class="flex">
                     <!-- 左侧平台类型筛选 -->
                     <div class="w-56 border-r border-gray-200 p-4">
+                        <h3 class="text-sm font-medium text-gray-900 mb-3">热门平台</h3>
                         <div class="space-y-2">
-                            <button class="platform-type w-full text-left px-3 py-2 rounded-lg text-sm hover:bg-gray-50 selected" data-type="all">
-                                <i class="fas fa-globe mr-2"></i>全部平台
-                                <span class="float-right text-gray-500">30</span>
+                            <button class="w-full text-left px-3 py-2.5 rounded-lg text-sm hover:bg-gray-50 flex items-center">
+                                <i class="fab fa-shopify mr-2 text-green-600"></i>Shopify
                             </button>
-                            <button class="platform-type w-full text-left px-3 py-2 rounded-lg text-sm hover:bg-gray-50" data-type="ecommerce">
-                                <i class="fas fa-shopping-cart mr-2"></i>电商平台
-                                <span class="float-right text-gray-500">15</span>
+                            <button class="w-full text-left px-3 py-2.5 rounded-lg text-sm hover:bg-gray-50 flex items-center">
+                                <i class="fab fa-paypal mr-2 text-blue-600"></i>PayPal
                             </button>
-                            <button class="platform-type w-full text-left px-3 py-2 rounded-lg text-sm hover:bg-gray-50" data-type="independent">
-                                <i class="fas fa-store mr-2"></i>独立站
-                                <span class="float-right text-gray-500">8</span>
+                            <button class="w-full text-left px-3 py-2.5 rounded-lg text-sm hover:bg-gray-50 flex items-center">
+                                <i class="fab fa-stripe mr-2 text-purple-600"></i>Stripe
                             </button>
-                            <button class="platform-type w-full text-left px-3 py-2 rounded-lg text-sm hover:bg-gray-50" data-type="service">
-                                <i class="fas fa-handshake mr-2"></i>服务贸易
-                                <span class="float-right text-gray-500">7</span>
-                            </button>
-                        </div>
-
-                        <div class="mt-4 pt-4 border-t border-gray-200">
-                            <h3 class="text-xs font-medium text-gray-500 uppercase mb-2">热门平台</h3>
-                            <div class="space-y-2">
-                                <button class="w-full text-left px-3 py-2 rounded-lg text-sm hover:bg-gray-50">
-                                    <i class="fab fa-amazon mr-2 text-blue-600"></i>Amazon
-                                </button>
-                                <button class="w-full text-left px-3 py-2 rounded-lg text-sm hover:bg-gray-50">
-                                    <i class="fab fa-shopify mr-2 text-green-600"></i>Shopify
-                                </button>
-                                <button class="w-full text-left px-3 py-2 rounded-lg text-sm hover:bg-gray-50">
-                                    <i class="fab fa-tiktok mr-2"></i>TikTok Shop
-                                </button>
-                            </div>
                         </div>
                     </div>
 
@@ -112,30 +91,19 @@
     <script>
         // 平台数据
         const platforms = [
-            { id: 1, name: 'Amazon', logo: 'amazon.com', type: 'ecommerce', hot: true },
-            { id: 2, name: 'Qoo10', logo: 'qoo10.com', type: 'ecommerce', hot: true },
-            { id: 3, name: 'Shopee', logo: 'shopee.com', type: 'ecommerce', hot: true },
-            { id: 4, name: 'TikTok', logo: 'tiktok.com', type: 'ecommerce', hot: true },
-            { id: 5, name: 'Lazada', logo: 'lazada.com', type: 'ecommerce', hot: true },
-            { id: 6, name: 'AliExpress', logo: 'aliexpress.com', type: 'ecommerce', hot: true },
-            { id: 7, name: 'eBay', logo: 'ebay.com', type: 'ecommerce', hot: true },
-            { id: 8, name: 'DHGate', logo: 'dhgate.com', type: 'ecommerce', hot: false },
-            { id: 9, name: 'Etsy', logo: 'etsy.com', type: 'ecommerce', hot: false },
-            { id: 10, name: 'Mercari', logo: 'mercari.com', type: 'ecommerce', hot: false },
-            { id: 11, name: 'Wayfair', logo: 'wayfair.com', type: 'ecommerce', hot: false },
-            { id: 12, name: 'MercadoLibre', logo: 'mercadolibre.com', type: 'ecommerce', hot: false },
-            { id: 13, name: 'Newegg', logo: 'newegg.com', type: 'ecommerce', hot: false },
-            { id: 14, name: 'Vinted', logo: 'vinted.com', type: 'ecommerce', hot: false },
-            { id: 15, name: 'Cdiscount', logo: 'cdiscount.com', type: 'ecommerce', hot: false },
-            { id: 16, name: 'Darty', logo: 'darty.com', type: 'ecommerce', hot: false },
-            { id: 17, name: 'Fnac', logo: 'fnac.com', type: 'ecommerce', hot: false },
-            { id: 18, name: 'KAUFLAND.DE', logo: 'kaufland.de', type: 'ecommerce', hot: false },
-            { id: 19, name: 'Otto', logo: 'otto.de', type: 'ecommerce', hot: false },
-            { id: 20, name: 'Bukalapak', logo: 'bukalapak.com', type: 'ecommerce', hot: false },
-            { id: 21, name: 'JD_ID', logo: 'jd.com', type: 'ecommerce', hot: false },
-            { id: 22, name: 'Tokopedia', logo: 'tokopedia.com', type: 'ecommerce', hot: false },
-            { id: 23, name: 'Temu', logo: 'temu.com', type: 'ecommerce', hot: true },
-            { id: 24, name: 'SHEIN', logo: 'shein.com', type: 'ecommerce', hot: true }
+            { id: 1, name: 'Shopify', logo: 'shopify.com', type: 'independent', hot: true },
+            { id: 2, name: 'Shopyy', logo: 'shopyy.com', type: 'independent', hot: true },
+            { id: 3, name: 'PayPal', logo: 'paypal.com', type: 'payment', hot: true },
+            { id: 4, name: 'CashApp', logo: 'cash.app', type: 'payment', hot: true },
+            { id: 5, name: 'Stripe', logo: 'stripe.com', type: 'payment', hot: true },
+            { id: 6, name: 'Payssion', logo: 'payssion.com', type: 'payment', hot: false },
+            { id: 7, name: 'Adyen', logo: 'adyen.com', type: 'payment', hot: false },
+            { id: 8, name: 'WooCommerce', logo: 'woocommerce.com', type: 'independent', hot: false },
+            { id: 9, name: 'Magento', logo: 'magento.com', type: 'independent', hot: false },
+            { id: 10, name: 'OpenCart', logo: 'opencart.com', type: 'independent', hot: false },
+            { id: 11, name: 'PrestaShop', logo: 'prestashop.com', type: 'independent', hot: false },
+            { id: 12, name: 'Square', logo: 'squareup.com', type: 'payment', hot: false },
+            { id: 13, name: '自建站', logo: 'custom-site.com', type: 'independent', hot: true }
         ];
 
         let selectedPlatform = null;

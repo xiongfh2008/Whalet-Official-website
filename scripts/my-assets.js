@@ -86,14 +86,16 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
-// 模拟数据 - 实际应用中应从API获取
+// 货币数据模拟
 const mockData = {
-    totalAssets: 1234567.89,
     exchangeRates: {
         USD: 1,
         CNH: 7.25,
         EUR: 0.92,
-        GBP: 0.78
+        GBP: 0.78,
+        JPY: 150.25,
+        HKD: 7.82,
+        SGD: 1.35
     },
     currencies: [
         {
@@ -220,7 +222,31 @@ const mockData = {
             icon: 'wallet',
             iconBg: 'yellow'
         }
-    ]
+    ],
+    USD: {
+        total: 10000.00,
+        available: 8500.00,
+        unavailable: 1500.00,
+        symbol: '$'
+    },
+    CNH: {
+        total: 72000.00,
+        available: 61200.00,
+        unavailable: 10800.00,
+        symbol: '¥'
+    },
+    EUR: {
+        total: 9200.00,
+        available: 7820.00,
+        unavailable: 1380.00,
+        symbol: '€'
+    },
+    GBP: {
+        total: 7900.00,
+        available: 6715.00,
+        unavailable: 1185.00,
+        symbol: '£'
+    }
 };
 
 // 格式化货币
@@ -260,35 +286,65 @@ function formatCurrency(amount, currency, options = {}) {
     return formatter.format(amount);
 }
 
-// 初始化总资产
-function initTotalAssets() {
-    // 默认使用USD显示总资产
-    updateTotalAssets('USD', '$');
-}
+// 更新资产显示
+function updateAssetDisplay(currency) {
+    const data = mockData[currency];
+    if (!data) return;
 
-// 更新总资产显示
-function updateTotalAssets(currency, symbol) {
-    const rate = mockData.exchangeRates[currency];
-    const convertedAmount = mockData.totalAssets / mockData.exchangeRates.USD * rate;
-    
-    document.getElementById('totalAssetsValue').textContent = `${symbol}${convertedAmount.toLocaleString('zh-CN', {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2
-    })}`;
-    document.getElementById('currencyLabel').textContent = currency;
+    // 更新货币符号
+    document.querySelectorAll('.currency-symbol').forEach(el => {
+        el.textContent = data.symbol;
+    });
+
+    // 更新金额
+    document.getElementById('totalAssetsValue').innerHTML = 
+        `<span class="currency-symbol">${data.symbol}</span>${formatCurrency(data.total, currency, { isTotal: true })}`;
+    document.getElementById('availableAssetsValue').innerHTML = 
+        `<span class="currency-symbol">${data.symbol}</span>${formatCurrency(data.available, currency, { isTotal: true })}`;
+    document.getElementById('unavailableAssetsValue').innerHTML = 
+        `<span class="currency-symbol">${data.symbol}</span>${formatCurrency(data.unavailable, currency, { isTotal: true })}`;
+
+    // 更新币种选择器显示
     document.getElementById('selectedCurrency').textContent = currency;
-    
+
     // 更新资产组成的币种标签
     const currencyNames = {
         'USD': '美元',
         'CNH': '人民币',
         'EUR': '欧元',
-        'GBP': '英镑'
+        'GBP': '英镑',
+        'JPY': '日元',
+        'HKD': '港币',
+        'SGD': '新加坡元'
     };
     document.getElementById('compositionCurrencyLabel').textContent = currencyNames[currency] || currency;
-    
-    // 更新资产组成数据
+
+    // 更新币种筛选器的选中状态
+    const selectedFilter = document.getElementById('selectedFilter');
+    const currencyData = mockData.currencies.find(c => c.code === currency);
+    if (currencyData) {
+        selectedFilter.innerHTML = `
+            <div class="flex items-center">
+                <img src="https://cdn.jsdelivr.net/gh/lipis/flag-icons/flags/4x3/${currencyData.flag}.svg" 
+                     class="w-4 h-4 rounded-full mr-2" 
+                     alt="${currency}">
+                <span class="font-medium">${currency}</span>
+                <span class="text-gray-500 ml-1">${currencyData.name}</span>
+            </div>
+        `;
+    }
+
+    // 更新资产组成
     updateAssetComposition(currency);
+    
+    // 更新币种列表
+    updateCurrencyList(currency);
+}
+
+// 初始化总资产
+function initTotalAssets() {
+    // 默认使用USD显示总资产
+    updateAssetDisplay('USD');
 }
 
 // 初始化资产币种选择器
@@ -328,8 +384,7 @@ function initAssetCurrencySelector() {
         currencyButtons.forEach(button => {
             button.addEventListener('click', () => {
                 const currency = button.getAttribute('data-currency');
-                const symbol = button.getAttribute('data-symbol');
-                updateTotalAssets(currency, symbol);
+                updateAssetDisplay(currency);
                 hideAssetCurrencyDropdown();
             });
         });
@@ -349,7 +404,7 @@ function initAssetCurrencySelector() {
 // 初始化资产组成饼图
 function initAssetComposition() {
     // 默认使用USD显示资产组成
-    updateAssetComposition('USD');
+    updateAssetDisplay('USD');
 }
 
 // 更新资产组成饼图数据
@@ -375,7 +430,6 @@ function updateAssetComposition(currency) {
         }
         
         const ctx = canvas.getContext('2d');
-        const rate = mockData.exchangeRates[currency];
         
         // 计算每种币种的总资产（可用+不可用）并转换为选定币种
         const currencyTotals = mockData.currencies.map(curr => {
@@ -393,8 +447,8 @@ function updateAssetComposition(currency) {
             }
             
             // 其他币种需要转换为选定币种
-            const currencyRate = mockData.exchangeRates[curr.code] || 1;
-            const convertedTotal = (totalInCurrency / currencyRate) * rate;
+            const rate = mockData.exchangeRates[currency] / mockData.exchangeRates[curr.code];
+            const convertedTotal = totalInCurrency * rate;
             
             return {
                 code: curr.code,
@@ -409,7 +463,7 @@ function updateAssetComposition(currency) {
         // 计算转换后的总资产
         const grandTotal = currencyTotals.reduce((sum, curr) => sum + curr.totalConverted, 0);
         
-        // 生成币种占比列表HTML - 这部分可能是比较快的，先执行
+        // 生成币种占比列表HTML
         generateCompositionList(currency, currencyTotals, grandTotal);
         console.log("币种占比列表生成完成");
         
@@ -433,7 +487,6 @@ function updateAssetComposition(currency) {
                         window.assetChart.destroy();
                     } catch (error) {
                         console.warn('销毁旧图表时出错:', error);
-                        // 错误不影响继续执行
                     }
                 }
                 
@@ -478,7 +531,7 @@ function updateAssetComposition(currency) {
             } catch (chartError) {
                 console.error('创建资产组成图表时出错:', chartError);
             }
-        }, 100); // 给UI线程一些时间响应
+        }, 100);
         
     } catch (error) {
         console.error('更新资产组成时出错:', error);
@@ -755,23 +808,13 @@ function initCurrencyFilter() {
         const filter = button.dataset.filter;
         if (filter === 'all') {
             selectedFilter.innerHTML = '<span>全部币种</span>';
+            updateCurrencyList('all');
         } else {
-            const currency = mockData.currencies.find(c => c.code === filter);
-            if (currency) {
-                selectedFilter.innerHTML = `
-                    <div class="flex items-center">
-                        <img src="https://cdn.jsdelivr.net/gh/lipis/flag-icons/flags/4x3/${currency.flag}.svg" 
-                             class="w-4 h-4 rounded-full mr-2" 
-                             alt="${currency.code}">
-                        <span class="font-medium">${currency.code}</span>
-                        <span class="text-gray-500 ml-1">${currency.name}</span>
-                    </div>
-                `;
-            }
+            // 同步更新资产显示和币种选择
+            updateAssetDisplay(filter);
         }
         
         hideFilterDropdown();
-        updateCurrencyList(filter);
     });
 
     // 隐藏下拉菜单

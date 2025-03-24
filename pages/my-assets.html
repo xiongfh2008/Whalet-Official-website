@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#0078d4">
-    <title>我的资产 - Whalet</title>
+    <title>账户总览 - Whalet</title>
     <!-- 引入 Tailwind CSS -->
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <!-- 引入字体 -->
@@ -230,8 +230,11 @@
             <div class="border-b border-gray-200">
                 <div class="flex justify-between items-center">
                     <nav class="flex justify-start -mb-px pl-6">
-                        <button class="tab-btn active whitespace-nowrap py-4 px-8 border-b-2 text-center text-sm font-medium">
+                        <button class="tab-btn active whitespace-nowrap py-4 px-8 border-b-2 text-center text-sm font-medium" data-tab="assets">
                             我的资产
+                        </button>
+                        <button class="tab-btn whitespace-nowrap py-4 px-8 border-b-2 text-center text-sm font-medium" data-tab="bank-accounts">
+                            银行账户
                         </button>
                     </nav>
                     <div class="flex items-center space-x-6 pr-6">
@@ -311,8 +314,8 @@
         </div>
 
         <!-- 资产内容 -->
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
-            <!-- 总资产预估 -->
+        <div id="assets-content" class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+            <!-- 总资产总额 -->
             <section class="lg:col-span-4 gradient-card rounded-xl p-5">
                 <div class="flex flex-col">
                     <h2 class="flex items-center justify-between">
@@ -320,12 +323,14 @@
                             <div class="p-2 rounded-lg bg-white/10">
                                 <i class="fas fa-chart-line"></i>
                             </div>
-                            总资产预估
+                            资产总额
+                            <button id="totalAssetsTooltip" class="text-white/80 hover:text-white" data-tippy-content="系统根据汇率以选定币种估算的当前账户总余额，仅供参考">
+                                <i class="fas fa-circle-info text-xs"></i>
+                            </button>
                         </div>
                         <!-- 添加币种选择器 -->
                         <div class="relative">
                             <button id="assetCurrencyBtn" class="flex items-center space-x-2 px-3 py-1.5 text-sm text-white bg-white/10 hover:bg-white/20 rounded-lg transition-colors duration-200">
-                                <span class="mr-1">折算成</span>
                                 <span id="selectedCurrency">USD</span>
                                 <i class="fas fa-chevron-down text-xs transition-transform duration-200"></i>
                             </button>
@@ -358,26 +363,23 @@
                         </div>
                     </h2>
                     <div class="mt-4">
-                        <div class="text-sm font-medium text-white/80 mb-1">
-                            总资产 (<span id="currencyLabel">USD</span>)
-                            <button id="totalAssetsTooltip" class="text-white/80 hover:text-white" data-tippy-content="系统根据汇率以选定币种估算的当前账户总余额，仅供参考">
-                                <i class="fas fa-circle-info text-xs"></i>
-                            </button>
+                        <div class="text-sm font-medium text-white/80 mb-1">总金额</div>
+                        <div class="stats-value text-white mb-6" id="totalAssetsValue">
+                            <span class="currency-symbol">$</span>0.00
                         </div>
-                        <div class="stats-value text-white mb-4" id="totalAssetsValue">$0.00</div>
-                        <div class="flex flex-wrap gap-2">
-                            <button class="btn-white-transparent" onclick="window.location.href='withdrawal.html'">
-                                <i class="fas fa-download"></i>
-                                提现
-                            </button>
-                            <button class="btn-white-transparent" onclick="window.location.href='payment.html'">
-                                <i class="fas fa-paper-plane"></i>
-                                付款
-                            </button>
-                            <button class="btn-white-transparent" onclick="window.location.href='forex.html'">
-                                <i class="fas fa-exchange-alt"></i>
-                                汇兑
-                            </button>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <div class="text-sm font-medium text-white/80 mb-1">可用金额</div>
+                                <div class="text-lg text-white mb-4" id="availableAssetsValue">
+                                    <span class="currency-symbol">$</span>0.00
+                                </div>
+                            </div>
+                            <div>
+                                <div class="text-sm font-medium text-white/80 mb-1">不可用金额</div>
+                                <div class="text-lg text-white mb-4" id="unavailableAssetsValue">
+                                    <span class="currency-symbol">$</span>0.00
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -413,93 +415,107 @@
             <section class="lg:col-span-12 bg-white rounded-xl shadow-sm overflow-hidden">
                 <div class="p-5 border-b border-gray-100 flex justify-between items-center">
                     <h3 class="text-lg font-medium text-gray-800">账户明细</h3>
-                    <div class="relative">
-                        <button id="currencyFilterBtn" class="flex items-center space-x-2 px-3 py-1.5 text-sm text-gray-600 bg-gray-50 hover:bg-gray-100 rounded-lg transition-colors duration-200">
-                            <div id="selectedFilter" class="flex items-center">
-                                <span>全部币种</span>
-                            </div>
-                            <i class="fas fa-chevron-down text-xs transition-transform duration-200"></i>
+                    <div class="flex items-center space-x-3">
+                        <button class="px-3 py-1.5 text-sm text-gray-600 bg-gray-50 hover:bg-gray-100 rounded-lg transition-colors duration-200 flex items-center gap-2" onclick="window.location.href='withdrawal.html'">
+                            <i class="fas fa-download text-sm"></i>
+                            提现
                         </button>
-                        <div id="currencyFilterDropdown" class="absolute right-0 top-full mt-1 w-56 bg-white rounded-lg shadow-lg py-2 hidden z-20">
-                            <div class="px-3 pb-2">
-                                <div class="relative">
-                                    <input type="text" 
-                                           id="currencySearch" 
-                                           class="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:outline-none focus:border-blue-500" 
-                                           placeholder="搜索币种..."
-                                    >
-                                    <i class="fas fa-search absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm"></i>
+                        <button class="px-3 py-1.5 text-sm text-gray-600 bg-gray-50 hover:bg-gray-100 rounded-lg transition-colors duration-200 flex items-center gap-2" onclick="window.location.href='payment.html'">
+                            <i class="fas fa-paper-plane text-sm"></i>
+                            付款
+                        </button>
+                        <button class="px-3 py-1.5 text-sm text-gray-600 bg-gray-50 hover:bg-gray-100 rounded-lg transition-colors duration-200 flex items-center gap-2" onclick="window.location.href='forex.html'">
+                            <i class="fas fa-exchange-alt text-sm"></i>
+                            汇兑
+                        </button>
+                        <div class="relative">
+                            <button id="currencyFilterBtn" class="flex items-center space-x-2 px-3 py-1.5 text-sm text-gray-600 bg-gray-50 hover:bg-gray-100 rounded-lg transition-colors duration-200">
+                                <div id="selectedFilter" class="flex items-center">
+                                    <span>全部币种</span>
                                 </div>
-                            </div>
-                            <div class="border-t border-gray-100"></div>
-                            <button class="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100 cursor-pointer" data-filter="all">
-                                全部币种
+                                <i class="fas fa-chevron-down text-xs transition-transform duration-200"></i>
                             </button>
-                            <div class="border-t border-gray-100 my-1"></div>
-                            <div id="currencyList" class="max-h-64 overflow-y-auto">
-                                <button class="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100 cursor-pointer" data-filter="CNH">
-                                    <div class="flex items-center">
-                                        <img src="https://cdn.jsdelivr.net/gh/lipis/flag-icons/flags/4x3/cn.svg" class="w-4 h-4 rounded-full mr-2" alt="CNH">
-                                        <div>
-                                            <span class="font-medium">CNH</span>
-                                            <span class="text-gray-500 ml-1">跨境人民币</span>
-                                        </div>
+                            <div id="currencyFilterDropdown" class="absolute right-0 top-full mt-1 w-56 bg-white rounded-lg shadow-lg py-2 hidden z-20">
+                                <div class="px-3 pb-2">
+                                    <div class="relative">
+                                        <input type="text" 
+                                               id="currencySearch" 
+                                               class="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:outline-none focus:border-blue-500" 
+                                               placeholder="搜索币种..."
+                                        >
+                                        <i class="fas fa-search absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm"></i>
                                     </div>
+                                </div>
+                                <div class="border-t border-gray-100"></div>
+                                <button class="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100 cursor-pointer" data-filter="all">
+                                    全部币种
                                 </button>
-                                <button class="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100 cursor-pointer" data-filter="USD">
-                                    <div class="flex items-center">
-                                        <img src="https://cdn.jsdelivr.net/gh/lipis/flag-icons/flags/4x3/us.svg" class="w-4 h-4 rounded-full mr-2" alt="USD">
-                                        <div>
-                                            <span class="font-medium">USD</span>
-                                            <span class="text-gray-500 ml-1">美元</span>
+                                <div class="border-t border-gray-100 my-1"></div>
+                                <div id="currencyList" class="max-h-64 overflow-y-auto">
+                                    <button class="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100 cursor-pointer" data-filter="CNH">
+                                        <div class="flex items-center">
+                                            <img src="https://cdn.jsdelivr.net/gh/lipis/flag-icons/flags/4x3/cn.svg" class="w-4 h-4 rounded-full mr-2" alt="CNH">
+                                            <div>
+                                                <span class="font-medium">CNH</span>
+                                                <span class="text-gray-500 ml-1">跨境人民币</span>
+                                            </div>
                                         </div>
-                                    </div>
-                                </button>
-                                <button class="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100 cursor-pointer" data-filter="EUR">
-                                    <div class="flex items-center">
-                                        <img src="https://cdn.jsdelivr.net/gh/lipis/flag-icons/flags/4x3/eu.svg" class="w-4 h-4 rounded-full mr-2" alt="EUR">
-                                        <div>
-                                            <span class="font-medium">EUR</span>
-                                            <span class="text-gray-500 ml-1">欧元</span>
+                                    </button>
+                                    <button class="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100 cursor-pointer" data-filter="USD">
+                                        <div class="flex items-center">
+                                            <img src="https://cdn.jsdelivr.net/gh/lipis/flag-icons/flags/4x3/us.svg" class="w-4 h-4 rounded-full mr-2" alt="USD">
+                                            <div>
+                                                <span class="font-medium">USD</span>
+                                                <span class="text-gray-500 ml-1">美元</span>
+                                            </div>
                                         </div>
-                                    </div>
-                                </button>
-                                <button class="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100 cursor-pointer" data-filter="GBP">
-                                    <div class="flex items-center">
-                                        <img src="https://cdn.jsdelivr.net/gh/lipis/flag-icons/flags/4x3/gb.svg" class="w-4 h-4 rounded-full mr-2" alt="GBP">
-                                        <div>
-                                            <span class="font-medium">GBP</span>
-                                            <span class="text-gray-500 ml-1">英镑</span>
+                                    </button>
+                                    <button class="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100 cursor-pointer" data-filter="EUR">
+                                        <div class="flex items-center">
+                                            <img src="https://cdn.jsdelivr.net/gh/lipis/flag-icons/flags/4x3/eu.svg" class="w-4 h-4 rounded-full mr-2" alt="EUR">
+                                            <div>
+                                                <span class="font-medium">EUR</span>
+                                                <span class="text-gray-500 ml-1">欧元</span>
+                                            </div>
                                         </div>
-                                    </div>
-                                </button>
-                                <button class="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100 cursor-pointer" data-filter="JPY">
-                                    <div class="flex items-center">
-                                        <img src="https://cdn.jsdelivr.net/gh/lipis/flag-icons/flags/4x3/jp.svg" class="w-4 h-4 rounded-full mr-2" alt="JPY">
-                                        <div>
-                                            <span class="font-medium">JPY</span>
-                                            <span class="text-gray-500 ml-1">日元</span>
+                                    </button>
+                                    <button class="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100 cursor-pointer" data-filter="GBP">
+                                        <div class="flex items-center">
+                                            <img src="https://cdn.jsdelivr.net/gh/lipis/flag-icons/flags/4x3/gb.svg" class="w-4 h-4 rounded-full mr-2" alt="GBP">
+                                            <div>
+                                                <span class="font-medium">GBP</span>
+                                                <span class="text-gray-500 ml-1">英镑</span>
+                                            </div>
                                         </div>
-                                    </div>
-                                </button>
-                                <button class="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100 cursor-pointer" data-filter="HKD">
-                                    <div class="flex items-center">
-                                        <img src="https://cdn.jsdelivr.net/gh/lipis/flag-icons/flags/4x3/hk.svg" class="w-4 h-4 rounded-full mr-2" alt="HKD">
-                                        <div>
-                                            <span class="font-medium">HKD</span>
-                                            <span class="text-gray-500 ml-1">港币</span>
+                                    </button>
+                                    <button class="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100 cursor-pointer" data-filter="JPY">
+                                        <div class="flex items-center">
+                                            <img src="https://cdn.jsdelivr.net/gh/lipis/flag-icons/flags/4x3/jp.svg" class="w-4 h-4 rounded-full mr-2" alt="JPY">
+                                            <div>
+                                                <span class="font-medium">JPY</span>
+                                                <span class="text-gray-500 ml-1">日元</span>
+                                            </div>
                                         </div>
-                                    </div>
-                                </button>
-                                <button class="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100 cursor-pointer" data-filter="SGD">
-                                    <div class="flex items-center">
-                                        <img src="https://cdn.jsdelivr.net/gh/lipis/flag-icons/flags/4x3/sg.svg" class="w-4 h-4 rounded-full mr-2" alt="SGD">
-                                        <div>
-                                            <span class="font-medium">SGD</span>
-                                            <span class="text-gray-500 ml-1">新加坡元</span>
+                                    </button>
+                                    <button class="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100 cursor-pointer" data-filter="HKD">
+                                        <div class="flex items-center">
+                                            <img src="https://cdn.jsdelivr.net/gh/lipis/flag-icons/flags/4x3/hk.svg" class="w-4 h-4 rounded-full mr-2" alt="HKD">
+                                            <div>
+                                                <span class="font-medium">HKD</span>
+                                                <span class="text-gray-500 ml-1">港币</span>
+                                            </div>
                                         </div>
-                                    </div>
-                                </button>
+                                    </button>
+                                    <button class="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100 cursor-pointer" data-filter="SGD">
+                                        <div class="flex items-center">
+                                            <img src="https://cdn.jsdelivr.net/gh/lipis/flag-icons/flags/4x3/sg.svg" class="w-4 h-4 rounded-full mr-2" alt="SGD">
+                                            <div>
+                                                <span class="font-medium">SGD</span>
+                                                <span class="text-gray-500 ml-1">新加坡元</span>
+                                            </div>
+                                        </div>
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -548,10 +564,1127 @@
                 </div>
             </section>
         </div>
+
+        <!-- 银行账户内容 -->
+        <div id="bank-accounts-content" class="grid grid-cols-1 lg:grid-cols-12 gap-6 hidden">
+            <!-- 统计概况 -->
+            <section class="lg:col-span-12 bg-white rounded-xl shadow-sm p-5">
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="flex items-center gap-3 text-lg font-semibold text-gray-800">
+                        <div class="p-2 rounded-lg" style="background-color: rgba(125, 51, 255, 0.1);">
+                            <i class="fas fa-chart-pie" style="color: #7D33FF;"></i>
+                        </div>
+                        统计概况
+                    </h2>
+                    <div class="flex items-center gap-3">
+                        <div class="relative">
+                            <input type="text" 
+                                   placeholder="搜索银行/持有人" 
+                                   class="pl-8 pr-3 py-1.5 text-sm border border-gray-200 rounded-lg focus:outline-none focus:border-purple-500"
+                            >
+                            <i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm"></i>
+                        </div>
+                        <button class="p-1.5 text-gray-400 hover:text-purple-600">
+                            <i class="fas fa-sort-amount-down"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                    <!-- 总开卡数统计 -->
+                    <div class="bg-gray-50 rounded-lg p-4">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-sm text-gray-600">总开卡数</span>
+                            <i class="fas fa-credit-card text-purple-600"></i>
+                        </div>
+                        <div class="text-2xl font-bold text-gray-900">50<span class="text-sm font-normal text-gray-500 ml-1">张</span></div>
+                    </div>
+
+                    <!-- 总持有人数 -->
+                    <div class="bg-gray-50 rounded-lg p-4">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-sm text-gray-600">总持有人数</span>
+                            <i class="fas fa-users text-purple-600"></i>
+                        </div>
+                        <div class="text-2xl font-bold text-gray-900">8<span class="text-sm font-normal text-gray-500 ml-1">人</span></div>
+                    </div>
+
+                    <!-- 银行数量 -->
+                    <div class="bg-gray-50 rounded-lg p-4">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-sm text-gray-600">银行数量</span>
+                            <i class="fas fa-university text-purple-600"></i>
+                        </div>
+                        <div class="text-2xl font-bold text-gray-900">12<span class="text-sm font-normal text-gray-500 ml-1">家</span></div>
+                    </div>
+
+                    <!-- 即将注销 -->
+                    <div class="bg-gray-50 rounded-lg p-4">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-sm text-gray-600">即将注销</span>
+                            <i class="fas fa-exclamation-circle text-yellow-500"></i>
+                        </div>
+                        <div class="text-2xl font-bold text-gray-900">3<span class="text-sm font-normal text-gray-500 ml-1">张</span></div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 mt-4">
+                    <!-- 银行开卡TOP5 -->
+                    <div class="border border-gray-100 rounded-lg p-4">
+                        <div class="flex items-center justify-between mb-3">
+                            <h3 class="text-sm font-medium text-gray-700">银行开卡TOP5</h3>
+                            <button class="text-xs text-purple-600 hover:text-purple-800" data-modal="bankStats">查看全部</button>
+                        </div>
+                        <div class="space-y-2">
+                            <div class="flex items-center justify-between py-2">
+                                <div class="flex items-center gap-2">
+                                    <span class="text-sm text-gray-900">Bank of America</span>
+                                </div>
+                                <span class="text-sm font-medium" style="color: #7D33FF;">12张</span>
+                            </div>
+                            <div class="flex items-center justify-between py-2">
+                                <div class="flex items-center gap-2">
+                                    <span class="text-sm text-gray-900">Chase Bank</span>
+                                </div>
+                                <span class="text-sm font-medium" style="color: #7D33FF;">8张</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 持有人开卡TOP5 -->
+                    <div class="border border-gray-100 rounded-lg p-4">
+                        <div class="flex items-center justify-between mb-3">
+                            <h3 class="text-sm font-medium text-gray-700">持有人开卡TOP5</h3>
+                            <button class="text-xs text-purple-600 hover:text-purple-800" data-modal="holderStats">查看全部</button>
+                        </div>
+                        <div class="space-y-2">
+                            <div class="flex items-center justify-between py-2">
+                                <div class="flex items-center gap-2">
+                                    <div class="w-6 h-6 rounded-full bg-purple-100 flex items-center justify-center">
+                                        <i class="fas fa-user text-xs text-purple-600"></i>
+                                    </div>
+                                    <div>
+                                        <span class="text-sm text-gray-900">Zhang Shanshan</span>
+                                        <span class="text-xs text-gray-500 ml-1">主账户</span>
+                                    </div>
+                                </div>
+                                <span class="text-sm font-medium" style="color: #7D33FF;">15张</span>
+                            </div>
+                            <div class="flex items-center justify-between py-2">
+                                <div class="flex items-center gap-2">
+                                    <div class="w-6 h-6 rounded-full bg-purple-100 flex items-center justify-center">
+                                        <i class="fas fa-user text-xs text-purple-600"></i>
+                                    </div>
+                                    <div>
+                                        <span class="text-sm text-gray-900">Li Wei</span>
+                                        <span class="text-xs text-gray-500 ml-1">持有人</span>
+                                    </div>
+                                </div>
+                                <span class="text-sm font-medium" style="color: #7D33FF;">5张</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 银行账户明细 -->
+            <section class="lg:col-span-12 bg-white rounded-xl shadow-sm overflow-hidden">
+                <div class="p-5 border-b border-gray-100 flex justify-between items-center">
+                    <h3 class="text-lg font-medium text-gray-800">收款账户</h3>
+                    <div class="flex items-center gap-3">
+                        <button id="batchExtendBtn" class="px-4 py-2 text-sm text-white bg-green-600 hover:bg-green-700 rounded-lg transition-colors duration-200">
+                            批量延长
+                        </button>
+                        <button id="batchCancelBtn" class="px-4 py-2 text-sm text-white bg-red-600 hover:bg-red-700 rounded-lg transition-colors duration-200">
+                            批量注销
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 查询条件 -->
+                <div class="p-5 border-b border-gray-100">
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                        <!-- 银行名称 -->
+                        <div class="relative">
+                            <label class="block text-sm font-medium text-gray-700 mb-1">银行名称</label>
+                            <select class="w-full pl-3 pr-8 py-2 text-sm border border-gray-200 rounded-lg focus:outline-none focus:border-purple-500 appearance-none bg-white">
+                                <option value="">全部</option>
+                                <option value="boa">Bank of America</option>
+                                <option value="chase">Chase Bank</option>
+                            </select>
+                            <i class="fas fa-chevron-down absolute right-3 top-1/2 text-gray-400 text-xs pointer-events-none"></i>
+                        </div>
+
+                        <!-- 平台名称 -->
+                        <div class="relative">
+                            <label class="block text-sm font-medium text-gray-700 mb-1">平台名称</label>
+                            <select class="w-full pl-3 pr-8 py-2 text-sm border border-gray-200 rounded-lg focus:outline-none focus:border-purple-500 appearance-none bg-white">
+                                <option value="">全部</option>
+                                <option value="amazon">Amazon</option>
+                                <option value="shopify">Shopify</option>
+                                <option value="trade">外贸收款</option>
+                            </select>
+                            <i class="fas fa-chevron-down absolute right-3 top-1/2 text-gray-400 text-xs pointer-events-none"></i>
+                        </div>
+
+                        <!-- 持有人 -->
+                        <div class="relative">
+                            <label class="block text-sm font-medium text-gray-700 mb-1">持有人</label>
+                            <select class="w-full pl-3 pr-8 py-2 text-sm border border-gray-200 rounded-lg focus:outline-none focus:border-purple-500 appearance-none bg-white">
+                                <option value="">全部</option>
+                                <option value="zhang">Zhang Shanshan</option>
+                                <option value="li">Li Wei</option>
+                            </select>
+                            <i class="fas fa-chevron-down absolute right-3 top-1/2 text-gray-400 text-xs pointer-events-none"></i>
+                        </div>
+
+                        <!-- 状态 -->
+                        <div class="relative">
+                            <label class="block text-sm font-medium text-gray-700 mb-1">状态</label>
+                            <select class="w-full pl-3 pr-8 py-2 text-sm border border-gray-200 rounded-lg focus:outline-none focus:border-purple-500 appearance-none bg-white">
+                                <option value="">全部</option>
+                                <option value="opening">开卡中</option>
+                                <option value="open_failed">开卡失败</option>
+                                <option value="activating">激活中</option>
+                                <option value="normal">正常</option>
+                                <option value="inactive">未激活</option>
+                                <option value="activate_failed">激活失败</option>
+                                <option value="cancelling">注销中</option>
+                                <option value="cancelled">已注销</option>
+                                <option value="disabled">已停用</option>
+                            </select>
+                            <i class="fas fa-chevron-down absolute right-3 top-1/2 text-gray-400 text-xs pointer-events-none"></i>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center justify-between mt-4">
+                        <div class="flex items-center gap-4">
+                            <!-- 自动续费 -->
+                            <label class="flex items-center gap-2 text-sm text-gray-600">
+                                <input type="checkbox" class="form-checkbox text-purple-600 rounded">
+                                仅看自动续费
+                            </label>
+                            <!-- 即将注销 -->
+                            <label class="flex items-center gap-2 text-sm text-gray-600">
+                                <input type="checkbox" class="form-checkbox text-purple-600 rounded">
+                                即将注销
+                            </label>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <button class="px-4 py-1.5 text-sm text-gray-600 hover:text-gray-900">
+                                重置
+                            </button>
+                            <button class="px-4 py-1.5 text-sm text-white bg-purple-600 hover:bg-purple-700 rounded-lg transition-colors duration-200">
+                                查询
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 表格部分保持不变 -->
+                <div class="overflow-x-auto">
+                    <table class="w-full">
+                        <thead>
+                            <tr class="table-header">
+                                <th class="px-5 py-4 text-left text-sm font-medium text-gray-600">银行名称</th>
+                                <th class="px-5 py-4 text-left text-sm font-medium text-gray-600">平台名称</th>
+                                <th class="px-5 py-4 text-left text-sm font-medium text-gray-600">账户名称</th>
+                                <th class="px-5 py-4 text-left text-sm font-medium text-gray-600">卡号</th>
+                                <th class="px-5 py-4 text-left text-sm font-medium text-gray-600">币种</th>
+                                <th class="px-5 py-4 text-left text-sm font-medium text-gray-600">注销日期</th>
+                                <th class="px-5 py-4 text-center text-sm font-medium text-gray-600">自动续费</th>
+                                <th class="px-5 py-4 text-left text-sm font-medium text-gray-600">状态</th>
+                                <th class="px-5 py-4 text-center text-sm font-medium text-gray-600">操作</th>
+                            </tr>
+                        </thead>
+                        <tbody id="bankAccountsList">
+                            <!-- 示例数据 - 正常状态 -->
+                            <tr class="border-b border-gray-100">
+                                <td class="px-5 py-4">
+                                    <div class="flex items-center">
+                                        <span class="font-medium text-gray-900">Bank of America</span>
+                                    </div>
+                                </td>
+                                <td class="px-5 py-4 text-sm text-gray-600">Amazon US</td>
+                                <td class="px-5 py-4 text-sm text-gray-600">ZHANG SHANSHAN</td>
+                                <td class="px-5 py-4 text-sm text-gray-600">****4567</td>
+                                <td class="px-5 py-4 text-sm text-gray-600">USD</td>
+                                <td class="px-5 py-4 text-sm text-gray-600">2024-12-31</td>
+                                <td class="px-5 py-4 text-center">
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                        已开启
+                                    </span>
+                                </td>
+                                <td class="px-5 py-4">
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                        正常
+                                    </span>
+                                </td>
+                                <td class="px-5 py-4">
+                                    <div class="flex items-center justify-center space-x-2">
+                                        <a href="account-details.html" class="text-sm text-purple-600 hover:text-purple-800">详情</a>
+                                        <div class="relative" x-data="{ open: false }">
+                                            <button @click="open = !open" class="text-sm text-purple-600 hover:text-purple-800 flex items-center">
+                                                更多
+                                                <i class="fas fa-chevron-down ml-1 text-xs transition-transform duration-200" :class="{ 'transform rotate-180': open }"></i>
+                                            </button>
+                                            <div x-show="open" 
+                                                 @click.away="open = false"
+                                                 x-transition:enter="transition ease-out duration-200"
+                                                 x-transition:enter-start="opacity-0 transform scale-95"
+                                                 x-transition:enter-end="opacity-100 transform scale-100"
+                                                 x-transition:leave="transition ease-in duration-75"
+                                                 x-transition:leave-start="opacity-100 transform scale-100"
+                                                 x-transition:leave-end="opacity-0 transform scale-95"
+                                                 class="absolute right-0 mt-2 w-40 bg-white rounded-lg shadow-lg py-2 z-10">
+                                                <button onclick="window.location.href='extend-expiry.html'" class="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100">延长注销</button>
+                                                <button onclick="showCancelConfirmation(this)" class="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100" data-account="*******4567" data-name="ZHANG SHANSHAN">注销</button>
+                                                <button class="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100">关闭续费</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <!-- 示例数据 - 未激活状态 -->
+                            <tr class="border-b border-gray-100">
+                                <td class="px-5 py-4">
+                                    <div class="flex items-center">
+                                        <span class="font-medium text-gray-900">Chase Bank</span>
+                                    </div>
+                                </td>
+                                <td class="px-5 py-4 text-sm text-gray-600">Shopify</td>
+                                <td class="px-5 py-4 text-sm text-gray-600">LI WEI</td>
+                                <td class="px-5 py-4 text-sm text-gray-600">****8901</td>
+                                <td class="px-5 py-4 text-sm text-gray-600">USD</td>
+                                <td class="px-5 py-4 text-sm text-gray-600">-</td>
+                                <td class="px-5 py-4 text-center">
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+                                        未开启
+                                    </span>
+                                </td>
+                                <td class="px-5 py-4">
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
+                                        未激活
+                                    </span>
+                                </td>
+                                <td class="px-5 py-4">
+                                    <div class="flex items-center justify-center space-x-2">
+                                        <a href="account-details.html" class="text-sm text-purple-600 hover:text-purple-800">详情</a>
+                                        <button class="text-sm text-purple-600 hover:text-purple-800">绑定店铺</button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <!-- 示例数据 - 外贸收款 -->
+                            <tr class="border-b border-gray-100">
+                                <td class="px-5 py-4">
+                                    <div class="flex items-center">
+                                        <span class="font-medium text-gray-900">Citibank</span>
+                                    </div>
+                                </td>
+                                <td class="px-5 py-4 text-sm text-gray-600">外贸收款</td>
+                                <td class="px-5 py-4 text-sm text-gray-600">ZHANG SHANSHAN</td>
+                                <td class="px-5 py-4 text-sm text-gray-600">****3456</td>
+                                <td class="px-5 py-4 text-sm text-gray-600">USD</td>
+                                <td class="px-5 py-4 text-sm text-gray-600">2024-10-15</td>
+                                <td class="px-5 py-4 text-center">
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                        已开启
+                                    </span>
+                                </td>
+                                <td class="px-5 py-4">
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                        正常
+                                    </span>
+                                </td>
+                                <td class="px-5 py-4">
+                                    <div class="flex items-center justify-center space-x-2">
+                                        <a href="foreign-trade-account-details.html" class="text-sm text-purple-600 hover:text-purple-800">详情</a>
+                                        <div class="relative" x-data="{ open: false }">
+                                            <button @click="open = !open" class="text-sm text-purple-600 hover:text-purple-800 flex items-center">
+                                                更多
+                                                <i class="fas fa-chevron-down ml-1 text-xs transition-transform duration-200" :class="{ 'transform rotate-180': open }"></i>
+                                            </button>
+                                            <div x-show="open" 
+                                                 @click.away="open = false"
+                                                 x-transition:enter="transition ease-out duration-200"
+                                                 x-transition:enter-start="opacity-0 transform scale-95"
+                                                 x-transition:enter-end="opacity-100 transform scale-100"
+                                                 x-transition:leave="transition ease-in duration-75"
+                                                 x-transition:leave-start="opacity-100 transform scale-100"
+                                                 x-transition:leave-end="opacity-0 transform scale-95"
+                                                 class="absolute right-0 mt-2 w-40 bg-white rounded-lg shadow-lg py-2 z-10">
+                                                <button onclick="window.location.href='extend-expiry.html'" class="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100">延长注销</button>
+                                                <button onclick="showCancelConfirmation(this)" class="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100" data-account="*******4567" data-name="ZHANG SHANSHAN">注销</button>
+                                                <button class="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100">关闭续费</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <!-- 新增记录 - 正常状态，未开启自动续费 -->
+                            <tr class="border-b border-gray-100">
+                                <td class="px-5 py-4">
+                                    <div class="flex items-center">
+                                        <span class="font-medium text-gray-900">Wells Fargo</span>
+                                    </div>
+                                </td>
+                                <td class="px-5 py-4 text-sm text-gray-600">Amazon US</td>
+                                <td class="px-5 py-4 text-sm text-gray-600">LI WEI</td>
+                                <td class="px-5 py-4 text-sm text-gray-600">****7890</td>
+                                <td class="px-5 py-4 text-sm text-gray-600">USD</td>
+                                <td class="px-5 py-4 text-sm text-gray-600">2024-11-30</td>
+                                <td class="px-5 py-4 text-center">
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+                                        未开启
+                                    </span>
+                                </td>
+                                <td class="px-5 py-4">
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                        正常
+                                    </span>
+                                </td>
+                                <td class="px-5 py-4">
+                                    <div class="flex items-center justify-center space-x-2">
+                                        <a href="account-details.html" class="text-sm text-purple-600 hover:text-purple-800">详情</a>
+                                        <div class="relative" x-data="{ open: false }">
+                                            <button @click="open = !open" class="text-sm text-purple-600 hover:text-purple-800 flex items-center">
+                                                更多
+                                                <i class="fas fa-chevron-down ml-1 text-xs transition-transform duration-200" :class="{ 'transform rotate-180': open }"></i>
+                                            </button>
+                                            <div x-show="open" 
+                                                 @click.away="open = false"
+                                                 x-transition:enter="transition ease-out duration-200"
+                                                 x-transition:enter-start="opacity-0 transform scale-95"
+                                                 x-transition:enter-end="opacity-100 transform scale-100"
+                                                 x-transition:leave="transition ease-in duration-75"
+                                                 x-transition:leave-start="opacity-100 transform scale-100"
+                                                 x-transition:leave-end="opacity-0 transform scale-95"
+                                                 class="absolute right-0 mt-2 w-40 bg-white rounded-lg shadow-lg py-2 z-10">
+                                                <button onclick="window.location.href='extend-expiry.html'" class="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100">延长注销</button>
+                                                <button onclick="showCancelConfirmation(this)" class="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100" data-account="*******7890" data-name="LI WEI">注销</button>
+                                                <button class="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100">开启续费</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <!-- 新增已注销记录 1 -->
+                            <tr class="border-b border-gray-100">
+                                <td class="px-5 py-4">
+                                    <div class="flex items-center">
+                                        <span class="font-medium text-gray-900">Bank of America</span>
+                                    </div>
+                                </td>
+                                <td class="px-5 py-4 text-sm text-gray-600">Shopify</td>
+                                <td class="px-5 py-4 text-sm text-gray-600">ZHANG SHANSHAN</td>
+                                <td class="px-5 py-4 text-sm text-gray-600">****2345</td>
+                                <td class="px-5 py-4 text-sm text-gray-600">USD</td>
+                                <td class="px-5 py-4 text-sm text-gray-600">-</td>
+                                <td class="px-5 py-4 text-center">
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+                                        未开启
+                                    </span>
+                                </td>
+                                <td class="px-5 py-4">
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+                                        已注销
+                                    </span>
+                                </td>
+                                <td class="px-5 py-4">
+                                    <div class="flex items-center justify-center">
+                                        <a href="account-details.html" class="text-sm text-purple-600 hover:text-purple-800">详情</a>
+                                    </div>
+                                </td>
+                            </tr>
+                            <!-- 新增已注销记录 2 -->
+                            <tr class="border-b border-gray-100">
+                                <td class="px-5 py-4">
+                                    <div class="flex items-center">
+                                        <span class="font-medium text-gray-900">Chase Bank</span>
+                                    </div>
+                                </td>
+                                <td class="px-5 py-4 text-sm text-gray-600">Amazon US</td>
+                                <td class="px-5 py-4 text-sm text-gray-600">LI WEI</td>
+                                <td class="px-5 py-4 text-sm text-gray-600">****9012</td>
+                                <td class="px-5 py-4 text-sm text-gray-600">USD</td>
+                                <td class="px-5 py-4 text-sm text-gray-600">-</td>
+                                <td class="px-5 py-4 text-center">
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+                                        未开启
+                                    </span>
+                                </td>
+                                <td class="px-5 py-4">
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+                                        已注销
+                                    </span>
+                                </td>
+                                <td class="px-5 py-4">
+                                    <div class="flex items-center justify-center">
+                                        <a href="account-details.html" class="text-sm text-purple-600 hover:text-purple-800">详情</a>
+                                    </div>
+                                </td>
+                            </tr>
+                            <!-- 新增已注销记录 3 -->
+                            <tr class="border-b border-gray-100">
+                                <td class="px-5 py-4">
+                                    <div class="flex items-center">
+                                        <span class="font-medium text-gray-900">Wells Fargo</span>
+                                    </div>
+                                </td>
+                                <td class="px-5 py-4 text-sm text-gray-600">外贸收款</td>
+                                <td class="px-5 py-4 text-sm text-gray-600">ZHANG SHANSHAN</td>
+                                <td class="px-5 py-4 text-sm text-gray-600">****5678</td>
+                                <td class="px-5 py-4 text-sm text-gray-600">USD</td>
+                                <td class="px-5 py-4 text-sm text-gray-600">-</td>
+                                <td class="px-5 py-4 text-center">
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+                                        未开启
+                                    </span>
+                                </td>
+                                <td class="px-5 py-4">
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+                                        已注销
+                                    </span>
+                                </td>
+                                <td class="px-5 py-4">
+                                    <div class="flex items-center justify-center">
+                                        <a href="account-details.html" class="text-sm text-purple-600 hover:text-purple-800">详情</a>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="p-4 border-t border-gray-100">
+                    <div class="flex items-center justify-between">
+                        <div class="text-sm text-gray-500">
+                            共 <span class="font-medium text-gray-900">20</span> 条记录
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <button class="px-3 py-1 text-sm text-gray-500 bg-gray-100 rounded-lg hover:bg-gray-200">
+                                上一页
+                            </button>
+                            <button class="px-3 py-1 text-sm text-white bg-purple-600 rounded-lg">1</button>
+                            <button class="px-3 py-1 text-sm text-gray-500 hover:text-purple-600">2</button>
+                            <button class="px-3 py-1 text-sm text-gray-500 hover:text-purple-600">3</button>
+                            <button class="px-3 py-1 text-sm text-gray-500 bg-gray-100 rounded-lg hover:bg-gray-200">
+                                下一页
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <!-- 银行开卡统计弹框 -->
+    <div id="bankStatsModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50">
+        <div class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full max-w-lg">
+            <div class="bg-white rounded-xl shadow-lg">
+                <!-- 弹框标题 -->
+                <div class="px-6 py-4 border-b border-gray-100 flex justify-between items-center">
+                    <h3 class="text-lg font-medium text-gray-800">银行开卡统计</h3>
+                    <button onclick="document.getElementById('bankStatsModal').classList.add('hidden')" class="text-gray-400 hover:text-gray-600">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <!-- 弹框内容 -->
+                <div class="p-6">
+                    <div class="space-y-4 max-h-96 overflow-y-auto">
+                        <!-- 银行列表 -->
+                        <div class="flex items-center justify-between py-3 border-b border-gray-100">
+                            <div class="flex items-center">
+                                <span class="text-sm text-gray-900">Bank of America</span>
+                            </div>
+                            <span class="text-sm font-medium" style="color: #7D33FF;">12张</span>
+                        </div>
+                        <div class="flex items-center justify-between py-3 border-b border-gray-100">
+                            <div class="flex items-center">
+                                <span class="text-sm text-gray-900">Chase Bank</span>
+                            </div>
+                            <span class="text-sm font-medium" style="color: #7D33FF;">8张</span>
+                        </div>
+                        <div class="flex items-center justify-between py-3 border-b border-gray-100">
+                            <div class="flex items-center">
+                                <span class="text-sm text-gray-900">Wells Fargo</span>
+                            </div>
+                            <span class="text-sm font-medium" style="color: #7D33FF;">6张</span>
+                        </div>
+                        <div class="flex items-center justify-between py-3 border-b border-gray-100">
+                            <div class="flex items-center">
+                                <span class="text-sm text-gray-900">Citibank</span>
+                            </div>
+                            <span class="text-sm font-medium" style="color: #7D33FF;">5张</span>
+                        </div>
+                        <div class="flex items-center justify-between py-3 border-b border-gray-100">
+                            <div class="flex items-center">
+                                <span class="text-sm text-gray-900">Capital One</span>
+                            </div>
+                            <span class="text-sm font-medium" style="color: #7D33FF;">4张</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 持有人开卡统计弹框 -->
+    <div id="holderStatsModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50">
+        <div class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full max-w-lg">
+            <div class="bg-white rounded-xl shadow-lg">
+                <!-- 弹框标题 -->
+                <div class="px-6 py-4 border-b border-gray-100 flex justify-between items-center">
+                    <h3 class="text-lg font-medium text-gray-800">持有人开卡统计</h3>
+                    <button onclick="document.getElementById('holderStatsModal').classList.add('hidden')" class="text-gray-400 hover:text-gray-600">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <!-- 弹框内容 -->
+                <div class="p-6">
+                    <div class="space-y-4 max-h-96 overflow-y-auto">
+                        <!-- 持有人列表 -->
+                        <div class="flex items-center justify-between py-3 border-b border-gray-100">
+                            <div class="flex items-center gap-3">
+                                <div class="w-8 h-8 rounded-full bg-purple-100 flex items-center justify-center">
+                                    <i class="fas fa-user text-sm text-purple-600"></i>
+                                </div>
+                                <div>
+                                    <span class="text-sm text-gray-900">Zhang Shanshan</span>
+                                    <span class="text-xs text-gray-500 ml-1">主账户</span>
+                                </div>
+                            </div>
+                            <span class="text-sm font-medium" style="color: #7D33FF;">15张</span>
+                        </div>
+                        <div class="flex items-center justify-between py-3 border-b border-gray-100">
+                            <div class="flex items-center gap-3">
+                                <div class="w-8 h-8 rounded-full bg-purple-100 flex items-center justify-center">
+                                    <i class="fas fa-user text-sm text-purple-600"></i>
+                                </div>
+                                <div>
+                                    <span class="text-sm text-gray-900">Li Wei</span>
+                                    <span class="text-xs text-gray-500 ml-1">持有人</span>
+                                </div>
+                            </div>
+                            <span class="text-sm font-medium" style="color: #7D33FF;">5张</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 批量延长弹窗 -->
+    <div id="batchExtendModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50">
+        <div class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full max-w-4xl">
+            <div class="bg-white rounded-xl shadow-lg">
+                <!-- 弹窗标题 -->
+                <div class="px-6 py-4 border-b border-gray-100 flex justify-between items-center">
+                    <h3 class="text-lg font-medium text-gray-800">批量付费延长注销日期</h3>
+                    <button onclick="document.getElementById('batchExtendModal').classList.add('hidden')" class="text-gray-400 hover:text-gray-600">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+
+                <!-- 穿梭框主体 -->
+                <div class="p-6">
+                    <div class="grid grid-cols-2 gap-8">
+                        <!-- 左侧待选列表 -->
+                        <div class="flex flex-col h-[500px] border border-gray-200 rounded-lg">
+                            <div class="p-4 border-b border-gray-100">
+                                <div class="flex items-center justify-between mb-3">
+                                    <span class="text-sm text-gray-600">待选择<span class="text-gray-400 ml-1">3条</span></span>
+                                </div>
+                                <div class="space-y-2">
+                                    <div class="grid grid-cols-2 gap-2">
+                                        <div class="relative">
+                                            <select class="w-full pl-3 pr-8 py-1.5 text-sm border border-gray-200 rounded-lg focus:outline-none focus:border-purple-500 appearance-none bg-white">
+                                                <option value="">选择收款平台</option>
+                                                <option value="amazon">Amazon</option>
+                                                <option value="shopify">Shopify</option>
+                                                <option value="trade">外贸收款</option>
+                                            </select>
+                                            <i class="fas fa-chevron-down absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs pointer-events-none"></i>
+                                        </div>
+                                        <div class="relative">
+                                            <input type="text" 
+                                                   placeholder="注销日期" 
+                                                   class="w-full pl-3 pr-8 py-1.5 text-sm border border-gray-200 rounded-lg focus:outline-none focus:border-purple-500">
+                                        </div>
+                                    </div>
+                                    <div class="relative">
+                                        <input type="text" 
+                                               placeholder="模糊搜索" 
+                                               class="w-full pl-8 pr-3 py-1.5 text-sm border border-gray-200 rounded-lg focus:outline-none focus:border-purple-500">
+                                        <i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flex-1 overflow-hidden flex flex-col min-h-0">
+                                <div class="p-4 border-b border-gray-100">
+                                    <div class="flex items-center">
+                                        <div class="flex items-center gap-2">
+                                            <input type="checkbox" class="form-checkbox text-purple-600 rounded">
+                                            <div class="flex items-center">
+                                                <span class="text-sm text-gray-900 w-32">收款账号</span>
+                                                <span class="text-sm text-gray-600">户名</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="flex-1 overflow-y-auto p-4">
+                                    <div class="space-y-1">
+                                        <label class="flex items-center p-2 hover:bg-gray-50 rounded-lg cursor-pointer">
+                                            <div class="flex items-center gap-2">
+                                                <input type="checkbox" class="form-checkbox text-purple-600 rounded">
+                                                <div class="flex items-center">
+                                                    <span class="text-sm text-gray-900 w-32">*******6838</span>
+                                                    <span class="text-sm text-gray-600">XIONG FUHAI</span>
+                                                </div>
+                                            </div>
+                                        </label>
+                                        <label class="flex items-center p-2 hover:bg-gray-50 rounded-lg cursor-pointer">
+                                            <div class="flex items-center gap-2">
+                                                <input type="checkbox" class="form-checkbox text-purple-600 rounded">
+                                                <div class="flex items-center">
+                                                    <span class="text-sm text-gray-900 w-32">*******1367</span>
+                                                    <span class="text-sm text-gray-600">XIONG FUHAI</span>
+                                                </div>
+                                            </div>
+                                        </label>
+                                        <label class="flex items-center p-2 hover:bg-gray-50 rounded-lg cursor-pointer">
+                                            <div class="flex items-center gap-2">
+                                                <input type="checkbox" class="form-checkbox text-purple-600 rounded">
+                                                <div class="flex items-center">
+                                                    <span class="text-sm text-gray-900 w-32">*******5883</span>
+                                                    <span class="text-sm text-gray-600">XIONG FUHAI</span>
+                                                </div>
+                                            </div>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 右侧已选列表 -->
+                        <div class="flex flex-col h-[500px] border border-gray-200 rounded-lg">
+                            <div class="p-4 border-b border-gray-100">
+                                <div class="flex items-center justify-between mb-3">
+                                    <span class="text-sm text-gray-600">已选择<span class="text-gray-400 ml-1">0条</span></span>
+                                    <span class="text-sm text-gray-400">单次最多600条</span>
+                                </div>
+                                <div class="relative">
+                                    <input type="text" 
+                                           placeholder="模糊搜索" 
+                                           class="w-full pl-8 pr-3 py-1.5 text-sm border border-gray-200 rounded-lg focus:outline-none focus:border-purple-500">
+                                    <i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm"></i>
+                                </div>
+                            </div>
+                            <div class="flex-1 overflow-hidden flex flex-col min-h-0">
+                                <div class="p-4 border-b border-gray-100">
+                                    <div class="flex items-center">
+                                        <div class="flex items-center ml-8">
+                                            <span class="text-sm text-gray-900 w-32">收款账号</span>
+                                            <span class="text-sm text-gray-600">户名</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="flex-1 overflow-y-auto p-4">
+                                    <div class="flex items-center justify-center h-full">
+                                        <span class="text-sm text-gray-400">暂无数据</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 底部按钮 -->
+                <div class="px-6 py-4 border-t border-gray-100 flex justify-end gap-2">
+                    <button onclick="document.getElementById('batchExtendModal').classList.add('hidden')" 
+                            class="px-4 py-2 text-sm text-gray-600 hover:text-gray-900">
+                        取消
+                    </button>
+                    <button class="px-4 py-2 text-sm text-white bg-purple-600 hover:bg-purple-700 rounded-lg transition-colors duration-200">
+                        确定并前往付费
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 批量注销弹窗 -->
+    <div id="batchCancelModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50">
+        <div class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full max-w-4xl">
+            <div class="bg-white rounded-xl shadow-lg">
+                <!-- 弹窗标题 -->
+                <div class="px-6 py-4 border-b border-gray-100 flex justify-between items-center">
+                    <h3 class="text-lg font-medium text-gray-800">批量注销</h3>
+                    <button onclick="document.getElementById('batchCancelModal').classList.add('hidden')" class="text-gray-400 hover:text-gray-600">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+
+                <!-- 穿梭框主体 -->
+                <div class="p-6">
+                    <div class="grid grid-cols-2 gap-8">
+                        <!-- 左侧待选列表 -->
+                        <div class="flex flex-col h-[500px] border border-gray-200 rounded-lg">
+                            <div class="p-4 border-b border-gray-100">
+                                <div class="flex items-center justify-between mb-3">
+                                    <span class="text-sm text-gray-600">待选择<span class="text-gray-400 ml-1">3条</span></span>
+                                </div>
+                                <div class="space-y-2">
+                                    <div class="grid grid-cols-2 gap-2">
+                                        <div class="relative">
+                                            <select class="w-full pl-3 pr-8 py-1.5 text-sm border border-gray-200 rounded-lg focus:outline-none focus:border-purple-500 appearance-none bg-white">
+                                                <option value="">选择收款平台</option>
+                                                <option value="amazon">Amazon</option>
+                                                <option value="shopify">Shopify</option>
+                                                <option value="trade">外贸收款</option>
+                                            </select>
+                                            <i class="fas fa-chevron-down absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs pointer-events-none"></i>
+                                        </div>
+                                        <div class="relative">
+                                            <input type="text" 
+                                                   placeholder="注销日期" 
+                                                   class="w-full pl-3 pr-8 py-1.5 text-sm border border-gray-200 rounded-lg focus:outline-none focus:border-purple-500">
+                                        </div>
+                                    </div>
+                                    <div class="relative">
+                                        <input type="text" 
+                                               placeholder="模糊搜索" 
+                                               class="w-full pl-8 pr-3 py-1.5 text-sm border border-gray-200 rounded-lg focus:outline-none focus:border-purple-500">
+                                        <i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flex-1 overflow-hidden flex flex-col min-h-0">
+                                <div class="p-4 border-b border-gray-100">
+                                    <div class="flex items-center">
+                                        <div class="flex items-center gap-2">
+                                            <input type="checkbox" class="form-checkbox text-purple-600 rounded">
+                                            <div class="flex items-center">
+                                                <span class="text-sm text-gray-900 w-32">收款账号</span>
+                                                <span class="text-sm text-gray-600">户名</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="flex-1 overflow-y-auto p-4">
+                                    <div class="space-y-1">
+                                        <label class="flex items-center p-2 hover:bg-gray-50 rounded-lg cursor-pointer">
+                                            <div class="flex items-center gap-2">
+                                                <input type="checkbox" class="form-checkbox text-purple-600 rounded">
+                                                <div class="flex items-center">
+                                                    <span class="text-sm text-gray-900 w-32">*******6838</span>
+                                                    <span class="text-sm text-gray-600">XIONG FUHAI</span>
+                                                </div>
+                                            </div>
+                                        </label>
+                                        <label class="flex items-center p-2 hover:bg-gray-50 rounded-lg cursor-pointer">
+                                            <div class="flex items-center gap-2">
+                                                <input type="checkbox" class="form-checkbox text-purple-600 rounded">
+                                                <div class="flex items-center">
+                                                    <span class="text-sm text-gray-900 w-32">*******1367</span>
+                                                    <span class="text-sm text-gray-600">XIONG FUHAI</span>
+                                                </div>
+                                            </div>
+                                        </label>
+                                        <label class="flex items-center p-2 hover:bg-gray-50 rounded-lg cursor-pointer">
+                                            <div class="flex items-center gap-2">
+                                                <input type="checkbox" class="form-checkbox text-purple-600 rounded">
+                                                <div class="flex items-center">
+                                                    <span class="text-sm text-gray-900 w-32">*******5883</span>
+                                                    <span class="text-sm text-gray-600">XIONG FUHAI</span>
+                                                </div>
+                                            </div>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 右侧已选列表 -->
+                        <div class="flex flex-col h-[500px] border border-gray-200 rounded-lg">
+                            <div class="p-4 border-b border-gray-100">
+                                <div class="flex items-center justify-between mb-3">
+                                    <span class="text-sm text-gray-600">已选择<span class="text-gray-400 ml-1">0条</span></span>
+                                    <span class="text-sm text-gray-400">单次最多50条</span>
+                                </div>
+                                <div class="relative">
+                                    <input type="text" 
+                                           placeholder="模糊搜索" 
+                                           class="w-full pl-8 pr-3 py-1.5 text-sm border border-gray-200 rounded-lg focus:outline-none focus:border-purple-500">
+                                    <i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm"></i>
+                                </div>
+                            </div>
+                            <div class="flex-1 overflow-hidden flex flex-col min-h-0">
+                                <div class="p-4 border-b border-gray-100">
+                                    <div class="flex items-center">
+                                        <div class="flex items-center ml-8">
+                                            <span class="text-sm text-gray-900 w-32">收款账号</span>
+                                            <span class="text-sm text-gray-600">户名</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="flex-1 overflow-y-auto p-4">
+                                    <div class="flex items-center justify-center h-full">
+                                        <span class="text-sm text-gray-400">暂无数据</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 底部按钮 -->
+                <div class="px-6 py-4 border-t border-gray-100 flex justify-end gap-2">
+                    <button onclick="document.getElementById('batchCancelModal').classList.add('hidden')" 
+                            class="px-4 py-2 text-sm text-gray-600 hover:text-gray-900">
+                        取消
+                    </button>
+                    <button id="batchCancelNextBtn" class="px-4 py-2 text-sm text-white bg-purple-600 hover:bg-purple-700 rounded-lg transition-colors duration-200">
+                        下一步
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 批量注销确认弹窗 -->
+    <div id="batchCancelConfirmModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50">
+        <div class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full max-w-2xl">
+            <div class="bg-white rounded-xl shadow-lg">
+                <!-- 弹窗标题 -->
+                <div class="px-6 py-4 border-b border-gray-100 flex justify-between items-center">
+                    <h3 class="text-lg font-medium text-gray-800">批量注销</h3>
+                    <button onclick="document.getElementById('batchCancelConfirmModal').classList.add('hidden')" class="text-gray-400 hover:text-gray-600">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+
+                <!-- 确认内容 -->
+                <div class="p-6">
+                    <div id="selectedAccountsInfo" class="mb-4">
+                        <p class="text-sm text-gray-800 mb-2">已选中<span id="selectedAccountCount">1</span>张收款账户进行注销，收款账户如下</p>
+                        <div id="selectedAccountsList" class="text-sm text-gray-700">
+                            <p>*******5883</p>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <div class="flex items-center mb-2">
+                            <span class="text-red-500 mr-1">*</span>
+                            <label class="text-sm text-gray-700">注销原因：</label>
+                        </div>
+                        <div class="relative">
+                            <select id="cancelReason" class="w-full pl-3 pr-8 py-2 text-sm border border-gray-200 rounded-lg focus:outline-none focus:border-purple-500 appearance-none bg-white">
+                                <option value="">请选择注销原因</option>
+                                <option value="1">不再使用</option>
+                                <option value="2">账户安全考虑</option>
+                                <option value="3">换用其他收款服务</option>
+                                <option value="4">其他原因</option>
+                            </select>
+                            <i class="fas fa-chevron-down absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs pointer-events-none"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <div class="flex items-center mb-2">
+                            <span class="text-red-500 mr-1">*</span>
+                            <label class="text-sm text-gray-700">交易密码：</label>
+                        </div>
+                        <div class="relative flex items-center">
+                            <input type="password" id="transactionPassword" class="w-full pl-3 pr-8 py-2 text-sm border border-gray-200 rounded-lg focus:outline-none focus:border-purple-500" placeholder="请输入交易密码">
+                            <a href="#" class="absolute right-3 text-sm text-purple-500 hover:text-purple-600">忘记交易密码？</a>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-blue-50 p-4 rounded-lg mb-4">
+                        <h4 class="text-sm text-gray-700 mb-2">温馨提醒：</h4>
+                        <ul class="list-disc pl-5 text-sm text-gray-600 space-y-2">
+                            <li>注销前请确认账户是否有在途资金，若有在途资金，请入账确认后再注销</li>
+                            <li>账号注销后关联的店铺将自动解除绑定</li>
+                            <li>注销后该收款账户将不再支持收款服务，请尽快在电商平台中进行更换，避免影响正常收款</li>
+                            <li class="text-red-500">注销成功后，将无法使用和恢复，请谨慎操作</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- 底部按钮 -->
+                <div class="px-6 py-4 border-t border-gray-100 flex justify-end gap-2">
+                    <button id="batchCancelBackBtn" class="px-4 py-2 text-sm text-gray-600 hover:text-gray-900">
+                        上一步
+                    </button>
+                    <button id="batchCancelConfirmBtn" class="px-4 py-2 text-sm text-white bg-purple-600 hover:bg-purple-700 rounded-lg transition-colors duration-200">
+                        确认注销
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 单个账户注销确认弹窗 -->
+    <div id="singleCancelModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50">
+        <div class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full max-w-2xl">
+            <div class="bg-white rounded-xl shadow-lg">
+                <!-- 弹窗标题 -->
+                <div class="px-6 py-4 border-b border-gray-100 flex justify-between items-center">
+                    <h3 class="text-lg font-medium text-gray-800">注销</h3>
+                    <button onclick="document.getElementById('singleCancelModal').classList.add('hidden')" class="text-gray-400 hover:text-gray-600">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+
+                <!-- 确认内容 -->
+                <div class="p-6">
+                    <div class="mb-6">
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm text-gray-600 mb-1">平台名称：</label>
+                                <div class="text-sm text-gray-900" id="platformName">Mercari</div>
+                            </div>
+                            <div>
+                                <label class="block text-sm text-gray-600 mb-1">银行账户：</label>
+                                <div class="text-sm text-gray-900" id="bankAccount">*******6838</div>
+                            </div>
+                            <div>
+                                <label class="block text-sm text-gray-600 mb-1">卡账户名：</label>
+                                <div class="text-sm text-gray-900" id="accountName">XIONG FUHAI</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <div class="flex items-center mb-2">
+                            <span class="text-red-500 mr-1">*</span>
+                            <label class="text-sm text-gray-700">注销原因：</label>
+                        </div>
+                        <div class="relative">
+                            <select id="singleCancelReason" class="w-full pl-3 pr-8 py-2 text-sm border border-gray-200 rounded-lg focus:outline-none focus:border-purple-500 appearance-none bg-white">
+                                <option value="">请选择注销原因</option>
+                                <option value="1">不再使用</option>
+                                <option value="2">账户安全考虑</option>
+                                <option value="3">换用其他收款服务</option>
+                                <option value="4">其他原因</option>
+                            </select>
+                            <i class="fas fa-chevron-down absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs pointer-events-none"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <div class="flex items-center mb-2">
+                            <span class="text-red-500 mr-1">*</span>
+                            <label class="text-sm text-gray-700">交易密码：</label>
+                        </div>
+                        <div class="relative flex items-center">
+                            <input type="password" id="singleTransactionPassword" class="w-full pl-3 pr-24 py-2 text-sm border border-gray-200 rounded-lg focus:outline-none focus:border-purple-500" placeholder="请输入交易密码">
+                            <a href="#" class="absolute right-3 text-sm text-purple-600 hover:text-purple-700">忘记交易密码？</a>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-blue-50 p-4 rounded-lg">
+                        <h4 class="text-sm text-gray-700 mb-2">温馨提醒：</h4>
+                        <ul class="list-disc pl-5 text-sm text-gray-600 space-y-2">
+                            <li>注销前请确认账户是否有在途资金，若有在途资金，请入账确认后再注销</li>
+                            <li>账号注销后关联的店铺将自动解除绑定</li>
+                            <li>注销后该收款账户将不再支持收款服务，请尽快在电商平台中进行更换，避免影响正常收款</li>
+                            <li class="text-red-500">注销成功后，将无法使用和恢复，请谨慎操作</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- 底部按钮 -->
+                <div class="px-6 py-4 border-t border-gray-100 flex justify-end gap-2">
+                    <button onclick="document.getElementById('singleCancelModal').classList.add('hidden')" 
+                            class="px-4 py-2 text-sm text-gray-600 hover:text-gray-900">
+                        取消
+                    </button>
+                    <button onclick="confirmSingleCancel()" 
+                            class="px-4 py-2 text-sm text-white bg-purple-600 hover:bg-purple-700 rounded-lg transition-colors duration-200">
+                        确认注销
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 开启自动续费弹窗 -->
+    <div id="enableAutoRenewalModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50">
+        <div class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full max-w-2xl">
+            <div class="bg-white rounded-xl shadow-lg">
+                <!-- 弹窗标题 -->
+                <div class="px-6 py-4 border-b border-gray-100 flex justify-between items-center">
+                    <h3 class="text-lg font-medium text-gray-800">开启自动续费</h3>
+                    <button onclick="document.getElementById('enableAutoRenewalModal').classList.add('hidden')" class="text-gray-400 hover:text-gray-600">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+
+                <!-- 确认内容 -->
+                <div class="p-6">
+                    <div class="mb-6">
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm text-gray-600 mb-1">平台名称：</label>
+                                <div class="text-sm text-gray-900" id="renewalPlatformName">Mercari</div>
+                            </div>
+                            <div>
+                                <label class="block text-sm text-gray-600 mb-1">银行账户：</label>
+                                <div class="text-sm text-gray-900" id="renewalBankAccount">*******6838</div>
+                            </div>
+                            <div>
+                                <label class="block text-sm text-gray-600 mb-1">卡账户名：</label>
+                                <div class="text-sm text-gray-900" id="renewalAccountName">XIONG FUHAI</div>
+                            </div>
+                            <div>
+                                <label class="block text-sm text-gray-600 mb-1">费用：</label>
+                                <div class="text-sm text-gray-900">1.5USD/月</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <div class="flex items-center mb-2">
+                            <span class="text-red-500 mr-1">*</span>
+                            <label class="text-sm text-gray-700">交易密码：</label>
+                        </div>
+                        <div class="relative flex items-center">
+                            <input type="password" id="renewalTransactionPassword" class="w-full pl-3 pr-24 py-2 text-sm border border-gray-200 rounded-lg focus:outline-none focus:border-purple-500" placeholder="请输入交易密码">
+                            <a href="#" class="absolute right-3 text-sm text-purple-600 hover:text-purple-700">忘记交易密码？</a>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-blue-50 p-4 rounded-lg">
+                        <h4 class="text-sm text-gray-700 mb-2">温馨提醒：</h4>
+                        <ul class="list-disc pl-5 text-sm text-gray-600 space-y-2">
+                            <li>收款账户开启自动续费后，系统会在注销日期前自动扣除续期费用并延期一个月</li>
+                            <li>扣费时如果账户没有美元或余额不足则会自动扣其他币种兑换成美元扣费，如果余额不足扣款失败则会注销收款账户</li>
+                            <li>收款账户自动续费启动如果有正常收款会在收款当月基础上自动延长注销日期，不会扣账户余额延期</li>
+                            <li class="text-red-500">为了保证可以正常扣费请在易融账号保留足够扣费的资金</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- 底部按钮 -->
+                <div class="px-6 py-4 border-t border-gray-100 flex justify-end gap-2">
+                    <button onclick="document.getElementById('enableAutoRenewalModal').classList.add('hidden')" 
+                            class="px-4 py-2 text-sm text-gray-600 hover:text-gray-900">
+                        取消
+                    </button>
+                    <button onclick="confirmEnableAutoRenewal()" 
+                            class="px-4 py-2 text-sm text-white bg-purple-600 hover:bg-purple-700 rounded-lg transition-colors duration-200">
+                        确定开启
+                    </button>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- 引入 Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+    <!-- 引入 Alpine.js -->
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <!-- 引入 Tippy.js 和 Popper.js -->
     <script src="https://unpkg.com/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
     <script src="https://unpkg.com/tippy.js@6.3.7/dist/tippy-bundle.umd.min.js"></script>
@@ -579,5 +1712,545 @@
     
     <!-- 引入自定义脚本 -->
     <script src="../scripts/my-assets.js"></script>
+
+    <!-- Tab切换脚本 -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const tabs = document.querySelectorAll('.tab-btn');
+            const assetsContent = document.getElementById('assets-content');
+            const bankAccountsContent = document.getElementById('bank-accounts-content');
+
+            // Function to activate a specific tab
+            function activateTab(tabName) {
+                // Remove active class from all tabs
+                tabs.forEach(t => t.classList.remove('active'));
+                
+                // Add active class to the target tab
+                const targetTab = Array.from(tabs).find(tab => tab.dataset.tab === tabName);
+                if (targetTab) {
+                    targetTab.classList.add('active');
+                }
+
+                // Show/hide content based on selected tab
+                if (tabName === 'assets') {
+                    assetsContent.classList.remove('hidden');
+                    bankAccountsContent.classList.add('hidden');
+                } else if (tabName === 'bank-accounts') {
+                    assetsContent.classList.add('hidden');
+                    bankAccountsContent.classList.remove('hidden');
+                }
+            }
+
+            // Check URL hash on page load
+            if (window.location.hash === '#bank-accounts') {
+                activateTab('bank-accounts');
+            }
+
+            // Tab切换逻辑
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    const tabName = tab.dataset.tab;
+                    activateTab(tabName);
+                    // Update URL hash when tab is clicked
+                    if (tabName === 'bank-accounts') {
+                        window.location.hash = '#bank-accounts';
+                    } else {
+                        window.location.hash = '';
+                    }
+                });
+            });
+
+            // 银行开卡统计弹框
+            const bankStatsBtn = document.querySelector('[data-modal="bankStats"]');
+            const bankStatsModal = document.getElementById('bankStatsModal');
+            
+            if (bankStatsBtn) {
+                bankStatsBtn.addEventListener('click', () => {
+                    bankStatsModal.classList.remove('hidden');
+                });
+            }
+
+            // 持有人开卡统计弹框
+            const holderStatsBtn = document.querySelector('[data-modal="holderStats"]');
+            const holderStatsModal = document.getElementById('holderStatsModal');
+            
+            if (holderStatsBtn) {
+                holderStatsBtn.addEventListener('click', () => {
+                    holderStatsModal.classList.remove('hidden');
+                });
+            }
+
+            // 批量延长弹框
+            const batchExtendBtn = document.getElementById('batchExtendBtn');
+            const batchExtendModal = document.getElementById('batchExtendModal');
+            
+            if (batchExtendBtn) {
+                batchExtendBtn.addEventListener('click', () => {
+                    batchExtendModal.classList.remove('hidden');
+                });
+            }
+
+            // 批量注销弹框
+            const batchCancelBtn = document.getElementById('batchCancelBtn');
+            const batchCancelModal = document.getElementById('batchCancelModal');
+            
+            if (batchCancelBtn) {
+                batchCancelBtn.addEventListener('click', () => {
+                    batchCancelModal.classList.remove('hidden');
+                });
+            }
+
+            // 点击弹框外部关闭弹框
+            window.addEventListener('click', (e) => {
+                if (e.target === bankStatsModal) {
+                    bankStatsModal.classList.add('hidden');
+                }
+                if (e.target === holderStatsModal) {
+                    holderStatsModal.classList.add('hidden');
+                }
+                if (e.target === batchExtendModal) {
+                    batchExtendModal.classList.add('hidden');
+                }
+                if (e.target === batchCancelModal) {
+                    batchCancelModal.classList.add('hidden');
+                }
+            });
+        });
+    </script>
+
+    <!-- 穿梭框功能脚本 -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 批量注销功能
+            const batchCancelModal = document.getElementById('batchCancelModal');
+            const batchCancelConfirmModal = document.getElementById('batchCancelConfirmModal');
+            const batchCancelBtn = document.getElementById('batchCancelBtn');
+            const batchCancelNextBtn = document.getElementById('batchCancelNextBtn');
+            const batchCancelBackBtn = document.getElementById('batchCancelBackBtn');
+            const batchCancelConfirmBtn = document.getElementById('batchCancelConfirmBtn');
+            
+            if (batchCancelBtn && batchCancelModal) {
+                // 打开批量注销模态框
+                batchCancelBtn.addEventListener('click', function() {
+                    batchCancelModal.classList.remove('hidden');
+                });
+                
+                // 模态框元素
+                const leftItems = batchCancelModal.querySelectorAll('.flex-col:first-child .overflow-y-auto label');
+                const leftCheckboxes = batchCancelModal.querySelectorAll('.flex-col:first-child .overflow-y-auto label input[type="checkbox"]');
+                const leftCheckAll = batchCancelModal.querySelector('.flex-col:first-child .p-4.border-b input[type="checkbox"]');
+                const rightContainer = batchCancelModal.querySelector('.flex-col:nth-child(2) .overflow-y-auto');
+                const countElem = batchCancelModal.querySelector('.flex-col:nth-child(2) .text-gray-400');
+                
+                // 选中的项目
+                const selectedItems = [];
+                
+                // 更新右侧面板
+                function updateRightPanel() {
+                    // 更新计数
+                    if (countElem) {
+                        countElem.textContent = selectedItems.length + '条';
+                    }
+                    
+                    // 更新右侧列表
+                    if (rightContainer) {
+                        if (selectedItems.length === 0) {
+                            rightContainer.innerHTML = '<div class="flex items-center justify-center h-full"><span class="text-sm text-gray-400">暂无数据</span></div>';
+                        } else {
+                            let html = '';
+                            selectedItems.forEach(item => {
+                                html += `
+                                    <div class="flex items-center justify-between p-2 hover:bg-gray-50 rounded-lg">
+                                        <div class="flex items-center">
+                                            <span class="text-sm text-gray-900 w-32">${item.account}</span>
+                                            <span class="text-sm text-gray-600">${item.name}</span>
+                                        </div>
+                                        <button class="text-red-500 hover:text-red-700 p-1 rounded-full hover:bg-red-50" 
+                                                onclick="removeItem('${item.account}')">
+                                            <i class="fas fa-times"></i>
+                                        </button>
+                                    </div>
+                                `;
+                            });
+                            rightContainer.innerHTML = html;
+                        }
+                    }
+                }
+                
+                // 每个复选框的点击事件
+                leftCheckboxes.forEach((checkbox, index) => {
+                    checkbox.addEventListener('change', function() {
+                        const item = leftItems[index];
+                        const account = item.querySelector('.text-gray-900').textContent;
+                        const name = item.querySelector('.text-gray-600').textContent;
+                        
+                        if (this.checked) {
+                            // 添加到已选项
+                            if (!selectedItems.find(i => i.account === account)) {
+                                selectedItems.push({ account, name });
+                            }
+                        } else {
+                            // 从已选项中移除
+                            const idx = selectedItems.findIndex(i => i.account === account);
+                            if (idx !== -1) {
+                                selectedItems.splice(idx, 1);
+                            }
+                        }
+                        
+                        updateRightPanel();
+                    });
+                });
+                
+                // 全选/取消全选
+                if (leftCheckAll) {
+                    leftCheckAll.addEventListener('change', function() {
+                        const checked = this.checked;
+                        
+                        leftCheckboxes.forEach((checkbox, index) => {
+                            // 避免重复触发change事件
+                            if (checkbox.checked !== checked) {
+                                checkbox.checked = checked;
+                                
+                                const item = leftItems[index];
+                                const account = item.querySelector('.text-gray-900').textContent;
+                                const name = item.querySelector('.text-gray-600').textContent;
+                                
+                                if (checked) {
+                                    // 添加到已选项
+                                    if (!selectedItems.find(i => i.account === account)) {
+                                        selectedItems.push({ account, name });
+                                    }
+                                } else {
+                                    // 清空已选项
+                                    selectedItems.length = 0;
+                                }
+                            }
+                        });
+                        
+                        updateRightPanel();
+                    });
+                }
+                
+                // 删除功能
+                window.removeItem = function(account) {
+                    // 从已选项中移除
+                    const idx = selectedItems.findIndex(i => i.account === account);
+                    if (idx !== -1) {
+                        selectedItems.splice(idx, 1);
+                    }
+                    
+                    // 更新左侧复选框状态
+                    leftCheckboxes.forEach((checkbox, index) => {
+                        const item = leftItems[index];
+                        const itemAccount = item.querySelector('.text-gray-900').textContent;
+                        if (itemAccount === account) {
+                            checkbox.checked = false;
+                        }
+                    });
+                    
+                    updateRightPanel();
+                };
+                
+                // 下一步按钮点击事件
+                if (batchCancelNextBtn) {
+                    batchCancelNextBtn.addEventListener('click', function() {
+                        if (selectedItems.length === 0) {
+                            alert('请选择需要注销的账户');
+                            return;
+                        }
+                        
+                        // 更新确认页面上的账户信息
+                        const selectedAccountCount = document.getElementById('selectedAccountCount');
+                        const selectedAccountsList = document.getElementById('selectedAccountsList');
+                        
+                        if (selectedAccountCount && selectedAccountsList) {
+                            selectedAccountCount.textContent = selectedItems.length;
+                            
+                            let accountsHtml = '';
+                            selectedItems.forEach(item => {
+                                accountsHtml += `<p>${item.account}</p>`;
+                            });
+                            selectedAccountsList.innerHTML = accountsHtml;
+                        }
+                        
+                        // 显示确认页面，隐藏选择页面
+                        batchCancelModal.classList.add('hidden');
+                        batchCancelConfirmModal.classList.remove('hidden');
+                    });
+                }
+                
+                // 上一步按钮点击事件
+                if (batchCancelBackBtn) {
+                    batchCancelBackBtn.addEventListener('click', function() {
+                        batchCancelConfirmModal.classList.add('hidden');
+                        batchCancelModal.classList.remove('hidden');
+                    });
+                }
+                
+                // 确认注销按钮点击事件
+                if (batchCancelConfirmBtn) {
+                    batchCancelConfirmBtn.addEventListener('click', function() {
+                        const cancelReason = document.getElementById('cancelReason');
+                        const transactionPassword = document.getElementById('transactionPassword');
+                        
+                        // 表单验证
+                        if (!cancelReason.value) {
+                            alert('请选择注销原因');
+                            cancelReason.focus();
+                            return;
+                        }
+                        
+                        if (!transactionPassword.value) {
+                            alert('请输入交易密码');
+                            transactionPassword.focus();
+                            return;
+                        }
+                        
+                        // 这里可以添加提交注销请求的代码
+                        alert('注销申请已提交，请等待处理结果。');
+                        batchCancelConfirmModal.classList.add('hidden');
+                        
+                        // 重置选择
+                        selectedItems.length = 0;
+                        updateRightPanel();
+                        leftCheckboxes.forEach(checkbox => {
+                            checkbox.checked = false;
+                        });
+                        
+                        if (leftCheckAll) {
+                            leftCheckAll.checked = false;
+                        }
+                    });
+                }
+            }
+            
+            // 批量延长功能
+            const batchExtendModal = document.getElementById('batchExtendModal');
+            const batchExtendBtn = document.getElementById('batchExtendBtn');
+            
+            if (batchExtendBtn && batchExtendModal) {
+                // 打开批量延长模态框
+                batchExtendBtn.addEventListener('click', function() {
+                    batchExtendModal.classList.remove('hidden');
+                });
+                
+                // 模态框元素
+                const leftItems = batchExtendModal.querySelectorAll('.flex-col:first-child .overflow-y-auto label');
+                const leftCheckboxes = batchExtendModal.querySelectorAll('.flex-col:first-child .overflow-y-auto label input[type="checkbox"]');
+                const leftCheckAll = batchExtendModal.querySelector('.flex-col:first-child .p-4.border-b input[type="checkbox"]');
+                const rightContainer = batchExtendModal.querySelector('.flex-col:nth-child(2) .overflow-y-auto');
+                const countElem = batchExtendModal.querySelector('.flex-col:nth-child(2) .text-gray-400');
+                
+                // 选中的项目
+                const selectedItems = [];
+                
+                // 更新右侧面板
+                function updateRightPanel() {
+                    // 更新计数
+                    if (countElem) {
+                        countElem.textContent = selectedItems.length + '条';
+                    }
+                    
+                    // 更新右侧列表
+                    if (rightContainer) {
+                        if (selectedItems.length === 0) {
+                            rightContainer.innerHTML = '<div class="flex items-center justify-center h-full"><span class="text-sm text-gray-400">暂无数据</span></div>';
+                        } else {
+                            let html = '';
+                            selectedItems.forEach(item => {
+                                html += `
+                                    <div class="flex items-center justify-between p-2 hover:bg-gray-50 rounded-lg">
+                                        <div class="flex items-center">
+                                            <span class="text-sm text-gray-900 w-32">${item.account}</span>
+                                            <span class="text-sm text-gray-600">${item.name}</span>
+                                        </div>
+                                        <button class="text-red-500 hover:text-red-700 p-1 rounded-full hover:bg-red-50" 
+                                                onclick="removeExtendItem('${item.account}')">
+                                            <i class="fas fa-times"></i>
+                                        </button>
+                                    </div>
+                                `;
+                            });
+                            rightContainer.innerHTML = html;
+                        }
+                    }
+                }
+                
+                // 每个复选框的点击事件
+                leftCheckboxes.forEach((checkbox, index) => {
+                    checkbox.addEventListener('change', function() {
+                        const item = leftItems[index];
+                        const account = item.querySelector('.text-gray-900').textContent;
+                        const name = item.querySelector('.text-gray-600').textContent;
+                        
+                        if (this.checked) {
+                            // 添加到已选项
+                            if (!selectedItems.find(i => i.account === account)) {
+                                selectedItems.push({ account, name });
+                            }
+                        } else {
+                            // 从已选项中移除
+                            const idx = selectedItems.findIndex(i => i.account === account);
+                            if (idx !== -1) {
+                                selectedItems.splice(idx, 1);
+                            }
+                        }
+                        
+                        updateRightPanel();
+                    });
+                });
+                
+                // 全选/取消全选
+                if (leftCheckAll) {
+                    leftCheckAll.addEventListener('change', function() {
+                        const checked = this.checked;
+                        
+                        leftCheckboxes.forEach((checkbox, index) => {
+                            // 避免重复触发change事件
+                            if (checkbox.checked !== checked) {
+                                checkbox.checked = checked;
+                                
+                                const item = leftItems[index];
+                                const account = item.querySelector('.text-gray-900').textContent;
+                                const name = item.querySelector('.text-gray-600').textContent;
+                                
+                                if (checked) {
+                                    // 添加到已选项
+                                    if (!selectedItems.find(i => i.account === account)) {
+                                        selectedItems.push({ account, name });
+                                    }
+                                } else {
+                                    // 清空已选项
+                                    selectedItems.length = 0;
+                                }
+                            }
+                        });
+                        
+                        updateRightPanel();
+                    });
+                }
+                
+                // 删除功能
+                window.removeExtendItem = function(account) {
+                    // 从已选项中移除
+                    const idx = selectedItems.findIndex(i => i.account === account);
+                    if (idx !== -1) {
+                        selectedItems.splice(idx, 1);
+                    }
+                    
+                    // 更新左侧复选框状态
+                    leftCheckboxes.forEach((checkbox, index) => {
+                        const item = leftItems[index];
+                        const itemAccount = item.querySelector('.text-gray-900').textContent;
+                        if (itemAccount === account) {
+                            checkbox.checked = false;
+                        }
+                    });
+                    
+                    updateRightPanel();
+                };
+                
+                // 确认按钮点击事件
+                const confirmBtn = batchExtendModal.querySelector('button.bg-purple-600');
+                if (confirmBtn) {
+                    confirmBtn.addEventListener('click', function() {
+                        // 直接跳转
+                        window.location.href = 'extend-expiry.html';
+                    });
+                }
+            }
+        });
+    </script>
+
+    <script>
+    // ... existing code ...
+
+    // 显示单个账户注销确认框
+    function showCancelConfirmation(button) {
+        const account = button.getAttribute('data-account');
+        const name = button.getAttribute('data-name');
+        const platformName = button.closest('tr').querySelector('td:nth-child(2)').textContent;
+        
+        // 更新弹窗信息
+        document.getElementById('platformName').textContent = platformName;
+        document.getElementById('bankAccount').textContent = account;
+        document.getElementById('accountName').textContent = name;
+        
+        // 重置表单
+        document.getElementById('singleCancelReason').value = '';
+        document.getElementById('singleTransactionPassword').value = '';
+        
+        // 显示弹窗
+        document.getElementById('singleCancelModal').classList.remove('hidden');
+    }
+
+    // 确认单个账户注销
+    function confirmSingleCancel() {
+        const reason = document.getElementById('singleCancelReason').value;
+        const password = document.getElementById('singleTransactionPassword').value;
+        
+        // 表单验证
+        if (!reason) {
+            alert('请选择注销原因');
+            return;
+        }
+        
+        if (!password) {
+            alert('请输入交易密码');
+            return;
+        }
+        
+        // 这里可以添加注销请求的代码
+        alert('注销申请已提交，请等待处理结果。');
+        document.getElementById('singleCancelModal').classList.add('hidden');
+    }
+
+    // 显示开启自动续费确认框
+    function showEnableAutoRenewal(button) {
+        const row = button.closest('tr');
+        const platformName = row.querySelector('td:nth-child(2)').textContent;
+        const account = row.querySelector('td:nth-child(4)').textContent;
+        const name = row.querySelector('td:nth-child(3)').textContent;
+        
+        // 更新弹窗信息
+        document.getElementById('renewalPlatformName').textContent = platformName;
+        document.getElementById('renewalBankAccount').textContent = account;
+        document.getElementById('renewalAccountName').textContent = name;
+        
+        // 重置表单
+        document.getElementById('renewalTransactionPassword').value = '';
+        
+        // 显示弹窗
+        document.getElementById('enableAutoRenewalModal').classList.remove('hidden');
+    }
+
+    // 确认开启自动续费
+    function confirmEnableAutoRenewal() {
+        const password = document.getElementById('renewalTransactionPassword').value;
+        
+        // 表单验证
+        if (!password) {
+            alert('请输入交易密码');
+            return;
+        }
+        
+        // 这里可以添加开启自动续费的请求代码
+        alert('自动续费已开启');
+        document.getElementById('enableAutoRenewalModal').classList.add('hidden');
+    }
+
+    // 更新"开启续费"按钮的点击事件
+    document.addEventListener('DOMContentLoaded', function() {
+        // 获取所有包含"开启续费"文本的按钮
+        const buttons = document.querySelectorAll('button');
+        buttons.forEach(button => {
+            if (button.textContent.trim() === '开启续费') {
+                button.onclick = function() {
+                    showEnableAutoRenewal(this);
+                };
+            }
+        });
+    });
+    </script>
 </body>
 </html> 

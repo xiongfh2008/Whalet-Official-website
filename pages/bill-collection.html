@@ -43,14 +43,15 @@
         .tab-btn {
             border-bottom: 2px solid transparent;
             color: #6b7280;
+            transition: all 0.2s ease-in-out;
         }
         .tab-btn:hover {
             color: #374151;
             border-bottom-color: #d1d5db;
         }
         .tab-btn.active {
-            border-bottom: 2px solid #4f46e5;
-            color: #4f46e5;
+            border-bottom: 2px solid #7D33FF;
+            color: #7D33FF;
         }
         .tab-content {
             display: none;
@@ -69,6 +70,43 @@
         }
         .status-expired {
             color: #D97706;
+        }
+        .status-normal {
+            color: #2563EB;
+        }
+        .status-disabled {
+            color: #DC2626;
+        }
+        .status-deleted {
+            color: #6B7280;
+        }
+        .status-paying {
+            color: #7C3AED;
+        }
+        .more-actions-dropdown {
+            position: absolute;
+            right: 0;
+            margin-top: 0.5rem;
+            z-index: 50;
+            min-width: 10rem;
+            padding: 0.5rem 0;
+            background-color: white;
+            border-radius: 0.375rem;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        
+        .more-actions-btn {
+            cursor: pointer;
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.25rem;
+        }
+        
+        .more-actions-btn:hover {
+            background-color: #f3f4f6;
+        }
+        
+        .relative {
+            position: relative;
         }
     </style>
 </head>
@@ -170,9 +208,9 @@
             <div class="p-6 border-b border-gray-200">
                 <div class="flex justify-between items-center">
                     <h2 class="text-xl font-semibold text-gray-800">账单收款</h2>
-                    <button class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded text-sm font-medium">
+                    <a href="create-payment-link.html" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded text-sm font-medium">
                         创建支付链接
-                    </button>
+                    </a>
                 </div>
             </div>
 
@@ -189,9 +227,12 @@
                         <span class="mr-2 text-sm font-medium text-gray-700">状态:</span>
                         <select class="p-2 text-sm border border-gray-300 rounded-md">
                             <option value="">全部状态</option>
-                            <option value="completed">已完成</option>
-                            <option value="cancelled">已删除</option>
+                            <option value="normal">正常</option>
+                            <option value="disabled">禁用</option>
                             <option value="expired">已过期</option>
+                            <option value="deleted">已删除</option>
+                            <option value="paying">付款中</option>
+                            <option value="completed">已完成</option>
                         </select>
                         </div>
                     <div class="flex items-center">
@@ -210,170 +251,169 @@
                 <table class="min-w-full divide-y divide-gray-200">
                     <thead class="bg-gray-50">
                         <tr>
-                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            <th scope="col" class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-[140px]">
                                 创建时间
                             </th>
-                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            <th scope="col" class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-[120px]">
                                 金额
                             </th>
-                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            <th scope="col" class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-[140px]">
                                 支付链接
                             </th>
-                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            <th scope="col" class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-[160px]">
                                 客户邮箱
                             </th>
-                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            <th scope="col" class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-[140px]">
                                 商户订单号
                             </th>
-                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            <th scope="col" class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-[120px]">
                                 链接名称
                             </th>
-                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            <th scope="col" class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-[140px]">
                                 链接有效期
                             </th>
-                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            <th scope="col" class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-[100px]">
                                 状态
                             </th>
-                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            <th scope="col" class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-[120px]">
                                 操作
                             </th>
                         </tr>
                     </thead>
                     <tbody class="bg-white divide-y divide-gray-200">
-                        <!-- 第一行数据 -->
+                        <!-- 状态为正常的行 -->
                         <tr>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">2025-01-17 10:08:53</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">15.00 EUR</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm">
-                                <a href="#" class="preview-link">预览</a>
+                            <td class="px-3 py-4 whitespace-nowrap text-sm text-gray-900">2025-01-18 15:30:00</td>
+                            <td class="px-3 py-4 whitespace-nowrap text-sm text-gray-900">2,000.00 USD</td>
+                            <td class="px-3 py-4 whitespace-nowrap text-sm">
+                                <a href="payment-preview.html" target="_blank" class="preview-link">预览</a>
+                                <a href="#" class="preview-link ml-2">复制链接</a>
                             </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">yuanyuan...@gmail.com</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">20250117...</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">gelunbiy...</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">2025-01-24 10:08:20</td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">已完成</span>
+                            <td class="px-3 py-4 whitespace-nowrap text-sm text-gray-900">customer...@gmail.com</td>
+                            <td class="px-3 py-4 whitespace-nowrap text-sm text-gray-900">20250118...</td>
+                            <td class="px-3 py-4 whitespace-nowrap text-sm text-gray-900">Payment-USD</td>
+                            <td class="px-3 py-4 whitespace-nowrap text-sm text-gray-900">2025-01-25 15:30:00</td>
+                            <td class="px-3 py-4 whitespace-nowrap">
+                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">正常</span>
                             </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                <a href="#" class="text-blue-600 hover:text-blue-900 mr-3">详情</a>
+                            <td class="px-3 py-4 whitespace-nowrap text-sm font-medium">
+                                <a href="bill-collection-detail.html" class="text-blue-600 hover:text-blue-900 mr-3">详情</a>
                                 <div class="relative inline-block text-left">
                                     <button type="button" class="more-actions-btn text-gray-600 hover:text-gray-900">更多</button>
                                     <div class="more-actions-dropdown origin-top-right absolute right-0 mt-2 w-40 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none hidden z-20">
                                         <div class="py-1">
-                                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">查看详情</a>
-                                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">复制链接</a>
+                                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">禁用</a>
+                                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">复制创建新链接</a>
+                                            <a href="#" class="block px-4 py-2 text-sm text-red-600 hover:bg-gray-100">删除</a>
                                         </div>
                                     </div>
                                 </div>
                             </td>
                         </tr>
                         
-                        <!-- 第二行数据 -->
+                        <!-- 已完成状态的行 -->
                         <tr>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">2025-01-16 17:40:53</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">15.00 USD</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm">
-                                <a href="#" class="preview-link">预览</a>
+                            <td class="px-3 py-4 whitespace-nowrap text-sm text-gray-900">2025-01-17 10:08:53</td>
+                            <td class="px-3 py-4 whitespace-nowrap text-sm text-gray-900">15.00 EUR</td>
+                            <td class="px-3 py-4 whitespace-nowrap text-sm">
+                                <a href="payment-preview.html" target="_blank" class="preview-link">预览</a>
                             </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">yuanyuan...@gmail.com</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">20250116...</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">nanfei-u...</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">2025-01-23 17:40:09</td>
-                            <td class="px-6 py-4 whitespace-nowrap">
+                            <td class="px-3 py-4 whitespace-nowrap text-sm text-gray-900">yuanyuan...@gmail.com</td>
+                            <td class="px-3 py-4 whitespace-nowrap text-sm text-gray-900">20250117...</td>
+                            <td class="px-3 py-4 whitespace-nowrap text-sm text-gray-900">gelunbiy...</td>
+                            <td class="px-3 py-4 whitespace-nowrap text-sm text-gray-900">2025-01-24 10:08:20</td>
+                            <td class="px-3 py-4 whitespace-nowrap">
+                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">已完成</span>
+                            </td>
+                            <td class="px-3 py-4 whitespace-nowrap text-sm font-medium">
+                                <a href="bill-collection-detail.html" class="text-blue-600 hover:text-blue-900 mr-3">详情</a>
+                                <div class="relative inline-block text-left">
+                                    <button type="button" class="more-actions-btn text-gray-600 hover:text-gray-900">更多</button>
+                                    <div class="more-actions-dropdown origin-top-right absolute right-0 mt-2 w-40 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none hidden z-20">
+                                        <div class="py-1">
+                                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">复制创建新链接</a>
+                                    </div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        <!-- 已删除状态的行 -->
+                        <tr>
+                            <td class="px-3 py-4 whitespace-nowrap text-sm text-gray-900">2025-01-16 17:40:53</td>
+                            <td class="px-3 py-4 whitespace-nowrap text-sm text-gray-900">15.00 USD</td>
+                            <td class="px-3 py-4 whitespace-nowrap text-sm">
+                                <a href="payment-preview.html" target="_blank" class="preview-link">预览</a>
+                            </td>
+                            <td class="px-3 py-4 whitespace-nowrap text-sm text-gray-900">yuanyuan...@gmail.com</td>
+                            <td class="px-3 py-4 whitespace-nowrap text-sm text-gray-900">20250116...</td>
+                            <td class="px-3 py-4 whitespace-nowrap text-sm text-gray-900">nanfei-u...</td>
+                            <td class="px-3 py-4 whitespace-nowrap text-sm text-gray-900">2025-01-23 17:40:09</td>
+                            <td class="px-3 py-4 whitespace-nowrap">
                                 <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-gray-800">已删除</span>
                             </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                <a href="#" class="text-blue-600 hover:text-blue-900 mr-3">详情</a>
+                            <td class="px-3 py-4 whitespace-nowrap text-sm font-medium">
+                                <a href="bill-collection-detail.html" class="text-blue-600 hover:text-blue-900 mr-3">详情</a>
                                 <div class="relative inline-block text-left">
                                     <button type="button" class="more-actions-btn text-gray-600 hover:text-gray-900">更多</button>
                                     <div class="more-actions-dropdown origin-top-right absolute right-0 mt-2 w-40 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none hidden z-20">
                                         <div class="py-1">
-                                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">查看详情</a>
-                                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">复制链接</a>
-                                    </div>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                        
-                        <!-- 第三行数据 -->
-                        <tr>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">2025-01-16 11:51:23</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">5,000.00 ARS</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm">
-                                <a href="#" class="preview-link">预览</a>
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">yuanyuan...@gmail.com</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">20250116...</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">agengtin...</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">2025-01-23 11:50:35</td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">已过期</span>
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                <a href="#" class="text-blue-600 hover:text-blue-900 mr-3">详情</a>
-                                <div class="relative inline-block text-left">
-                                    <button type="button" class="more-actions-btn text-gray-600 hover:text-gray-900">更多</button>
-                                    <div class="more-actions-dropdown origin-top-right absolute right-0 mt-2 w-40 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none hidden z-20">
-                                        <div class="py-1">
-                                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">查看详情</a>
-                                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">复制链接</a>
+                                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">复制创建新链接</a>
                                         </div>
                                     </div>
                                 </div>
                             </td>
                         </tr>
                         
-                        <!-- 第四行数据 -->
+                        <!-- 已过期状态的行 -->
                         <tr>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">2025-01-14 11:46:06</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">1,500.00 XOF</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm">
-                                <a href="#" class="preview-link">预览</a>
+                            <td class="px-3 py-4 whitespace-nowrap text-sm text-gray-900">2025-01-16 11:51:23</td>
+                            <td class="px-3 py-4 whitespace-nowrap text-sm text-gray-900">5,000.00 ARS</td>
+                            <td class="px-3 py-4 whitespace-nowrap text-sm">
+                                <a href="payment-preview.html" target="_blank" class="preview-link">预览</a>
                             </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">yuanyuan...@gmail.com</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">20250114...</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">Senegal</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">2025-01-21 11:41:25</td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">已完成</span>
+                            <td class="px-3 py-4 whitespace-nowrap text-sm text-gray-900">yuanyuan...@gmail.com</td>
+                            <td class="px-3 py-4 whitespace-nowrap text-sm text-gray-900">20250116...</td>
+                            <td class="px-3 py-4 whitespace-nowrap text-sm text-gray-900">agengtin...</td>
+                            <td class="px-3 py-4 whitespace-nowrap text-sm text-gray-900">2025-01-23 11:50:35</td>
+                            <td class="px-3 py-4 whitespace-nowrap">
+                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">已过期</span>
                             </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                <a href="#" class="text-blue-600 hover:text-blue-900 mr-3">详情</a>
+                            <td class="px-3 py-4 whitespace-nowrap text-sm font-medium">
+                                <a href="bill-collection-detail.html" class="text-blue-600 hover:text-blue-900 mr-3">详情</a>
                                 <div class="relative inline-block text-left">
                                     <button type="button" class="more-actions-btn text-gray-600 hover:text-gray-900">更多</button>
                                     <div class="more-actions-dropdown origin-top-right absolute right-0 mt-2 w-40 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none hidden z-20">
                                         <div class="py-1">
-                                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">查看详情</a>
-                                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">复制链接</a>
+                                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">复制创建新链接</a>
+                                            <a href="#" class="block px-4 py-2 text-sm text-red-600 hover:bg-gray-100">删除</a>
                                     </div>
                                     </div>
                                 </div>
                             </td>
                         </tr>
                         
-                        <!-- 第五行数据 -->
+                        <!-- 其他状态的行 -->
                         <tr>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">2025-01-14 11:45:21</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">1,500.00 XOF</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm">
-                                <a href="#" class="preview-link">预览</a>
+                            <td class="px-3 py-4 whitespace-nowrap text-sm text-gray-900">2025-01-14 11:46:06</td>
+                            <td class="px-3 py-4 whitespace-nowrap text-sm text-gray-900">1,500.00 XOF</td>
+                            <td class="px-3 py-4 whitespace-nowrap text-sm">
+                                <a href="payment-preview.html" target="_blank" class="preview-link">预览</a>
                             </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">yuanyuan...@gmail.com</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">20250114...</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">Senegal</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">2025-01-21 11:41:25</td>
-                            <td class="px-6 py-4 whitespace-nowrap">
+                            <td class="px-3 py-4 whitespace-nowrap text-sm text-gray-900">yuanyuan...@gmail.com</td>
+                            <td class="px-3 py-4 whitespace-nowrap text-sm text-gray-900">20250114...</td>
+                            <td class="px-3 py-4 whitespace-nowrap text-sm text-gray-900">Senegal</td>
+                            <td class="px-3 py-4 whitespace-nowrap text-sm text-gray-900">2025-01-21 11:41:25</td>
+                            <td class="px-3 py-4 whitespace-nowrap">
                                 <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">已完成</span>
                             </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                <a href="#" class="text-blue-600 hover:text-blue-900 mr-3">详情</a>
+                            <td class="px-3 py-4 whitespace-nowrap text-sm font-medium">
+                                <a href="bill-collection-detail.html" class="text-blue-600 hover:text-blue-900 mr-3">详情</a>
                                 <div class="relative inline-block text-left">
                                     <button type="button" class="more-actions-btn text-gray-600 hover:text-gray-900">更多</button>
                                     <div class="more-actions-dropdown origin-top-right absolute right-0 mt-2 w-40 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none hidden z-20">
                                         <div class="py-1">
-                                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">查看详情</a>
-                                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">复制链接</a>
+                                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">复制创建新链接</a>
                                         </div>
                                     </div>
                                 </div>
@@ -419,9 +459,9 @@
             <div class="p-6 border-b border-gray-200">
                 <div class="flex justify-between items-center">
                     <h2 class="text-xl font-semibold text-gray-800">商品管理</h2>
-                    <button class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded text-sm font-medium">
+                    <a href="create-product.html" style="background-color: #7D33FF; color: white" class="hover:bg-purple-700 px-6 py-2 rounded text-sm font-medium">
                         创建商品
-                    </button>
+                    </a>
                 </div>
             </div>
             
@@ -438,15 +478,14 @@
                         <span class="mr-2 text-sm font-medium text-gray-700">状态:</span>
                         <select class="p-2 text-sm border border-gray-300 rounded-md">
                             <option value="">全部状态</option>
-                            <option value="completed">正常</option>
-                            <option value="cancelled">下架</option>
-                            <option value="expired">删除</option>
+                            <option value="normal">正常</option>
+                            <option value="disabled">禁用</option>
                         </select>
                     </div>
                     <div class="flex items-center">
                         <input type="text" placeholder="商品ID" class="p-2 text-sm border border-gray-300 rounded-md w-64" />
                         <input type="text" placeholder="商品名称" class="ml-2 p-2 text-sm border border-gray-300 rounded-md w-64" />
-                        <button class="ml-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded text-sm font-medium">
+                        <button class="ml-2 bg-[#7D33FF] hover:bg-purple-700 text-white px-4 py-2 rounded text-sm font-medium">
                             查询
                         </button>
                         <button class="ml-2 bg-white border border-gray-300 text-gray-700 px-4 py-2 rounded text-sm font-medium hover:bg-gray-50">
@@ -489,16 +528,16 @@
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">kemailong</td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">1,000.00 XAF</td>
                             <td class="px-6 py-4 whitespace-nowrap">
-                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">正常</span>
+                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">正常</span>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                <a href="#" class="text-blue-600 hover:text-blue-900 mr-3">详情</a>
+                                <a href="product-detail.html" class="text-blue-600 hover:text-blue-900 mr-3">详情</a>
                                 <div class="relative inline-block text-left">
                                     <button type="button" class="more-actions-btn text-gray-600 hover:text-gray-900">更多</button>
                                     <div class="more-actions-dropdown origin-top-right absolute right-0 mt-2 w-40 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none hidden z-20">
                                         <div class="py-1">
-                                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">编辑商品</a>
-                                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">复制链接</a>
+                                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">编辑</a>
+                                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">禁用</a>
                                             <a href="#" class="block px-4 py-2 text-sm text-red-600 hover:bg-gray-100">删除</a>
                                         </div>
                                     </div>
@@ -513,16 +552,15 @@
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">ruwangda</td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">6,000.00 RWF</td>
                             <td class="px-6 py-4 whitespace-nowrap">
-                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">正常</span>
+                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">禁用</span>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                <a href="#" class="text-blue-600 hover:text-blue-900 mr-3">详情</a>
+                                <a href="product-detail.html" class="text-blue-600 hover:text-blue-900 mr-3">详情</a>
                                 <div class="relative inline-block text-left">
                                     <button type="button" class="more-actions-btn text-gray-600 hover:text-gray-900">更多</button>
                                     <div class="more-actions-dropdown origin-top-right absolute right-0 mt-2 w-40 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none hidden z-20">
                                         <div class="py-1">
-                                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">编辑商品</a>
-                                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">复制链接</a>
+                                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">启用</a>
                                             <a href="#" class="block px-4 py-2 text-sm text-red-600 hover:bg-gray-100">删除</a>
                                         </div>
                                     </div>
@@ -541,16 +579,16 @@
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">6,000.00 KES</td>
                             <td class="px-6 py-4 whitespace-nowrap">
-                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">正常</span>
+                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">正常</span>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                <a href="#" class="text-blue-600 hover:text-blue-900 mr-3">详情</a>
+                                <a href="product-detail.html" class="text-blue-600 hover:text-blue-900 mr-3">详情</a>
                                 <div class="relative inline-block text-left">
                                     <button type="button" class="more-actions-btn text-gray-600 hover:text-gray-900">更多</button>
                                     <div class="more-actions-dropdown origin-top-right absolute right-0 mt-2 w-40 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none hidden z-20">
                                         <div class="py-1">
-                                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">编辑商品</a>
-                                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">复制链接</a>
+                                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">编辑</a>
+                                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">禁用</a>
                                             <a href="#" class="block px-4 py-2 text-sm text-red-600 hover:bg-gray-100">删除</a>
                                         </div>
                                     </div>
@@ -565,16 +603,15 @@
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">bilu</td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">6,000.00 TZS</td>
                             <td class="px-6 py-4 whitespace-nowrap">
-                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">正常</span>
+                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">禁用</span>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                <a href="#" class="text-blue-600 hover:text-blue-900 mr-3">详情</a>
+                                <a href="product-detail.html" class="text-blue-600 hover:text-blue-900 mr-3">详情</a>
                                 <div class="relative inline-block text-left">
                                     <button type="button" class="more-actions-btn text-gray-600 hover:text-gray-900">更多</button>
                                     <div class="more-actions-dropdown origin-top-right absolute right-0 mt-2 w-40 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none hidden z-20">
                                         <div class="py-1">
-                                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">编辑商品</a>
-                                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">复制链接</a>
+                                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">启用</a>
                                             <a href="#" class="block px-4 py-2 text-sm text-red-600 hover:bg-gray-100">删除</a>
                                         </div>
                                     </div>
@@ -589,16 +626,16 @@
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">bilu</td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">6,000.00 PEN</td>
                             <td class="px-6 py-4 whitespace-nowrap">
-                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">正常</span>
+                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">正常</span>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                <a href="#" class="text-blue-600 hover:text-blue-900 mr-3">详情</a>
+                                <a href="product-detail.html" class="text-blue-600 hover:text-blue-900 mr-3">详情</a>
                                 <div class="relative inline-block text-left">
                                     <button type="button" class="more-actions-btn text-gray-600 hover:text-gray-900">更多</button>
                                     <div class="more-actions-dropdown origin-top-right absolute right-0 mt-2 w-40 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none hidden z-20">
                                         <div class="py-1">
-                                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">编辑商品</a>
-                                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">复制链接</a>
+                                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">编辑</a>
+                                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">禁用</a>
                                             <a href="#" class="block px-4 py-2 text-sm text-red-600 hover:bg-gray-100">删除</a>
                                         </div>
                                     </div>
@@ -645,9 +682,9 @@
             <div class="p-6 border-b border-gray-200">
                 <div class="flex justify-between items-center">
                     <h2 class="text-xl font-semibold text-gray-800">买家管理</h2>
-                    <button class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded text-sm font-medium">
+                    <a href="create-buyer.html" style="background-color: #7D33FF; color: white" class="hover:bg-purple-700 px-6 py-2 rounded text-sm font-medium">
                         新建买家
-                    </button>
+                    </a>
                 </div>
             </div>
             
@@ -664,15 +701,14 @@
                         <span class="mr-2 text-sm font-medium text-gray-700">状态:</span>
                         <select class="p-2 text-sm border border-gray-300 rounded-md">
                             <option value="">全部状态</option>
-                            <option value="completed">正常</option>
-                            <option value="cancelled">下架</option>
-                            <option value="expired">删除</option>
+                            <option value="normal">正常</option>
+                            <option value="disabled">禁用</option>
                         </select>
                     </div>
                     <div class="flex items-center">
                         <input type="text" placeholder="邮箱" class="p-2 text-sm border border-gray-300 rounded-md w-64" />
                         <input type="text" placeholder="买家名称" class="ml-2 p-2 text-sm border border-gray-300 rounded-md w-64" />
-                        <button class="ml-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded text-sm font-medium">
+                        <button class="ml-2 bg-[#7D33FF] hover:bg-purple-700 text-white px-4 py-2 rounded text-sm font-medium">
                             查询
                         </button>
                         <button class="ml-2 bg-white border border-gray-300 text-gray-700 px-4 py-2 rounded text-sm font-medium hover:bg-gray-50">
@@ -725,7 +761,7 @@
                                 </tr>
                             </thead>
                             <tbody class="bg-white divide-y divide-gray-200">
-                                <!-- 第一行数据 -->
+                                <!-- 第一行数据 - 正常状态 -->
                                 <tr>
                                     <td class="px-3 py-4 whitespace-nowrap text-sm text-gray-900">2025-01-17 09:59:48</td>
                                     <td class="px-3 py-4 whitespace-nowrap text-sm text-gray-900">yyuanyua...</td>
@@ -737,25 +773,24 @@
                                     <td class="px-3 py-4 whitespace-nowrap text-sm text-gray-900">28 Zanker...</td>
                                     <td class="px-3 py-4 whitespace-nowrap text-sm text-gray-900">400000</td>
                                     <td class="px-3 py-4 whitespace-nowrap">
-                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">正常</span>
+                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">正常</span>
                                     </td>
                                     <td class="px-3 py-4 whitespace-nowrap text-sm font-medium">
-                                        <div class="flex items-center space-x-2">
-                                            <a href="#" class="text-blue-600 hover:text-blue-900">详情</a>
-                                            <div class="relative inline-block text-left">
-                                                <button type="button" class="more-actions-btn text-gray-600 hover:text-gray-900">更多</button>
-                                                <div class="more-actions-dropdown origin-top-right absolute right-0 mt-2 w-40 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none hidden z-20">
-                                                    <div class="py-1">
-                                                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">编辑</a>
-                                                        <a href="#" class="block px-4 py-2 text-sm text-red-600 hover:bg-gray-100">删除</a>
-                                                    </div>
+                                        <a href="buyer-detail.html" class="text-blue-600 hover:text-blue-900 mr-3">详情</a>
+                                        <div class="relative inline-block text-left">
+                                            <button type="button" class="more-actions-btn text-gray-600 hover:text-gray-900">更多</button>
+                                            <div class="more-actions-dropdown origin-top-right absolute right-0 mt-2 w-40 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none hidden z-20">
+                                                <div class="py-1">
+                                                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">编辑</a>
+                                                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">禁用</a>
+                                                    <a href="#" class="block px-4 py-2 text-sm text-red-600 hover:bg-gray-100">删除</a>
                                                 </div>
                                             </div>
                                         </div>
                                     </td>
                                 </tr>
                                 
-                                <!-- 第二行数据 -->
+                                <!-- 第二行数据 - 禁用状态 -->
                                 <tr>
                                     <td class="px-3 py-4 whitespace-nowrap text-sm text-gray-900">2025-01-14 11:19:41</td>
                                     <td class="px-3 py-4 whitespace-nowrap text-sm text-gray-900">yyuanyua...</td>
@@ -767,25 +802,23 @@
                                     <td class="px-3 py-4 whitespace-nowrap text-sm text-gray-900">28 Zanker...</td>
                                     <td class="px-3 py-4 whitespace-nowrap text-sm text-gray-900">400000</td>
                                     <td class="px-3 py-4 whitespace-nowrap">
-                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">正常</span>
+                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">禁用</span>
                                     </td>
                                     <td class="px-3 py-4 whitespace-nowrap text-sm font-medium">
-                                        <div class="flex items-center space-x-2">
-                                            <a href="#" class="text-blue-600 hover:text-blue-900">详情</a>
-                                            <div class="relative inline-block text-left">
-                                                <button type="button" class="more-actions-btn text-gray-600 hover:text-gray-900">更多</button>
-                                                <div class="more-actions-dropdown origin-top-right absolute right-0 mt-2 w-40 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none hidden z-20">
-                                                    <div class="py-1">
-                                                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">编辑</a>
-                                                        <a href="#" class="block px-4 py-2 text-sm text-red-600 hover:bg-gray-100">删除</a>
-                                                    </div>
+                                        <a href="buyer-detail.html" class="text-blue-600 hover:text-blue-900 mr-3">详情</a>
+                                        <div class="relative inline-block text-left">
+                                            <button type="button" class="more-actions-btn text-gray-600 hover:text-gray-900">更多</button>
+                                            <div class="more-actions-dropdown origin-top-right absolute right-0 mt-2 w-40 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none hidden z-20">
+                                                <div class="py-1">
+                                                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">启用</a>
+                                                    <a href="#" class="block px-4 py-2 text-sm text-red-600 hover:bg-gray-100">删除</a>
                                                 </div>
                                             </div>
                                         </div>
                                     </td>
                                 </tr>
                                 
-                                <!-- 第三行数据 -->
+                                <!-- 第三行数据 - 正常状态 -->
                                 <tr>
                                     <td class="px-3 py-4 whitespace-nowrap text-sm text-gray-900">2025-01-14 11:18:27</td>
                                     <td class="px-3 py-4 whitespace-nowrap text-sm text-gray-900">yyuanyua...</td>
@@ -797,25 +830,24 @@
                                     <td class="px-3 py-4 whitespace-nowrap text-sm text-gray-900">28 Zanker...</td>
                                     <td class="px-3 py-4 whitespace-nowrap text-sm text-gray-900">400000</td>
                                     <td class="px-3 py-4 whitespace-nowrap">
-                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">正常</span>
+                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">正常</span>
                                     </td>
                                     <td class="px-3 py-4 whitespace-nowrap text-sm font-medium">
-                                        <div class="flex items-center space-x-2">
-                                            <a href="#" class="text-blue-600 hover:text-blue-900">详情</a>
-                                            <div class="relative inline-block text-left">
-                                                <button type="button" class="more-actions-btn text-gray-600 hover:text-gray-900">更多</button>
-                                                <div class="more-actions-dropdown origin-top-right absolute right-0 mt-2 w-40 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none hidden z-20">
-                                                    <div class="py-1">
-                                                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">编辑</a>
-                                                        <a href="#" class="block px-4 py-2 text-sm text-red-600 hover:bg-gray-100">删除</a>
-                                                    </div>
+                                        <a href="buyer-detail.html" class="text-blue-600 hover:text-blue-900 mr-3">详情</a>
+                                        <div class="relative inline-block text-left">
+                                            <button type="button" class="more-actions-btn text-gray-600 hover:text-gray-900">更多</button>
+                                            <div class="more-actions-dropdown origin-top-right absolute right-0 mt-2 w-40 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none hidden z-20">
+                                                <div class="py-1">
+                                                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">编辑</a>
+                                                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">禁用</a>
+                                                    <a href="#" class="block px-4 py-2 text-sm text-red-600 hover:bg-gray-100">删除</a>
                                                 </div>
                                             </div>
                                         </div>
                                     </td>
                                 </tr>
                                 
-                                <!-- 第四行数据 -->
+                                <!-- 第四行数据 - 禁用状态 -->
                                 <tr>
                                     <td class="px-3 py-4 whitespace-nowrap text-sm text-gray-900">2025-01-10 17:21:42</td>
                                     <td class="px-3 py-4 whitespace-nowrap text-sm text-gray-900">yyuanyua...</td>
@@ -827,25 +859,23 @@
                                     <td class="px-3 py-4 whitespace-nowrap text-sm text-gray-900">28 Zanker...</td>
                                     <td class="px-3 py-4 whitespace-nowrap text-sm text-gray-900">400000</td>
                                     <td class="px-3 py-4 whitespace-nowrap">
-                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">正常</span>
+                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">禁用</span>
                                     </td>
                                     <td class="px-3 py-4 whitespace-nowrap text-sm font-medium">
-                                        <div class="flex items-center space-x-2">
-                                            <a href="#" class="text-blue-600 hover:text-blue-900">详情</a>
-                                            <div class="relative inline-block text-left">
-                                                <button type="button" class="more-actions-btn text-gray-600 hover:text-gray-900">更多</button>
-                                                <div class="more-actions-dropdown origin-top-right absolute right-0 mt-2 w-40 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none hidden z-20">
-                                                    <div class="py-1">
-                                                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">编辑</a>
-                                                        <a href="#" class="block px-4 py-2 text-sm text-red-600 hover:bg-gray-100">删除</a>
-                                                    </div>
+                                        <a href="buyer-detail.html" class="text-blue-600 hover:text-blue-900 mr-3">详情</a>
+                                        <div class="relative inline-block text-left">
+                                            <button type="button" class="more-actions-btn text-gray-600 hover:text-gray-900">更多</button>
+                                            <div class="more-actions-dropdown origin-top-right absolute right-0 mt-2 w-40 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none hidden z-20">
+                                                <div class="py-1">
+                                                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">启用</a>
+                                                    <a href="#" class="block px-4 py-2 text-sm text-red-600 hover:bg-gray-100">删除</a>
                                                 </div>
                                             </div>
                                         </div>
                                     </td>
                                 </tr>
                                 
-                                <!-- 第五行数据 -->
+                                <!-- 第五行数据 - 正常状态 -->
                                 <tr>
                                     <td class="px-3 py-4 whitespace-nowrap text-sm text-gray-900">2025-01-10 16:42:35</td>
                                     <td class="px-3 py-4 whitespace-nowrap text-sm text-gray-900">yyuanyua...</td>
@@ -857,18 +887,17 @@
                                     <td class="px-3 py-4 whitespace-nowrap text-sm text-gray-900">28 Zanker...</td>
                                     <td class="px-3 py-4 whitespace-nowrap text-sm text-gray-900">400000</td>
                                     <td class="px-3 py-4 whitespace-nowrap">
-                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">正常</span>
+                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">正常</span>
                                     </td>
                                     <td class="px-3 py-4 whitespace-nowrap text-sm font-medium">
-                                        <div class="flex items-center space-x-2">
-                                            <a href="#" class="text-blue-600 hover:text-blue-900">详情</a>
-                                            <div class="relative inline-block text-left">
-                                                <button type="button" class="more-actions-btn text-gray-600 hover:text-gray-900">更多</button>
-                                                <div class="more-actions-dropdown origin-top-right absolute right-0 mt-2 w-40 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none hidden z-20">
-                                                    <div class="py-1">
-                                                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">编辑</a>
-                                                        <a href="#" class="block px-4 py-2 text-sm text-red-600 hover:bg-gray-100">删除</a>
-                                                    </div>
+                                        <a href="buyer-detail.html" class="text-blue-600 hover:text-blue-900 mr-3">详情</a>
+                                        <div class="relative inline-block text-left">
+                                            <button type="button" class="more-actions-btn text-gray-600 hover:text-gray-900">更多</button>
+                                            <div class="more-actions-dropdown origin-top-right absolute right-0 mt-2 w-40 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none hidden z-20">
+                                                <div class="py-1">
+                                                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">编辑</a>
+                                                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">禁用</a>
+                                                    <a href="#" class="block px-4 py-2 text-sm text-red-600 hover:bg-gray-100">删除</a>
                                                 </div>
                                             </div>
                                         </div>
@@ -913,25 +942,69 @@
     </div>
 
     <script>
-        // JavaScript for tab switching and other functionality
         document.addEventListener('DOMContentLoaded', function() {
-            // Tab switching
-            const tabBtns = document.querySelectorAll('.tab-btn');
+            const tabButtons = document.querySelectorAll('.tab-btn');
             const tabContents = document.querySelectorAll('.tab-content');
             
-            tabBtns.forEach(btn => {
-                btn.addEventListener('click', function() {
-                    const tabId = this.getAttribute('data-tab');
-                    
-                    // Hide all tabs and deactivate buttons
-                    tabContents.forEach(content => content.classList.remove('active'));
-                    tabBtns.forEach(btn => btn.classList.remove('active'));
-                    
-                    // Show selected tab and activate button
-                    document.getElementById(tabId).classList.add('active');
-                    this.classList.add('active');
+            // 切换标签页的函数
+            function switchTab(tabId) {
+                // 移除所有标签页的激活状态
+                tabButtons.forEach(btn => {
+                    btn.classList.remove('active');
+                    btn.classList.remove('text-purple-600', 'border-purple-600');
+                    btn.classList.add('text-gray-500', 'border-transparent');
+                });
+                tabContents.forEach(content => {
+                    content.style.display = 'none';
+                });
+
+                // 激活选中的标签页
+                const selectedButton = document.querySelector(`[data-tab="${tabId}"]`);
+                const selectedContent = document.getElementById(tabId);
+
+                if (selectedButton && selectedContent) {
+                    selectedButton.classList.add('active');
+                    selectedButton.classList.remove('text-gray-500', 'border-transparent');
+                    selectedButton.classList.add('text-purple-600', 'border-purple-600');
+                    selectedContent.style.display = 'block';
+                }
+            }
+
+            // 为每个标签按钮添加点击事件
+            tabButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const tabId = button.getAttribute('data-tab');
+                    switchTab(tabId);
+                    // 存储当前激活的标签页
+                    localStorage.setItem('activeTab', tabId);
                 });
             });
+
+            // 从 localStorage 恢复激活的标签页
+            const activeTab = localStorage.getItem('activeTab');
+            if (activeTab) {
+                switchTab(activeTab);
+                // 清除存储的标签页信息
+                localStorage.removeItem('activeTab');
+            } else {
+                // 默认显示第一个标签页
+                const firstTab = tabButtons[0].getAttribute('data-tab');
+                switchTab(firstTab);
+            }
+
+            // 处理 URL hash 变化
+            window.addEventListener('hashchange', function() {
+                const hash = window.location.hash.slice(1);
+                if (hash) {
+                    switchTab(hash);
+                }
+            });
+
+            // 初始检查 URL hash
+            const initialHash = window.location.hash.slice(1);
+            if (initialHash) {
+                switchTab(initialHash);
+            }
             
             // User center dropdown
             const userCenterBtn = document.getElementById('userCenterBtn');
@@ -948,27 +1021,31 @@
                 }
             });
             
-            // More actions dropdown
+            // More actions button click handler
             const moreActionsBtns = document.querySelectorAll('.more-actions-btn');
             moreActionsBtns.forEach(btn => {
                 btn.addEventListener('click', function(e) {
+                    e.preventDefault();
                     e.stopPropagation();
-                    const dropdown = this.nextElementSibling;
-                    dropdown.classList.toggle('hidden');
                     
-                    // Close other dropdowns
-                    document.querySelectorAll('.more-actions-dropdown').forEach(dropdown => {
-                        if (dropdown !== this.nextElementSibling) {
-                            dropdown.classList.add('hidden');
+                    // Close all other dropdowns first
+                    document.querySelectorAll('.more-actions-dropdown').forEach(d => {
+                        if (d !== this.nextElementSibling) {
+                            d.classList.add('hidden');
                         }
                     });
+                    
+                    // Toggle current dropdown
+                    const dropdown = this.nextElementSibling;
+                    dropdown.classList.toggle('hidden');
                 });
             });
             
-            // Close all dropdowns when clicking outside
+            // Close dropdowns when clicking outside
             document.addEventListener('click', function(event) {
-                if (!event.target.closest('.more-actions-btn')) {
-                    document.querySelectorAll('.more-actions-dropdown').forEach(dropdown => {
+                const dropdowns = document.querySelectorAll('.more-actions-dropdown');
+                if (!event.target.closest('.more-actions-btn') && !event.target.closest('.more-actions-dropdown')) {
+                    dropdowns.forEach(dropdown => {
                         dropdown.classList.add('hidden');
                     });
                 }

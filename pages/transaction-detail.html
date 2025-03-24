@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>交易详情 - Whalet</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../styles/custom.css">
+    <style>
+        :root {
+            --primary-color: #7D33FF;
+            --primary-hover: #6929CC;
+            --primary-light: rgba(125, 51, 255, 0.1);
+            --primary-lighter: rgba(125, 51, 255, 0.05);
+        }
+
+        body {
+            background-color: #F8F9FD;
+            font-family: 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+        }
+
+        .tab-btn {
+            position: relative;
+            color: #6b7280;
+            text-decoration: none;
+            padding: 1rem 1.5rem;
+            font-size: 0.875rem;
+            transition: all 0.2s;
+            border-bottom: 2px solid transparent;
+        }
+
+        .tab-btn:hover {
+            color: var(--primary-color);
+        }
+
+        .tab-btn.active {
+            color: var(--primary-color);
+            font-weight: 500;
+            border-bottom-color: var(--primary-color);
+        }
+
+        .detail-section {
+            background: white;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+            margin-bottom: 1rem;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+        }
+
+        .info-item {
+            display: flex;
+            margin-bottom: 1rem;
+        }
+
+        .info-label {
+            color: #6b7280;
+            font-size: 0.875rem;
+            width: 120px;
+            flex-shrink: 0;
+        }
+
+        .info-value {
+            color: #111827;
+            font-size: 0.875rem;
+            flex-grow: 1;
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.375rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .status-badge.pending {
+            background-color: var(--primary-lighter);
+            color: var(--primary-color);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        table thead {
+            background-color: #F9FAFB;
+        }
+
+        table th {
+            padding: 0.75rem;
+            text-align: left;
+            font-weight: 500;
+            color: #6B7280;
+            font-size: 0.875rem;
+        }
+
+        table td {
+            padding: 0.75rem;
+            color: #111827;
+            font-size: 0.875rem;
+            border-bottom: 1px solid #E5E7EB;
+        }
+
+        .section-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #111827;
+            margin-bottom: 1rem;
+            padding-left: 0.75rem;
+            border-left: 3px solid var(--primary-color);
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+    <div class="container mx-auto px-4 py-8">
+        <div class="max-w-6xl mx-auto bg-white rounded-lg shadow-sm">
+            <!-- 头部 -->
+            <div class="p-6 border-b border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center">
+                        <a href="transaction-list.html#payment-records" class="text-purple-600 hover:text-purple-700 mr-2">
+                            <i class="fas fa-arrow-left"></i>
+                        </a>
+                        <a href="transaction-list.html#payment-records" class="text-purple-600 hover:text-purple-700 mr-4">返回</a>
+                        <h1 class="text-xl font-semibold text-gray-800">交易详情</h1>
+                    </div>
+                    <a href="transaction-list.html#payment-records" class="text-gray-500 hover:text-gray-700">
+                        <i class="fas fa-times"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- 交易详情内容 -->
+            <div class="p-6">
+                <!-- 基本信息 -->
+                <div class="flex justify-between items-center mb-6">
+                    <div class="text-2xl font-medium text-gray-900">1,000.00 NGN</div>
+                    <div class="status-badge pending">
+                        付款中
+                    </div>
+                </div>
+
+                <div class="flex items-center space-x-4 mb-8">
+                    <span class="text-sm text-gray-500">交易时间：2025-03-17 13:44:23</span>
+                    <span class="text-sm text-gray-500">交易流水号：202503171344234297850001</span>
+                </div>
+
+                <!-- 标签页导航 -->
+                <div class="border-b border-gray-200 mb-6">
+                    <nav class="flex space-x-4">
+                        <button class="tab-btn active" data-tab="transaction-detail">
+                            交易详情
+                        </button>
+                        <button class="tab-btn" data-tab="settlement-info">
+                            结算信息
+                        </button>
+                        <button class="tab-btn" data-tab="refund-info">
+                            退款记录
+                        </button>
+                    </nav>
+                </div>
+
+                <!-- 交易详情标签页 -->
+                <div id="transaction-detail" class="tab-content active">
+                    <!-- 订单信息 -->
+                    <div class="mb-8">
+                        <h3 class="section-title">订单信息</h3>
+                        <div class="info-grid">
+                            <div class="info-item">
+                                <div class="info-label">商户订单号</div>
+                                <div class="info-value">202503171344233142820001</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-label">订单时间</div>
+                                <div class="info-value">2025-03-17 13:44:23</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-label">订单总金额</div>
+                                <div class="info-value">1,000.00 NGN</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-label">折扣</div>
+                                <div class="info-value">-</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-label">运费</div>
+                                <div class="info-value">-</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 商品信息 -->
+                    <div class="mb-8">
+                        <h3 class="section-title">商品信息</h3>
+                        <table class="min-w-full">
+                            <thead>
+                                <tr>
+                                    <th>商品名称</th>
+                                    <th class="text-center">数量</th>
+                                    <th class="text-right">单价</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>尼日利亚NGN</td>
+                                    <td class="text-center">1</td>
+                                    <td class="text-right">1,000.00 NGN</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- 客户信息 -->
+                    <div>
+                        <h3 class="section-title">客户信息</h3>
+                        <div class="info-grid">
+                            <div class="info-item">
+                                <div class="info-label">国家/地区</div>
+                                <div class="info-value">尼日利亚</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-label">邮箱</div>
+                                <div class="info-value">yjunxiang@whalet.com</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-label">手机号码</div>
+                                <div class="info-value">18223974787</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-label">购单国家/地区</div>
+                                <div class="info-value">尼日利亚</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-label">购单省</div>
+                                <div class="info-value">chongqing</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-label">购单地址1</div>
+                                <div class="info-value">chongqing</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-label">购单地址2</div>
+                                <div class="info-value">chongqing</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-label">邮政编码</div>
+                                <div class="info-value">023023</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 结算信息标签页 -->
+                <div id="settlement-info" class="tab-content">
+                    <div class="text-center text-gray-500 py-8">
+                        暂无结算信息
+                    </div>
+                </div>
+
+                <!-- 退款记录标签页 -->
+                <div id="refund-info" class="tab-content">
+                    <div class="text-center text-gray-500 py-8">
+                        暂无退款记录
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 获取URL参数
+            const urlParams = new URLSearchParams(window.location.search);
+            const fromPayment = urlParams.get('from') === 'payment';
+
+            // 标签页切换
+            const tabButtons = document.querySelectorAll('.tab-btn');
+            const tabContents = document.querySelectorAll('.tab-content');
+
+            function activateTab(tabId) {
+                tabButtons.forEach(btn => {
+                    if (btn.getAttribute('data-tab') === tabId) {
+                        btn.classList.add('active');
+                    } else {
+                        btn.classList.remove('active');
+                    }
+                });
+
+                tabContents.forEach(content => {
+                    if (content.id === tabId) {
+                        content.classList.add('active');
+                    } else {
+                        content.classList.remove('active');
+                    }
+                });
+            }
+
+            // 如果是从支付记录列表进入，默认显示交易详情标签页
+            if (fromPayment) {
+                activateTab('transaction-detail');
+            }
+
+            // 标签页点击事件
+            tabButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const tabId = button.getAttribute('data-tab');
+                    activateTab(tabId);
+                });
+            });
+        });
+    </script>
+</body>
+</html> 

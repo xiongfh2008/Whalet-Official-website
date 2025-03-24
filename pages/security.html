@@ -199,9 +199,9 @@
                             <p class="text-sm text-gray-500">最后修改：2023-09-04 12:04:58</p>
                         </div>
                     </div>
-                    <button class="px-4 py-2 text-blue-600 hover:text-blue-700 text-sm font-medium">
+                    <a href="reset-password.html" class="px-4 py-2 text-blue-600 hover:text-blue-700 text-sm font-medium">
                         更新
-                    </button>
+                    </a>
                 </div>
             </div>
 
@@ -217,9 +217,9 @@
                             <p class="text-sm text-gray-500">最后修改：2024-11-13 10:08:25</p>
                         </div>
                     </div>
-                    <button class="px-4 py-2 text-blue-600 hover:text-blue-700 text-sm font-medium">
+                    <a href="reset-transaction-password.html" class="px-4 py-2 text-blue-600 hover:text-blue-700 text-sm font-medium">
                         更新
-                    </button>
+                    </a>
                 </div>
             </div>
 
@@ -235,9 +235,9 @@
                             <p class="text-sm text-gray-600">86-132 **** 2514</p>
                         </div>
                     </div>
-                    <button class="px-4 py-2 text-blue-600 hover:text-blue-700 text-sm font-medium">
+                    <a href="update-phone.html" class="px-4 py-2 text-blue-600 hover:text-blue-700 text-sm font-medium">
                         更新
-                    </button>
+                    </a>
                 </div>
             </div>
 
@@ -253,9 +253,9 @@
                             <p class="text-sm text-gray-600">daniel **** halet.com</p>
                         </div>
                     </div>
-                    <button class="px-4 py-2 text-blue-600 hover:text-blue-700 text-sm font-medium">
+                    <a href="update-email.html" class="px-4 py-2 text-blue-600 hover:text-blue-700 text-sm font-medium">
                         更新
-                    </button>
+                    </a>
                 </div>
             </div>
         </div>
@@ -306,6 +306,87 @@
         document.addEventListener('click', (e) => {
             if (!userCenterDropdown.contains(e.target) && e.target !== userCenterBtn) {
                 userCenterDropdown.classList.add('hidden');
+            }
+        });
+    </script>
+
+    <!-- 修改英文名称弹窗 -->
+    <div id="editEnglishNameModal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center z-50">
+        <div class="bg-white rounded-lg w-[500px] relative">
+            <!-- 标题和关闭按钮 -->
+            <div class="flex justify-between items-center p-4 border-b">
+                <h3 class="text-lg font-medium">修改英文名称</h3>
+                <button id="closeEnglishNameModal" class="text-gray-400 hover:text-gray-600">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <!-- 提示信息 -->
+            <div class="p-4">
+                <div class="bg-blue-50 p-4 mb-4 rounded-lg">
+                    <p class="text-sm text-gray-600">修改前的英文名开通的收款账户名称不会修改，审核通过后英文名称才会生效，审核结果会进行短信通知，请留意</p>
+                </div>
+
+                <!-- 表单内容 -->
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">
+                            英文名称 <span class="text-red-500">*</span>
+                        </label>
+                        <input type="text" id="englishName" value="Whale Testing Co., Ltd" class="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">
+                            证明资料 <span class="text-red-500">*</span>
+                        </label>
+                        <div class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center">
+                            <div class="flex flex-col items-center justify-center">
+                                <i class="fas fa-plus text-gray-400 mb-2"></i>
+                                <span class="text-sm text-gray-500">证明资料</span>
+                            </div>
+                            <p class="text-xs text-gray-500 mt-2">请上传相关证明资料。</p>
+                            <p class="text-xs text-gray-500">文件扩展：jpg,jpeg,png,pdf,bmp,zip,rar</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 底部按钮 -->
+            <div class="flex justify-end space-x-3 p-4 border-t">
+                <button id="cancelEnglishName" class="px-4 py-2 text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200">
+                    取消
+                </button>
+                <button id="confirmEnglishName" class="px-4 py-2 text-white bg-blue-600 rounded-lg hover:bg-blue-700">
+                    确认
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 英文名称修改弹窗控制
+        const editEnglishNameModal = document.getElementById('editEnglishNameModal');
+        const closeEnglishNameModal = document.getElementById('closeEnglishNameModal');
+        const cancelEnglishName = document.getElementById('cancelEnglishName');
+        const editEnglishNameBtn = document.querySelector('.security-item:first-of-type button');
+
+        function showModal() {
+            editEnglishNameModal.classList.remove('hidden');
+        }
+
+        function hideModal() {
+            editEnglishNameModal.classList.add('hidden');
+        }
+
+        editEnglishNameBtn.addEventListener('click', showModal);
+        closeEnglishNameModal.addEventListener('click', hideModal);
+        cancelEnglishName.addEventListener('click', hideModal);
+
+        // Close modal when clicking outside
+        editEnglishNameModal.addEventListener('click', (e) => {
+            if (e.target === editEnglishNameModal) {
+                hideModal();
             }
         });
     </script>

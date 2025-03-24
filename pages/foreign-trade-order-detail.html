@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>外贸订单详情 - Whalet</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            background-color: #F8F9FD;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+
+        .page-container {
+            background: white;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+        }
+
+        /* Tab styles */
+        .tab-btn {
+            position: relative;
+            transition: all 0.3s ease;
+            border-bottom: 2px solid transparent;
+        }
+        .tab-btn.active {
+            color: #7D33FF !important;
+            border-bottom: 2px solid #7D33FF !important;
+        }
+        .tab-btn:hover {
+            color: #7D33FF !important;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Header styles */
+        .header {
+            border-bottom: 1px solid #E5E7EB;
+            background-color: white;
+        }
+        
+        /* Back button and close button styles */
+        .header-btn {
+            color: #7D33FF;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+        }
+        .header-btn:hover {
+            color: #6929CC;
+        }
+        .header-btn i {
+            font-size: 0.875rem;
+        }
+        .close-btn {
+            color: #6B7280;
+        }
+        .close-btn:hover {
+            color: #374151;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="page-container">
+            <!-- Header -->
+            <div class="header">
+                <div class="p-6">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center">
+                            <a href="trade-collection.html#trade-orders" class="header-btn mr-2">
+                                <i class="fas fa-arrow-left"></i>
+                            </a>
+                            <a href="trade-collection.html#trade-orders" class="header-btn mr-4">返回</a>
+                            <h1 class="text-xl font-semibold text-gray-800">外贸订单详情</h1>
+                        </div>
+                        <a href="trade-collection.html#trade-orders" class="close-btn">
+                            <i class="fas fa-times"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="p-6">
+                <!-- Combined Order Overview and Payment Progress -->
+                <div class="bg-white rounded-lg shadow-sm mb-6 border border-gray-200">
+                    <div class="p-6">
+                        <!-- Order Amount -->
+                        <div class="mb-6">
+                            <div class="flex justify-between items-center mb-4">
+                                <div class="text-2xl font-medium text-gray-900">订单金额 4,000.00 USD</div>
+                                <div class="flex items-center space-x-4">
+                                    <button class="px-4 py-2 text-sm font-medium text-gray-700 hover:text-gray-900 border border-gray-300 rounded-md hover:bg-gray-50 transition-colors duration-200">
+                                        删除订单
+                                    </button>
+                                    <button class="px-4 py-2 text-sm font-medium text-white bg-purple-600 hover:bg-purple-700 rounded-md transition-colors duration-200">
+                                        编辑订单
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-4 gap-6">
+                                <div>
+                                    <div class="text-sm text-gray-500">创建时间</div>
+                                    <div class="mt-1 text-gray-900">2021-08-30 18:20:29</div>
+                                </div>
+                                <div>
+                                    <div class="text-sm text-gray-500">订单编号</div>
+                                    <div class="mt-1 text-gray-900">DD20210830001</div>
+                                </div>
+                                <div>
+                                    <div class="text-sm text-gray-500">是否发货</div>
+                                    <div class="mt-1 text-gray-900">
+                                        <span class="text-gray-900">未发货</span>
+                                        <a href="#" class="text-blue-500 hover:text-blue-600 ml-1">补充发货信息</a>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="text-sm text-gray-500">状态</div>
+                                    <div class="mt-1">
+                                        <span class="text-yellow-600">收款中</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Divider -->
+                        <div class="border-t border-gray-200 my-6"></div>
+
+                        <!-- Payment Progress -->
+                        <div>
+                            <div class="text-base font-medium text-gray-900 mb-4">已关联入账ID</div>
+                            <div class="relative">
+                                <!-- Progress bar background -->
+                                <div class="h-2 bg-gray-200 rounded-full">
+                                    <!-- Progress bar filled portion (40% in this case) -->
+                                    <div class="h-2 bg-blue-500 rounded-full" style="width: 40%"></div>
+                                </div>
+                                <!-- Payment details -->
+                                <div class="flex justify-between mt-4">
+                                    <div>
+                                        <span class="text-gray-900">已入账</span>
+                                        <span class="text-gray-900 font-medium ml-2">1,500.00 USD</span>
+                                    </div>
+                                    <div>
+                                        <span class="text-gray-900">剩余待收款金额</span>
+                                        <span class="text-gray-900 font-medium ml-2">2,500.00 USD</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Detailed Information Tabs -->
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200">
+                    <div class="border-b border-gray-200">
+                        <nav class="flex -mb-px px-6" aria-label="Tabs">
+                            <button class="tab-btn active whitespace-nowrap py-4 px-8 text-sm font-medium" data-tab="order-info">
+                                订单信息
+                            </button>
+                            <button class="tab-btn whitespace-nowrap py-4 px-8 text-sm font-medium text-gray-500" data-tab="logistics-info">
+                                物流信息
+                            </button>
+                            <button class="tab-btn whitespace-nowrap py-4 px-8 text-sm font-medium text-gray-500" data-tab="other-info">
+                                其他信息
+                            </button>
+                        </nav>
+                    </div>
+
+                    <!-- Tab Content Area -->
+                    <div class="p-6">
+                        <!-- Order Information -->
+                        <div id="order-info" class="tab-content active">
+                            <div class="grid grid-cols-2 gap-6">
+                                <div>
+                                    <div class="text-sm text-gray-500">贸易国家/地区</div>
+                                    <div class="mt-1 text-gray-900">马来西亚</div>
+                                </div>
+                                <div>
+                                    <div class="text-sm text-gray-500">买家英文名</div>
+                                    <div class="mt-1 text-gray-900">ZHI ZUN BAO</div>
+                                </div>
+                                <div>
+                                    <div class="text-sm text-gray-500">订单编号</div>
+                                    <div class="mt-1 text-gray-900">2021001</div>
+                                </div>
+                                <div>
+                                    <div class="text-sm text-gray-500">交易时间</div>
+                                    <div class="mt-1 text-gray-900">2022-01-12 10:52:48</div>
+                                </div>
+                                <div>
+                                    <div class="text-sm text-gray-500">订单总额</div>
+                                    <div class="mt-1 text-gray-900">4,000.00 USD</div>
+                                </div>
+                                <div>
+                                    <div class="text-sm text-gray-500">商品类型</div>
+                                    <div class="mt-1 text-gray-900">电子产品</div>
+                                </div>
+                                <div>
+                                    <div class="text-sm text-gray-500">商品英文名</div>
+                                    <div class="mt-1 text-gray-900">PS5 Pro-5T</div>
+                                </div>
+                                <div>
+                                    <div class="text-sm text-gray-500">商品中文名</div>
+                                    <div class="mt-1 text-gray-900">苹果手机</div>
+                                </div>
+                                <div>
+                                    <div class="text-sm text-gray-500">商品数量</div>
+                                    <div class="mt-1 text-gray-900">60 PAIRS</div>
+                                </div>
+                                <div>
+                                    <div class="text-sm text-gray-500">商品/店铺地址</div>
+                                    <div class="mt-1 text-gray-900">www.baidu.com</div>
+                                </div>
+                                <div>
+                                    <div class="text-sm text-gray-500">发票附件(PI/CI)</div>
+                                    <div class="mt-1 text-gray-900">
+                                        <div class="flex items-center">
+                                            <input type="checkbox" checked disabled class="h-4 w-4 text-purple-600 border-gray-300 rounded">
+                                            <span class="ml-2">交易PI.pdf</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="text-sm text-gray-500">是否结汇</div>
+                                    <div class="mt-1 text-gray-900">是</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Logistics Information -->
+                        <div id="logistics-info" class="tab-content">
+                            <div class="space-y-4">
+                                <div class="flex items-center">
+                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                        已发货
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Other Information -->
+                        <div id="other-info" class="tab-content">
+                            <div class="space-y-4">
+                                <!-- Other related information can be added here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Get order ID from URL parameters
+            const urlParams = new URLSearchParams(window.location.search);
+            const orderId = urlParams.get('id');
+            if (orderId) {
+                document.getElementById('orderNumber').textContent = orderId;
+            }
+
+            // Tab switching functionality
+            const tabButtons = document.querySelectorAll('.tab-btn');
+            const tabContents = document.querySelectorAll('.tab-content');
+
+            tabButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    // Remove all active classes
+                    tabButtons.forEach(btn => {
+                        btn.classList.remove('active');
+                        btn.classList.add('text-gray-500');
+                    });
+                    tabContents.forEach(content => {
+                        content.classList.remove('active');
+                    });
+
+                    // Add active class to current tab
+                    button.classList.remove('text-gray-500');
+                    button.classList.add('active');
+                    const tabId = button.getAttribute('data-tab');
+                    document.getElementById(tabId).classList.add('active');
+                });
+            });
+        });
+    </script>
+</body>
+</html> 

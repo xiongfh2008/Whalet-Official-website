@@ -447,9 +447,9 @@
                         <div class="step">
                             <div class="step-circle active">
                                 <i class="fas fa-pen-to-square"></i>
-                                    </div>
+                            </div>
                             <div class="step-text active font-medium">填写兑换信息</div>
-                                </div>
+                        </div>
                         <div class="step">
                             <div class="step-circle">
                                 <i class="fas fa-check"></i>
@@ -464,129 +464,183 @@
                         </div>
                     </div>
                     
-                    <!-- 温馨提示 -->
-                    <div class="warning-box mb-3">
-                        <div class="flex items-start">
-                            <i class="fas fa-exclamation-circle text-amber-500 mt-0.5 mr-2"></i>
-                            <p class="text-xs text-gray-700">温馨提醒：货币兑换显示的汇率仅不是"实入"或"实出"汇率，而是银行间汇率，即银行间交易的批发汇率。银行向个人收取的汇率不包括外汇可能详细的成本、手续费与其他费用，请注意，由于交易规则和本地的不同，这些汇率仅供参考。</p>
+                    <!-- 第一步：填写兑换信息 -->
+                    <div class="exchange-form">
+                        <!-- 温馨提示 -->
+                        <div class="warning-box mb-3">
+                            <div class="flex items-start">
+                                <i class="fas fa-exclamation-circle text-amber-500 mt-0.5 mr-2"></i>
+                                <p class="text-xs text-gray-700">温馨提醒：货币兑换显示的汇率仅不是"实入"或"实出"汇率，而是银行间汇率，即银行间交易的批发汇率。银行向个人收取的汇率不包括外汇可能详细的成本、手续费与其他费用，请注意，由于交易规则和本地的不同，这些汇率仅供参考。</p>
+                            </div>
                         </div>
-                    </div>
-                    
-                    <!-- 卖出/买入表单 -->
-                    <div class="mb-6">
-                        <!-- 卖出部分 -->
-                        <div class="exchange-card">
-                            <div class="exchange-card-header">
-                                <h3 class="font-medium text-gray-800">卖出</h3>
-                                <div class="text-sm text-blue-600 flex items-center">
-                                    <span>可卖出金额</span>
-                                    <span class="font-medium ml-1">1000.99 USD</span>
-                                    <i class="fas fa-info-circle text-gray-400 ml-1 cursor-help" title="您账户中可用于兑换的美元金额"></i>
-                </div>
-            </div>
-            
-                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                                <div class="md:col-span-2">
-                                    <label class="block text-sm font-medium text-gray-700 mb-1">金额</label>
-                                    <input type="text" placeholder="输入卖出金额" class="currency-amount-input" value="1000.99">
+
+                        <!-- 卖出/买入表单 -->
+                        <div class="space-y-4">
+                            <!-- 卖出部分 -->
+                            <div class="exchange-card">
+                                <div class="exchange-card-header">
+                                    <h3 class="font-medium text-gray-800">卖出</h3>
+                                    <div class="text-sm text-blue-600 flex items-center">
+                                        <span>可卖出金额</span>
+                                        <span class="font-medium ml-1">1000.99 USD</span>
+                                    </div>
                                 </div>
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-1">货币</label>
+                                <div class="grid grid-cols-3 gap-4">
+                                    <div class="col-span-2">
+                                        <input type="text" class="currency-amount-input" value="1000.99">
+                                    </div>
                                     <div class="currency-dropdown">
                                         <img src="https://flagcdn.com/w40/us.png" alt="USD" class="currency-flag-large">
-                                        <span class="ml-2 text-gray-800">美元</span>
-                                        <i class="fas fa-chevron-down ml-auto text-gray-400"></i>
+                                        <span class="ml-2">USD</span>
                                     </div>
                                 </div>
-                            </div>
-                            
-                            <div class="mt-3">
-                                <div class="info-badge warning">
-                                    <i class="fas fa-exclamation-circle mr-1"></i>
-                                    <span>金额不足，当前最多可卖出 1000.99 USD</span>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <!-- 兑换箭头和汇率信息 -->
-                        <div class="flex items-center my-2">
-                            <!-- 兑换箭头和汇率信息在同一行 -->
-                            <div class="exchange-rate-box flex items-center w-full py-3 px-4">
-                                <!-- 新的兑换图标 -->
-                                <div class="w-10 h-10 rounded-full bg-gradient-to-r from-[#7D33FF] to-[#6422db] flex items-center justify-center mr-4 flex-shrink-0">
-                                    <i class="fas fa-money-bill-wave text-white"></i>
-                                </div>
-                                
-                                <!-- 汇率和手续费信息 -->
-                                <div class="flex-grow">
-                                    <div class="flex items-center justify-between">
-                                        <div class="flex flex-col">
-                                            <div class="flex items-center select-none pointer-events-none">
-                                                <span class="text-sm text-gray-600 mr-2">参考汇率</span>
-                                                <span class="text-sm font-medium">1 USD = 0.8900 EUR</span>
-                                            </div>
-                                            <div class="text-sm flex items-center mt-2">
-                                                <div class="rate-info-text flex items-center">
-                                                    <span>手续费</span>
-                                                    <span class="ml-2 font-medium">0.00 USD</span>
-                                                </div>
-                                                <button class="ml-1 rate-button text-xs clickable">查看明细</button>
-                                            </div>
-                                        </div>
-                                        <div class="flex items-center">
-                                            <div class="text-xs bg-gray-200 text-gray-600 px-2 py-1 rounded-full flex items-center select-none pointer-events-none">
-                                                <span class="countdown-badge">15</span>
-                                                <span class="ml-1">秒</span>
-                                            </div>
-                                            <span id="rate-expired" class="ml-2 text-red-500 text-sm hidden">汇率已失效</span>
-                                            <button id="refresh-button" class="ml-2 rate-button text-sm flex items-center hidden clickable">
-                                                <i class="fas fa-sync-alt mr-1"></i>
-                                                刷新
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <!-- 买入部分 -->
-                        <div class="exchange-card">
-                            <div class="exchange-card-header">
-                                <h3 class="font-medium text-gray-800">买入</h3>
-                                <div class="text-sm text-gray-600 flex items-center">
-                                    <span>可用金额</span>
-                                    <span class="font-medium ml-1">9999.99 EUR</span>
-                                    <i class="fas fa-info-circle text-gray-400 ml-1 cursor-help" title="您账户中的欧元余额"></i>
-                                </div>
-                            </div>
-                            
-                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                                <div class="md:col-span-2">
-                                    <label class="block text-sm font-medium text-gray-700 mb-1">预计到账金额</label>
-                                    <input type="text" placeholder="预计到账金额" class="currency-amount-input bg-gray-50" readonly value="890.88" disabled>
-                        </div>
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-1">货币</label>
-                                    <div class="currency-dropdown">
-                                        <img src="https://flagcdn.com/w40/eu.png" alt="EUR" class="currency-flag-large">
-                                        <span class="ml-2 text-gray-800">欧元</span>
-                                        <i class="fas fa-chevron-down ml-auto text-gray-400"></i>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <!-- 下一步按钮 -->
-                        <div class="flex justify-center mt-6">
-                            <button class="next-button w-full md:w-1/2">
-                                下一步
-                            </button>
                             </div>
 
-                        <!-- 操作时间 -->
-                        <div class="operation-time text-center mt-4">
-                            <i class="far fa-clock mr-1"></i>
-                            操作时间: 北京时间工作日"09:00-16:00"
+                            <!-- 买入部分 -->
+                            <div class="exchange-card">
+                                <div class="exchange-card-header">
+                                    <h3 class="font-medium text-gray-800">买入</h3>
+                                </div>
+                                <div class="grid grid-cols-3 gap-4">
+                                    <div class="col-span-2">
+                                        <input type="text" class="currency-amount-input bg-gray-50" value="894.98" readonly>
+                                    </div>
+                                    <div class="currency-dropdown">
+                                        <img src="https://flagcdn.com/w40/eu.png" alt="EUR" class="currency-flag-large">
+                                        <span class="ml-2">EUR</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 汇率信息 -->
+                            <div class="exchange-rate-box">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <div class="text-sm text-gray-600">参考汇率</div>
+                                        <div class="text-sm font-medium mt-1">1 USD = 0.8900 EUR</div>
+                                    </div>
+                                    <div class="text-sm text-gray-600">
+                                        <span class="countdown-badge">15</span>
+                                        <span class="ml-1">秒</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 下一步按钮 -->
+                            <div class="flex justify-center mt-6">
+                                <button class="next-button w-full md:w-1/2">下一步</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 第二步：确认兑换信息 -->
+                    <div class="confirmation-form" style="display: none;">
+                        <!-- 汇率过期提示 -->
+                        <div class="bg-gray-100 p-3 mb-4">
+                            <p class="text-green-700 text-sm">
+                                您的汇率价格已过期，请重新获取价格
+                            </p>
+                        </div>
+
+                        <!-- 兑换信息列表 -->
+                        <div class="space-y-6">
+                            <!-- 卖出 -->
+                            <div class="flex items-start">
+                                <div class="w-6 flex-shrink-0 mr-2">
+                                    <i class="fas fa-upload text-gray-400"></i>
+                                </div>
+                                <div>
+                                    <div class="text-gray-500 text-sm">卖出</div>
+                                    <div class="flex items-center mt-1">
+                                        <span class="text-base">1,000.99 USD</span>
+                                        <img src="https://flagcdn.com/w20/us.png" alt="USD" class="ml-2 w-4 h-3">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 手续费 -->
+                            <div class="flex items-start">
+                                <div class="w-6 flex-shrink-0 mr-2">
+                                    <i class="fas fa-dollar-sign text-gray-400"></i>
+                                </div>
+                                <div>
+                                    <div class="text-gray-500 text-sm">手续费</div>
+                                    <div class="text-base mt-1">20.00 USD</div>
+                                </div>
+                            </div>
+
+                            <!-- 参考汇率 -->
+                            <div class="flex items-start">
+                                <div class="w-6 flex-shrink-0 mr-2">
+                                    <i class="fas fa-exchange-alt text-gray-400"></i>
+                                </div>
+                                <div>
+                                    <div class="text-gray-500 text-sm">参考汇率</div>
+                                    <div class="text-base mt-1">USD/EUR = 0.8900</div>
+                                </div>
+                            </div>
+
+                            <!-- 买入 -->
+                            <div class="flex items-start">
+                                <div class="w-6 flex-shrink-0 mr-2">
+                                    <i class="fas fa-download text-gray-400"></i>
+                                </div>
+                                <div>
+                                    <div class="text-gray-500 text-sm">买入</div>
+                                    <div class="flex items-center mt-1">
+                                        <span class="text-base">894.98 EUR</span>
+                                        <img src="https://flagcdn.com/w20/eu.png" alt="EUR" class="ml-2 w-4 h-3">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 交易密码输入 -->
+                        <div class="mt-6">
+                            <div class="mb-2">
+                                <label class="text-gray-700">交易密码</label>
+                                <input type="password" class="w-full mt-1 px-3 py-2 border border-gray-300 rounded" placeholder="请输入交易密码">
+                            </div>
+                            <a href="#" class="text-blue-600 text-sm">忘记交易密码？</a>
+                        </div>
+
+                        <!-- 按钮组 -->
+                        <div class="flex space-x-4 mt-6">
+                            <button class="px-6 py-2 bg-blue-600 text-white rounded">
+                                确定提交
+                            </button>
+                            <button class="px-6 py-2 bg-blue-600 text-white rounded">
+                                重新获取价格
+                            </button>
+                            <button class="px-6 py-2 text-gray-700 border border-gray-300 rounded">
+                                上一步
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- 第三步：兑换结果 -->
+                    <div class="result-form" style="display: none;">
+                        <div class="flex flex-col items-center justify-center py-8">
+                            <!-- 成功图标 -->
+                            <div class="w-20 h-20 rounded-full bg-green-400 flex items-center justify-center mb-6">
+                                <i class="fas fa-check text-white text-3xl"></i>
+                            </div>
+                            
+                            <!-- 成功标题 -->
+                            <h2 class="text-xl font-medium text-gray-900 mb-2">换汇申请成功</h2>
+                            
+                            <!-- 成功描述 -->
+                            <p class="text-gray-600 mb-8">换汇申请提交成功，等待银行处理！</p>
+                            
+                            <!-- 按钮组 -->
+                            <div class="flex space-x-4">
+                                <a href="#" class="text-blue-600 hover:text-blue-700 font-medium">
+                                    查看换汇记录
+                                </a>
+                                <a href="#" class="text-blue-600 hover:text-blue-700 font-medium">
+                                    继续货币兑换
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -731,60 +785,113 @@
                     }
                 });
             }
-            
+
+            // 处理步骤切换
+            function showStep(stepNumber) {
+                const step1Content = document.querySelector('.exchange-form');
+                const step2Content = document.querySelector('.confirmation-form');
+                const step3Content = document.querySelector('.result-form');
+                const steps = document.querySelectorAll('.step');
+
+                if (!step1Content || !step2Content || !step3Content) {
+                    console.error('找不到步骤内容元素');
+                    return;
+                }
+
+                steps.forEach((step, index) => {
+                    const circle = step.querySelector('.step-circle');
+                    const text = step.querySelector('.step-text');
+                    if (index + 1 === stepNumber) {
+                        circle.classList.add('active');
+                        text.classList.add('active');
+                    } else {
+                        circle.classList.remove('active');
+                        text.classList.remove('active');
+                    }
+                });
+
+                if (stepNumber === 1) {
+                    step1Content.style.display = 'block';
+                    step2Content.style.display = 'none';
+                    step3Content.style.display = 'none';
+                } else if (stepNumber === 2) {
+                    step1Content.style.display = 'none';
+                    step2Content.style.display = 'block';
+                    step3Content.style.display = 'none';
+                } else if (stepNumber === 3) {
+                    step1Content.style.display = 'none';
+                    step2Content.style.display = 'none';
+                    step3Content.style.display = 'block';
+                }
+            }
+
+            // 绑定按钮事件
+            const nextButton = document.querySelector('.next-button');
+            const prevButton = Array.from(document.querySelectorAll('button')).find(button => button.textContent.trim() === '上一步');
+            const submitButton = Array.from(document.querySelectorAll('button')).find(button => button.textContent.trim() === '确定提交');
+            const refreshButton = Array.from(document.querySelectorAll('button')).find(button => button.textContent.trim() === '重新获取价格');
+            const passwordInput = document.querySelector('input[type="password"]');
+
+            // 绑定结果页面的链接事件
+            const viewRecordLink = Array.from(document.querySelectorAll('a')).find(link => link.textContent.trim() === '查看换汇记录');
+            const continueExchangeLink = Array.from(document.querySelectorAll('a')).find(link => link.textContent.trim() === '继续货币兑换');
+
+            if (nextButton) {
+                nextButton.addEventListener('click', () => {
+                    console.log('下一步按钮被点击');
+                    showStep(2);
+                });
+            }
+
+            if (prevButton) {
+                prevButton.addEventListener('click', () => {
+                    console.log('上一步按钮被点击');
+                    showStep(1);
+                });
+            }
+
+            if (submitButton && passwordInput) {
+                submitButton.addEventListener('click', () => {
+                    if (!passwordInput.value) {
+                        alert('请输入交易密码');
+                        return;
+                    }
+                    // 模拟验证成功后跳转到第三步
+                    showStep(3);
+                });
+            }
+
+            if (refreshButton) {
+                refreshButton.addEventListener('click', () => {
+                    alert('正在获取最新汇率...');
+                });
+            }
+
+            // 结果页面的链接事件
+            if (viewRecordLink) {
+                viewRecordLink.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    window.location.href = 'transactions.html?tab=exchange';
+                });
+            }
+
+            if (continueExchangeLink) {
+                continueExchangeLink.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    window.location.reload();
+                });
+            }
+
             // 查看全部兑换历史按钮点击事件
             const viewAllExchangeHistoryBtn = document.getElementById('viewAllExchangeHistory');
             if (viewAllExchangeHistoryBtn) {
                 viewAllExchangeHistoryBtn.addEventListener('click', function() {
-                    // 跳转到交易查询页面，并传递参数以激活换汇记录标签
                     window.location.href = 'transactions.html?tab=exchange';
                 });
             }
-            
-            // 模拟倒计时
-            let countdown = 15;
-            const countdownEl = document.querySelector('.countdown-badge');
-            const rateExpiredEl = document.getElementById('rate-expired');
-            const refreshButtonEl = document.getElementById('refresh-button');
-            
-            if (countdownEl) {
-                const timer = setInterval(() => {
-                    countdown--;
-                    countdownEl.textContent = countdown;
-                    
-                    if (countdown <= 0) {
-                        clearInterval(timer);
-                        // 显示汇率已失效和刷新按钮
-                        if (rateExpiredEl) rateExpiredEl.classList.remove('hidden');
-                        if (refreshButtonEl) refreshButtonEl.classList.remove('hidden');
-                    }
-                }, 1000);
-                
-                // 刷新按钮点击事件
-                if (refreshButtonEl) {
-                    refreshButtonEl.addEventListener('click', function() {
-                        // 重置倒计时
-                        countdown = 15;
-                        countdownEl.textContent = countdown;
-                        // 隐藏汇率已失效和刷新按钮
-                        rateExpiredEl.classList.add('hidden');
-                        refreshButtonEl.classList.add('hidden');
-                        
-                        // 重新开始倒计时
-                        const newTimer = setInterval(() => {
-                            countdown--;
-                            countdownEl.textContent = countdown;
-                            
-                            if (countdown <= 0) {
-                                clearInterval(newTimer);
-                                // 显示汇率已失效和刷新按钮
-                                rateExpiredEl.classList.remove('hidden');
-                                refreshButtonEl.classList.remove('hidden');
-                            }
-                        }, 1000);
-                    });
-                }
-            }
+
+            // 初始化显示第一步
+            showStep(1);
         });
     </script>
 </body>

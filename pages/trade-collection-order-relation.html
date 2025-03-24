@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>收款关联订单 - Whalet</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* 添加按钮样式 */
+        .primary-btn {
+            background-color: #7D33FF !important;
+            color: white !important;
+        }
+        .primary-btn:hover {
+            background-color: #6929CC !important;
+        }
+        /* 添加链接样式 */
+        .link-primary {
+            color: #7D33FF !important;
+        }
+        .link-primary:hover {
+            color: #6929CC !important;
+        }
+        /* 添加卡片阴影效果 */
+        .card-shadow {
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+        }
+        /* 表格样式优化 */
+        .table-container {
+            border-radius: 0.5rem;
+            overflow: hidden;
+        }
+        .table-header {
+            background-color: #F9FAFB;
+        }
+        /* 步骤导航样式 */
+        .step-active {
+            background-color: #7D33FF;
+            color: white;
+        }
+        .step-completed {
+            background-color: #7D33FF;
+            color: white;
+        }
+        .step-pending {
+            background-color: #E5E7EB;
+            color: #6B7280;
+        }
+        .step-content {
+            display: none;
+        }
+        .step-content.active {
+            display: block;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <div class="min-h-screen">
+    <div class="container mx-auto px-4 py-6">
+            <div class="max-w-6xl mx-auto">
+                <!-- 头部导航 -->
+                <div class="bg-white rounded-t-lg shadow-sm">
+                    <div class="px-6 py-4 border-b border-gray-200">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center space-x-4">
+                                <a href="javascript:history.back()" class="text-purple-600 hover:text-purple-700 flex items-center">
+                                    <i class="fas fa-arrow-left text-sm mr-2"></i>
+                                    <span>返回</span>
+                                </a>
+                                <h1 class="text-xl font-semibold text-gray-800">收款关联订单</h1>
+                            </div>
+                            <a href="javascript:history.back()" class="text-gray-400 hover:text-gray-600 transition-colors">
+                                <i class="fas fa-times"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 主要内容区域 -->
+                <div class="bg-white shadow-sm">
+                    <!-- 收款信息卡片 -->
+                    <div class="p-6 border-b border-gray-200">
+                        <div class="grid grid-cols-3 gap-x-8 gap-y-4">
+                            <div class="flex items-center">
+                            <span class="text-gray-500 w-24">收款编号:</span>
+                                <span class="text-gray-900 font-medium">SK202101010001</span>
+                        </div>
+                            <div class="flex items-center">
+                            <span class="text-gray-500 w-24">付款方:</span>
+                            <span class="text-gray-900">ZHI ZUN BAO</span>
+                        </div>
+                        <div class="flex items-center">
+                            <span class="text-gray-500 w-24">收款金额:</span>
+                                <span class="text-gray-900 font-medium">4,000.00 USD</span>
+                        </div>
+                            <div class="flex items-center">
+                            <span class="text-gray-500 w-24">收款时间:</span>
+                            <span class="text-gray-900">2021-8-29 17:47</span>
+                        </div>
+                            <div class="flex items-center">
+                            <span class="text-gray-500 w-24">收款账户:</span>
+                            <span class="text-gray-900">62270037</span>
+                        </div>
+                    </div>
+                    </div>
+
+                    <!-- 步骤导航 -->
+                    <div class="flex items-center justify-center py-6 px-6 border-b border-gray-200">
+                        <div class="flex items-center w-2/3">
+                            <div class="flex items-center flex-1">
+                                <div id="step1-circle" class="flex items-center justify-center w-8 h-8 rounded-full step-completed">
+                                    <span>1</span>
+                                </div>
+                                <div class="ml-2 text-sm font-medium text-gray-900">创建/选择订单</div>
+                                <div id="step1-line" class="flex-1 h-0.5 mx-4 bg-purple-600"></div>
+                            </div>
+                            <div class="flex items-center flex-1">
+                                <div id="step2-circle" class="flex items-center justify-center w-8 h-8 rounded-full step-active">
+                                    <span>2</span>
+                                </div>
+                                <div class="ml-2 text-sm font-medium text-gray-900">输入关联金额</div>
+                                <div id="step2-line" class="flex-1 h-0.5 mx-4 bg-gray-200"></div>
+                            </div>
+                            <div class="flex items-center flex-1">
+                                <div id="step3-circle" class="flex items-center justify-center w-8 h-8 rounded-full step-pending">
+                                    <span>3</span>
+                                </div>
+                                <div class="ml-2 text-sm font-medium text-gray-500">关联完成</div>
+                </div>
+            </div>
+        </div>
+
+                    <!-- 第一步：创建/选择订单 -->
+                    <div id="step1-content" class="step-content p-6">
+                        <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-lg font-medium text-gray-900">请创建/选择与该笔收款对应的订单</h2>
+                            <button class="primary-btn px-5 py-2 rounded-md text-sm font-medium transition-colors duration-200">
+                                创建订单
+                            </button>
+                </div>
+                        <div class="table-container border border-gray-200">
+                    <table class="min-w-full divide-y divide-gray-200">
+                                <thead class="table-header">
+                            <tr>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-10">
+                                    选择
+                                </th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    订单编号
+                                </th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    买方名称
+                                </th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    商品名称
+                                </th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    创建时间
+                                </th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    订单金额
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">
+                                    <tr class="hover:bg-gray-50">
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                            <input type="checkbox" class="rounded border-gray-300 text-purple-600 focus:border-purple-500 focus:ring focus:ring-purple-200 focus:ring-opacity-50">
+                                </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 font-medium">2021001</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">ZHI ZUN BAO</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">PS5 Pro-5T</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">2021-08-30 18:20</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 font-medium">4,000.00 USD</td>
+                            </tr>
+                                    <tr class="hover:bg-gray-50">
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                            <input type="checkbox" class="rounded border-gray-300 text-purple-600 focus:border-purple-500 focus:ring focus:ring-purple-200 focus:ring-opacity-50">
+                                </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 font-medium">2021002</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">ZHI ZUN YU</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">PS4 Pro-2T</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">2021-08-30 18:20</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 font-medium">4,000.00 USD</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                        <div class="mt-4 text-sm text-gray-500">
+                    已选择 1 个订单
+                </div>
+            </div>
+
+                    <!-- 第二步：输入关联金额 -->
+                    <div id="step2-content" class="step-content active p-6">
+                        <!-- 收款金额信息卡片 -->
+                        <div class="bg-gray-50 p-4 rounded-lg mb-6">
+                            <div class="flex justify-between items-center">
+                                <div class="flex items-center">
+                                    <span class="text-gray-600 text-sm">本次外贸收款金额：</span>
+                                    <span class="text-gray-900 text-sm font-medium ml-2">4,000.00 USD</span>
+                                    <div class="flex items-center ml-4 text-green-500">
+                                        <i class="fas fa-check-circle text-sm mr-1.5"></i>
+                                        <span class="text-sm">关联已足额，收款可全额入账</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mt-4 flex items-center">
+                                <span class="text-gray-600 text-sm">输入关联总额：</span>
+                                <span class="text-orange-500 text-sm font-medium ml-2">4,000.00 USD</span>
+                                <span class="text-gray-500 text-sm ml-2">输入关联实际收款总额，即可全额入账</span>
+                            </div>
+                        </div>
+
+                        <div class="text-gray-500 mb-4 text-sm">请在下方输入相应订单对应的收款金额</div>
+
+                        <!-- 三列标题 -->
+                        <div class="bg-gray-50 rounded-t border border-gray-200">
+                            <div class="grid grid-cols-3 text-sm text-gray-500">
+                                <div class="py-2.5 px-4">已选订单</div>
+                                <div class="py-2.5 px-4">剩余可关联金额</div>
+                                <div class="py-2.5 px-4">输入关联金额</div>
+                            </div>
+                        </div>
+
+                        <!-- 订单内容 -->
+                        <div class="bg-white border-x border-b border-gray-200">
+                            <div class="grid grid-cols-3 p-6">
+                                <!-- 订单信息 -->
+                                <div class="space-y-4 border-r border-gray-200 pr-6">
+                                    <div class="grid grid-cols-2 gap-x-4">
+                                        <!-- 左列 -->
+                                        <div class="space-y-4">
+                                            <div>
+                                                <div class="text-gray-500 text-sm mb-1">订单编号：</div>
+                                                <div class="text-gray-900 truncate">2021001</div>
+                                            </div>
+                                            <div>
+                                                <div class="text-gray-500 text-sm mb-1">买方名称：</div>
+                                                <div class="text-gray-900 truncate">ZHI ZUN BAO</div>
+                                            </div>
+                                            <div>
+                                                <div class="text-gray-500 text-sm mb-1">商品名称：</div>
+                                                <div class="text-gray-900 truncate">PS5 Pro-5T</div>
+                                            </div>
+                                        </div>
+                                        <!-- 右列 -->
+                                        <div class="space-y-4">
+                                            <div>
+                                                <div class="text-gray-500 text-sm mb-1">订单总额：</div>
+                                                <div class="text-gray-900 truncate">4,000.00 USD</div>
+                                            </div>
+                                            <div>
+                                                <div class="text-gray-500 text-sm mb-1">创建时间：</div>
+                                                <div class="text-gray-900 truncate">2021-08-30 18:20</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- 剩余可关联金额 -->
+                                <div class="flex items-center border-r border-gray-200 px-6">
+                                    <span class="text-gray-900 truncate">4,000.00 USD</span>
+                                </div>
+
+                                <!-- 输入关联金额 -->
+                                <div class="flex items-center justify-center px-6">
+                                    <div class="relative w-full max-w-[280px]">
+                                        <div class="flex">
+                                            <input type="text" 
+                                                class="w-full border border-gray-300 rounded-l px-3 py-1.5 text-sm focus:ring-1 focus:ring-purple-200 focus:border-purple-500 outline-none" 
+                                                value="4,000.00"
+                                                style="padding-right: 64px;">
+                                            <div class="absolute inset-y-0 right-0 flex items-center">
+                                                <span class="bg-gray-50 text-gray-500 text-sm px-4 py-1.5 border-l border-gray-300">USD</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 复选框选项 -->
+                            <div class="px-6 pb-5 border-t border-gray-100 pt-4">
+                                <label class="inline-flex items-center">
+                                    <input type="checkbox" class="form-checkbox h-4 w-4 text-purple-600 rounded border-gray-300 focus:ring-1 focus:ring-purple-200" checked>
+                                    <span class="ml-2 text-sm text-gray-500">订单款项已收齐，审核通过后自动关闭订单</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- 提示信息 -->
+                        <div class="mt-6 p-4 border border-red-100 bg-red-50 rounded flex items-start">
+                            <i class="fas fa-exclamation-circle text-red-500 mt-0.5 mr-2"></i>
+                            <span class="text-red-600 text-sm">提示：请核实您的订单并提交真实的数据信息，提交后无法修改</span>
+                        </div>
+                    </div>
+
+                    <!-- 第三步：关联完成 -->
+                    <div id="step3-content" class="step-content p-6">
+                        <div class="flex flex-col items-center justify-center py-12">
+                            <!-- 成功图标 -->
+                            <div class="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center mb-6">
+                                <i class="fas fa-check text-2xl text-green-500"></i>
+                            </div>
+                            <!-- 标题 -->
+                            <h2 class="text-xl font-medium text-gray-900 mb-2">关联完成</h2>
+                            <!-- 描述文本 -->
+                            <p class="text-gray-500 text-sm mb-8">我们会对您的资料进行审核，最快 1 小时完成，请留意短信或邮件通知</p>
+                            <!-- 返回按钮 -->
+                            <a href="javascript:history.back()" class="text-purple-600 hover:text-purple-700 text-sm">返回外贸收款</a>
+                        </div>
+                    </div>
+
+                    <!-- 底部按钮 -->
+                    <div class="px-6 py-4 border-t border-gray-200 bg-gray-50 rounded-b-lg">
+                        <div class="flex justify-center space-x-3">
+                            <button id="prevBtn" class="px-6 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 transition-colors duration-200">
+                                上一步
+                            </button>
+                            <button id="nextBtn" class="primary-btn px-6 py-2 rounded-md text-sm font-medium transition-colors duration-200">
+                                提交
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const step1Content = document.getElementById('step1-content');
+            const step2Content = document.getElementById('step2-content');
+            const step3Content = document.getElementById('step3-content');
+            const step1Circle = document.getElementById('step1-circle');
+            const step2Circle = document.getElementById('step2-circle');
+            const step3Circle = document.getElementById('step3-circle');
+            const step1Line = document.getElementById('step1-line');
+            const step2Line = document.getElementById('step2-line');
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+
+            let currentStep = 1; // 初始在第一步
+
+            function updateStepDisplay() {
+                // 更新内容显示
+                step1Content.classList.toggle('active', currentStep === 1);
+                step2Content.classList.toggle('active', currentStep === 2);
+                step3Content.classList.toggle('active', currentStep === 3);
+
+                // 更新步骤样式
+                if (currentStep === 1) {
+                    step1Circle.classList.remove('step-completed');
+                    step1Circle.classList.add('step-active');
+                    step2Circle.classList.remove('step-active', 'step-completed');
+                    step2Circle.classList.add('step-pending');
+                    step3Circle.classList.remove('step-active', 'step-completed');
+                    step3Circle.classList.add('step-pending');
+                    step1Line.classList.remove('bg-purple-600');
+                    step1Line.classList.add('bg-gray-200');
+                    step2Line.classList.remove('bg-purple-600');
+                    step2Line.classList.add('bg-gray-200');
+                    nextBtn.textContent = '下一步';
+                    prevBtn.style.display = 'none'; // 第一步隐藏上一步按钮
+                } else if (currentStep === 2) {
+                    step1Circle.classList.remove('step-active');
+                    step1Circle.classList.add('step-completed');
+                    step2Circle.classList.remove('step-pending', 'step-completed');
+                    step2Circle.classList.add('step-active');
+                    step3Circle.classList.remove('step-active', 'step-completed');
+                    step3Circle.classList.add('step-pending');
+                    step1Line.classList.remove('bg-gray-200');
+                    step1Line.classList.add('bg-purple-600');
+                    step2Line.classList.remove('bg-purple-600');
+                    step2Line.classList.add('bg-gray-200');
+                    nextBtn.textContent = '提交';
+                    prevBtn.style.display = 'block'; // 显示上一步按钮
+                } else if (currentStep === 3) {
+                    step1Circle.classList.add('step-completed');
+                    step2Circle.classList.remove('step-active');
+                    step2Circle.classList.add('step-completed');
+                    step3Circle.classList.remove('step-pending');
+                    step3Circle.classList.add('step-active');
+                    step1Line.classList.add('bg-purple-600');
+                    step2Line.classList.remove('bg-gray-200');
+                    step2Line.classList.add('bg-purple-600');
+                    // 隐藏底部按钮
+                    document.querySelector('.px-6.py-4.border-t').style.display = 'none';
+                }
+            }
+
+            prevBtn.addEventListener('click', function() {
+                if (currentStep > 1) {
+                    currentStep--;
+                    updateStepDisplay();
+                }
+            });
+
+            nextBtn.addEventListener('click', function() {
+                if (currentStep < 3) {
+                    currentStep++;
+                    updateStepDisplay();
+                }
+            });
+
+            // 初始化显示第一步
+            updateStepDisplay();
+        });
+    </script>
+</body>
+</html> 

@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>商品详情 - Whalet</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../styles/custom.css">
+    <style>
+        body {
+            background-color: #f9fafb;
+            font-family: 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+        }
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 1.5rem 1rem;
+        }
+        .required:after {
+            content: "*";
+            color: #ef4444;
+            margin-left: 4px;
+        }
+        .form-label {
+            display: block;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: #374151;
+            width: 100px;
+            flex-shrink: 0;
+        }
+        .form-input {
+            width: 100%;
+            padding: 0.5rem;
+            font-size: 0.875rem;
+            border: 1px solid #d1d5db;
+            border-radius: 0.375rem;
+            max-width: 360px;
+        }
+        .form-input:disabled {
+            background-color: #f9fafb;
+        }
+        .form-group {
+            display: flex;
+            align-items: flex-start;
+            padding-top: 14px;
+            padding-bottom: 14px;
+        }
+        .form-section {
+            border-bottom: 1px solid #e5e7eb;
+        }
+        .form-section:last-child {
+            border-bottom: none;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <div class="container mx-auto px-4 py-8">
+        <div class="max-w-6xl mx-auto bg-white rounded-lg shadow-sm">
+            <!-- 头部 -->
+            <div class="p-6 border-b border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center">
+                        <a href="bill-collection.html#product-management" class="text-[#7D33FF] hover:text-purple-700 mr-2">
+                            <i class="fas fa-arrow-left"></i>
+                        </a>
+                        <a href="bill-collection.html#product-management" class="text-[#7D33FF] hover:text-purple-700 mr-4">返回</a>
+                        <h1 class="text-xl font-semibold text-gray-800">商品详情</h1>
+                    </div>
+                    <a href="bill-collection.html#product-management" class="text-gray-500 hover:text-gray-700">
+                        <i class="fas fa-times"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- 商品详情表单 -->
+            <div class="p-6">
+                <div class="max-w-[1000px] mx-auto">
+                    <!-- 基本信息 -->
+                    <div class="form-section">
+                        <div class="grid grid-cols-2 gap-x-12">
+                            <!-- 店铺链接 -->
+                            <div class="form-group">
+                                <label class="form-label required">店铺链接</label>
+                                <div class="flex-1">
+                                    <input type="text" value="myshop.com/id=1524039898" readonly
+                                        class="form-input bg-gray-50" />
+                                </div>
+                            </div>
+
+                            <!-- 商品ID -->
+                            <div class="form-group">
+                                <label class="form-label">商品ID</label>
+                                <div class="flex-1">
+                                    <input type="text" value="202501101723321555414001" readonly
+                                        class="form-input bg-gray-50" />
+                                </div>
+                            </div>
+
+                            <!-- 商品名称 -->
+                            <div class="form-group">
+                                <label class="form-label required">商品名称</label>
+                                <div class="flex-1">
+                                    <input type="text" value="kemailong" readonly
+                                        class="form-input bg-gray-50" />
+                                </div>
+                            </div>
+
+                            <!-- 单价 -->
+                            <div class="form-group">
+                                <label class="form-label required">单价</label>
+                                <div class="flex-1">
+                                    <div class="flex space-x-2">
+                                        <input type="text" value="1000" readonly
+                                            class="form-input bg-gray-50" style="max-width: 280px" />
+                                        <select class="p-2 text-sm border border-gray-300 rounded-md bg-gray-50 w-[72px]" disabled>
+                                            <option selected>XAF</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 商品描述 -->
+                            <div class="form-group">
+                                <label class="form-label">商品描述</label>
+                                <div class="flex-1">
+                                    <textarea readonly
+                                        class="form-input bg-gray-50 h-24" style="max-width: none"></textarea>
+                                </div>
+                            </div>
+
+                            <!-- 状态 -->
+                            <div class="form-group">
+                                <label class="form-label">状态</label>
+                                <div class="flex-1">
+                                    <div class="flex items-center">
+                                        <span class="px-2 py-1 text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
+                                            正常
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 产品图片 -->
+                    <div class="form-section pt-2">
+                        <div class="form-group">
+                            <label class="form-label">产品图片</label>
+                            <div class="flex-1">
+                                <div class="relative w-32 h-32 bg-gray-100 rounded-lg overflow-hidden">
+                                    <img src="../assets/images/product-placeholder.jpg" alt="产品图片" 
+                                        class="w-full h-full object-cover" 
+                                        onerror="this.onerror=null; this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'40\' height=\'40\' viewBox=\'0 0 40 40\'%3E%3Crect width=\'40\' height=\'40\' fill=\'%23f3f4f6\'/%3E%3Cpath d=\'M20 15a2 2 0 100-4 2 2 0 000 4zm0 2a4 4 0 110-8 4 4 0 010 8zm-8 12h16v-2l-4-4-2 2-6-6-4 4v6z\' fill=\'%239ca3af\'/%3E%3C/svg%3E';" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html> 

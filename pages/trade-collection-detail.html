@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>外贸收款详情 - Whalet</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* 添加按钮样式 */
+        .primary-btn {
+            background-color: #7D33FF !important;
+            color: white !important;
+        }
+        .primary-btn:hover {
+            background-color: #6929CC !important;
+        }
+        /* 添加链接样式 */
+        .link-primary {
+            color: #7D33FF !important;
+        }
+        .link-primary:hover {
+            color: #6929CC !important;
+        }
+        /* 添加卡片阴影效果 */
+        .card-shadow {
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+        /* 进度条样式 */
+        .timeline-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            border: 2px solid #fff;
+            box-shadow: 0 0 0 2px #7D33FF;
+        }
+        .timeline-dot.completed {
+            background-color: #7D33FF;
+        }
+        .timeline-dot.pending {
+            background-color: #fff;
+        }
+        .timeline-line {
+            height: 3px;
+            background: linear-gradient(to right, #7D33FF 50%, #E5E7EB 50%);
+        }
+        .table-hover tr:hover {
+            background-color: #F9FAFB;
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <div class="min-h-screen">
+        <div class="container mx-auto px-4 py-8">
+            <div class="max-w-6xl mx-auto">
+                <!-- 主要内容区域 -->
+                <div class="bg-white rounded-lg shadow-sm">
+                    <!-- 头部导航 -->
+                    <div class="px-8 py-5 border-b border-gray-200">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center space-x-6">
+                                <a href="trade-collection.html#collection-records" class="text-purple-600 hover:text-purple-700 flex items-center transition-colors">
+                                    <i class="fas fa-arrow-left text-sm mr-2"></i>
+                                    <span>返回</span>
+                                </a>
+                                <h1 class="text-2xl font-semibold text-gray-800">外贸收款详情</h1>
+                            </div>
+                            <a href="trade-collection.html#collection-records" class="text-gray-400 hover:text-gray-600 transition-colors p-2">
+                                <i class="fas fa-times"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- 基本信息 -->
+                    <div class="p-8 border-b border-gray-200">
+                        <div class="flex justify-between items-start mb-8">
+                            <div>
+                                <h2 class="text-xl font-semibold text-gray-900 mb-2">外贸收款详情</h2>
+                                <p class="text-sm text-gray-500">收款编号：SK202101010001</p>
+                            </div>
+                            <div class="flex items-center px-4 py-2 bg-yellow-50 rounded-full">
+                                <div class="w-2.5 h-2.5 rounded-full bg-yellow-400 mr-2"></div>
+                                <span class="text-sm font-medium text-yellow-800">待审核</span>
+                            </div>
+                        </div>
+
+                        <!-- 进度时间线 -->
+                        <div class="relative mt-12">
+                            <div class="absolute top-5 left-0 right-0 timeline-line"></div>
+                            <div class="relative flex justify-between">
+                                <div class="flex flex-col items-center z-10">
+                                    <div class="timeline-dot completed mb-3"></div>
+                                    <span class="text-sm font-medium text-gray-900">收到汇款</span>
+                                    <span class="text-xs text-gray-500 mt-1.5">2021-09-02 17:52</span>
+                                </div>
+                                <div class="flex flex-col items-center z-10">
+                                    <div class="timeline-dot completed mb-3"></div>
+                                    <span class="text-sm font-medium text-gray-900">关联订单</span>
+                                    <span class="text-xs text-gray-500 mt-1.5">2021-09-15 16:21</span>
+                                </div>
+                                <div class="flex flex-col items-center z-10">
+                                    <div class="timeline-dot pending mb-3"></div>
+                                    <span class="text-sm font-medium text-gray-500">资料审核</span>
+                                    <span class="text-xs text-gray-500 mt-1.5">处理中</span>
+                                </div>
+                                <div class="flex flex-col items-center z-10">
+                                    <div class="timeline-dot pending mb-3"></div>
+                                    <span class="text-sm font-medium text-gray-500">汇款入账</span>
+                                    <span class="text-xs text-gray-500 mt-1.5">待处理</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 收款信息及当前状态 -->
+                    <div class="p-8 border-b border-gray-200">
+                        <h3 class="text-lg font-semibold text-gray-900 mb-6">收款信息及当前状态</h3>
+                        <div class="grid grid-cols-2 gap-8">
+                            <div class="p-6 border border-gray-200 rounded-lg bg-white">
+                                <div class="grid grid-cols-2 gap-x-4 gap-y-5">
+                                    <div class="flex">
+                                        <span class="text-gray-500 text-sm w-24">收款时间：</span>
+                                        <span class="text-gray-900 text-sm font-medium">2021-09-06 11:20</span>
+                                    </div>
+                                    <div class="flex">
+                                        <span class="text-gray-500 text-sm w-24">汇款方：</span>
+                                        <span class="text-gray-900 text-sm font-medium">ZHI ZUN BAO</span>
+                                    </div>
+                                    <div class="flex">
+                                        <span class="text-gray-500 text-sm w-24">收款金额：</span>
+                                        <span class="text-gray-900 text-sm font-medium">1000.00 USD</span>
+                                    </div>
+                                    <div class="flex">
+                                        <span class="text-gray-500 text-sm w-24">收款银行：</span>
+                                        <span class="text-gray-900 text-sm font-medium">DBS Bank(HK)</span>
+                                    </div>
+                                    <div class="flex">
+                                        <span class="text-gray-500 text-sm w-24">收款账号：</span>
+                                        <span class="text-gray-900 text-sm font-medium">62270037</span>
+                                    </div>
+                                    <div class="flex">
+                                        <span class="text-gray-500 text-sm w-24">附言：</span>
+                                        <span class="text-gray-900 text-sm font-medium truncate" title="God Of War 4 & Red Dead: Redemption">God Of War 4 & Red Dead: Redemption</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="bg-yellow-50 rounded-xl p-6 border border-yellow-200 flex items-center">
+                                <div class="flex items-start">
+                                    <i class="fas fa-exclamation-circle text-yellow-500 text-lg mt-0.5 mr-3"></i>
+                                    <div>
+                                        <h4 class="text-base font-semibold text-gray-900 mb-1.5">资料审核中</h4>
+                                        <p class="text-sm text-gray-600">审核通过后即可入账，请留意短信或邮件通知</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 已关联订单 -->
+                    <div class="p-8">
+                        <h3 class="text-lg font-semibold text-gray-900 mb-6">已关联订单</h3>
+                        <div class="border border-gray-200 rounded-lg overflow-hidden">
+                            <table class="min-w-full divide-y divide-gray-200 table-hover">
+                                <thead class="bg-gray-50">
+                                    <tr>
+                                        <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">合同编号</th>
+                                        <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">买家名称</th>
+                                        <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">商品名称</th>
+                                        <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">关联时间</th>
+                                        <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">订单金额</th>
+                                        <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">关联金额</th>
+                                        <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">操作</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="bg-white divide-y divide-gray-200">
+                                    <tr>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">2021001</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">ZHI ZUN BAO</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">PS5 Pro-5T</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">2021-09-15 16:55</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">500.00 USD</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">500.00 USD</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm">
+                                            <a href="#" class="text-blue-600 hover:text-blue-800 font-medium">详情</a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">2021002</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">ZHI ZUN YU</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">PS4 Pro-2T</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">2021-09-15 16:55</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">500.00 USD</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">500.00 USD</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm">
+                                            <a href="#" class="text-blue-600 hover:text-blue-800 font-medium">详情</a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 处理所有返回链接
+            document.querySelectorAll('a[href="trade-collection.html#collection-records"]').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    window.location.href = this.href;
+                });
+            });
+        });
+    </script>
+</body>
+</html> 

@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>申请服务贸易收款账户 - Whalet</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../styles/custom.css">
+    <style>
+        .platform-card {
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        .platform-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+        .platform-card.selected {
+            border-color: #4f46e5;
+            background-color: #f5f3ff;
+        }
+        .platform-type.selected {
+            background-color: #f5f3ff;
+            color: #4f46e5;
+            font-weight: 500;
+        }
+        .hot-tag {
+            position: absolute;
+            top: 4px;
+            right: 4px;
+            font-size: 10px;
+            padding: 2px 6px;
+            border-radius: 10px;
+            background-color: #FEF2F2;
+            color: #DC2626;
+            font-weight: 500;
+        }
+        .platform-section:not(:last-child) {
+            border-bottom: 1px solid #E5E7EB;
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <div class="container mx-auto px-4 py-6">
+        <!-- 主要内容区域 -->
+        <div class="max-w-7xl mx-auto">
+            <div class="bg-white rounded-lg shadow-sm">
+                <!-- 顶部搜索栏 -->
+                <div class="p-4 border-b border-gray-200">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center">
+                            <button class="mr-4 text-indigo-600 hover:text-indigo-900" onclick="window.location.href='service-trade.html'">
+                                <i class="fas fa-arrow-left"></i>
+                                <span class="ml-1 text-sm">返回</span>
+                            </button>
+                            <h1 class="text-xl font-medium text-gray-900">申请服务贸易收款账户</h1>
+                        </div>
+                        <div class="relative">
+                            <input type="text" id="platform-search" placeholder="搜索平台" class="w-80 pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm">
+                            <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex">
+                    <!-- 左侧平台类型筛选 -->
+                    <div class="w-56 border-r border-gray-200 p-4">
+                        <h3 class="text-sm font-medium text-gray-900 mb-3">平台分类</h3>
+                        <div class="space-y-2">
+                            <button class="platform-type w-full text-left px-3 py-2.5 rounded-lg text-sm hover:bg-gray-50" data-type="all">
+                                全部平台
+                            </button>
+                            <button class="platform-type w-full text-left px-3 py-2.5 rounded-lg text-sm hover:bg-gray-50" data-type="ads">
+                                广告服务
+                            </button>
+                            <button class="platform-type w-full text-left px-3 py-2.5 rounded-lg text-sm hover:bg-gray-50" data-type="apps">
+                                应用市场
+                            </button>
+                            <button class="platform-type w-full text-left px-3 py-2.5 rounded-lg text-sm hover:bg-gray-50" data-type="others">
+                                其他服务
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- 右侧平台列表 -->
+                    <div class="flex-1 p-4">
+                        <!-- 广告服务 -->
+                        <div class="platform-section" id="ads-section">
+                            <h2 class="text-base font-medium text-gray-900 mb-3">广告服务</h2>
+                            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4" id="ads-grid">
+                                <!-- 平台卡片将通过 JavaScript 动态生成 -->
+                            </div>
+                        </div>
+
+                        <!-- 应用市场 -->
+                        <div class="platform-section" id="apps-section">
+                            <h2 class="text-base font-medium text-gray-900 mb-3">应用市场</h2>
+                            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4" id="apps-grid">
+                                <!-- 平台卡片将通过 JavaScript 动态生成 -->
+                            </div>
+                        </div>
+
+                        <!-- 其他服务 -->
+                        <div class="platform-section" id="others-section">
+                            <h2 class="text-base font-medium text-gray-900 mb-3">其他服务</h2>
+                            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4" id="others-grid">
+                                <!-- 平台卡片将通过 JavaScript 动态生成 -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 平台数据
+        const platforms = {
+            ads: [
+                { id: 'adsense', name: 'Google AdSense', logo: 'google.com', hot: true },
+                { id: 'admob', name: 'Google AdMob', logo: 'google.com', hot: true },
+                { id: 'audience', name: 'Audience Network', logo: 'facebook.com', hot: true },
+                { id: 'amazon', name: 'Amazon Affiliate', logo: 'amazon.com', hot: true },
+                { id: 'unity', name: 'Unity Ads', logo: 'unity.com', hot: true },
+                { id: 'applovin', name: 'AppLovin', logo: 'applovin.com', hot: false },
+                { id: 'liftoff', name: 'Liftoff', logo: 'liftoff.io', hot: false },
+                { id: 'pangle', name: 'Pangle', logo: 'pangle.io', hot: false },
+                { id: 'ironsource', name: 'ironSource', logo: 'ironsrc.com', hot: false }
+            ],
+            apps: [
+                { id: 'appstore', name: 'AppStore', logo: 'apple.com', hot: true },
+                { id: 'googleplay', name: 'Google Play', logo: 'play.google.com', hot: true },
+                { id: 'steam', name: 'Steam', logo: 'steampowered.com', hot: true }
+            ],
+            others: [
+                { id: 'logistics', name: '物流服务', logo: 'logistics.com', hot: false },
+                { id: 'aviation', name: '国际航空', logo: 'aviation.com', hot: false },
+                { id: 'mcn', name: 'MCN机构', logo: 'mcn.com', hot: false },
+                { id: 'salary', name: '职工薪酬', logo: 'salary.com', hot: false }
+            ]
+        };
+
+        let selectedPlatform = null;
+
+        // 渲染平台卡片
+        function renderPlatformCard(platform) {
+            return `
+                <button class="platform-card p-3 border border-gray-200 rounded-lg hover:border-blue-500 focus:outline-none ${selectedPlatform === platform.id ? 'selected' : ''}" data-id="${platform.id}">
+                    ${platform.hot ? '<span class="hot-tag">热门</span>' : ''}
+                    <div class="flex flex-col items-center">
+                        <div class="w-10 h-10 rounded-lg mb-2 flex items-center justify-center bg-gray-50">
+                            <img src="https://logo.clearbit.com/${platform.logo}" alt="${platform.name}" 
+                                 class="w-8 h-8 object-contain"
+                                 onerror="this.onerror=null; this.src='https://via.placeholder.com/32?text=${platform.name[0]}';">
+                        </div>
+                        <span class="text-xs font-medium text-gray-900 text-center line-clamp-1">${platform.name}</span>
+                    </div>
+                </button>
+            `;
+        }
+
+        // 渲染所有平台
+        function renderPlatforms() {
+            // 渲染广告服务平台
+            const adsGrid = document.getElementById('ads-grid');
+            adsGrid.innerHTML = platforms.ads.map(platform => renderPlatformCard(platform)).join('');
+
+            // 渲染应用市场平台
+            const appsGrid = document.getElementById('apps-grid');
+            appsGrid.innerHTML = platforms.apps.map(platform => renderPlatformCard(platform)).join('');
+
+            // 渲染其他服务平台
+            const othersGrid = document.getElementById('others-grid');
+            othersGrid.innerHTML = platforms.others.map(platform => renderPlatformCard(platform)).join('');
+
+            // 绑定点击事件
+            document.querySelectorAll('.platform-card').forEach(card => {
+                card.addEventListener('click', () => {
+                    const id = card.dataset.id;
+                    if (selectedPlatform === id) {
+                        // 取消选择
+                        selectedPlatform = null;
+                        card.classList.remove('selected');
+                    } else {
+                        // 新选择
+                        const previousSelected = document.querySelector('.platform-card.selected');
+                        if (previousSelected) {
+                            previousSelected.classList.remove('selected');
+                        }
+                        selectedPlatform = id;
+                        card.classList.add('selected');
+                        
+                        // 添加选中动画效果
+                        card.style.transform = 'scale(1.05)';
+                        setTimeout(() => {
+                            // 300ms后自动跳转到下一步
+                            window.location.href = 'apply-collection-account-info.html?platform=' + id;
+                        }, 300);
+                    }
+                });
+            });
+        }
+
+        // 平台类型筛选
+        document.querySelectorAll('.platform-type').forEach(button => {
+            button.addEventListener('click', () => {
+                document.querySelectorAll('.platform-type').forEach(btn => btn.classList.remove('selected'));
+                button.classList.add('selected');
+                
+                const type = button.dataset.type;
+                const sections = {
+                    'ads': document.getElementById('ads-section'),
+                    'apps': document.getElementById('apps-section'),
+                    'others': document.getElementById('others-section')
+                };
+
+                if (type === 'all') {
+                    Object.values(sections).forEach(section => section.style.display = 'block');
+                } else {
+                    Object.entries(sections).forEach(([sectionType, section]) => {
+                        section.style.display = sectionType === type ? 'block' : 'none';
+                    });
+                }
+            });
+        });
+
+        // 搜索功能
+        document.getElementById('platform-search').addEventListener('input', (e) => {
+            const searchTerm = e.target.value.toLowerCase();
+            const allPlatformCards = document.querySelectorAll('.platform-card');
+            
+            allPlatformCards.forEach(card => {
+                const platformName = card.querySelector('span').textContent.toLowerCase();
+                const shouldShow = platformName.includes(searchTerm);
+                card.style.display = shouldShow ? 'block' : 'none';
+            });
+
+            // 如果某个分类下所有平台都被隐藏，则隐藏该分类标题
+            ['ads', 'apps', 'others'].forEach(type => {
+                const section = document.getElementById(`${type}-section`);
+                const cards = section.querySelectorAll('.platform-card');
+                const hasVisibleCards = Array.from(cards).some(card => card.style.display !== 'none');
+                section.style.display = hasVisibleCards ? 'block' : 'none';
+            });
+        });
+
+        // 初始化渲染
+        renderPlatforms();
+        // 默认选中"全部平台"
+        document.querySelector('.platform-type[data-type="all"]').classList.add('selected');
+    </script>
+</body>
+</html> 

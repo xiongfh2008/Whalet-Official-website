@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>电商平台 - Whalet</title>
+    <title>独立站 - Whalet</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="../styles/custom.css">
@@ -61,7 +61,7 @@
                             订单管理
                         </button>
                     </nav>
-                        </div>
+                </div>
             </div>
         </div>
 
@@ -70,9 +70,9 @@
             <div class="p-6 border-b border-gray-200">
                 <div class="flex justify-between items-center">
                     <h2 class="text-xl font-semibold text-gray-800">店铺管理</h2>
-                    <a href="apply-collection-account.html" class="apply-btn px-4 py-2 rounded text-sm font-medium inline-flex items-center">
-                        <i class="fas fa-plus mr-2"></i>申请收款账户
-                    </a>
+                        <a href="apply-collection-account.html" class="apply-btn px-4 py-2 rounded text-sm font-medium inline-flex items-center">
+                            <i class="fas fa-plus mr-2"></i>申请收款账户
+                        </a>
                 </div>
             </div>
 
@@ -83,11 +83,14 @@
                         <span class="mr-2 text-sm font-medium text-gray-700">收款平台:</span>
                         <select class="p-2 text-sm border border-gray-300 rounded-md">
                             <option value="">全部</option>
-                            <option value="amazon">Amazon</option>
                             <option value="shopify">Shopify</option>
-                            <option value="ebay">eBay</option>
+                            <option value="shopyy">Shopyy</option>
                             <option value="paypal">PayPal</option>
+                            <option value="cashapp">CashApp</option>
                             <option value="stripe">Stripe</option>
+                            <option value="payssion">Payssion</option>
+                            <option value="adyen">Adyen</option>
+                            <option value="selfbuilt">自建站</option>
                         </select>
                     </div>
                     <div class="flex items-center">
@@ -98,7 +101,7 @@
                             <option value="suspended">已暂停</option>
                             <option value="closed">已关闭</option>
                         </select>
-                        </div>
+                    </div>
                     <div class="flex items-center">
                         <input type="text" placeholder="店铺名称/支持模糊查询" class="p-2 text-sm border border-gray-300 rounded-md w-64">
                     </div>
@@ -142,10 +145,10 @@
                         <!-- 示例数据行 -->
                         <tr>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                Amazon
+                                Shopify
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                My Amazon Store
+                                My Shopify Store
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                 USD
@@ -195,12 +198,23 @@
                         <span class="mr-2 text-sm text-gray-600">收款平台:</span>
                         <select class="p-2 text-sm border border-gray-300 rounded-md w-24">
                             <option value="">全部</option>
+                            <option value="shopify">Shopify</option>
+                            <option value="shopyy">Shopyy</option>
+                            <option value="paypal">PayPal</option>
+                            <option value="cashapp">CashApp</option>
+                            <option value="stripe">Stripe</option>
+                            <option value="payssion">Payssion</option>
+                            <option value="adyen">Adyen</option>
+                            <option value="selfbuilt">自建站</option>
                         </select>
                     </div>
                     <div class="flex items-center">
                         <span class="mr-2 text-sm text-gray-600">状态:</span>
                         <select class="p-2 text-sm border border-gray-300 rounded-md w-24">
                             <option value="">全部</option>
+                            <option value="pending">待审核</option>
+                            <option value="approved">已通过</option>
+                            <option value="rejected">已驳回</option>
                         </select>
                     </div>
                     <div class="flex items-center ml-auto">
@@ -210,8 +224,8 @@
                         <button class="bg-gray-100 text-gray-600 px-4 py-2 rounded text-sm font-medium hover:bg-gray-200">
                             重置
                         </button>
+                    </div>
                 </div>
-            </div>
 
                 <!-- 数据表格 -->
                 <div class="overflow-x-auto">
@@ -251,72 +265,38 @@
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
-                                <!-- 示例数据行 -->
-                                <tr>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                        selbuilt
-                                </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                        fac60...
-                                </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                        35,756.00 USD
-                                </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                        0/53
-                                </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                        0.00
-                                </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                        其他自建站
-                                </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                        2024-01-16 16:59:52
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                        
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-purple-600 hover:text-purple-800">
-                                        <button>预览</button>
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                        <span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
-                                            审核返回
-                                    </span>
-                                </td>
-                            </tr>
+                            <!-- 示例数据行 -->
                             <tr>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                        selbuilt
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                        2023-...
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                        88,078.98 USD
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                        0/128
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                        0.00
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                        其他自建站
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                        2023-12-19 09:23:29
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                        
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-purple-600 hover:text-purple-800">
-                                        <button>预览</button>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                    My Shopify Store
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                    orders_202403.csv
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                    35,756.00 USD
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                    45/50
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                    32,180.40
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                    Shopify
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                    2024-03-20 16:59:52
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                    
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-purple-600 hover:text-purple-800">
+                                    <button>预览</button>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
-                                        <span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
-                                            审核返回
+                                    <span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                        已通过
                                     </span>
                                 </td>
                             </tr>

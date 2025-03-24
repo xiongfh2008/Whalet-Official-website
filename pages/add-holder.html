@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>添加持有人 - Whalet</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../styles/custom.css">
+    <style>
+        .form-input:focus, .form-select:focus {
+            border-color: #7D33FF !important;
+            --tw-ring-color: #7D33FF !important;
+            --tw-ring-opacity: 0.5 !important;
+            --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color) !important;
+            --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color) !important;
+            box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000) !important;
+        }
+        .submit-btn {
+            background-color: #7D33FF !important;
+            color: white !important;
+        }
+        .submit-btn:hover {
+            background-color: #6929CC !important;
+        }
+        .upload-area {
+            min-height: 160px;
+            transition: all 0.3s ease;
+        }
+        .upload-area:hover {
+            border-color: #7D33FF;
+            background-color: #F9F7FF;
+        }
+        .form-section {
+            background-color: #F9FAFB;
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        .form-section-title {
+            font-size: 1rem;
+            font-weight: 500;
+            color: #374151;
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <div class="container mx-auto px-4 py-6">
+        <div class="max-w-6xl mx-auto bg-white rounded-lg shadow-sm">
+            <!-- 头部 -->
+            <div class="p-6 border-b border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center">
+                        <a href="holder-management.html" class="text-purple-600 hover:text-purple-700 mr-2">
+                            <i class="fas fa-arrow-left"></i>
+                        </a>
+                        <a href="holder-management.html" class="text-purple-600 hover:text-purple-700 mr-4">返回</a>
+                        <h1 class="text-xl font-semibold text-gray-800">添加持有人</h1>
+                    </div>
+                    <a href="holder-management.html" class="text-gray-500 hover:text-gray-700">
+                        <i class="fas fa-times"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- 表单内容 -->
+            <div class="p-6">
+                <form id="addHolderForm" class="space-y-6">
+                    <!-- 基本信息 -->
+                    <div class="form-section">
+                        <h3 class="form-section-title">基本信息</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <!-- 持有人类型 -->
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">
+                                    <span class="text-red-500">*</span> 持有人类型
+                                </label>
+                                <select required class="form-select w-full p-2 border border-gray-300 rounded-md">
+                                    <option value="">请选择持有人类型</option>
+                                    <option value="personal">个人</option>
+                                    <option value="company">企业</option>
+                                </select>
+                            </div>
+
+                            <!-- 持有人地区 -->
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">
+                                    <span class="text-red-500">*</span> 持有人地区
+                                </label>
+                                <select required class="form-select w-full p-2 border border-gray-300 rounded-md">
+                                    <option value="">请选择持有人地区</option>
+                                    <option value="CN">中国（大陆）(CN)</option>
+                                </select>
+                            </div>
+
+                            <!-- 持有人身份 -->
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">
+                                    <span class="text-red-500">*</span> 持有人身份
+                                </label>
+                                <select required class="form-select w-full p-2 border border-gray-300 rounded-md">
+                                    <option value="">请选择持有人身份</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 证明材料 -->
+                    <div class="form-section">
+                        <h3 class="form-section-title">证明材料</h3>
+                        <!-- 持有人账户平台证明 -->
+                        <div class="mb-6">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">
+                                <span class="text-red-500">*</span> 持有人账户平台证明
+                            </label>
+                            <div class="upload-area border-2 border-dashed border-gray-300 rounded-lg p-6 text-center">
+                                <div class="mb-4">
+                                    <i class="fas fa-cloud-upload-alt text-gray-400 text-3xl"></i>
+                                    <p class="text-sm text-gray-500 mt-2">点击或拖拽文件到这里上传</p>
+                                </div>
+                                <p class="text-xs text-gray-500">请上传包含账户广告平台名称的截图，如亚马逊、Paypal后台截图等</p>
+                                <p class="text-xs text-gray-500 mt-1">支持格式：jpg, jpeg, png, pdf, bmp, zip, rar</p>
+                            </div>
+                        </div>
+
+                        <!-- 持有人证件照 -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">
+                                    <span class="text-red-500">*</span> 持有人证件照
+                                </label>
+                                <div class="upload-area border-2 border-dashed border-gray-300 rounded-lg p-6 text-center">
+                                    <div class="mb-2">
+                                        <i class="fas fa-id-card text-gray-400 text-3xl"></i>
+                                        <p class="text-sm text-gray-500 mt-2">证件照正面</p>
+                                    </div>
+                                    <a href="#" class="text-blue-600 text-sm hover:text-blue-800">查看示例</a>
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">
+                                    <span class="text-red-500">*</span> 证件背面
+                                </label>
+                                <div class="upload-area border-2 border-dashed border-gray-300 rounded-lg p-6 text-center">
+                                    <div class="mb-2">
+                                        <i class="fas fa-id-card text-gray-400 text-3xl"></i>
+                                        <p class="text-sm text-gray-500 mt-2">证件照背面</p>
+                                    </div>
+                                    <a href="#" class="text-blue-600 text-sm hover:text-blue-800">查看示例</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 个人信息 -->
+                    <div class="form-section">
+                        <h3 class="form-section-title">个人信息</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <!-- 持有人名称 -->
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">
+                                    <span class="text-red-500">*</span> 持有人名称
+                                </label>
+                                <input type="text" required placeholder="请输入身份证上的名称" class="form-input w-full p-2 border border-gray-300 rounded-md">
+                            </div>
+
+                            <!-- 持有人证件类型 -->
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">
+                                    <span class="text-red-500">*</span> 持有人证件类型
+                                </label>
+                                <select required class="form-select w-full p-2 border border-gray-300 rounded-md">
+                                    <option value="">请选择证件类型</option>
+                                    <option value="id">中国大陆第二代身份证</option>
+                                </select>
+                            </div>
+
+                            <!-- 持有人英文名称 -->
+                            <div class="col-span-2 grid grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">
+                                        <span class="text-red-500">*</span> 名的拼音或英文
+                                    </label>
+                                    <input type="text" required placeholder="名的拼音或英文" class="form-input w-full p-2 border border-gray-300 rounded-md">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">
+                                        <span class="text-red-500">*</span> 姓的拼音或英文
+                                    </label>
+                                    <input type="text" required placeholder="姓的拼音或英文" class="form-input w-full p-2 border border-gray-300 rounded-md">
+                                </div>
+                            </div>
+
+                            <!-- 持有人证件号码 -->
+                            <div class="col-span-2">
+                                <label class="block text-sm font-medium text-gray-700 mb-2">
+                                    <span class="text-red-500">*</span> 持有人证件号码
+                                </label>
+                                <input type="text" required placeholder="请输入持有人证件号码" class="form-input w-full p-2 border border-gray-300 rounded-md">
+                            </div>
+
+                            <!-- 证件有效期 -->
+                            <div class="col-span-2 grid grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">
+                                        <span class="text-red-500">*</span> 开始日期
+                                    </label>
+                                    <input type="date" required class="form-input w-full p-2 border border-gray-300 rounded-md">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">
+                                        <span class="text-red-500">*</span> 结束日期
+                                    </label>
+                                    <div class="flex items-center space-x-4">
+                                        <input type="date" class="form-input flex-1 p-2 border border-gray-300 rounded-md">
+                                        <label class="inline-flex items-center">
+                                            <input type="checkbox" class="form-checkbox h-4 w-4 text-purple-600">
+                                            <span class="ml-2 text-sm text-gray-700">长期</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 出生日期 -->
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">
+                                    <span class="text-red-500">*</span> 出生日期
+                                </label>
+                                <input type="date" required class="form-input w-full p-2 border border-gray-300 rounded-md">
+                            </div>
+
+                            <!-- 性别 -->
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">
+                                    <span class="text-red-500">*</span> 性别
+                                </label>
+                                <select required class="form-select w-full p-2 border border-gray-300 rounded-md">
+                                    <option value="">请选择性别</option>
+                                    <option value="male">男</option>
+                                    <option value="female">女</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 地址信息 -->
+                    <div class="form-section">
+                        <h3 class="form-section-title">地址信息</h3>
+                        <!-- 身份证地址 -->
+                        <div class="space-y-4">
+                            <label class="block text-sm font-medium text-gray-700">
+                                <span class="text-red-500">*</span> 身份证地址
+                            </label>
+                            <div class="grid grid-cols-3 gap-4">
+                                <select required class="form-select p-2 border border-gray-300 rounded-md">
+                                    <option value="">请选择省</option>
+                                </select>
+                                <select required class="form-select p-2 border border-gray-300 rounded-md">
+                                    <option value="">请选择市</option>
+                                </select>
+                                <select required class="form-select p-2 border border-gray-300 rounded-md">
+                                    <option value="">请选择区/县</option>
+                                </select>
+                            </div>
+                            <input type="text" required placeholder="请输入详细街道地址" class="form-input w-full p-2 border border-gray-300 rounded-md">
+                        </div>
+
+                        <!-- 邮政编码 -->
+                        <div class="mt-4">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">
+                                <span class="text-red-500">*</span> 邮政编码
+                            </label>
+                            <input type="text" required placeholder="请输入邮政编码" class="form-input w-full p-2 border border-gray-300 rounded-md">
+                        </div>
+                    </div>
+
+                    <!-- 同意条款 -->
+                    <div class="bg-purple-50 p-4 rounded-lg">
+                        <div class="flex items-center">
+                            <input type="checkbox" required class="h-4 w-4 text-purple-600 rounded border-gray-300">
+                            <label class="ml-2 text-sm text-gray-600">
+                                本人已阅读、知晓并同意 <a href="#" class="text-purple-600 hover:text-purple-800">《承诺函》</a> <a href="#" class="text-purple-600 hover:text-purple-800">《持有人授权协议》</a>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- 提交按钮 -->
+                    <div class="flex justify-center space-x-4 pt-4">
+                        <a href="holder-management.html" class="px-8 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50">
+                            返回
+                        </a>
+                        <button type="submit" class="submit-btn px-8 py-2 rounded-md text-sm font-medium">
+                            申请添加
+                        </button>
+                        <button type="button" id="submitAndContinue" class="submit-btn px-8 py-2 rounded-md text-sm font-medium">
+                            提交并继续添加
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 处理表单提交
+            document.getElementById('addHolderForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                // 这里添加表单提交逻辑
+                alert('持有人信息提交成功！');
+                window.location.href = 'holder-management.html';
+            });
+
+            // 处理提交并继续添加
+            document.getElementById('submitAndContinue').addEventListener('click', function() {
+                // 这里添加表单提交逻辑
+                alert('持有人信息提交成功！');
+                // 重置表单而不是跳转
+                document.getElementById('addHolderForm').reset();
+                window.scrollTo(0, 0);
+            });
+
+            // 处理证件有效期长期选项
+            const longTermCheckbox = document.querySelector('input[type="checkbox"]');
+            const endDateInput = document.querySelector('input[type="date"]:last-of-type');
+            
+            longTermCheckbox.addEventListener('change', function() {
+                endDateInput.disabled = this.checked;
+                if (this.checked) {
+                    endDateInput.value = '';
+                }
+            });
+
+            // 处理文件上传区域的拖拽效果
+            const uploadAreas = document.querySelectorAll('.upload-area');
+            uploadAreas.forEach(area => {
+                area.addEventListener('dragover', (e) => {
+                    e.preventDefault();
+                    area.classList.add('border-purple-500', 'bg-purple-50');
+                });
+
+                area.addEventListener('dragleave', (e) => {
+                    e.preventDefault();
+                    area.classList.remove('border-purple-500', 'bg-purple-50');
+                });
+
+                area.addEventListener('drop', (e) => {
+                    e.preventDefault();
+                    area.classList.remove('border-purple-500', 'bg-purple-50');
+                    // 这里添加文件上传处理逻辑
+                });
+            });
+        });
+    </script>
+</body>
+</html> 

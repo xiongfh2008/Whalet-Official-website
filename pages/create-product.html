@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>创建商品 - Whalet</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            background-color: #F8F9FD;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+
+        .form-section {
+            background: white;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: #374151;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-input:focus,
+        .form-select:focus {
+            border-color: #7D33FF;
+            box-shadow: 0 0 0 3px rgba(125, 51, 255, 0.1);
+            outline: none;
+        }
+
+        .required-field::after {
+            content: '*';
+            color: #EF4444;
+            margin-left: 4px;
+        }
+
+        .upload-area {
+            border: 2px dashed #E5E7EB;
+            border-radius: 0.5rem;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            background-color: #FAFBFF;
+        }
+
+        .upload-area:hover {
+            border-color: #7D33FF;
+            background-color: rgba(125, 51, 255, 0.05);
+        }
+
+        .btn-primary {
+            background-color: #7D33FF;
+            color: white;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            background-color: #6929CC;
+        }
+
+        .form-columns {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+
+        /* 开关按钮样式 */
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 48px;
+            height: 24px;
+        }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #E5E7EB;
+            transition: .4s;
+            border-radius: 24px;
+        }
+
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 20px;
+            width: 20px;
+            left: 2px;
+            bottom: 2px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        .toggle-switch input:checked + .toggle-slider {
+            background-color: #7D33FF;
+        }
+
+        .toggle-switch input:checked + .toggle-slider:before {
+            transform: translateX(24px);
+        }
+
+        .toggle-label {
+            margin-left: 0.5rem;
+            font-size: 0.875rem;
+            color: #374151;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 主要内容区域 -->
+        <div class="form-section">
+            <!-- 页面标题 -->
+            <div class="p-6 border-b border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center">
+                        <a href="bill-collection.html#product-management" class="text-purple-600 hover:text-purple-700 mr-2">
+                            <i class="fas fa-arrow-left"></i>
+                        </a>
+                        <a href="bill-collection.html#product-management" class="text-purple-600 hover:text-purple-700 mr-4">返回</a>
+                        <h1 class="text-xl font-semibold text-gray-800">创建商品</h1>
+                    </div>
+                    <a href="bill-collection.html#product-management" class="text-gray-500 hover:text-gray-700">
+                        <i class="fas fa-times"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- 创建商品表单 -->
+            <div class="p-6">
+                <form class="space-y-6">
+                    <div class="form-columns">
+                        <!-- 左列 -->
+                        <div>
+                            <!-- 店铺链接 -->
+                            <div class="form-group">
+                                <label class="form-label required">店铺链接</label>
+                                <input type="text" placeholder="商户店铺链接" 
+                                       class="w-full p-2 border border-gray-300 rounded-md text-sm focus:ring-2 focus:ring-purple-500 focus:border-purple-500">
+                            </div>
+
+                            <!-- 商品ID -->
+                            <div class="form-group">
+                                <label class="form-label">商品ID</label>
+                                <input type="text" placeholder="不填则自动生成"
+                                       class="w-full p-2 border border-gray-300 rounded-md text-sm focus:ring-2 focus:ring-purple-500 focus:border-purple-500">
+                            </div>
+
+                            <!-- 商品名称 -->
+                            <div class="form-group">
+                                <label class="form-label required">商品名称</label>
+                                <input type="text" placeholder="请用英文填写商品名称"
+                                       class="w-full p-2 border border-gray-300 rounded-md text-sm focus:ring-2 focus:ring-purple-500 focus:border-purple-500">
+                            </div>
+
+                            <!-- 单价 -->
+                            <div class="form-group">
+                                <label class="form-label required">单价</label>
+                                <div class="flex">
+                                    <input type="text" placeholder="单价"
+                                           class="flex-1 p-2 border border-gray-300 rounded-l-md text-sm focus:ring-2 focus:ring-purple-500 focus:border-purple-500">
+                                    <select class="w-24 p-2 border border-l-0 border-gray-300 rounded-r-md text-sm bg-white focus:ring-2 focus:ring-purple-500 focus:border-purple-500">
+                                        <option value="USD">USD</option>
+                                        <option value="EUR">EUR</option>
+                                        <option value="GBP">GBP</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <!-- 状态 -->
+                            <div class="form-group">
+                                <label class="form-label">状态</label>
+                                <div class="flex items-center">
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" checked>
+                                        <span class="toggle-slider"></span>
+                                    </label>
+                                    <span class="toggle-label" id="statusLabel">正常</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 右列 -->
+                        <div>
+                            <!-- 商品描述 -->
+                            <div class="form-group">
+                                <label class="form-label">商品描述</label>
+                                <textarea rows="4" placeholder="请输入商品描述"
+                                          class="w-full p-2 border border-gray-300 rounded-md text-sm focus:ring-2 focus:ring-purple-500 focus:border-purple-500"></textarea>
+                            </div>
+
+                            <!-- 产品图片 -->
+                            <div class="form-group">
+                                <label class="form-label">产品图片</label>
+                                <div class="upload-area">
+                                    <div class="space-y-1 text-center">
+                                        <i class="fas fa-cloud-upload-alt text-gray-400 text-3xl mb-3"></i>
+                                        <div class="flex text-sm text-gray-600 justify-center">
+                                            <label class="relative cursor-pointer bg-white rounded-md font-medium text-purple-600 hover:text-purple-500">
+                                                <span>上传文件</span>
+                                                <input type="file" class="sr-only" accept="image/*">
+                                            </label>
+                                        </div>
+                                        <p class="text-xs text-gray-500">
+                                            支持一张照片，支持JPG、JPEG、PNG格式，单个文件最大5M
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 按钮组 -->
+                    <div class="flex justify-center space-x-4 pt-6 mt-8 border-t border-gray-200">
+                        <a href="bill-collection.html#product-management" class="px-8 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50">
+                            返回
+                        </a>
+                        <button type="submit" class="px-8 py-2 btn-primary rounded-md text-sm font-medium">
+                            提交
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 处理返回链接
+            document.querySelectorAll('a[href="bill-collection.html#product-management"]').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    // 存储要激活的标签页信息
+                    localStorage.setItem('activeTab', 'product-management');
+                    window.location.href = this.href;
+                });
+            });
+
+            // 处理表单提交
+            document.querySelector('form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                // 这里添加表单提交逻辑
+                alert('商品创建成功！');
+                // 存储要激活的标签页信息
+                localStorage.setItem('activeTab', 'product-management');
+                window.location.href = 'bill-collection.html#product-management';
+            });
+
+            // 文件上传处理
+            const fileInput = document.querySelector('input[type="file"]');
+            const uploadArea = document.querySelector('.upload-area');
+
+            uploadArea.addEventListener('click', () => {
+                fileInput.click();
+            });
+
+            fileInput.addEventListener('change', (e) => {
+                if (e.target.files && e.target.files[0]) {
+                    const file = e.target.files[0];
+                    if (file.size > 5 * 1024 * 1024) {
+                        alert('文件大小不能超过5M');
+                        return;
+                    }
+                    
+                    const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png'];
+                    if (!allowedTypes.includes(file.type)) {
+                        alert('只支持JPG、JPEG、PNG格式的图片');
+                        return;
+                    }
+                }
+            });
+
+            // 状态切换处理
+            const statusToggle = document.querySelector('.toggle-switch input');
+            const statusLabel = document.getElementById('statusLabel');
+
+            statusToggle.addEventListener('change', function() {
+                statusLabel.textContent = this.checked ? '正常' : '禁用';
+            });
+        });
+    </script>
+</body>
+</html> 

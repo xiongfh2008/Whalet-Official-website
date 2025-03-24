@@ -165,9 +165,6 @@
                         <button class="tab-btn active whitespace-nowrap py-4 px-8 border-b-2 text-center text-sm font-medium mr-2" data-tab="collection-records">
                             外贸收款记录
                         </button>
-                        <button class="tab-btn whitespace-nowrap py-4 px-8 border-b-2 border-transparent text-center text-sm font-medium text-gray-500 mr-2" data-tab="collection-accounts">
-                            外贸收款账户
-                        </button>
                         <button class="tab-btn whitespace-nowrap py-4 px-8 border-b-2 border-transparent text-center text-sm font-medium text-gray-500 mr-2" data-tab="trade-orders">
                             外贸订单
                         </button>
@@ -253,9 +250,9 @@
                 <div class="flex justify-between items-center">
                     <h2 class="text-xl font-semibold text-gray-800">外贸收款记录</h2>
                     <div class="flex space-x-3">
-                        <button onclick="window.location.href='create-collection-order.html'" class="primary-btn px-4 py-2 rounded text-sm font-medium flex items-center">
+                        <button onclick="window.location.href='apply-trade-collection-account.html'" class="primary-btn px-4 py-2 rounded text-sm font-medium flex items-center">
                             <i class="fas fa-plus mr-2"></i>
-                            新建收款单
+                            申请收款账户
                         </button>
                         <button class="export-btn px-4 py-2 rounded text-sm font-medium flex items-center">
                             <i class="fas fa-download mr-2"></i>导出
@@ -291,9 +288,11 @@
                         <span class="mr-2 text-sm font-medium text-gray-700">状态:</span>
                         <select class="p-2 text-sm border border-gray-300 rounded-md">
                             <option value="">全部</option>
-                            <option value="completed">已完成</option>
-                            <option value="processing">处理中</option>
-                            <option value="failed">失败</option>
+                            <option value="pending">待入账</option>
+                            <option value="processing">入账中</option>
+                            <option value="completed">已入账</option>
+                            <option value="refunding">退款中</option>
+                            <option value="refunded">已退款</option>
                         </select>
                     </div>
                     <div class="flex items-center">
@@ -348,21 +347,13 @@
                                 Bank of America **** 5678
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
-                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
-                                    处理中
+                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-gray-800">
+                                    待入账
                                 </span>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                <a href="#" class="details-link mr-3">详情</a>
-                                <div class="relative inline-block text-left">
-                                    <button type="button" class="more-actions-btn text-gray-600 hover:text-gray-900">更多</button>
-                                    <div class="more-actions-dropdown origin-top-right absolute right-0 mt-2 w-40 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none hidden z-20" style="overflow: visible; white-space: nowrap;">
-                                        <div>
-                                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">导出收款凭证</a>
-                                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">关联订单</a>
-                                        </div>
-                                    </div>
-                                </div>
+                                <a href="trade-collection-detail.html" class="text-purple-600 hover:text-purple-900 mr-3">详情</a>
+                                <a href="trade-collection-order-relation.html" class="text-purple-600 hover:text-purple-900">关联订单</a>
                             </td>
                         </tr>
                         <tr>
@@ -381,20 +372,11 @@
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                                    已完成
+                                    已入账
                                 </span>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                <a href="#" class="details-link mr-3">详情</a>
-                                <div class="relative inline-block text-left">
-                                    <button type="button" class="more-actions-btn text-gray-600 hover:text-gray-900">更多</button>
-                                    <div class="more-actions-dropdown origin-top-right absolute right-0 mt-2 w-40 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none hidden z-20" style="overflow: visible; white-space: nowrap;">
-                                        <div>
-                                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">导出收款凭证</a>
-                                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">关联订单</a>
-                                        </div>
-                                    </div>
-                                </div>
+                                <a href="trade-collection-detail.html" class="text-purple-600 hover:text-purple-900">详情</a>
                             </td>
                         </tr>
                     </tbody>
@@ -417,133 +399,14 @@
             </div>
         </div>
 
-        <!-- 外贸收款账户 Tab 内容 -->
-        <div id="collection-accounts" class="tab-content bg-white rounded-lg shadow-sm">
-            <!-- 收款账户管理 -->
-            <div class="p-6 border-b border-gray-200">
-                <div class="flex justify-between items-center">
-                    <h2 class="text-xl font-semibold text-gray-800">收款账户管理</h2>
-                    <button class="primary-btn px-4 py-2 rounded text-sm font-medium flex items-center" onclick="window.location.href='apply-trade-collection-account.html'">
-                        <i class="fas fa-plus mr-2"></i>
-                        申请收款账户
-                    </button>
-                </div>
-            </div>
-            <div class="p-6">
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    <!-- 美国账户 -->
-                    <div class="border border-gray-200 rounded-lg p-5 hover:shadow-md transition-shadow">
-                        <div class="flex justify-between items-start mb-4">
-                            <h4 class="font-medium text-gray-800 text-lg">Bank of America</h4>
-                            <span class="px-2 py-1 text-xs font-medium rounded-full bg-green-100 text-green-800">
-                                正常
-                            </span>
-                        </div>
-                        <div class="space-y-2 mb-4">
-                            <div class="flex items-center">
-                                <span class="text-gray-500 text-sm w-20">卡号:</span>
-                                <span class="text-gray-900 text-sm font-medium">**** **** **** 5678</span>
-                            </div>
-                            <div class="flex items-center">
-                                <span class="text-gray-500 text-sm w-20">账户名:</span>
-                                <span class="text-gray-900 text-sm">Whalet Inc.</span>
-                            </div>
-                            <div class="flex items-center">
-                                <span class="text-gray-500 text-sm w-20">币种:</span>
-                                <span class="text-gray-900 text-sm">USD, EUR, GBP, JPY, CAD...</span>
-                            </div>
-                            <div class="flex items-center">
-                                <span class="text-gray-500 text-sm w-20">类型:</span>
-                                <span class="text-gray-900 text-sm">全球账户</span>
-                            </div>
-                        </div>
-                        <div class="flex justify-end">
-                            <button class="details-link text-sm font-medium" onclick="window.location.href='foreign-trade-account-details.html'">
-                                <i class="fas fa-eye mr-1"></i>
-                                查看详情
-                            </button>
-                        </div>
-                    </div>
-                    
-                    <!-- 欧洲账户 -->
-                    <div class="border border-gray-200 rounded-lg p-5 hover:shadow-md transition-shadow">
-                        <div class="flex justify-between items-start mb-4">
-                            <h4 class="font-medium text-gray-800 text-lg">HSBC</h4>
-                            <span class="px-2 py-1 text-xs font-medium rounded-full bg-green-100 text-green-800">
-                                正常
-                            </span>
-                        </div>
-                        <div class="space-y-2 mb-4">
-                            <div class="flex items-center">
-                                <span class="text-gray-500 text-sm w-20">卡号:</span>
-                                <span class="text-gray-900 text-sm font-medium">**** **** **** 3456</span>
-                            </div>
-                            <div class="flex items-center">
-                                <span class="text-gray-500 text-sm w-20">账户名:</span>
-                                <span class="text-gray-900 text-sm">Whalet Europe Ltd.</span>
-                            </div>
-                            <div class="flex items-center">
-                                <span class="text-gray-500 text-sm w-20">币种:</span>
-                                <span class="text-gray-900 text-sm">EUR, USD, GBP, CHF, SEK...</span>
-                            </div>
-                            <div class="flex items-center">
-                                <span class="text-gray-500 text-sm w-20">类型:</span>
-                                <span class="text-gray-900 text-sm">全球账户</span>
-                            </div>
-                        </div>
-                        <div class="flex justify-end">
-                            <button class="details-link text-sm font-medium" onclick="window.location.href='foreign-trade-account-details.html'">
-                                <i class="fas fa-eye mr-1"></i>
-                                查看详情
-                            </button>
-                        </div>
-                    </div>
-                    
-                    <!-- 国内账户 -->
-                    <div class="border border-gray-200 rounded-lg p-5 hover:shadow-md transition-shadow">
-                        <div class="flex justify-between items-start mb-4">
-                            <h4 class="font-medium text-gray-800 text-lg">中国银行</h4>
-                            <span class="px-2 py-1 text-xs font-medium rounded-full bg-green-100 text-green-800">
-                                正常
-                            </span>
-                        </div>
-                        <div class="space-y-2 mb-4">
-                            <div class="flex items-center">
-                                <span class="text-gray-500 text-sm w-20">卡号:</span>
-                                <span class="text-gray-900 text-sm font-medium">**** **** **** 9012</span>
-                            </div>
-                            <div class="flex items-center">
-                                <span class="text-gray-500 text-sm w-20">账户名:</span>
-                                <span class="text-gray-900 text-sm">上海威来贸易有限公司</span>
-                            </div>
-                            <div class="flex items-center">
-                                <span class="text-gray-500 text-sm w-20">币种:</span>
-                                <span class="text-gray-900 text-sm">CNY</span>
-                            </div>
-                            <div class="flex items-center">
-                                <span class="text-gray-500 text-sm w-20">类型:</span>
-                                <span class="text-gray-900 text-sm">本地账户</span>
-                            </div>
-                        </div>
-                        <div class="flex justify-end">
-                            <button class="details-link text-sm font-medium" onclick="window.location.href='foreign-trade-account-details.html'">
-                                <i class="fas fa-eye mr-1"></i>
-                                查看详情
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
         <!-- 外贸订单 Tab 内容 -->
         <div id="trade-orders" class="tab-content bg-white rounded-lg shadow-sm">
             <div class="p-6 border-b border-gray-200">
                 <div class="flex justify-between items-center">
                     <h2 class="text-xl font-semibold text-gray-800">订单管理</h2>
-                    <button class="primary-btn px-4 py-2 rounded text-sm font-medium flex items-center">
+                    <button onclick="window.location.href='create-collection-order.html'" class="primary-btn px-4 py-2 rounded text-sm font-medium flex items-center">
                         <i class="fas fa-plus mr-2"></i>
-                        创建订单
+                        新建订单
                     </button>
                 </div>
             </div>
@@ -650,17 +513,21 @@
                             </td>
                             <td class="px-4 py-4 whitespace-nowrap">
                                 <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                                    已完成
+                                    已入账
                                 </span>
                             </td>
                             <td class="px-4 py-4 whitespace-nowrap text-sm font-medium">
-                                <a href="#" class="details-link mr-3">详情</a>
+                                <a href="foreign-trade-order-detail.html?id=ORD20230515001" class="text-purple-600 hover:text-purple-900 mr-3">详情</a>
                                 <div class="relative inline-block text-left">
-                                    <button type="button" class="text-gray-600 hover:text-[#7D33FF]">更多</button>
+                                    <button type="button" class="text-gray-600 hover:text-[#7D33FF] more-actions-btn">更多</button>
                                     <div class="more-actions-dropdown origin-top-right absolute right-0 mt-2 w-40 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none hidden z-20">
-                                        <div>
-                                            <a href="#" class="block px-4 py-2 text-sm text-red-600 hover:bg-gray-100">注销</a>
-                                            <a href="#" class="block px-4 py-2 text-sm text-[#7D33FF] hover:bg-gray-100">延长注销日期</a>
+                                        <div class="py-1">
+                                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-[#7D33FF]">
+                                                <i class="fas fa-edit mr-2"></i>编辑
+                                            </a>
+                                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-[#7D33FF]">
+                                                <i class="fas fa-copy mr-2"></i>复制创建新订单
+                                            </a>
                                         </div>
                                     </div>
                                 </div>
@@ -681,7 +548,7 @@
                             </td>
                             <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-900">
                                 <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
-                                    未发货
+                                    入账中
                                 </span>
                             </td>
                             <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-900">
@@ -696,13 +563,17 @@
                                 </span>
                             </td>
                             <td class="px-4 py-4 whitespace-nowrap text-sm font-medium">
-                                <a href="#" class="details-link mr-3">详情</a>
+                                <a href="foreign-trade-order-detail.html?id=ORD20230512002" class="text-purple-600 hover:text-purple-900 mr-3">详情</a>
                                 <div class="relative inline-block text-left">
-                                    <button type="button" class="text-gray-600 hover:text-[#7D33FF]">更多</button>
+                                    <button type="button" class="text-gray-600 hover:text-[#7D33FF] more-actions-btn">更多</button>
                                     <div class="more-actions-dropdown origin-top-right absolute right-0 mt-2 w-40 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none hidden z-20">
-                                        <div>
-                                            <a href="#" class="block px-4 py-2 text-sm text-red-600 hover:bg-gray-100">注销</a>
-                                            <a href="#" class="block px-4 py-2 text-sm text-[#7D33FF] hover:bg-gray-100">延长注销日期</a>
+                                        <div class="py-1">
+                                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-[#7D33FF]">
+                                                <i class="fas fa-edit mr-2"></i>编辑
+                                            </a>
+                                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-[#7D33FF]">
+                                                <i class="fas fa-copy mr-2"></i>复制创建新订单
+                                            </a>
                                         </div>
                                     </div>
                                 </div>

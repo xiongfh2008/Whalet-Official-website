@@ -146,6 +146,11 @@
         .step-text.inactive {
             color: #6B7280;
         }
+
+        /* 付款成功页面链接样式 */
+        #paymentSuccess a {
+            color: #7D33FF !important;
+        }
     </style>
 </head>
 <body>
@@ -602,13 +607,136 @@
                 </div>
 
                 <!-- 表单控制按钮 -->
-                <div class="flex justify-between pt-6 mt-8 border-t border-gray-100">
+                <div class="flex justify-start space-x-4 pt-6 mt-8 border-t border-gray-100">
                     <button id="backToStep1Btn" class="px-6 py-2 border border-gray-300 text-gray-700 rounded-lg text-sm font-medium hover:bg-gray-50">
                         上一步
                     </button>
-                    <button type="submit" class="px-6 py-2 btn-primary text-white rounded-lg text-sm font-medium">
-                        确定
+                    <button id="nextToStep3" class="px-6 py-2 btn-primary text-white rounded-lg text-sm font-medium">
+                        下一步
                     </button>
+                </div>
+            </div>
+
+            <!-- 确认付款表单 -->
+            <div id="paymentStep3" class="md:col-span-2 bg-white rounded-xl shadow-sm p-6 hidden">
+                <!-- 步骤显示 -->
+                <div class="mb-6">
+                    <div class="step-indicator">
+                        <div class="flex items-center">
+                            <div class="step-number active">1</div>
+                            <div class="ml-2">
+                                <span class="step-text active">收款方信息</span>
+                            </div>
+                        </div>
+                        <div class="step-line active"></div>
+                        <div class="flex items-center">
+                            <div class="step-number active">2</div>
+                            <div class="ml-2">
+                                <span class="step-text active">付款详情</span>
+                            </div>
+                        </div>
+                        <div class="step-line active"></div>
+                        <div class="flex items-center">
+                            <div class="step-number active">3</div>
+                            <div class="ml-2">
+                                <span class="step-text active">确认付款</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 确认付款内容 -->
+                <div class="space-y-6">
+                    <!-- 银行卡信息 -->
+                    <div class="p-4 bg-gray-50 rounded-lg">
+                        <div class="flex justify-between items-start mb-3">
+                            <div>
+                                <h4 class="text-sm text-gray-600">银行卡信息</h4>
+                                <p class="text-base font-medium text-gray-900 mt-1">ZHI ZUN BAO</p>
+                                <p class="text-sm text-gray-500 mt-1">DBS Bank (Hong Kong) Limited (5678) 美国</p>
+                            </div>
+                            <button id="backToStep2" style="color: #7D33FF !important" class="text-sm">修改</button>
+                        </div>
+                    </div>
+
+                    <!-- 付款金额信息 -->
+                    <div class="space-y-4">
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-gray-600">付款金额</span>
+                            <span class="text-base font-medium">1,000,000.00 USD</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-gray-600">手续费</span>
+                            <span class="text-base">20.00 USD</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-gray-600">付款人名称费用</span>
+                            <span class="text-base">15.00 USD</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-gray-600">汇率</span>
+                            <span class="text-base">USD/EUR = 0.9852</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-gray-600">汇出时间</span>
+                            <span class="text-base">预计T+1日之内汇出</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-gray-600">汇出金额</span>
+                            <span class="text-base font-medium">980,000.00 EUR</span>
+                        </div>
+                    </div>
+
+                    <!-- 警告信息 -->
+                    <div class="bg-blue-50 p-4 rounded-lg">
+                        <div class="flex items-start">
+                            <i class="fas fa-info-circle text-blue-600 mt-1"></i>
+                            <p class="ml-3 text-sm text-gray-600">请认真核对收款账户信息，如银行账户信息错误或打款账户不匹配，资金会被收款行退回，提现服务费和银行手续费不会退回！</p>
+                        </div>
+                    </div>
+
+                    <!-- 交易密码 -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">交易密码</label>
+                        <div class="relative">
+                            <input type="password" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#7D33FF] focus:border-transparent" placeholder="请输入交易密码">
+                            <a href="#" class="absolute right-3 top-1/2 transform -translate-y-1/2 text-sm" style="color: #7D33FF">忘记交易密码？</a>
+                        </div>
+                    </div>
+
+                    <!-- 表单控制按钮 -->
+                    <div class="flex justify-start space-x-4 pt-6 mt-8 border-t border-gray-100">
+                        <button id="backToStep2Btn" class="px-6 py-2 border border-gray-300 text-gray-700 rounded-lg text-sm font-medium hover:bg-gray-50">
+                            上一步
+                        </button>
+                        <button type="submit" class="px-6 py-2 btn-primary text-white rounded-lg text-sm font-medium">
+                            确认付款
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 付款提交结果页面 -->
+            <div id="paymentSuccess" class="md:col-span-2 bg-white rounded-xl shadow-sm p-6 hidden">
+                <div class="text-center">
+                    <!-- 成功图标 -->
+                    <div class="mb-4">
+                        <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-green-100">
+                            <i class="fas fa-check text-3xl text-green-500"></i>
+                        </div>
+                    </div>
+                    
+                    <!-- 成功标题 -->
+                    <h2 class="text-xl font-medium text-gray-900 mb-2">付款提交成功</h2>
+                    
+                    <!-- 成功描述 -->
+                    <p class="text-gray-600 mb-6">您的付款申请已成功提交，请等待审核银行处理！</p>
+                    
+                    <!-- 操作链接 -->
+                    <div class="flex items-center justify-center space-x-2">
+                        <span class="text-gray-600">您可能需要：</span>
+                        <a href="#" style="color: #7D33FF !important" class="font-medium hover:underline">继续付款</a>
+                    </div>
                 </div>
             </div>
 
@@ -854,9 +982,14 @@
             // Step switching elements
             const step1Content = document.querySelector('#singlePaymentContent > div:first-child');
             const step2Content = document.getElementById('paymentStep2');
+            const step3Content = document.getElementById('paymentStep3');
+            const paymentSuccess = document.getElementById('paymentSuccess');
             const nextToStep2Btn = document.getElementById('nextToStep2');
+            const nextToStep3Btn = document.getElementById('nextToStep3');
             const backToStep1Btn = document.getElementById('backToStep1Btn');
+            const backToStep2Btn = document.getElementById('backToStep2Btn');
             const backToStep1Link = document.getElementById('backToStep1');
+            const backToStep2Link = document.getElementById('backToStep2');
 
             // Currency comparison for exchange rate display
             const paymentCurrency = document.getElementById('paymentCurrency');
@@ -890,13 +1023,25 @@
             }
 
             // Function to handle step switching
-            function switchStep(toStep2) {
-                if (toStep2) {
-                    step1Content.classList.add('hidden');
-                    step2Content.classList.remove('hidden');
-                } else {
-                    step1Content.classList.remove('hidden');
-                    step2Content.classList.add('hidden');
+            function switchStep(step) {
+                step1Content.classList.add('hidden');
+                step2Content.classList.add('hidden');
+                step3Content.classList.add('hidden');
+                paymentSuccess.classList.add('hidden');
+
+                switch(step) {
+                    case 1:
+                        step1Content.classList.remove('hidden');
+                        break;
+                    case 2:
+                        step2Content.classList.remove('hidden');
+                        break;
+                    case 3:
+                        step3Content.classList.remove('hidden');
+                        break;
+                    case 'success':
+                        paymentSuccess.classList.remove('hidden');
+                        break;
                 }
             }
 
@@ -920,10 +1065,35 @@
                 }
             }
 
-            // Add event listeners
-            nextToStep2Btn.addEventListener('click', () => switchStep(true));
-            backToStep1Btn.addEventListener('click', () => switchStep(false));
-            backToStep1Link.addEventListener('click', () => switchStep(false));
+            // Add form submit handler
+            const paymentForm = document.querySelector('#paymentStep3');
+            if (paymentForm) {
+                const confirmPaymentBtn = paymentForm.querySelector('button[type="submit"]');
+                if (confirmPaymentBtn) {
+                    confirmPaymentBtn.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        console.log('Confirm payment clicked'); // 添加调试日志
+                        switchStep('success');
+                    });
+                }
+            }
+
+            // Add event listeners for step navigation
+            nextToStep2Btn.addEventListener('click', () => switchStep(2));
+            nextToStep3Btn.addEventListener('click', () => switchStep(3));
+            backToStep1Btn.addEventListener('click', () => switchStep(1));
+            backToStep2Btn.addEventListener('click', () => switchStep(2));
+            backToStep1Link.addEventListener('click', () => switchStep(1));
+            backToStep2Link.addEventListener('click', () => switchStep(2));
+
+            // Add event listener for success page links
+            const continuePaymentLink = document.querySelector('#paymentSuccess a:first-of-type');
+            if (continuePaymentLink) {
+                continuePaymentLink.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    switchStep(1); // 返回第一步重新开始付款
+                });
+            }
 
             paymentCurrency.addEventListener('change', (e) => {
                 updateAvailableBalance(e.target.value);

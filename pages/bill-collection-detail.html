@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>链接详情 - Whalet</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../styles/custom.css">
+    <style>
+        body {
+            background-color: #f9fafb;
+            font-family: 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+        }
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 1.5rem 1rem;
+        }
+        .detail-section {
+            background: white;
+            border-radius: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+        .section-header {
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        .section-content {
+            padding: 1.5rem;
+        }
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+        }
+        .info-item {
+            display: flex;
+            flex-direction: column;
+        }
+        .info-label {
+            color: #6b7280;
+            font-size: 0.875rem;
+            margin-bottom: 0.5rem;
+        }
+        .info-value {
+            color: #111827;
+            font-size: 0.875rem;
+        }
+        .status-normal {
+            color: #2563eb;
+            background-color: #dbeafe;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="max-w-6xl mx-auto bg-white rounded-lg shadow-sm">
+            <!-- 头部 -->
+            <div class="p-6 border-b border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center">
+                        <a href="bill-collection.html" class="text-purple-600 hover:text-purple-700 mr-2">
+                            <i class="fas fa-arrow-left"></i>
+                        </a>
+                        <a href="bill-collection.html" class="text-purple-600 hover:text-purple-700 mr-4">返回</a>
+                        <h1 class="text-xl font-semibold text-gray-800">链接详情</h1>
+                    </div>
+                    <a href="bill-collection.html" class="text-gray-500 hover:text-gray-700">
+                        <i class="fas fa-times"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- 链接详情 -->
+            <div class="border-b border-gray-200">
+                <div class="section-content">
+                    <div class="flex items-center justify-between mb-6">
+                        <div class="text-xl font-semibold">支付金额 15.00EUR</div>
+                    </div>
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <span class="info-label">创建时间</span>
+                            <span class="info-value">2025-03-20 21:19:10</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">状态</span>
+                            <span class="info-value">正常</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">支付链接</span>
+                            <span class="info-value">
+                                <a href="#" class="text-purple-600 hover:text-purple-800">复制支付链接</a>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 订单信息 -->
+            <div class="border-b border-gray-200">
+                <div class="section-header">
+                    <h2 class="text-lg font-medium text-gray-900">订单信息</h2>
+                </div>
+                <div class="section-content">
+                    <div class="grid grid-cols-3 gap-6">
+                        <div class="info-item">
+                            <span class="info-label">商户订单号</span>
+                            <span class="info-value">202503202119100207264001</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">订单总金额</span>
+                            <span class="info-value">15.00EUR</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">订单时间</span>
+                            <span class="info-value">2025-03-20 21:19:10</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">折扣</span>
+                            <span class="info-value">-</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">运费</span>
+                            <span class="info-value">-</span>
+                        </div>
+                    </div>
+                    
+                    <!-- 商品列表 -->
+                    <div class="mt-6">
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        商品名称
+                                    </th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        数量
+                                    </th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        单价
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-200">
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                        GB/EU
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                        1
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                        15.00EUR
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 客户信息 -->
+            <div>
+                <div class="section-header">
+                    <h2 class="text-lg font-medium text-gray-900">客户信息</h2>
+                </div>
+                <div class="section-content">
+                    <div class="grid grid-cols-3 gap-6">
+                        <div class="info-item">
+                            <span class="info-label">国家/地区</span>
+                            <span class="info-value">哥伦比亚</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">买家名称</span>
+                            <span class="info-value">yyuanyuan</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">邮箱</span>
+                            <span class="info-value">yuanyuan112@whalet.com</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">手机号码</span>
+                            <span class="info-value">13527363117</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">州/区域/省</span>
+                            <span class="info-value">state</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">城市</span>
+                            <span class="info-value">San Jose</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">地址1</span>
+                            <span class="info-value">28 Zanker Rd</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">邮政编码</span>
+                            <span class="info-value">400000</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html> 

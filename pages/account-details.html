@@ -101,19 +101,19 @@
             color: #6929CC;
         }
         /* 添加或更新样式 */
-        .text-[#7D33FF] {
+        .custom-purple {
             color: #7D33FF !important;
         }
-        .hover\:text-[#6929CC]:hover {
+        .custom-purple-hover:hover {
             color: #6929CC !important;
         }
         /* 确保按钮样式优先级 */
-        button.text-[#7D33FF],
-        a.text-[#7D33FF] {
+        button.custom-purple,
+        a.custom-purple {
             color: #7D33FF !important;
         }
-        button.hover\:text-[#6929CC]:hover,
-        a.hover\:text-[#6929CC]:hover {
+        button.custom-purple-hover:hover,
+        a.custom-purple-hover:hover {
             color: #6929CC !important;
         }
     </style>
@@ -126,7 +126,7 @@
                 <!-- 顶部导航栏 -->
                 <div class="p-4 border-b border-gray-200">
                     <div class="flex items-center">
-                        <a href="platform-collection.html" class="mr-4 flex items-center" style="color: #7D33FF;">
+                        <a href="my-assets.html#bank-accounts" class="mr-4 flex items-center" style="color: #7D33FF;">
                             <i class="fas fa-arrow-left"></i>
                             <span class="ml-1 text-sm">返回</span>
                         </a>
@@ -203,12 +203,12 @@
                                         </div>
                                         <div class="flex items-center mb-4">
                                             <p class="text-lg font-medium">**** **** **** 5678</p>
-                                            <button class="ml-2" style="color: #7D33FF;" onclick="showPasswordModal()" title="查看完整卡号">
+                                            <button class="ml-2 custom-purple" onclick="showPasswordModal()" title="查看完整卡号">
                                                 <i class="fas fa-eye"></i>
                                             </button>
                                         </div>
                                         <div class="flex justify-between items-center">
-                                            <a href="#" class="text-[#7D33FF] hover:text-[#6929CC] text-sm" onclick="showAccountDetailsModal()">查看账户详情</a>
+                                            <a href="#" class="custom-purple custom-purple-hover text-sm" onclick="showAccountDetailsModal()">查看账户详情</a>
                                             <div class="flex space-x-2">
                                                 <button class="p-1 text-sm text-gray-600 hover:text-[#7D33FF]" title="申请银行证明信">
                                                     <i class="fas fa-file-alt"></i>
@@ -216,7 +216,7 @@
                                                 <button class="p-1 text-sm text-red-600 hover:text-red-800" title="注销账户">
                                                     <i class="fas fa-trash-alt"></i>
                                                 </button>
-                                                <button class="p-1 text-sm text-[#7D33FF] hover:text-[#6929CC]" title="付费延长">
+                                                <button class="p-1 text-sm custom-purple custom-purple-hover" title="付费延长">
                                                     <i class="fas fa-clock"></i>
                                                 </button>
                                                 <button class="p-1 text-sm text-green-600 hover:text-green-800" title="开启自动续费">
@@ -237,12 +237,12 @@
                                         </div>
                                         <div class="flex items-center mb-4">
                                             <p class="text-lg font-medium">**** **** **** 9012</p>
-                                            <button class="ml-2 text-purple" onclick="showPasswordModal()" title="查看完整卡号">
+                                            <button class="ml-2 custom-purple" onclick="showPasswordModal()" title="查看完整卡号">
                                                 <i class="fas fa-eye"></i>
                                             </button>
                                         </div>
                                         <div class="flex justify-between items-center">
-                                            <a href="#" class="text-[#7D33FF] hover:text-[#6929CC] text-sm" onclick="showAccountDetailsModal()">查看账户详情</a>
+                                            <a href="#" class="custom-purple custom-purple-hover text-sm" onclick="showAccountDetailsModal()">查看账户详情</a>
                                             <div class="flex space-x-2">
                                                 <button class="p-1 text-sm text-gray-600 hover:text-[#7D33FF]" title="申请银行证明信">
                                                     <i class="fas fa-file-alt"></i>
@@ -250,7 +250,7 @@
                                                 <button class="p-1 text-sm text-red-600 hover:text-red-800" title="注销账户">
                                                     <i class="fas fa-trash-alt"></i>
                                                 </button>
-                                                <button class="p-1 text-sm text-[#7D33FF] hover:text-[#6929CC]" title="付费延长">
+                                                <button class="p-1 text-sm custom-purple custom-purple-hover" title="付费延长">
                                                     <i class="fas fa-clock"></i>
                                                 </button>
                                                 <button class="p-1 text-sm text-green-600 hover:text-green-800" title="开启自动续费">
