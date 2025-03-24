@@ -271,19 +271,24 @@
             box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
         }
         .currency-dropdown {
-            background: #ffffff;
+            display: flex;
+            align-items: center;
+            background: white;
             border: 1px solid #e5e7eb;
             border-radius: 0.75rem;
             padding: 0.75rem 1rem;
-            display: flex;
-            align-items: center;
             cursor: pointer;
             transition: all 0.2s ease;
-            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
         }
         .currency-dropdown:hover {
             border-color: #3b82f6;
             box-shadow: 0 2px 4px rgba(59, 130, 246, 0.1);
+        }
+        .currency-option {
+            transition: all 0.2s ease;
+        }
+        .currency-option:hover {
+            background-color: #f8fafc;
         }
         .info-badge {
             background: linear-gradient(145deg, #f1f5f9, #e2e8f0);
@@ -474,24 +479,80 @@
                             </div>
                         </div>
 
-                        <!-- 卖出/买入表单 -->
-                        <div class="space-y-4">
                             <!-- 卖出部分 -->
                             <div class="exchange-card">
                                 <div class="exchange-card-header">
                                     <h3 class="font-medium text-gray-800">卖出</h3>
                                     <div class="text-sm text-blue-600 flex items-center">
                                         <span>可卖出金额</span>
-                                        <span class="font-medium ml-1">1000.99 USD</span>
+                                    <span class="font-medium ml-1" id="selectedCurrencyBalance">1000.99 USD</span>
                                     </div>
                                 </div>
                                 <div class="grid grid-cols-3 gap-4">
                                     <div class="col-span-2">
                                         <input type="text" class="currency-amount-input" value="1000.99">
                                     </div>
-                                    <div class="currency-dropdown">
+                                <div class="relative">
+                                    <button id="sellCurrencyDropdown" class="currency-dropdown w-full">
+                                        <img src="https://flagcdn.com/w40/us.png" alt="USD" class="currency-flag-large" id="sellCurrencyFlag">
+                                        <span class="ml-2" id="sellCurrencyText">USD美元</span>
+                                        <i class="fas fa-chevron-down ml-auto text-gray-400"></i>
+                                    </button>
+                                    <div id="sellCurrencyOptions" class="absolute z-10 w-full mt-1 bg-white border border-gray-200 rounded-lg shadow-lg hidden">
+                                        <div class="p-2">
+                                            <div class="currency-option hover:bg-gray-50 p-2 rounded cursor-pointer" data-currency="USD" data-balance="18,983.87USD" data-flag="us">
+                                                <div class="flex items-center">
                                         <img src="https://flagcdn.com/w40/us.png" alt="USD" class="currency-flag-large">
-                                        <span class="ml-2">USD</span>
+                                                    <div class="ml-2">
+                                                        <div>USD美元</div>
+                                                        <div class="text-sm text-gray-500">余额18,983.87USD</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="currency-option hover:bg-gray-50 p-2 rounded cursor-pointer" data-currency="JPY" data-balance="196JPY" data-flag="jp">
+                                                <div class="flex items-center">
+                                                    <img src="https://flagcdn.com/w40/jp.png" alt="JPY" class="currency-flag-large">
+                                                    <div class="ml-2">
+                                                        <div>JPY日元</div>
+                                                        <div class="text-sm text-gray-500">余额196JPY</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="currency-option hover:bg-gray-50 p-2 rounded cursor-pointer" data-currency="EUR" data-balance="0.00EUR" data-flag="eu">
+                                                <div class="flex items-center">
+                                                    <img src="https://flagcdn.com/w40/eu.png" alt="EUR" class="currency-flag-large">
+                                                    <div class="ml-2">
+                                                        <div>EUR欧元</div>
+                                                        <div class="text-sm text-gray-500">余额0.00EUR</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 汇率信息 -->
+                        <div class="exchange-rate-box">
+                            <div class="flex items-center justify-between mb-3">
+                                <div class="flex items-center">
+                                    <div class="text-sm text-gray-600">手续费</div>
+                                    <div class="text-sm font-medium ml-2">3.00USD</div>
+                                    <a href="#" class="text-blue-600 text-sm ml-2">查看明细</a>
+                                </div>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center" id="rateContainer">
+                                    <div class="text-sm text-gray-600">参考汇率</div>
+                                    <div class="text-sm font-medium ml-2">USD/CNH = </div>
+                                    <div class="text-sm font-medium ml-2" id="rateValue">7.2345</div>
+                                    <div class="text-sm text-red-500 font-medium ml-2 hidden" id="rateExpired">汇率已失效</div>
+                                    <button class="text-blue-600 text-sm ml-2 hidden" id="refreshRate">刷新</button>
+                                    <div class="text-sm text-gray-600 ml-2" id="countdown">
+                                        <span id="timer">15</span>
+                                        <span class="ml-1">秒</span>
+                                    </div>
                                     </div>
                                 </div>
                             </div>
@@ -505,23 +566,34 @@
                                     <div class="col-span-2">
                                         <input type="text" class="currency-amount-input bg-gray-50" value="894.98" readonly>
                                     </div>
-                                    <div class="currency-dropdown">
+                                <div class="relative">
+                                    <button id="buyCurrencyDropdown" class="currency-dropdown w-full">
+                                        <img src="https://flagcdn.com/w40/eu.png" alt="EUR" class="currency-flag-large" id="buyCurrencyFlag">
+                                        <span class="ml-2" id="buyCurrencyText">EUR欧元</span>
+                                        <i class="fas fa-chevron-down ml-auto text-gray-400"></i>
+                                    </button>
+                                    <div id="buyCurrencyOptions" class="absolute z-10 w-full mt-1 bg-white border border-gray-200 rounded-lg shadow-lg hidden">
+                                        <div class="p-2">
+                                            <div class="currency-option hover:bg-gray-50 p-2 rounded cursor-pointer" data-currency="USD" data-flag="us">
+                                                <div class="flex items-center">
+                                                    <img src="https://flagcdn.com/w40/us.png" alt="USD" class="currency-flag-large">
+                                                    <div class="ml-2">USD美元</div>
+                                                </div>
+                                            </div>
+                                            <div class="currency-option hover:bg-gray-50 p-2 rounded cursor-pointer" data-currency="JPY" data-flag="jp">
+                                                <div class="flex items-center">
+                                                    <img src="https://flagcdn.com/w40/jp.png" alt="JPY" class="currency-flag-large">
+                                                    <div class="ml-2">JPY日元</div>
+                                                </div>
+                                            </div>
+                                            <div class="currency-option hover:bg-gray-50 p-2 rounded cursor-pointer" data-currency="EUR" data-flag="eu">
+                                                <div class="flex items-center">
                                         <img src="https://flagcdn.com/w40/eu.png" alt="EUR" class="currency-flag-large">
-                                        <span class="ml-2">EUR</span>
+                                                    <div class="ml-2">EUR欧元</div>
                                     </div>
                                 </div>
                             </div>
-
-                            <!-- 汇率信息 -->
-                            <div class="exchange-rate-box">
-                                <div class="flex items-center justify-between">
-                                    <div>
-                                        <div class="text-sm text-gray-600">参考汇率</div>
-                                        <div class="text-sm font-medium mt-1">1 USD = 0.8900 EUR</div>
                                     </div>
-                                    <div class="text-sm text-gray-600">
-                                        <span class="countdown-badge">15</span>
-                                        <span class="ml-1">秒</span>
                                     </div>
                                 </div>
                             </div>
@@ -529,17 +601,21 @@
                             <!-- 下一步按钮 -->
                             <div class="flex justify-center mt-6">
                                 <button class="next-button w-full md:w-1/2">下一步</button>
-                            </div>
                         </div>
                     </div>
 
                     <!-- 第二步：确认兑换信息 -->
                     <div class="confirmation-form" style="display: none;">
-                        <!-- 汇率过期提示 -->
-                        <div class="bg-gray-100 p-3 mb-4">
-                            <p class="text-green-700 text-sm">
+                        <!-- 汇率倒计时提示 -->
+                        <div class="bg-gray-50 p-4 rounded-lg mb-4">
+                            <div id="confirmationTimer" class="text-gray-700 text-sm">
+                                <span>您需要在 </span>
+                                <span class="text-red-500 font-medium" id="confirmCountdown">15</span>
+                                <span> 秒内确认您的交易</span>
+                            </div>
+                            <div id="confirmationExpired" class="hidden text-gray-700 text-sm">
                                 您的汇率价格已过期，请重新获取价格
-                            </p>
+                            </div>
                         </div>
 
                         <!-- 兑换信息列表 -->
@@ -598,8 +674,12 @@
                         <!-- 交易密码输入 -->
                         <div class="mt-6">
                             <div class="mb-2">
-                                <label class="text-gray-700">交易密码</label>
-                                <input type="password" class="w-full mt-1 px-3 py-2 border border-gray-300 rounded" placeholder="请输入交易密码">
+                                <label class="text-gray-700">
+                                    交易密码
+                                    <span class="text-red-500">*</span>
+                                </label>
+                                <input type="password" class="w-full mt-1 px-3 py-2 border border-gray-300 rounded focus:border-blue-500 focus:ring-1 focus:ring-blue-500" placeholder="请输入交易密码" id="transactionPassword">
+                                <div class="text-red-500 text-sm mt-1 hidden" id="passwordError">请输入交易密码</div>
                             </div>
                             <a href="#" class="text-blue-600 text-sm">忘记交易密码？</a>
                         </div>
@@ -609,7 +689,7 @@
                             <button class="px-6 py-2 bg-blue-600 text-white rounded">
                                 确定提交
                             </button>
-                            <button class="px-6 py-2 bg-blue-600 text-white rounded">
+                            <button class="px-6 py-2 bg-blue-600 text-white rounded hidden" id="confirmationRefreshRateBottom">
                                 重新获取价格
                             </button>
                             <button class="px-6 py-2 text-gray-700 border border-gray-300 rounded">
@@ -793,11 +873,6 @@
                 const step3Content = document.querySelector('.result-form');
                 const steps = document.querySelectorAll('.step');
 
-                if (!step1Content || !step2Content || !step3Content) {
-                    console.error('找不到步骤内容元素');
-                    return;
-                }
-
                 steps.forEach((step, index) => {
                     const circle = step.querySelector('.step-circle');
                     const text = step.querySelector('.step-text');
@@ -818,6 +893,8 @@
                     step1Content.style.display = 'none';
                     step2Content.style.display = 'block';
                     step3Content.style.display = 'none';
+                    // 进入第二步时启动倒计时
+                    startConfirmationCountdown();
                 } else if (stepNumber === 3) {
                     step1Content.style.display = 'none';
                     step2Content.style.display = 'none';
@@ -829,8 +906,8 @@
             const nextButton = document.querySelector('.next-button');
             const prevButton = Array.from(document.querySelectorAll('button')).find(button => button.textContent.trim() === '上一步');
             const submitButton = Array.from(document.querySelectorAll('button')).find(button => button.textContent.trim() === '确定提交');
-            const refreshButton = Array.from(document.querySelectorAll('button')).find(button => button.textContent.trim() === '重新获取价格');
-            const passwordInput = document.querySelector('input[type="password"]');
+            const refreshButton = Array.from(document.querySelectorAll('button')).find(button => button.textContent.trim() === '刷新');
+            const passwordInput = document.querySelector('#transactionPassword');
 
             // 绑定结果页面的链接事件
             const viewRecordLink = Array.from(document.querySelectorAll('a')).find(link => link.textContent.trim() === '查看换汇记录');
@@ -852,12 +929,22 @@
 
             if (submitButton && passwordInput) {
                 submitButton.addEventListener('click', () => {
-                    if (!passwordInput.value) {
-                        alert('请输入交易密码');
+                    if (!passwordInput.value.trim()) {
+                        passwordError.classList.remove('hidden');
+                        passwordInput.classList.add('border-red-500');
                         return;
                     }
+                    
+                    passwordError.classList.add('hidden');
+                    passwordInput.classList.remove('border-red-500');
                     // 模拟验证成功后跳转到第三步
                     showStep(3);
+                });
+
+                // 输入框获得焦点时隐藏错误提示
+                passwordInput.addEventListener('focus', () => {
+                    passwordError.classList.add('hidden');
+                    passwordInput.classList.remove('border-red-500');
                 });
             }
 
@@ -887,6 +974,176 @@
             if (viewAllExchangeHistoryBtn) {
                 viewAllExchangeHistoryBtn.addEventListener('click', function() {
                     window.location.href = 'transactions.html?tab=exchange';
+                });
+            }
+
+            // 汇率倒计时功能
+            const rateValue = document.getElementById('rateValue');
+            const rateExpired = document.getElementById('rateExpired');
+            const refreshRateBtn = document.getElementById('refreshRate');
+            const timerElement = document.getElementById('timer');
+            const countdown = document.getElementById('countdown');
+            
+            let countdownInterval;
+            let timeLeft = 15;
+
+            function startCountdown() {
+                // 显示汇率，隐藏失效提示和刷新按钮
+                rateValue.classList.remove('hidden');
+                rateExpired.classList.add('hidden');
+                refreshRateBtn.classList.add('hidden');
+                countdown.classList.remove('hidden');
+                
+                // 重置时间
+                timeLeft = 15;
+                timerElement.textContent = timeLeft;
+                
+                // 清除之前的计时器
+                if (countdownInterval) {
+                    clearInterval(countdownInterval);
+                }
+                
+                // 启动新的计时器
+                countdownInterval = setInterval(() => {
+                    timeLeft--;
+                    timerElement.textContent = timeLeft;
+                    
+                    if (timeLeft <= 0) {
+                        clearInterval(countdownInterval);
+                        // 显示汇率失效和刷新按钮
+                        rateValue.classList.add('hidden');
+                        rateExpired.classList.remove('hidden');
+                        refreshRateBtn.classList.remove('hidden');
+                        countdown.classList.add('hidden');
+                    }
+                }, 1000);
+            }
+
+            // 点击刷新按钮重新开始计时
+            refreshRateBtn.addEventListener('click', () => {
+                startCountdown();
+            });
+
+            // 页面加载时开始第一次计时
+            startCountdown();
+
+            // 卖出币种下拉功能
+            const sellCurrencyDropdown = document.getElementById('sellCurrencyDropdown');
+            const sellCurrencyOptions = document.getElementById('sellCurrencyOptions');
+            const sellCurrencyFlag = document.getElementById('sellCurrencyFlag');
+            const sellCurrencyText = document.getElementById('sellCurrencyText');
+            const selectedCurrencyBalance = document.getElementById('selectedCurrencyBalance');
+
+            sellCurrencyDropdown.addEventListener('click', () => {
+                sellCurrencyOptions.classList.toggle('hidden');
+            });
+
+            // 买入币种下拉功能
+            const buyCurrencyDropdown = document.getElementById('buyCurrencyDropdown');
+            const buyCurrencyOptions = document.getElementById('buyCurrencyOptions');
+            const buyCurrencyFlag = document.getElementById('buyCurrencyFlag');
+            const buyCurrencyText = document.getElementById('buyCurrencyText');
+
+            buyCurrencyDropdown.addEventListener('click', () => {
+                buyCurrencyOptions.classList.toggle('hidden');
+            });
+
+            // 点击其他地方关闭下拉菜单
+            document.addEventListener('click', (event) => {
+                if (!sellCurrencyDropdown.contains(event.target)) {
+                    sellCurrencyOptions.classList.add('hidden');
+                }
+                if (!buyCurrencyDropdown.contains(event.target)) {
+                    buyCurrencyOptions.classList.add('hidden');
+                }
+            });
+
+            // 卖出币种选项点击事件
+            document.querySelectorAll('#sellCurrencyOptions .currency-option').forEach(option => {
+                option.addEventListener('click', () => {
+                    const currency = option.dataset.currency;
+                    const balance = option.dataset.balance;
+                    const flag = option.dataset.flag;
+                    
+                    sellCurrencyFlag.src = `https://flagcdn.com/w40/${flag}.png`;
+                    sellCurrencyFlag.alt = currency;
+                    sellCurrencyText.textContent = `${currency}${getCurrencyName(currency)}`;
+                    selectedCurrencyBalance.textContent = balance;
+                    
+                    sellCurrencyOptions.classList.add('hidden');
+                });
+            });
+
+            // 买入币种选项点击事件
+            document.querySelectorAll('#buyCurrencyOptions .currency-option').forEach(option => {
+                option.addEventListener('click', () => {
+                    const currency = option.dataset.currency;
+                    const flag = option.dataset.flag;
+                    
+                    buyCurrencyFlag.src = `https://flagcdn.com/w40/${flag}.png`;
+                    buyCurrencyFlag.alt = currency;
+                    buyCurrencyText.textContent = `${currency}${getCurrencyName(currency)}`;
+                    
+                    buyCurrencyOptions.classList.add('hidden');
+                });
+            });
+
+            // 获取货币名称
+            function getCurrencyName(currency) {
+                const names = {
+                    'USD': '美元',
+                    'JPY': '日元',
+                    'EUR': '欧元'
+                };
+                return names[currency] || '';
+            }
+
+            // 确认页面倒计时功能
+            let confirmationInterval;
+            let confirmationTimeLeft = 15;
+
+            function startConfirmationCountdown() {
+                const confirmCountdown = document.getElementById('confirmCountdown');
+                const confirmationTimer = document.getElementById('confirmationTimer');
+                const confirmationExpired = document.getElementById('confirmationExpired');
+                const confirmationRefreshRateBottom = document.getElementById('confirmationRefreshRateBottom');
+                
+                // 重置时间
+                confirmationTimeLeft = 15;
+                
+                // 显示倒计时，隐藏过期提示和底部刷新按钮
+                confirmationTimer.classList.remove('hidden');
+                confirmationExpired.classList.add('hidden');
+                confirmationRefreshRateBottom.classList.add('hidden');
+                
+                // 更新倒计时显示
+                confirmCountdown.textContent = confirmationTimeLeft;
+                
+                // 清除之前的计时器
+                if (confirmationInterval) {
+                    clearInterval(confirmationInterval);
+                }
+                
+                // 启动新的计时器
+                confirmationInterval = setInterval(() => {
+                    confirmationTimeLeft--;
+                    confirmCountdown.textContent = confirmationTimeLeft;
+                    
+                    if (confirmationTimeLeft <= 0) {
+                        clearInterval(confirmationInterval);
+                        // 显示过期提示和底部刷新按钮
+                        confirmationTimer.classList.add('hidden');
+                        confirmationExpired.classList.remove('hidden');
+                        confirmationRefreshRateBottom.classList.remove('hidden');
+                    }
+                }, 1000);
+            }
+
+            // 点击底部重新获取价格按钮
+            const confirmationRefreshRateBottom = document.getElementById('confirmationRefreshRateBottom');
+            if (confirmationRefreshRateBottom) {
+                confirmationRefreshRateBottom.addEventListener('click', () => {
+                    startConfirmationCountdown();
                 });
             }
 

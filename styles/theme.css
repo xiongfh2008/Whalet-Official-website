@@ -1,0 +1,77 @@
+:root {
+    /* Light theme (default) */
+    --bg-primary: #f9fafb;
+    --bg-secondary: #ffffff;
+    --text-primary: #1f2937;
+    --text-secondary: #6b7280;
+    --border-color: #e5e7eb;
+    --primary-color: #7D33FF;
+    --primary-hover: #6929D4;
+    --primary-light: rgba(125, 51, 255, 0.1);
+    --shadow-color: rgba(0, 0, 0, 0.1);
+}
+
+[data-theme="dark"] {
+    /* Dark theme */
+    --bg-primary: #111827;
+    --bg-secondary: #1f2937;
+    --text-primary: #f9fafb;
+    --text-secondary: #d1d5db;
+    --border-color: #374151;
+    --primary-color: #a78bfa;
+    --primary-hover: #8b5cf6;
+    --primary-light: rgba(167, 139, 250, 0.1);
+    --shadow-color: rgba(0, 0, 0, 0.3);
+}
+
+/* Apply theme variables to elements */
+body {
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+}
+
+.bg-white {
+    background-color: var(--bg-secondary) !important;
+}
+
+.text-gray-600 {
+    color: var(--text-secondary) !important;
+}
+
+.text-gray-700 {
+    color: var(--text-primary) !important;
+}
+
+.border-gray-100 {
+    border-color: var(--border-color) !important;
+}
+
+.shadow-lg {
+    box-shadow: 0 10px 15px -3px var(--shadow-color) !important;
+}
+
+/* Theme toggle button styles */
+.theme-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.theme-toggle:hover {
+    background-color: var(--primary-light);
+}
+
+.theme-toggle i {
+    color: var(--text-secondary);
+    font-size: 1.25rem;
+    transition: color 0.2s ease;
+}
+
+.theme-toggle:hover i {
+    color: var(--primary-color);
+} 

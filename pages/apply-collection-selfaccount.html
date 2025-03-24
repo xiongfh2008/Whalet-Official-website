@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>申请收款账户 - Whalet</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../styles/custom.css">
+    <style>
+        .platform-card {
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        .platform-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+        .platform-card.selected {
+            border-color: #4f46e5;
+            background-color: #f5f3ff;
+        }
+        .platform-type.selected {
+            background-color: #f5f3ff;
+            color: #4f46e5;
+            font-weight: 500;
+        }
+        .hot-tag {
+            position: absolute;
+            top: 4px;
+            right: 4px;
+            font-size: 10px;
+            padding: 2px 6px;
+            border-radius: 10px;
+            background-color: #FEF2F2;
+            color: #DC2626;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <div class="container mx-auto px-4 py-6">
+        <!-- 主要内容区域 -->
+        <div class="max-w-7xl mx-auto">
+            <div class="bg-white rounded-lg shadow-sm">
+                <!-- 顶部搜索栏 -->
+                <div class="p-4 border-b border-gray-200">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center">
+                            <button class="mr-4 text-indigo-600 hover:text-indigo-900" onclick="window.location.href='independent-site.html'">
+                                <i class="fas fa-arrow-left"></i>
+                                <span class="ml-1 text-sm">返回</span>
+                            </button>
+                            <h1 class="text-xl font-medium text-gray-900">申请独立站收款账户</h1>
+                        </div>
+                        <div class="relative">
+                            <input type="text" id="platform-search" placeholder="搜索平台" class="w-80 pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm">
+                            <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex">
+                    <!-- 左侧平台类型筛选 -->
+                    <div class="w-56 border-r border-gray-200 p-4">
+                        <h3 class="text-sm font-medium text-gray-900 mb-3">热门平台</h3>
+                        <div class="space-y-2">
+                            <button class="w-full text-left px-3 py-2.5 rounded-lg text-sm hover:bg-gray-50 flex items-center">
+                                <i class="fab fa-shopify mr-2 text-green-600"></i>Shopify
+                            </button>
+                            <button class="w-full text-left px-3 py-2.5 rounded-lg text-sm hover:bg-gray-50 flex items-center">
+                                <i class="fab fa-paypal mr-2 text-blue-600"></i>PayPal
+                            </button>
+                            <button class="w-full text-left px-3 py-2.5 rounded-lg text-sm hover:bg-gray-50 flex items-center">
+                                <i class="fab fa-stripe mr-2 text-purple-600"></i>Stripe
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- 右侧平台列表 -->
+                    <div class="flex-1 p-4">
+                        <div class="grid grid-cols-6 gap-4" id="platforms-grid">
+                            <!-- 平台卡片将通过 JavaScript 动态生成 -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 平台数据
+        const platforms = [
+            { id: 1, name: 'Shopify', logo: 'shopify.com', type: 'independent', hot: true },
+            { id: 2, name: 'Shopyy', logo: 'shopyy.com', type: 'independent', hot: true },
+            { id: 3, name: 'PayPal', logo: 'paypal.com', type: 'payment', hot: true },
+            { id: 4, name: 'CashApp', logo: 'cash.app', type: 'payment', hot: true },
+            { id: 5, name: 'Stripe', logo: 'stripe.com', type: 'payment', hot: true },
+            { id: 6, name: 'Payssion', logo: 'payssion.com', type: 'payment', hot: false },
+            { id: 7, name: 'Adyen', logo: 'adyen.com', type: 'payment', hot: false },
+            { id: 8, name: 'WooCommerce', logo: 'woocommerce.com', type: 'independent', hot: false },
+            { id: 9, name: 'Magento', logo: 'magento.com', type: 'independent', hot: false },
+            { id: 10, name: 'OpenCart', logo: 'opencart.com', type: 'independent', hot: false },
+            { id: 11, name: 'PrestaShop', logo: 'prestashop.com', type: 'independent', hot: false },
+            { id: 12, name: 'Square', logo: 'squareup.com', type: 'payment', hot: false },
+            { id: 13, name: '自建站', logo: 'custom-site.com', type: 'independent', hot: true }
+        ];
+
+        let selectedPlatform = null;
+
+        // 渲染平台卡片
+        function renderPlatforms(platformsToRender) {
+            const grid = document.getElementById('platforms-grid');
+            grid.innerHTML = platformsToRender.map(platform => `
+                <button class="platform-card p-3 border border-gray-200 rounded-lg hover:border-blue-500 focus:outline-none ${selectedPlatform === platform.id ? 'selected' : ''}" data-id="${platform.id}">
+                    ${platform.hot ? '<span class="hot-tag">热门</span>' : ''}
+                    <div class="flex flex-col items-center">
+                        <div class="w-10 h-10 rounded-lg mb-2 flex items-center justify-center bg-gray-50">
+                            <img src="https://logo.clearbit.com/${platform.logo}" alt="${platform.name}" 
+                                 class="w-8 h-8 object-contain"
+                                 onerror="this.onerror=null; this.src='https://via.placeholder.com/32?text=${platform.name[0]}';">
+                        </div>
+                        <span class="text-xs font-medium text-gray-900 text-center line-clamp-1">${platform.name}</span>
+                    </div>
+                </button>
+            `).join('');
+
+            // 绑定点击事件
+            grid.querySelectorAll('.platform-card').forEach(card => {
+                card.addEventListener('click', () => {
+                    const id = parseInt(card.dataset.id);
+                    if (selectedPlatform === id) {
+                        // 取消选择
+                        selectedPlatform = null;
+                        card.classList.remove('selected');
+                    } else {
+                        // 新选择
+                        const previousSelected = grid.querySelector('.selected');
+                        if (previousSelected) {
+                            previousSelected.classList.remove('selected');
+                        }
+                        selectedPlatform = id;
+                        card.classList.add('selected');
+                        
+                        // 添加选中动画效果
+                        card.style.transform = 'scale(1.05)';
+                        setTimeout(() => {
+                            // 300ms后自动跳转到下一步
+                            window.location.href = 'apply-collection-account-info.html';
+                        }, 300);
+                    }
+                });
+            });
+        }
+
+        // 平台类型筛选
+        document.querySelectorAll('.platform-type').forEach(button => {
+            button.addEventListener('click', () => {
+                document.querySelectorAll('.platform-type').forEach(btn => btn.classList.remove('selected'));
+                button.classList.add('selected');
+                
+                const type = button.dataset.type;
+                const filteredPlatforms = type === 'all' 
+                    ? platforms 
+                    : platforms.filter(p => p.type === type);
+                renderPlatforms(filteredPlatforms);
+            });
+        });
+
+        // 搜索功能
+        document.getElementById('platform-search').addEventListener('input', (e) => {
+            const searchTerm = e.target.value.toLowerCase();
+            const filteredPlatforms = platforms.filter(platform => 
+                platform.name.toLowerCase().includes(searchTerm)
+            );
+            renderPlatforms(filteredPlatforms);
+        });
+
+        // 初始化渲染
+        renderPlatforms(platforms);
+    </script>
+</body>
+</html> 

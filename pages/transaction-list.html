@@ -729,19 +729,29 @@
                 document.getElementById('orderNumber').textContent = orderData.orderNumber;
                 document.getElementById('paidAmount').textContent = orderData.paidAmount;
                 document.getElementById('refundableAmount').textContent = orderData.refundableAmount;
+                document.getElementById('refundFee').textContent = '0.30 USD';  // 示例固定手续费
+                document.getElementById('amountError').textContent = '账户余额不足，无法发起退款';
                 const modalBackdrop = document.getElementById('refundModal');
                 modalBackdrop.style.display = 'block';
                 // 重置表单
                 document.getElementById('refundAmount').value = '';
                 document.getElementById('refundReason').value = '';
                 document.getElementById('refundDescription').value = '';
-                document.getElementById('amountError').textContent = '';
 
                 // 添加点击背景关闭弹框
                 modalBackdrop.addEventListener('click', function(e) {
                     if (e.target === modalBackdrop) {
                         closeRefundModal();
                     }
+                });
+
+                // 监听退款金额输入
+                document.getElementById('refundAmount').addEventListener('input', function() {
+                    // 只更新手续费显示，不做余额校验
+                    const refundAmount = parseFloat(this.value) || 0;
+                    const feeRate = 0.003; // 0.3%
+                    const refundFee = refundAmount * feeRate;
+                    document.getElementById('refundFee').textContent = `${refundFee.toFixed(2)} USD`;
                 });
             };
             
@@ -759,6 +769,11 @@
             window.setFullRefund = function() {
                 const refundableAmount = document.getElementById('refundableAmount').textContent;
                 document.getElementById('refundAmount').value = refundableAmount.split(' ')[0];
+                // 更新手续费
+                const refundAmount = parseFloat(refundableAmount) || 0;
+                const feeRate = 0.003; // 0.3%
+                const refundFee = refundAmount * feeRate;
+                document.getElementById('refundFee').textContent = `${refundFee.toFixed(2)} USD`;
             };
             
             window.submitRefund = function() {
@@ -775,14 +790,8 @@
                     return;
                 }
                 
-                // TODO: 处理退款请求
-                console.log('提交退款申请', {
-                    amount,
-                    reason,
-                    description: document.getElementById('refundDescription').value
-                });
-                
-                closeRefundModal();
+                // 由于余额不足，阻止提交
+                return;
             };
             
             // 修改退款按钮点击事件
@@ -797,6 +806,32 @@
                     openRefundModal(orderData);
                 });
             });
+
+            // 计算退款手续费和总扣除金额
+            function calculateRefundFee() {
+                const refundAmount = parseFloat(document.getElementById('refundAmount').value) || 0;
+                const currency = document.getElementById('currency').value;
+                
+                // 这里使用示例费率，实际应从后端获取
+                const feeRate = 0.003; // 0.3%
+                const refundFee = refundAmount * feeRate;
+
+                // 更新显示 - 手续费固定显示为 USD
+                document.getElementById('refundFee').textContent = `${refundFee.toFixed(2)} USD`;
+
+                // 验证余额是否足够
+                const accountBalance = parseFloat(document.getElementById('accountBalance').textContent);
+                const totalDeduct = refundAmount + refundFee;
+                
+                if (totalDeduct > accountBalance) {
+                    document.getElementById('amountError').textContent = '账户余额不足，无法发起退款';
+                    document.getElementById('amountError').classList.add('text-red-600');
+                    return false;
+                } else {
+                    document.getElementById('amountError').textContent = '';
+                    return true;
+                }
+            }
         });
     </script>
 
@@ -833,7 +868,11 @@
                             <option value="NGN">NGN</option>
                         </select>
                     </div>
-                    <div class="error-message" id="amountError"></div>
+                    <div class="text-sm mt-2">
+                        <span class="text-gray-500">退款手续费：</span>
+                        <span id="refundFee" class="text-gray-900">0.00 USD</span>
+                    </div>
+                    <div class="error-message text-red-600 mt-1" id="amountError"></div>
                 </div>
                 <div class="form-group" style="margin-top: 1rem;">
                     <label class="form-label required">退款原因</label>

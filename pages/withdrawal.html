@@ -782,70 +782,133 @@
 
                             <!-- 提现金额 -->
                                 <div class="form-group mb-1">
-                                    <div class="form-label">
+                                    <div class="form-label flex justify-between items-center">
                                         <label class="text-sm font-medium text-gray-700">提现金额</label>
+                                        <div class="text-xs text-gray-500">
+                                            可用：<span x-text="formatCurrency(balances[withdrawalCurrency], withdrawalCurrency)"></span>
+                                        </div>
                                     </div>
                                     <div class="form-field">
                                         <div class="flex space-x-3">
-                                        <div class="flex-1">
+                                            <div class="flex-1">
+                                                <div class="relative">
+                                                    <input
+                                                        type="number"
+                                                        x-model="withdrawalAmount"
+                                                        class="w-full h-[46px] px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:ring-opacity-50 transition-colors"
+                                                        :placeholder="`可提现金额${formatCurrency(balances[withdrawalCurrency], withdrawalCurrency).replace(/[^\d.]/g, '')}`"
+                                                    >
+                                                </div>
+                                            </div>
                                             <div class="relative">
-                                                <input
-                                                    type="number"
-                                                    x-model="withdrawalAmount"
-                                                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:ring-opacity-50 transition-colors"
-                                                    placeholder="请输入提现金额"
-                                                >
-                                        </div>
-                                    </div>
-                                        <div class="relative">
-                                            <div class="currency-selector">
-                                                <button
-                                                    @click="showWithdrawalCurrencySelector = !showWithdrawalCurrencySelector"
-                                                    class="w-[220px] px-4 py-3 border border-gray-300 rounded-lg bg-white flex items-center justify-between hover:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-colors"
-                                                >
-                                                    <div class="flex items-center space-x-3">
-                                                        <img :src="`https://cdn.jsdelivr.net/gh/lipis/flag-icons/flags/4x3/${withdrawalCurrency.toLowerCase() === 'usd' ? 'us' : withdrawalCurrency.toLowerCase() === 'cny' ? 'cn' : withdrawalCurrency.toLowerCase() === 'gbp' ? 'gb' : withdrawalCurrency.toLowerCase() === 'eur' ? 'eu' : withdrawalCurrency.toLowerCase()}.svg`"
-                                                            class="currency-flag"
-                                                            :alt="withdrawalCurrency"
-                                                        />
-                                                        <span class="font-medium" x-text="withdrawalCurrency === 'USD' ? '美元' : withdrawalCurrency === 'CNY' ? '人民币' : withdrawalCurrency === 'EUR' ? '欧元' : withdrawalCurrency === 'GBP' ? '英镑' : withdrawalCurrency"></span>
-                                                    </div>
-                                                    <i class="fas fa-chevron-down text-gray-400 text-xs"></i>
-                                                </button>
-                                                
-                                                <!-- 下拉选项 -->
-                                                <div 
-                                                    x-show="showWithdrawalCurrencySelector"
-                                                    @click.away="showWithdrawalCurrencySelector = false"
-                                                    class="dropdown-menu"
-                                                    style="display: none;"
-                                                >
-                                                    <div class="py-1">
-                                                        <template x-for="currency in withdrawalCurrencies" :key="currency">
-                                                            <button
-                                                                @click="withdrawalCurrency = currency; showWithdrawalCurrencySelector = false"
-                                                                class="w-full px-4 py-2 flex items-center space-x-3 hover:bg-gray-50"
-                                                                :class="{'bg-gray-50': currency === withdrawalCurrency}"
-                                                            >
-                                                                <img :src="`https://cdn.jsdelivr.net/gh/lipis/flag-icons/flags/4x3/${currency.toLowerCase() === 'usd' ? 'us' : currency.toLowerCase() === 'cny' ? 'cn' : currency.toLowerCase() === 'gbp' ? 'gb' : currency.toLowerCase() === 'eur' ? 'eu' : currency.toLowerCase()}.svg`"
-                                                                    class="currency-flag"
-                                                                    :alt="currency"
-                                                                />
-                                                                <span x-text="currency === 'USD' ? '美元' : currency === 'CNY' ? '人民币' : currency === 'EUR' ? '欧元' : currency === 'GBP' ? '英镑' : currency"></span>
-                                                            </button>
-                                                        </template>
+                                                <div class="currency-selector">
+                                                    <button
+                                                        @click="showWithdrawalCurrencySelector = !showWithdrawalCurrencySelector"
+                                                        class="w-[220px] h-[46px] px-4 py-3 border border-gray-300 rounded-lg bg-white flex items-center justify-between hover:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-colors"
+                                                    >
+                                                        <div class="flex items-center space-x-3">
+                                                            <img :src="`https://cdn.jsdelivr.net/gh/lipis/flag-icons/flags/4x3/${withdrawalCurrency.toLowerCase() === 'usd' ? 'us' : withdrawalCurrency.toLowerCase() === 'cny' ? 'cn' : withdrawalCurrency.toLowerCase() === 'gbp' ? 'gb' : withdrawalCurrency.toLowerCase() === 'eur' ? 'eu' : withdrawalCurrency.toLowerCase()}.svg`"
+                                                                class="currency-flag"
+                                                                :alt="withdrawalCurrency"
+                                                            />
+                                                            <span class="font-medium" x-text="withdrawalCurrency === 'USD' ? '美元' : withdrawalCurrency === 'CNY' ? '人民币' : withdrawalCurrency === 'EUR' ? '欧元' : withdrawalCurrency === 'GBP' ? '英镑' : withdrawalCurrency"></span>
+                                                        </div>
+                                                        <i class="fas fa-chevron-down text-gray-400 text-xs"></i>
+                                                    </button>
+                                                    
+                                                    <!-- 下拉选项 -->
+                                                    <div 
+                                                        x-show="showWithdrawalCurrencySelector"
+                                                        @click.away="showWithdrawalCurrencySelector = false"
+                                                        class="dropdown-menu"
+                                                        style="display: none;"
+                                                    >
+                                                        <div class="py-1">
+                                                            <template x-for="currency in withdrawalCurrencies" :key="currency">
+                                                                <button
+                                                                    @click="withdrawalCurrency = currency; showWithdrawalCurrencySelector = false"
+                                                                    class="w-full px-4 py-2 flex items-center justify-between hover:bg-gray-50"
+                                                                    :class="{'bg-gray-50': currency === withdrawalCurrency}"
+                                                                >
+                                                                    <div class="flex items-center space-x-3">
+                                                                        <img :src="`https://cdn.jsdelivr.net/gh/lipis/flag-icons/flags/4x3/${currency.toLowerCase() === 'usd' ? 'us' : currency.toLowerCase() === 'cny' ? 'cn' : currency.toLowerCase() === 'gbp' ? 'gb' : currency.toLowerCase() === 'eur' ? 'eu' : currency.toLowerCase()}.svg`"
+                                                                            class="currency-flag"
+                                                                            :alt="currency"
+                                                                        />
+                                                                        <span x-text="currency === 'USD' ? '美元' : currency === 'CNY' ? '人民币' : currency === 'EUR' ? '欧元' : currency === 'GBP' ? '英镑' : currency"></span>
+                                                                    </div>
+                                                                    <span class="text-sm text-gray-500" x-text="formatCurrency(balances[currency], currency)"></span>
+                                                                </button>
+                                                            </template>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="text-xs text-gray-500 mt-1 text-right">
-                                                <span>可用：</span>
-                                                <span x-text="formatCurrency(balances[withdrawalCurrency], withdrawalCurrency)"></span>
+                                        </div>
+                                        <p class="mt-1 mb-0 text-xs text-gray-500">
+                                        单笔提现最低 150 USD，最高 250,000 USD 
+                                        可提现金额 10000.00 USD 
+                                        <a href="#" @click.prevent="$refs.balanceDetailsModal.showModal()" style="color: #7D33FF;" class="hover:opacity-80">查看详情</a>
+                                    </p>
+
+                                    <!-- 余额详情模态框 -->
+                                    <dialog x-ref="balanceDetailsModal" class="rounded-lg shadow-xl border border-gray-200 p-0 w-full max-w-3xl bg-white">
+                                        <div class="bg-white">
+                                            <!-- 模态框头部 -->
+                                            <div class="flex items-center justify-between px-5 py-3 border-b border-gray-100">
+                                                <h3 class="text-base font-medium text-gray-800">详情</h3>
+                                                <button @click="$refs.balanceDetailsModal.close()" class="text-gray-400 hover:text-gray-500 focus:outline-none">
+                                                    <i class="fas fa-times text-sm"></i>
+                                                </button>
+                                            </div>
+                                            
+                                            <!-- 模态框内容 -->
+                                            <div class="p-5">
+                                                <div class="bg-gray-50 rounded-lg border border-gray-100">
+                                                    <!-- 表头 -->
+                                                    <div class="grid grid-cols-3 text-xs font-medium text-gray-500 bg-gray-50 rounded-t-lg border-b border-gray-100">
+                                                        <div class="px-4 py-2.5">平台</div>
+                                                        <div class="px-4 py-2.5">可用余额</div>
+                                                        <div class="px-4 py-2.5">
+                                                            <div class="flex items-center">
+                                                                可用额度
+                                                                <div class="tooltip ml-1">
+                                                                    <i class="fas fa-question-circle text-gray-400 text-xs"></i>
+                                                                    <span class="tooltip-text">可用额度说明</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    <!-- 表格内容 -->
+                                                    <div class="divide-y divide-gray-100">
+                                                        <!-- Paypal -->
+                                                        <div class="grid grid-cols-3 text-sm hover:bg-gray-50 transition-colors">
+                                                            <div class="px-4 py-2.5 flex items-center">
+                                                                <img src="https://www.paypalobjects.com/webstatic/icon/pp258.png" alt="PayPal" class="w-4 h-4 mr-2">
+                                                                Paypal
+                                                            </div>
+                                                            <div class="px-4 py-2.5 text-gray-900">2,940.85 USD</div>
+                                                            <div class="px-4 py-2.5 text-gray-600">
+                                                                <div>25,080,015.00 USD</div>
+                                                                <div>250,050.00 GBP</div>
+                                                            </div>
+                                                        </div>
+                                                        
+                                                        <!-- GoogleAdSense -->
+                                                        <div class="grid grid-cols-3 text-sm hover:bg-gray-50 transition-colors">
+                                                            <div class="px-4 py-2.5 flex items-center">
+                                                                <img src="https://www.google.com/adsense/start/images/favicon.png" alt="AdSense" class="w-4 h-4 mr-2">
+                                                                GoogleAdSense
+                                                            </div>
+                                                            <div class="px-4 py-2.5 text-gray-900">321.00 USD</div>
+                                                            <div class="px-4 py-2.5 text-gray-600"></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                        <p class="mt-1 mb-0 text-xs text-gray-500">
-                                        单笔提现最低 150 USD，最高 250,000 USD
-                                    </p>
+                                    </dialog>
                             </div>
                         </div>
                         
@@ -857,31 +920,29 @@
                                     <div class="form-field">
                                         <div class="bg-gray-50 rounded-lg p-3 space-y-2">
                                             <div class="flex items-center justify-between">
-                                                <span class="text-sm text-gray-600">手续费</span>
-                                                <span class="text-sm font-medium" x-text="formatCurrency(fee, withdrawalCurrency)"></span>
+                                                <div class="flex items-center space-x-2">
+                                                    <span class="text-sm text-gray-600">手续费</span>
+                                                    <template x-if="withdrawalAmount">
+                                                        <span class="text-xs font-medium" style="color: #7D33FF;">查看明细</span>
+                                                    </template>
+                                                </div>
+                                                <span class="text-sm font-medium text-gray-900">0 USD</span>
                                             </div>
                                             <div class="flex items-center justify-between">
                                                 <span class="text-sm text-gray-600">抵扣手续费</span>
-                                                <span class="text-sm font-medium text-green-600" x-text="'- ' + formatCurrency(discountFee, withdrawalCurrency)"></span>
+                                                <span class="text-sm font-medium" x-text="`${withdrawalAmount ? 0 : 0}`"></span>
                                             </div>
                                             <div class="flex items-center justify-between pb-2 border-b border-gray-200">
                                                 <span class="text-sm font-medium">实际手续费</span>
-                                                <span class="text-sm font-medium" x-text="formatCurrency(actualFee, withdrawalCurrency)"></span>
-                                            </div>
-                                            <!-- 查看明细链接 -->
-                                            <div class="pt-2 text-right">
-                                                <button class="text-sm text-blue-600 hover:text-blue-700 flex items-center justify-end w-full">
-                                                    <span>查看明细</span>
-                                                    <i class="fas fa-chevron-right ml-1 text-xs"></i>
-                                                </button>
+                                                <span class="text-sm font-medium" x-text="`${withdrawalAmount ? 0 : 0}`"></span>
                                             </div>
                                             <!-- 参考汇率 -->
                                             <template x-if="withdrawalCurrency !== receivingCurrency">
                                                 <div class="flex items-center justify-between pt-2">
                                                     <span class="text-sm text-gray-600">参考汇率</span>
                                                     <div class="flex items-center space-x-2">
-                                                        <span class="text-sm" x-text="`1 ${withdrawalCurrency} = ${exchangeRate} ${receivingCurrency}`"></span>
-                                                            <span class="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded-md" x-text="countdown + '秒'"></span>
+                                                        <span class="text-sm" x-text="`USD/CNY=${exchangeRate}`"></span>
+                                                        <span class="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded-md" x-text="`${countdown}秒`"></span>
                                                     </div>
                                                 </div>
                                             </template>
@@ -949,7 +1010,9 @@
                                     </div>
                                         <div class="mt-2 flex items-start space-x-2">
                                             <i class="fas fa-exclamation-circle text-yellow-500 mt-0.5"></i>
-                                            <p class="text-sm text-gray-500">因银行假期影响，实际到账时间可能有所延迟，请留意当地银行假期安排。</p>
+                                            <div class="flex flex-col">
+                                                <p class="text-sm text-gray-500">因银行假期影响，预计到账时间：2024年3月18日，实际到账时间以银行为准，请留意当地银行假期安排。</p>
+                                            </div>
                                         </div>
                             </div>
                         </div>
