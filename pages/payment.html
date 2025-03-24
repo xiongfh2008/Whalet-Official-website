@@ -276,7 +276,7 @@
                     <!-- 账户类型选择 -->
                     <div class="mb-6">
                         <label class="block text-sm font-medium text-gray-700 mb-2">账户类型<span class="text-red-500 ml-0.5">*</span></label>
-                        <div class="grid grid-cols-2 gap-4">
+                        <div class="grid grid-cols-3 gap-4">
                             <div class="relative">
                                 <input type="radio" id="bankAccount" name="accountType" value="bank" class="radio-button peer hidden" checked>
                                 <label for="bankAccount" class="block p-4 border-2 rounded-lg cursor-pointer transition-all duration-200 hover:border-[#7D33FF] peer-checked:border-[#7D33FF] peer-checked:bg-[#7D33FF]/10 relative">
@@ -298,6 +298,20 @@
                                         <div class="flex items-center">
                                             <i class="fas fa-wallet text-xl text-gray-600 peer-checked:text-[#7D33FF]"></i>
                                             <span class="ml-3 font-medium text-gray-900 peer-checked:text-[#7D33FF]">电子钱包</span>
+                                        </div>
+                                        <div class="hidden peer-checked:block">
+                                            <i class="fas fa-check-circle text-[#7D33FF]"></i>
+                                        </div>
+                                    </div>
+                                </label>
+                            </div>
+                            <div class="relative">
+                                <input type="radio" id="cashWithdrawal" name="accountType" value="cash" class="radio-button peer hidden">
+                                <label for="cashWithdrawal" class="block p-4 border-2 rounded-lg cursor-pointer transition-all duration-200 hover:border-[#7D33FF] peer-checked:border-[#7D33FF] peer-checked:bg-[#7D33FF]/10 relative">
+                                    <div class="flex items-center justify-between">
+                                        <div class="flex items-center">
+                                            <i class="fas fa-money-bill-wave text-xl text-gray-600 peer-checked:text-[#7D33FF]"></i>
+                                            <span class="ml-3 font-medium text-gray-900 peer-checked:text-[#7D33FF]">现金取款</span>
                                         </div>
                                         <div class="hidden peer-checked:block">
                                             <i class="fas fa-check-circle text-[#7D33FF]"></i>
@@ -837,7 +851,7 @@
                 <!-- 账户类型 -->
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-2">账户类型<span class="text-red-500 ml-0.5">*</span></label>
-                    <div class="grid grid-cols-2 gap-4">
+                    <div class="grid grid-cols-3 gap-4">
                         <div class="relative">
                             <input type="radio" id="modalBankAccount" name="modalAccountType" value="bank" class="peer hidden" checked>
                             <label for="modalBankAccount" class="block p-4 border-2 rounded-lg cursor-pointer transition-all duration-200 hover:border-[#7D33FF] peer-checked:border-[#7D33FF] peer-checked:bg-[#7D33FF]/10">
@@ -859,6 +873,20 @@
                                     <div class="flex items-center">
                                         <i class="fas fa-wallet text-xl text-gray-600 peer-checked:text-[#7D33FF]"></i>
                                         <span class="ml-3 font-medium text-gray-900 peer-checked:text-[#7D33FF]">电子钱包</span>
+                                    </div>
+                                    <div class="hidden peer-checked:block">
+                                        <i class="fas fa-check-circle text-[#7D33FF]"></i>
+                                    </div>
+                                </div>
+                            </label>
+                        </div>
+                        <div class="relative">
+                            <input type="radio" id="modalCashWithdrawal" name="modalAccountType" value="cash" class="peer hidden">
+                            <label for="modalCashWithdrawal" class="block p-4 border-2 rounded-lg cursor-pointer transition-all duration-200 hover:border-[#7D33FF] peer-checked:border-[#7D33FF] peer-checked:bg-[#7D33FF]/10">
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center">
+                                        <i class="fas fa-money-bill-wave text-xl text-gray-600 peer-checked:text-[#7D33FF]"></i>
+                                        <span class="ml-3 font-medium text-gray-900 peer-checked:text-[#7D33FF]">现金取款</span>
                                     </div>
                                     <div class="hidden peer-checked:block">
                                         <i class="fas fa-check-circle text-[#7D33FF]"></i>

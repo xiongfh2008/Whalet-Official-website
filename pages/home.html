@@ -15,12 +15,22 @@
             font-family: 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
             position: relative;
         }
+        [data-theme="dark"] body {
+            background-color: #1a1a1a;
+        }
         .card {
             transition: all 0.3s ease;
         }
         .card:hover {
             transform: translateY(-5px);
             box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+        [data-theme="dark"] .card {
+            background-color: #2d2d2d;
+            border-color: #404040;
+        }
+        [data-theme="dark"] .card:hover {
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
         }
         .stat-card {
             height: 100%;
@@ -35,6 +45,9 @@
         .currency-card:hover {
             background-color: #f3f4f6;
         }
+        [data-theme="dark"] .currency-card:hover {
+            background-color: #404040;
+        }
         .calendar-day {
             width: 36px;
             height: 36px;
@@ -43,16 +56,27 @@
             justify-content: center;
             font-size: 0.875rem;
         }
+        [data-theme="dark"] .calendar-day {
+            color: #e5e7eb;
+        }
         .calendar-day.today {
             background-color: #eef2ff;
             color: #7D33FF;
             font-weight: 600;
             border-radius: 9999px;
         }
+        [data-theme="dark"] .calendar-day.today {
+            background-color: rgba(125, 51, 255, 0.2);
+            color: #a78bfa;
+        }
         .calendar-day.holiday {
             background-color: #fee2e2;
             color: #dc2626;
             border-radius: 9999px;
+        }
+        [data-theme="dark"] .calendar-day.holiday {
+            background-color: rgba(220, 38, 38, 0.2);
+            color: #fca5a5;
         }
         .currency-flag {
             width: 20px;
@@ -67,7 +91,14 @@
         .timeRange:hover {
             background-color: #f3f4f6;
         }
+        [data-theme="dark"] .timeRange:hover {
+            background-color: #404040;
+        }
         .timeRange.active {
+            background-color: #7D33FF;
+            color: white;
+        }
+        [data-theme="dark"] .timeRange.active {
             background-color: #7D33FF;
             color: white;
         }
@@ -91,6 +122,11 @@
             position: relative;
             animation: modalShow 0.3s ease-out;
             box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        
+        [data-theme="dark"] #surveyModal .modal-content {
+            background: #2d2d2d;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.2);
         }
         
         @keyframes modalShow {
@@ -132,6 +168,50 @@
         }
         .enterprise-link:hover {
             opacity: 0.8;
+        }
+
+        /* 添加夜间模式文字颜色样式 */
+        [data-theme="dark"] .text-gray-600 {
+            color: #9ca3af !important;
+        }
+        [data-theme="dark"] .text-gray-700 {
+            color: #d1d5db !important;
+        }
+        [data-theme="dark"] .text-gray-800 {
+            color: #e5e7eb !important;
+        }
+        [data-theme="dark"] .text-gray-900 {
+            color: #f3f4f6 !important;
+        }
+        [data-theme="dark"] .bg-white {
+            background-color: #2d2d2d !important;
+        }
+        [data-theme="dark"] .border-gray-200 {
+            border-color: #404040 !important;
+        }
+        [data-theme="dark"] .border-gray-100 {
+            border-color: #404040 !important;
+        }
+        [data-theme="dark"] .hover\:bg-gray-50:hover {
+            background-color: #404040 !important;
+        }
+        [data-theme="dark"] .text-gray-500 {
+            color: #9ca3af !important;
+        }
+        [data-theme="dark"] .text-gray-300 {
+            color: #6b7280 !important;
+        }
+        [data-theme="dark"] .bg-gradient-to-r {
+            background-image: linear-gradient(to right, #2d2d2d, #404040) !important;
+        }
+        [data-theme="dark"] .from-blue-50 {
+            --tw-gradient-from: #2d2d2d !important;
+        }
+        [data-theme="dark"] .to-indigo-50 {
+            --tw-gradient-to: #404040 !important;
+        }
+        [data-theme="dark"] .border-blue-100 {
+            border-color: #404040 !important;
         }
     </style>
 </head>
