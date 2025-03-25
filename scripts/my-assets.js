@@ -287,7 +287,7 @@ function formatCurrency(amount, currency, options = {}) {
 }
 
 // 更新资产显示
-function updateAssetDisplay(currency) {
+function updateAssetDisplay(currency, options = { updateFilter: true }) {
     const data = mockData[currency];
     if (!data) return;
 
@@ -305,7 +305,10 @@ function updateAssetDisplay(currency) {
         `<span class="currency-symbol">${data.symbol}</span>${formatCurrency(data.unavailable, currency, { isTotal: true })}`;
 
     // 更新币种选择器显示
-    document.getElementById('selectedCurrency').textContent = currency;
+    const selectedCurrency = document.getElementById('selectedCurrency');
+    if (selectedCurrency) {
+        selectedCurrency.textContent = currency;
+    }
 
     // 更新资产组成的币种标签
     const currencyNames = {
@@ -317,34 +320,19 @@ function updateAssetDisplay(currency) {
         'HKD': '港币',
         'SGD': '新加坡元'
     };
-    document.getElementById('compositionCurrencyLabel').textContent = currencyNames[currency] || currency;
-
-    // 更新币种筛选器的选中状态
-    const selectedFilter = document.getElementById('selectedFilter');
-    const currencyData = mockData.currencies.find(c => c.code === currency);
-    if (currencyData) {
-        selectedFilter.innerHTML = `
-            <div class="flex items-center">
-                <img src="https://cdn.jsdelivr.net/gh/lipis/flag-icons/flags/4x3/${currencyData.flag}.svg" 
-                     class="w-4 h-4 rounded-full mr-2" 
-                     alt="${currency}">
-                <span class="font-medium">${currency}</span>
-                <span class="text-gray-500 ml-1">${currencyData.name}</span>
-            </div>
-        `;
+    const compositionCurrencyLabel = document.getElementById('compositionCurrencyLabel');
+    if (compositionCurrencyLabel) {
+        compositionCurrencyLabel.textContent = currencyNames[currency] || currency;
     }
 
     // 更新资产组成
     updateAssetComposition(currency);
-    
-    // 更新币种列表
-    updateCurrencyList(currency);
 }
 
 // 初始化总资产
 function initTotalAssets() {
-    // 默认使用USD显示总资产
-    updateAssetDisplay('USD');
+    // 默认使用USD显示总资产，但不更新筛选器
+    updateAssetDisplay('USD', { updateFilter: false });
 }
 
 // 初始化资产币种选择器
@@ -374,7 +362,7 @@ function initAssetCurrencySelector() {
 
         // 点击页面其他地方时关闭下拉菜单
         document.addEventListener('click', (e) => {
-            if (!assetCurrencyDropdown.contains(e.target) && e.target !== assetCurrencyBtn) {
+            if (!assetCurrencyDropdown.contains(e.target) && !assetCurrencyBtn.contains(e.target)) {
                 hideAssetCurrencyDropdown();
             }
         });
@@ -382,11 +370,19 @@ function initAssetCurrencySelector() {
         // 币种选择
         const currencyButtons = assetCurrencyDropdown.querySelectorAll('button');
         currencyButtons.forEach(button => {
-            button.addEventListener('click', () => {
+            button.addEventListener('click', (e) => {
+                e.stopPropagation();
                 const currency = button.getAttribute('data-currency');
+                if (currency) {
                 updateAssetDisplay(currency);
+                }
                 hideAssetCurrencyDropdown();
             });
+        });
+
+        // 阻止下拉菜单内部点击事件冒泡
+        assetCurrencyDropdown.addEventListener('click', (e) => {
+            e.stopPropagation();
         });
 
         // 隐藏下拉菜单的函数
@@ -403,8 +399,8 @@ function initAssetCurrencySelector() {
 
 // 初始化资产组成饼图
 function initAssetComposition() {
-    // 默认使用USD显示资产组成
-    updateAssetDisplay('USD');
+    // 默认使用USD显示资产组成，但不更新筛选器
+    updateAssetDisplay('USD', { updateFilter: false });
 }
 
 // 更新资产组成饼图数据
@@ -613,6 +609,15 @@ function generateCompositionList(currency, currencyTotals, grandTotal) {
 
 // 生成币种列表行HTML
 function generateCurrencyRow(currency) {
+    // 为USD添加特殊提示
+    const usdTooltip = currency.code === 'USD' ? `
+        <div class="inline-flex items-center">
+            ${formatCurrency(currency.available, currency.code)}
+            <i class="fas fa-info-circle text-gray-400 ml-1 cursor-help" 
+               data-tippy-content="其中金额100.00USD仅支持商务卡中使用"></i>
+        </div>
+    ` : formatCurrency(currency.available, currency.code);
+
     return `
         <tr class="currency-row border-b border-gray-100">
             <td class="px-5 py-4">
@@ -627,7 +632,7 @@ function generateCurrencyRow(currency) {
                 </div>
             </td>
             <td class="px-5 py-4 text-right">
-                <div class="font-medium text-gray-900">${formatCurrency(currency.available, currency.code)}</div>
+                <div class="font-medium text-gray-900">${usdTooltip}</div>
             </td>
             <td class="px-5 py-4 text-right">
                 <div class="flex items-center justify-end">
@@ -647,6 +652,12 @@ function initCurrencyList() {
     const mainCurrencyList = document.getElementById('mainCurrencyList');
     const moreCurrencyList = document.getElementById('moreCurrencyList');
     
+    if (!mainCurrencyList || !moreCurrencyList) {
+        console.error("找不到币种列表元素");
+        return;
+    }
+
+    // 显示所有币种
     mainCurrencyList.innerHTML = mainCurrencies.map(generateCurrencyRow).join('');
     moreCurrencyList.innerHTML = otherCurrencies.map(generateCurrencyRow).join('');
     
@@ -656,6 +667,24 @@ function initCurrencyList() {
         toggleButton.parentElement.style.display = 'none';
     } else {
         toggleButton.addEventListener('click', toggleCurrencyList);
+    }
+
+    // 确保筛选器显示"全部币种"
+    const selectedFilter = document.getElementById('selectedFilter');
+    if (selectedFilter) {
+        selectedFilter.innerHTML = '<span>全部币种</span>';
+    }
+
+    // 初始化提示工具
+    if (typeof tippy === 'function') {
+        tippy('[data-tippy-content]', {
+            placement: 'top',
+            arrow: true,
+            theme: 'light',
+            maxWidth: 300,
+            animation: 'scale',
+            duration: 200
+        });
     }
 }
 
@@ -698,6 +727,16 @@ function initRecentTransactions() {
             </div>
         </div>
     `).join('');
+
+    // 添加查看全部链接的点击事件处理
+    document.addEventListener('click', function(e) {
+        const viewAllLink = e.target.closest('.view-all-transactions');
+        if (viewAllLink) {
+            e.preventDefault();
+            // 使用相对路径导航到交易查询页面
+            window.location.href = './transactions.html';
+        }
+    });
 }
 
 // 更新币种列表显示
@@ -706,32 +745,122 @@ function updateCurrencyList(filter) {
     const moreCurrencyList = document.getElementById('moreCurrencyList');
     const toggleButton = document.getElementById('toggleCurrencies');
     
-    if (filter === 'all') {
-        // 显示全部币种，恢复原始逻辑
+    if (!mainCurrencyList || !moreCurrencyList || !toggleButton) {
+        console.error("找不到币种列表必要元素");
+        return;
+    }
+
         const mainCurrencies = mockData.currencies.filter(c => c.isMain);
         const otherCurrencies = mockData.currencies.filter(c => !c.isMain);
         
-        mainCurrencyList.innerHTML = mainCurrencies.map(generateCurrencyRow).join('');
-        moreCurrencyList.innerHTML = otherCurrencies.map(generateCurrencyRow).join('');
-        
-        // 如果有其他币种，显示切换按钮
-        toggleButton.parentElement.style.display = otherCurrencies.length > 0 ? 'block' : 'none';
+    // 始终显示所有币种
+    mainCurrencyList.innerHTML = mainCurrencies.map(currency => {
+        // 为USD添加特殊提示
+        const availableAmount = currency.code === 'USD' ? `
+            <div class="inline-flex items-center">
+                ${formatCurrency(currency.available, currency.code)}
+                <i class="fas fa-info-circle text-gray-400 ml-1 cursor-help" 
+                   data-tippy-content="其中金额100.00USD仅支持商务卡中使用"></i>
+            </div>
+        ` : formatCurrency(currency.available, currency.code);
+
+        return `
+            <tr class="currency-row border-b border-gray-100" data-currency="${currency.code}">
+                <td class="px-5 py-4">
+                    <div class="flex items-center">
+                        <img src="https://cdn.jsdelivr.net/gh/lipis/flag-icons/flags/4x3/${currency.flag}.svg" 
+                             class="currency-flag mr-3" 
+                             alt="${currency.code}">
+                        <div>
+                            <div class="font-medium text-gray-900">${currency.name}</div>
+                            <div class="text-sm text-gray-500">${currency.code}</div>
+                        </div>
+                    </div>
+                </td>
+                <td class="px-5 py-4 text-right">
+                    <div class="font-medium text-gray-900">${availableAmount}</div>
+                </td>
+                <td class="px-5 py-4 text-right">
+                    <div class="flex items-center justify-end">
+                        <span class="font-medium text-gray-900">${formatCurrency(currency.unavailable, currency.code)}</span>
+                        <i class="fas fa-lock text-red-500 text-xs ml-1"></i>
+                    </div>
+                </td>
+            </tr>
+        `;
+    }).join('');
+
+    moreCurrencyList.innerHTML = otherCurrencies.map(currency => {
+        // 为USD添加特殊提示
+        const availableAmount = currency.code === 'USD' ? `
+            <div class="inline-flex items-center">
+                ${formatCurrency(currency.available, currency.code)}
+                <i class="fas fa-info-circle text-gray-400 ml-1 cursor-help" 
+                   data-tippy-content="其中金额100.00USD仅支持商务卡中使用"></i>
+            </div>
+        ` : formatCurrency(currency.available, currency.code);
+
+        return `
+            <tr class="currency-row border-b border-gray-100" data-currency="${currency.code}">
+                <td class="px-5 py-4">
+                    <div class="flex items-center">
+                        <img src="https://cdn.jsdelivr.net/gh/lipis/flag-icons/flags/4x3/${currency.flag}.svg" 
+                             class="currency-flag mr-3" 
+                             alt="${currency.code}">
+                        <div>
+                            <div class="font-medium text-gray-900">${currency.name}</div>
+                            <div class="text-sm text-gray-500">${currency.code}</div>
+                        </div>
+                    </div>
+                </td>
+                <td class="px-5 py-4 text-right">
+                    <div class="font-medium text-gray-900">${availableAmount}</div>
+                </td>
+                <td class="px-5 py-4 text-right">
+                    <div class="flex items-center justify-end">
+                        <span class="font-medium text-gray-900">${formatCurrency(currency.unavailable, currency.code)}</span>
+                        <i class="fas fa-lock text-red-500 text-xs ml-1"></i>
+                    </div>
+                </td>
+            </tr>
+        `;
+    }).join('');
+
+    // 应用筛选
+    const allRows = document.querySelectorAll('.currency-row');
+    allRows.forEach(row => {
+        if (filter === 'all' || row.dataset.currency === filter) {
+            row.style.display = '';
+        } else {
+            row.style.display = 'none';
+        }
+    });
+
+    // 根据是否有其他币种来显示/隐藏切换按钮
+    const hasVisibleOtherCurrencies = filter === 'all' || otherCurrencies.some(c => c.code === filter);
+    toggleButton.parentElement.style.display = hasVisibleOtherCurrencies ? 'block' : 'none';
+
         // 重置展开/收起状态
         moreCurrencyList.classList.add('hidden');
         const showMore = toggleButton.querySelector('.show-more');
         const showLess = toggleButton.querySelector('.show-less');
         const icon = toggleButton.querySelector('.currency-toggle');
+    if (showMore && showLess && icon) {
         showMore.classList.remove('hidden');
         showLess.classList.add('hidden');
         icon.classList.remove('rotate');
-    } else {
-        // 显示特定币种
-        const selectedCurrency = mockData.currencies.find(c => c.code === filter);
-        if (selectedCurrency) {
-            mainCurrencyList.innerHTML = generateCurrencyRow(selectedCurrency);
-            moreCurrencyList.innerHTML = '';
-            toggleButton.parentElement.style.display = 'none';
-        }
+    }
+
+    // 初始化提示工具
+    if (typeof tippy === 'function') {
+        tippy('[data-tippy-content]', {
+            placement: 'top',
+            arrow: true,
+            theme: 'light',
+            maxWidth: 300,
+            animation: 'scale',
+            duration: 200
+        });
     }
 }
 
@@ -740,13 +869,29 @@ function initCurrencyFilter() {
     const filterBtn = document.getElementById('currencyFilterBtn');
     const filterDropdown = document.getElementById('currencyFilterDropdown');
     const selectedFilter = document.getElementById('selectedFilter');
-    const chevronIcon = filterBtn.querySelector('.fa-chevron-down');
+    const chevronIcon = filterBtn?.querySelector('.fa-chevron-down');
     const searchInput = document.getElementById('currencySearch');
     const currencyList = document.getElementById('currencyList');
     let isFilterDropdownVisible = false;
 
+    if (!filterBtn || !filterDropdown || !selectedFilter || !currencyList) {
+        console.error("找不到币种筛选器必要元素");
+        return;
+    }
+
+    // 默认显示全部币种
+    selectedFilter.innerHTML = '<span>全部币种</span>';
+    updateCurrencyList('all');
+
+    // 移除之前的定位样式
+    if (filterDropdown) {
+        filterDropdown.style.removeProperty('bottom');
+        filterDropdown.style.removeProperty('top');
+        filterDropdown.style.removeProperty('marginBottom');
+    }
+
     // 搜索功能
-    searchInput.addEventListener('input', (e) => {
+    searchInput?.addEventListener('input', (e) => {
         const searchTerm = e.target.value.toLowerCase();
         const currencyButtons = currencyList.querySelectorAll('button');
         
@@ -762,17 +907,19 @@ function initCurrencyFilter() {
     });
 
     // 防止搜索框点击事件关闭下拉菜单
-    searchInput.addEventListener('click', (e) => {
+    searchInput?.addEventListener('click', (e) => {
         e.stopPropagation();
     });
 
     // 清空搜索框当下拉菜单关闭时
     function clearSearch() {
+        if (searchInput) {
         searchInput.value = '';
         const currencyButtons = currencyList.querySelectorAll('button');
         currencyButtons.forEach(button => {
             button.style.display = 'block';
         });
+        }
     }
 
     // 点击按钮时切换下拉菜单
@@ -781,16 +928,18 @@ function initCurrencyFilter() {
         isFilterDropdownVisible = !isFilterDropdownVisible;
         if (isFilterDropdownVisible) {
             filterDropdown.classList.remove('hidden');
+            if (chevronIcon) {
             chevronIcon.style.transform = 'rotate(180deg)';
-            searchInput.focus(); // 自动聚焦到搜索框
+            }
+            searchInput?.focus();
         } else {
             hideFilterDropdown();
         }
     });
 
     // 点击页面其他地方时关闭下拉菜单
-    document.addEventListener('click', () => {
-        if (isFilterDropdownVisible) {
+    document.addEventListener('click', (e) => {
+        if (!filterDropdown.contains(e.target) && !filterBtn.contains(e.target)) {
             hideFilterDropdown();
         }
     });
@@ -801,17 +950,39 @@ function initCurrencyFilter() {
     });
 
     // 点击筛选选项
-    filterDropdown.addEventListener('click', (e) => {
-        const button = e.target.closest('button');
+    currencyList.addEventListener('click', function(e) {
+        const button = e.target.closest('button[data-filter]');
         if (!button) return;
 
-        const filter = button.dataset.filter;
+        const filter = button.getAttribute('data-filter');
+        console.log('Selected filter:', filter); // 添加调试日志
+
+        // 更新选中的筛选器显示
         if (filter === 'all') {
             selectedFilter.innerHTML = '<span>全部币种</span>';
             updateCurrencyList('all');
         } else {
-            // 同步更新资产显示和币种选择
-            updateAssetDisplay(filter);
+            const currencyData = mockData.currencies.find(c => c.code === filter);
+            if (currencyData) {
+                selectedFilter.innerHTML = `
+                    <div class="flex items-center">
+                        <img src="https://cdn.jsdelivr.net/gh/lipis/flag-icons/flags/4x3/${currencyData.flag}.svg" 
+                             class="w-4 h-4 rounded-full mr-2" 
+                             alt="${filter}">
+                        <span class="font-medium">${currencyData.code}</span>
+                        <span class="text-gray-500 ml-1">${currencyData.name}</span>
+                    </div>
+                `;
+                updateCurrencyList(filter);
+            }
+        }
+        
+        // 确保更新币种列表显示
+        if (filter === 'all') {
+            const allRows = document.querySelectorAll('.currency-row');
+            allRows.forEach(row => {
+                row.style.display = '';
+            });
         }
         
         hideFilterDropdown();
@@ -821,7 +992,9 @@ function initCurrencyFilter() {
     function hideFilterDropdown() {
         isFilterDropdownVisible = false;
         filterDropdown.classList.add('hidden');
+        if (chevronIcon) {
         chevronIcon.style.transform = 'rotate(0deg)';
-        clearSearch(); // 清空搜索框
+        }
+        clearSearch();
     }
 }

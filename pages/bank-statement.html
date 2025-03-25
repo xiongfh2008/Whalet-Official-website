@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>开具银行证明信 - Whalet</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .tab-active {
+            color: #7c3aed;
+            border-bottom: 2px solid #7c3aed;
+        }
+        .form-section {
+            max-width: 100%;
+            padding: 0 24px;
+        }
+        .form-group {
+            display: grid;
+            grid-template-columns: 140px 1fr;
+            align-items: center;
+            gap: 1rem;
+            max-width: 560px;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <div class="container mx-auto px-4 py-6">
+        <div class="max-w-6xl mx-auto bg-white rounded-lg shadow-sm">
+            <!-- 头部 -->
+            <div class="px-6 py-4 border-b border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center">
+                        <a href="my-assets.html#bank-accounts" class="text-purple-600 hover:text-purple-700 mr-2">
+                            <i class="fas fa-arrow-left"></i>
+                        </a>
+                        <a href="my-assets.html#bank-accounts" class="text-purple-600 hover:text-purple-700 mr-4">返回</a>
+                        <h1 class="text-lg font-medium text-gray-800">开具银行证明信</h1>
+                    </div>
+                    <a href="my-assets.html#bank-accounts" class="text-gray-500 hover:text-purple-700">
+                        <i class="fas fa-times"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- 标签页导航 -->
+            <div class="border-b border-gray-200">
+                <nav class="flex">
+                    <button class="tab-button tab-active px-6 py-3 text-sm font-medium" data-tab="account-proof">
+                        银行账户证明
+                    </button>
+                    <button class="tab-button px-6 py-3 text-sm font-medium text-gray-500 hover:text-purple-700" data-tab="account-statement">
+                        银行账户流水单
+                    </button>
+                    <button class="tab-button px-6 py-3 text-sm font-medium text-gray-500 hover:text-purple-700" data-tab="bank-letter">
+                        银行证明信（银行开具）
+                    </button>
+                    <button class="tab-button px-6 py-3 text-sm font-medium text-gray-500 hover:text-purple-700" data-tab="issued-records">
+                        已开具记录
+                    </button>
+                </nav>
+            </div>
+
+            <!-- 标签页内容 -->
+            <div class="tab-content">
+                <!-- 银行账户证明 -->
+                <div id="account-proof" class="tab-pane active">
+                    <div class="p-6">
+                        <form id="bankStatementForm" class="form-section space-y-5">
+                            <!-- 只读信息部分 -->
+                            <div class="bg-gray-50 rounded-lg p-4 space-y-3">
+                                <!-- 收款平台 -->
+                                <div class="form-group">
+                                    <label class="text-sm font-medium text-gray-600">收款平台</label>
+                                    <div class="text-sm text-gray-900">敦煌</div>
+                                </div>
+
+                                <!-- 币种 -->
+                                <div class="form-group">
+                                    <label class="text-sm font-medium text-gray-600">币种</label>
+                                    <div class="text-sm text-gray-900">美元(USD)</div>
+                                </div>
+
+                                <!-- 收款账号 -->
+                                <div class="form-group">
+                                    <label class="text-sm font-medium text-gray-600">收款账号</label>
+                                    <div class="flex items-center space-x-2">
+                                        <div class="text-sm text-gray-900">********2036</div>
+                                        <a href="#" class="text-sm text-purple-600 hover:text-purple-800">证明信示例</a>
+                                    </div>
+                                </div>
+
+                                <!-- 手续费 -->
+                                <div class="form-group">
+                                    <label class="text-sm font-medium text-gray-600">手续费</label>
+                                    <div class="text-sm text-gray-900">免费</div>
+                                </div>
+                            </div>
+
+                            <!-- 可编辑信息部分 -->
+                            <div class="space-y-4 pt-2">
+                                <!-- 账户持有人姓名 -->
+                                <div class="form-group">
+                                    <label class="text-sm font-medium text-gray-700">
+                                        <span class="text-red-500">*</span> 账户持有人姓名
+                                    </label>
+                                    <input type="text" value="Whale Testing Co., Ltd" disabled class="text-sm py-1.5 px-3 border border-gray-300 rounded-md bg-gray-50 cursor-not-allowed" />
+                                </div>
+
+                                <!-- 账户持有人地址 -->
+                                <div class="form-group">
+                                    <label class="text-sm font-medium text-gray-700">
+                                        <span class="text-red-500">*</span> 账户持有人地址
+                                    </label>
+                                    <input type="text" placeholder="请与电商平台/收款平台注册信息保存一致" class="text-sm py-1.5 px-3 border border-gray-300 rounded-md focus:ring-1 focus:ring-purple-500 focus:border-purple-500" />
+                                </div>
+                            </div>
+
+                            <!-- 确认已阅读 -->
+                            <div class="pt-4">
+                                <div class="flex items-start space-x-2 max-w-[560px]">
+                                    <input type="checkbox" required class="mt-1 h-4 w-4 text-purple-600 rounded border-gray-300 focus:ring-purple-500" id="agreement">
+                                    <label for="agreement" class="text-sm text-gray-600 leading-relaxed">
+                                        我确认，以上信息真实有效且完全匹配电商平台/收款平台登记的资料。我同意易鲸(whalet)使用以上信息进行进一步的身份验证。
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- 提交按钮 -->
+                            <div class="flex space-x-4 pt-6">
+                                <a href="my-assets.html#bank-accounts" class="min-w-[120px] px-6 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-purple-50 transition-colors">
+                                    返回
+                                </a>
+                                <button type="submit" class="min-w-[120px] px-6 py-2 bg-purple-600 text-white rounded-md text-sm font-medium hover:bg-purple-700 transition-colors">
+                                    提交
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- 银行账户流水单 -->
+                <div id="account-statement" class="tab-pane hidden p-6">
+                    <div class="text-center text-gray-500 py-12">
+                        银行账户流水单内容
+                    </div>
+                </div>
+
+                <!-- 银行证明信（银行开具） -->
+                <div id="bank-letter" class="tab-pane hidden p-6">
+                    <div class="text-center text-gray-500 py-12">
+                        银行证明信（银行开具）内容
+                    </div>
+                </div>
+
+                <!-- 已开具记录 -->
+                <div id="issued-records" class="tab-pane hidden p-6">
+                    <div class="text-center text-gray-500 py-12">
+                        已开具记录内容
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 处理标签页切换
+            const tabButtons = document.querySelectorAll('.tab-button');
+            const tabPanes = document.querySelectorAll('.tab-pane');
+
+            tabButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    // 移除所有活动状态
+                    tabButtons.forEach(btn => btn.classList.remove('tab-active'));
+                    tabPanes.forEach(pane => pane.classList.add('hidden'));
+
+                    // 添加当前活动状态
+                    button.classList.add('tab-active');
+                    const tabId = button.getAttribute('data-tab');
+                    document.getElementById(tabId).classList.remove('hidden');
+                });
+            });
+
+            // 处理所有返回链接
+            document.querySelectorAll('a[href="my-assets.html#bank-accounts"]').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    localStorage.setItem('activeTab', 'bank-accounts');
+                    window.location.href = this.href;
+                });
+            });
+
+            // 处理表单提交
+            document.getElementById('bankStatementForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                alert('银行证明信申请已提交！');
+                localStorage.setItem('activeTab', 'bank-accounts');
+                window.location.href = 'my-assets.html#bank-accounts';
+            });
+        });
+    </script>
+</body>
+</html> 

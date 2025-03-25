@@ -264,18 +264,18 @@
             <div id="content-withdrawal" class="tab-content active bg-white rounded-xl shadow-sm p-6">
                 <div class="flex justify-between items-center mb-6">
                     <h2 class="text-lg font-medium text-gray-800">我的银行卡</h2>
-                    <button class="text-sm text-blue-600 hover:text-blue-700 font-medium">
+                    <a href="add-bank-card.html" class="text-sm text-blue-600 hover:text-blue-700 font-medium">
                         <i class="fas fa-plus mr-1"></i>
                         添加新卡
-                    </button>
+                    </a>
                 </div>
                 
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                     <!-- Add New Card Button -->
-                    <div class="bank-card add-card-button">
+                    <a href="add-bank-card.html" class="bank-card add-card-button">
                         <i class="fas fa-plus-circle text-2xl text-gray-400 mb-1"></i>
                         <span class="text-xs text-gray-600">添加新银行卡</span>
-                    </div>
+                    </a>
 
                     <!-- CNY Bank Card (China Mainland) -->
                     <div class="bank-card cursor-pointer hover:shadow-md transition-shadow" onclick="showCardDetails(this)">
@@ -329,10 +329,10 @@
                 <!-- 标题和添加按钮区 -->
                 <div class="flex justify-between items-center mb-6">
                     <h2 class="text-lg font-medium text-gray-900">第三方账户</h2>
-                    <button id="addPayeeBtn" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium flex items-center">
+                    <a href="add-payee.html" id="addPayeeBtn" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium flex items-center">
                         <i class="fas fa-plus mr-1"></i>
                         添加收款人
-                    </button>
+                    </a>
                 </div>
 
                 <!-- 搜索筛选区 -->
@@ -674,36 +674,18 @@
         // 在页面加载完成后初始化
         document.addEventListener('DOMContentLoaded', function() {
             console.log('Page loaded, initializing tabs...');
-            // 初始化显示我的银行卡tab
-            switchTab('withdrawal');
             
-            // 显示添加收款人弹窗
-            const addPayeeBtn = document.getElementById('addPayeeBtn');
-            if (addPayeeBtn) {
-                addPayeeBtn.addEventListener('click', function() {
-                document.getElementById('addPayeeModal').classList.remove('hidden');
-            });
-            }
-    
-            // 关闭添加收款人弹窗
-            const closeAddPayeeModal = document.getElementById('closeAddPayeeModal');
-            if (closeAddPayeeModal) {
-                closeAddPayeeModal.addEventListener('click', function() {
-                document.getElementById('addPayeeModal').classList.add('hidden');
-            });
-            }
-    
-            // 关闭弹窗的取消按钮
-            const cancelBtn = document.querySelector('#addPayeeModal button:last-child');
-            if (cancelBtn) {
-                cancelBtn.addEventListener('click', function() {
-                document.getElementById('addPayeeModal').classList.add('hidden');
-            });
-            }
-    
+            // 检查是否有存储的活动标签
+            const activeTab = localStorage.getItem('activeTab') || 'withdrawal';
+            switchTab(activeTab);
+            
+            // 清除存储的活动标签
+            localStorage.removeItem('activeTab');
+            
             // 用户中心下拉菜单
             const userCenterBtn = document.getElementById('userCenterBtn');
             const userCenterDropdown = document.getElementById('userCenterDropdown');
+            
             if (userCenterBtn && userCenterDropdown) {
                 userCenterBtn.addEventListener('click', function(e) {
                     e.stopPropagation();

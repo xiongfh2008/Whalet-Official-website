@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         body {
-            background-color: #fff;
+            background-color: #f9fafb;
             font-family: 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
         }
         .todo-item {
@@ -136,73 +136,54 @@
         }
     </style>
 </head>
-<body class="bg-white">
+<body class="bg-gray-50">
     <div class="container mx-auto px-4 py-8">
-        <div class="max-w-6xl mx-auto bg-white rounded-xl shadow-sm">
+        <div class="max-w-6xl mx-auto bg-white rounded-lg shadow-sm">
             <!-- 头部 -->
             <div class="p-6 border-b border-gray-200">
                 <div class="flex items-center justify-between">
                     <div class="flex items-center">
-                        <a href="home.html" class="text-purple-600 hover:text-purple-700 mr-2">
+                        <a href="platform-collection.html#order-management" class="text-purple-600 hover:text-purple-700 mr-2">
                             <i class="fas fa-arrow-left"></i>
                         </a>
-                        <a href="home.html" class="text-purple-600 hover:text-purple-700 mr-4">返回</a>
+                        <a href="platform-collection.html#order-management" class="text-purple-600 hover:text-purple-700 mr-4">返回</a>
                         <h1 class="text-xl font-semibold text-gray-800">待办事项</h1>
                     </div>
-                    <a href="home.html" class="text-gray-500 hover:text-gray-700">
+                    <a href="platform-collection.html#order-management" class="text-gray-500 hover:text-gray-700">
                         <i class="fas fa-times"></i>
                     </a>
                 </div>
             </div>
 
             <!-- 筛选栏 -->
-            <div class="p-4 border-b border-gray-200 bg-gray-50">
-                <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-12 gap-3">
-                    <!-- 开始时间和结束时间 -->
-                    <div class="lg:col-span-3 flex items-center space-x-2">
-                        <input type="date" class="filter-input flex-1 min-w-0 py-1.5" />
-                        <span class="text-gray-500">至</span>
-                        <input type="date" class="filter-input flex-1 min-w-0 py-1.5" />
+            <div class="p-6 border-b border-gray-200">
+                <div class="flex flex-wrap gap-4">
+                    <div class="flex items-center">
+                        <span class="mr-2 text-sm font-medium text-gray-700">开始时间:</span>
+                        <input type="date" class="p-2 text-sm border border-gray-300 rounded-md focus:ring-purple-500 focus:border-purple-500" />
+                        <span class="mx-2">至</span>
+                        <input type="date" class="p-2 text-sm border border-gray-300 rounded-md focus:ring-purple-500 focus:border-purple-500" />
                     </div>
                     
-                    <!-- 待办主题 -->
-                    <div class="lg:col-span-3 relative">
-                        <input type="text" placeholder="搜索标题或内容" class="filter-input w-full pl-8 py-1.5" />
-                        <i class="fas fa-search absolute left-2.5 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
-                    </div>
-                    
-                    <!-- 待办类型 -->
-                    <div class="lg:col-span-2">
-                        <select class="filter-select w-full py-1.5">
-                            <option value="">待办类型</option>
-                            <option value="1">账户</option>
-                            <option value="2">实名</option>
-                            <option value="3">收款</option>
-                            <option value="4">收单</option>
-                            <option value="5">换汇</option>
-                            <option value="6">商务卡</option>
-                            <option value="7">提现</option>
-                            <option value="8">付款</option>
-                        </select>
-                    </div>
-                    
-                    <!-- 状态 -->
-                    <div class="lg:col-span-2">
-                        <select class="filter-select w-full py-1.5">
-                            <option value="">状态</option>
-                            <option value="1">待处理</option>
-                            <option value="2">处理中</option>
-                            <option value="3">已完成</option>
+                    <div class="flex items-center">
+                        <span class="mr-2 text-sm font-medium text-gray-700">状态:</span>
+                        <select class="p-2 text-sm border border-gray-300 rounded-md focus:ring-purple-500 focus:border-purple-500">
+                            <option value="">全部</option>
+                            <option value="1">待办理</option>
+                            <option value="2">已办理</option>
                         </select>
                     </div>
 
-                    <!-- 按钮组 -->
-                    <div class="lg:col-span-2 flex justify-end space-x-2">
-                        <button class="btn btn-secondary py-1.5 px-3">
-                            <i class="fas fa-undo mr-1"></i>重置
+                    <div class="flex items-center">
+                        <input type="text" placeholder="搜索标题或内容" class="p-2 text-sm border border-gray-300 rounded-md w-64 focus:ring-purple-500 focus:border-purple-500" />
+                    </div>
+
+                    <div class="flex items-center ml-auto space-x-2">
+                        <button class="bg-purple-600 text-white px-4 py-2 rounded text-sm font-medium hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2">
+                            查询
                         </button>
-                        <button class="btn btn-primary py-1.5 px-3">
-                            <i class="fas fa-search mr-1"></i>查询
+                        <button class="bg-white text-gray-700 px-4 py-2 rounded text-sm font-medium border border-gray-300 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2">
+                            重置
                         </button>
                     </div>
                 </div>
@@ -212,23 +193,20 @@
             <div class="divide-y divide-gray-200">
                 <!-- 列表头部 -->
                 <div class="grid grid-cols-12 gap-4 px-6 py-3 bg-gray-50 text-sm font-medium text-gray-500">
-                    <div class="col-span-5">待办事项</div>
-                    <div class="col-span-2">类型</div>
-                    <div class="col-span-2">状态</div>
-                    <div class="col-span-2">截止日期</div>
+                    <div class="col-span-6">待办事项</div>
+                    <div class="col-span-3">状态</div>
+                    <div class="col-span-2">创建日期</div>
                     <div class="col-span-1 text-right">操作</div>
                 </div>
 
                 <!-- 待办事项1 -->
                 <div class="todo-item grid grid-cols-12 gap-4 px-6 py-4 items-center">
-                    <div class="col-span-5 flex items-center space-x-3">
-                        <div class="todo-status urgent"></div>
+                    <div class="col-span-6">
                         <h3 class="text-gray-800 font-medium">提交收款账户申请</h3>
                     </div>
-                    <div class="col-span-2 text-sm text-gray-500">收款</div>
-                    <div class="col-span-2">
+                    <div class="col-span-3">
                         <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
-                            待处理
+                            待办理
                         </span>
                     </div>
                     <div class="col-span-2 text-sm text-gray-500">2024-03-20</div>
@@ -241,34 +219,27 @@
 
                 <!-- 待办事项2 -->
                 <div class="todo-item grid grid-cols-12 gap-4 px-6 py-4 items-center">
-                    <div class="col-span-5 flex items-center space-x-3">
-                        <div class="todo-status normal"></div>
+                    <div class="col-span-6">
                         <h3 class="text-gray-800 font-medium">核对本月交易记录</h3>
                     </div>
-                    <div class="col-span-2 text-sm text-gray-500">收单</div>
-                    <div class="col-span-2">
-                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
-                            待处理
+                    <div class="col-span-3">
+                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                            已办理
                         </span>
                     </div>
                     <div class="col-span-2 text-sm text-gray-500">2024-03-25</div>
                     <div class="col-span-1 text-right">
-                        <button class="text-sm text-purple-600 hover:text-purple-700 hover:bg-purple-50 px-3 py-1.5 rounded transition-colors duration-200">
-                            去办理
-                        </button>
                     </div>
                 </div>
 
                 <!-- 待办事项3 -->
                 <div class="todo-item grid grid-cols-12 gap-4 px-6 py-4 items-center">
-                    <div class="col-span-5 flex items-center space-x-3">
-                        <div class="todo-status low"></div>
+                    <div class="col-span-6">
                         <h3 class="text-gray-800 font-medium">更新商户信息</h3>
                     </div>
-                    <div class="col-span-2 text-sm text-gray-500">账户</div>
-                    <div class="col-span-2">
-                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
-                            处理中
+                    <div class="col-span-3">
+                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
+                            待办理
                         </span>
                     </div>
                     <div class="col-span-2 text-sm text-gray-500">2024-03-30</div>
@@ -281,14 +252,12 @@
 
                 <!-- 待办事项4 -->
                 <div class="todo-item grid grid-cols-12 gap-4 px-6 py-4 items-center">
-                    <div class="col-span-5 flex items-center space-x-3">
-                        <div class="todo-status urgent"></div>
+                    <div class="col-span-6">
                         <h3 class="text-gray-800 font-medium">完善企业认证资料</h3>
                     </div>
-                    <div class="col-span-2 text-sm text-gray-500">实名</div>
-                    <div class="col-span-2">
+                    <div class="col-span-3">
                         <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
-                            待处理
+                            待办理
                         </span>
                     </div>
                     <div class="col-span-2 text-sm text-gray-500">2024-03-18</div>
@@ -301,21 +270,16 @@
 
                 <!-- 待办事项5 -->
                 <div class="todo-item grid grid-cols-12 gap-4 px-6 py-4 items-center">
-                    <div class="col-span-5 flex items-center space-x-3">
-                        <div class="todo-status normal"></div>
+                    <div class="col-span-6">
                         <h3 class="text-gray-800 font-medium">确认收款信息</h3>
                     </div>
-                    <div class="col-span-2 text-sm text-gray-500">收款</div>
-                    <div class="col-span-2">
-                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
-                            待处理
+                    <div class="col-span-3">
+                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                            已办理
                         </span>
                     </div>
                     <div class="col-span-2 text-sm text-gray-500">2024-03-22</div>
                     <div class="col-span-1 text-right">
-                        <button class="text-sm text-purple-600 hover:text-purple-700 hover:bg-purple-50 px-3 py-1.5 rounded transition-colors duration-200">
-                            去办理
-                        </button>
                     </div>
                 </div>
 
@@ -336,5 +300,19 @@
             </div>
         </div>
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 处理所有返回链接
+            document.querySelectorAll('a[href="platform-collection.html#order-management"]').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    // 存储要激活的标签页信息
+                    localStorage.setItem('activeTab', 'order-management');
+                    window.location.href = this.href;
+                });
+            });
+        });
+    </script>
 </body>
 </html> 

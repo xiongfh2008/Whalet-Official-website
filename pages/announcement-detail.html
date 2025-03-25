@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>公告详情 - Whalet</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../styles/custom.css">
+    <link rel="stylesheet" href="../styles/theme.css">
+    <style>
+        body {
+            background-color: #f9fafb;
+            font-family: 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+        }
+        [data-theme="dark"] body {
+            background-color: #1a1a1a;
+        }
+        [data-theme="dark"] .bg-white {
+            background-color: #2d2d2d !important;
+        }
+        [data-theme="dark"] .text-gray-600 {
+            color: #9ca3af !important;
+        }
+        [data-theme="dark"] .text-gray-700 {
+            color: #d1d5db !important;
+        }
+        [data-theme="dark"] .text-gray-800 {
+            color: #e5e7eb !important;
+        }
+        [data-theme="dark"] .text-gray-900 {
+            color: #f3f4f6 !important;
+        }
+        [data-theme="dark"] .border-gray-200 {
+            border-color: #404040 !important;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <div class="container mx-auto px-4 py-8">
+        <div class="max-w-6xl mx-auto bg-white rounded-lg shadow-sm">
+            <!-- 头部 -->
+            <div class="p-6 border-b border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center">
+                        <a href="home.html" class="text-purple-600 hover:text-purple-700 mr-2">
+                            <i class="fas fa-arrow-left"></i>
+                        </a>
+                        <a href="home.html" class="text-purple-600 hover:text-purple-700 mr-4">返回</a>
+                        <h1 class="text-xl font-semibold text-gray-800">公告详情</h1>
+                    </div>
+                    <a href="home.html" class="text-gray-500 hover:text-gray-700">
+                        <i class="fas fa-times"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- 主要内容区域 -->
+            <div class="p-6">
+                <!-- 公告标题 -->
+                <h2 class="text-2xl font-medium text-gray-900 mb-2">清明节假期公告</h2>
+                
+                <!-- 发布时间 -->
+                <div class="text-gray-600 text-sm mb-6">2025-03-21 17:54:59</div>
+                
+                <!-- 公告内容 -->
+                <div class="prose max-w-none text-gray-800">
+                    <p class="mb-4">亲爱的易鲸用户：</p>
+                    
+                    <p class="mb-6">受清明节（2025年4月4日-4月6日）假期影响，各业务处理时间调整如下，请您提前做好资金安排。</p>
+                    
+                    <div class="space-y-6">
+                        <div>
+                            <h3 class="text-lg font-medium text-gray-900 mb-2">1. 收款入账</h3>
+                            <p class="text-gray-800">中国大陆/中国香港/印尼假期，相关入账业务将有延迟</p>
+                        </div>
+                        
+                        <div>
+                            <h3 class="text-lg font-medium text-gray-900 mb-2">2. 提现付款</h3>
+                            <p class="text-gray-800">将暂停处理提现及付款业务，4月7日恢复正常</p>
+                        </div>
+                        
+                        <div>
+                            <h3 class="text-lg font-medium text-gray-900 mb-2">3. 鲸卡服务</h3>
+                            <p class="text-gray-800">鲸卡账户余额转出顺延至4月7日恢复受理</p>
+                        </div>
+                        
+                        <div>
+                            <h3 class="text-lg font-medium text-gray-900 mb-2">4. 其他业务</h3>
+                            <p class="text-gray-800">暂停账户认证、审核店铺/订单，4月7日按序处理</p>
+                        </div>
+                    </div>
+                    
+                    <p class="mt-6 text-gray-800">给您带来不便，敬请谅解。如有疑问，请联系系统的专属销售经理或官方客服400-806-0877。</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 主题切换功能
+        document.addEventListener('DOMContentLoaded', function() {
+            const html = document.documentElement;
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            html.setAttribute('data-theme', savedTheme);
+        });
+    </script>
+</body>
+</html> 

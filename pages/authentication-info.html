@@ -70,7 +70,7 @@
                     <div class="flex items-center space-x-6 pr-6">
                         <!-- 公告图标 -->
                         <div class="relative">
-                            <a href="#" class="text-gray-600 hover:text-blue-600">
+                            <a href="#" class="text-gray-600 hover:text-purple-600">
                                 <span class="relative">
                                     <i class="fas fa-bell text-lg"></i>
                                     <span class="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full"></span>
@@ -79,11 +79,11 @@
                         </div>
                         
                         <!-- 帮助 -->
-                        <a href="#" class="text-gray-600 hover:text-blue-600 text-sm">帮助</a>
+                        <a href="#" class="text-gray-600 hover:text-purple-600 text-sm">帮助</a>
                         
                         <!-- 用户中心 -->
                         <div class="relative">
-                            <button id="userCenterBtn" class="text-gray-600 hover:text-blue-600">
+                            <button id="userCenterBtn" class="text-gray-600 hover:text-purple-600">
                                 <i class="fas fa-user-circle text-lg"></i>
                             </button>
                             <div id="userCenterDropdown" class="absolute right-0 top-full mt-1 w-64 bg-white rounded-lg shadow-lg py-3 hidden z-10">
@@ -155,7 +155,7 @@
                     <div class="space-y-2">
                         <div class="text-sm text-gray-500">用户类型</div>
                         <div class="flex items-center text-gray-900">
-                            <i class="fas fa-user-tag text-blue-500 mr-2"></i>
+                            <i class="fas fa-user-tag text-purple-500 mr-2"></i>
                             <span id="userType" class="font-medium">个人用户</span>
                         </div>
                     </div>
@@ -163,7 +163,7 @@
                     <div class="space-y-2">
                         <div class="text-sm text-gray-500">用户名称</div>
                         <div class="flex items-center text-gray-900">
-                            <i class="fas fa-user text-blue-500 mr-2"></i>
+                            <i class="fas fa-user text-purple-500 mr-2"></i>
                             <span id="userName" class="font-medium">张**</span>
                         </div>
                     </div>
@@ -171,7 +171,7 @@
                     <div class="space-y-2">
                         <div class="text-sm text-gray-500">证件类型</div>
                         <div class="flex items-center text-gray-900">
-                            <i class="fas fa-id-card text-blue-500 mr-2"></i>
+                            <i class="fas fa-id-card text-purple-500 mr-2"></i>
                             <span id="idType" class="font-medium">身份证</span>
                         </div>
                     </div>
@@ -179,7 +179,7 @@
                     <div class="space-y-2">
                         <div class="text-sm text-gray-500">证件号码</div>
                         <div class="flex items-center text-gray-900">
-                            <i class="fas fa-fingerprint text-blue-500 mr-2"></i>
+                            <i class="fas fa-fingerprint text-purple-500 mr-2"></i>
                             <span id="idNumber" class="font-medium font-mono">110101********1234</span>
                         </div>
                     </div>
@@ -187,7 +187,7 @@
                     <div class="space-y-2 col-span-2">
                         <div class="text-sm text-gray-500">证件有效期</div>
                         <div class="flex items-center text-gray-900">
-                            <i class="fas fa-calendar-alt text-blue-500 mr-2"></i>
+                            <i class="fas fa-calendar-alt text-purple-500 mr-2"></i>
                             <span id="validPeriod" class="font-medium">
                                 <span id="validFrom">2020-01-01</span>
                                 <span class="mx-2 text-gray-400">至</span>
@@ -199,7 +199,7 @@
                     <div class="space-y-2 col-span-2">
                         <div class="text-sm text-gray-500">证件地址</div>
                         <div class="flex items-center text-gray-900">
-                            <i class="fas fa-map-marker-alt text-blue-500 mr-2"></i>
+                            <i class="fas fa-map-marker-alt text-purple-500 mr-2"></i>
                             <span id="idAddress" class="font-medium">北京市朝阳区***************</span>
                         </div>
                     </div>
@@ -207,7 +207,7 @@
                     <div class="space-y-2 col-span-full">
                         <div class="text-sm text-gray-500">常驻地址</div>
                         <div class="flex items-center text-gray-900">
-                            <i class="fas fa-home text-blue-500 mr-2"></i>
+                            <i class="fas fa-home text-purple-500 mr-2"></i>
                             <span id="residenceAddress" class="font-medium">北京市朝阳区***************</span>
                         </div>
                     </div>
@@ -220,8 +220,8 @@
                     <h2 class="text-lg font-semibold text-gray-800">证件照片</h2>
                 </div>
                 <div class="grid grid-cols-3 gap-4" style="max-width: 480px;" id="idPhotos">
-                    <div class="w-32 h-32 rounded-lg overflow-hidden bg-gray-50 border border-gray-200 hover:border-blue-500 transition-colors cursor-pointer group" onclick="showPasswordModal('front')">
-                        <div class="h-full flex flex-col items-center justify-center text-gray-400 group-hover:text-blue-500">
+                    <div class="w-32 h-32 rounded-lg overflow-hidden bg-gray-50 border border-gray-200 hover:border-purple-500 transition-colors cursor-pointer group" onclick="showPasswordModal('front')">
+                        <div class="h-full flex flex-col items-center justify-center text-gray-400 group-hover:text-purple-500">
                             <div class="relative">
                                 <i class="fas fa-id-card text-2xl mb-2"></i>
                                 <i class="fas fa-lock text-xs absolute -right-1 -bottom-1 bg-white rounded-full p-1"></i>
@@ -230,8 +230,8 @@
                         </div>
                         <img src="../assets/images/id-front.jpg" alt="证件正面照" class="hidden">
                     </div>
-                    <div class="w-32 h-32 rounded-lg overflow-hidden bg-gray-50 border border-gray-200 hover:border-blue-500 transition-colors cursor-pointer group" onclick="showPasswordModal('back')">
-                        <div class="h-full flex flex-col items-center justify-center text-gray-400 group-hover:text-blue-500">
+                    <div class="w-32 h-32 rounded-lg overflow-hidden bg-gray-50 border border-gray-200 hover:border-purple-500 transition-colors cursor-pointer group" onclick="showPasswordModal('back')">
+                        <div class="h-full flex flex-col items-center justify-center text-gray-400 group-hover:text-purple-500">
                             <div class="relative">
                                 <i class="fas fa-id-card-alt text-2xl mb-2"></i>
                                 <i class="fas fa-lock text-xs absolute -right-1 -bottom-1 bg-white rounded-full p-1"></i>
@@ -240,8 +240,8 @@
                         </div>
                         <img src="../assets/images/id-back.jpg" alt="证件背面照" class="hidden">
                     </div>
-                    <div class="w-32 h-32 rounded-lg overflow-hidden bg-gray-50 border border-gray-200 hover:border-blue-500 transition-colors cursor-pointer group" onclick="showPasswordModal('hand')">
-                        <div class="h-full flex flex-col items-center justify-center text-gray-400 group-hover:text-blue-500">
+                    <div class="w-32 h-32 rounded-lg overflow-hidden bg-gray-50 border border-gray-200 hover:border-purple-500 transition-colors cursor-pointer group" onclick="showPasswordModal('hand')">
+                        <div class="h-full flex flex-col items-center justify-center text-gray-400 group-hover:text-purple-500">
                             <div class="relative">
                                 <i class="fas fa-hand-holding-medical text-2xl mb-2"></i>
                                 <i class="fas fa-lock text-xs absolute -right-1 -bottom-1 bg-white rounded-full p-1"></i>
@@ -267,12 +267,12 @@
             <div class="mb-6">
                 <p class="text-sm text-gray-500 mb-4">查看证件照片需要验证交易密码</p>
                 <div class="payment-password-input grid grid-cols-6 gap-2 mb-3">
-                    <input type="password" maxlength="1" class="w-full h-12 border-2 rounded-lg text-center text-xl font-medium focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all" />
-                    <input type="password" maxlength="1" class="w-full h-12 border-2 rounded-lg text-center text-xl font-medium focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all" />
-                    <input type="password" maxlength="1" class="w-full h-12 border-2 rounded-lg text-center text-xl font-medium focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all" />
-                    <input type="password" maxlength="1" class="w-full h-12 border-2 rounded-lg text-center text-xl font-medium focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all" />
-                    <input type="password" maxlength="1" class="w-full h-12 border-2 rounded-lg text-center text-xl font-medium focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all" />
-                    <input type="password" maxlength="1" class="w-full h-12 border-2 rounded-lg text-center text-xl font-medium focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all" />
+                    <input type="password" maxlength="1" class="w-full h-12 border-2 rounded-lg text-center text-xl font-medium focus:border-purple-500 focus:ring-2 focus:ring-purple-200 transition-all" />
+                    <input type="password" maxlength="1" class="w-full h-12 border-2 rounded-lg text-center text-xl font-medium focus:border-purple-500 focus:ring-2 focus:ring-purple-200 transition-all" />
+                    <input type="password" maxlength="1" class="w-full h-12 border-2 rounded-lg text-center text-xl font-medium focus:border-purple-500 focus:ring-2 focus:ring-purple-200 transition-all" />
+                    <input type="password" maxlength="1" class="w-full h-12 border-2 rounded-lg text-center text-xl font-medium focus:border-purple-500 focus:ring-2 focus:ring-purple-200 transition-all" />
+                    <input type="password" maxlength="1" class="w-full h-12 border-2 rounded-lg text-center text-xl font-medium focus:border-purple-500 focus:ring-2 focus:ring-purple-200 transition-all" />
+                    <input type="password" maxlength="1" class="w-full h-12 border-2 rounded-lg text-center text-xl font-medium focus:border-purple-500 focus:ring-2 focus:ring-purple-200 transition-all" />
                 </div>
                 <p id="passwordError" class="flex items-center text-red-500 text-sm hidden">
                     <i class="fas fa-exclamation-circle mr-2"></i>
@@ -281,7 +281,7 @@
             </div>
             <div class="flex justify-end space-x-3">
                 <button id="cancelPassword" class="px-6 py-2 text-gray-600 hover:text-gray-800 font-medium transition-colors" onclick="closePasswordModal()">取消</button>
-                <button id="confirmPassword" class="px-6 py-2 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors">确认</button>
+                <button id="confirmPassword" class="px-6 py-2 bg-purple-600 text-white font-medium rounded-lg hover:bg-purple-700 transition-colors">确认</button>
             </div>
         </div>
     </div>

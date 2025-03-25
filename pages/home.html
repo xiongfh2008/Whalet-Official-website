@@ -213,6 +213,45 @@
         [data-theme="dark"] .border-blue-100 {
             border-color: #404040 !important;
         }
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-4px); }
+            75% { transform: translateX(4px); }
+        }
+
+        .animate-shake {
+            animation: shake 0.3s ease-in-out;
+        }
+
+        /* 自定义复选框样式 */
+        .quick-nav-checkbox {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            padding: 0;
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+            display: inline-block;
+            vertical-align: middle;
+            background-origin: border-box;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            user-select: none;
+            flex-shrink: 0;
+            background-color: #fff;
+            border: 1px solid #7D33FF;
+        }
+
+        .quick-nav-checkbox:checked {
+            background-color: #7D33FF;
+            background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='M12.207 4.793a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0l-2-2a1 1 0 011.414-1.414L6.5 9.086l4.293-4.293a1 1 0 011.414 0z'/%3e%3c/svg%3e");
+        }
+
+        .quick-nav-checkbox:focus {
+            outline: 2px solid transparent;
+            outline-offset: 2px;
+            box-shadow: 0 0 0 2px rgba(125, 51, 255, 0.2);
+        }
     </style>
 </head>
 <body>
@@ -232,7 +271,7 @@
                 
                 <!-- 公告图标 -->
                 <div class="relative">
-                    <a href="#" class="text-gray-600 nav-link-hover">
+                    <a href="message-center.html" class="text-gray-600 nav-link-hover">
                         <span class="relative">
                             <i class="fas fa-bell text-lg"></i>
                             <span class="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full"></span>
@@ -318,7 +357,7 @@
                             </div>
                         </div>
                     </div>
-                    <a href="#" style="color: #7D33FF" class="hover:bg-[#7D33FF]/10 px-2 py-1 rounded text-sm font-medium flex items-center whitespace-nowrap">
+                    <a href="announcement-detail.html" style="color: #7D33FF" class="hover:bg-[#7D33FF]/10 px-2 py-1 rounded text-sm font-medium flex items-center whitespace-nowrap">
                         查看详情
                         <i class="fas fa-chevron-right ml-1 text-xs"></i>
                     </a>
@@ -330,11 +369,6 @@
         <div class="mb-4" id="adBanner">
             <div class="bg-gradient-to-r from-purple-500 to-indigo-600 rounded-lg overflow-hidden shadow-sm">
                 <div class="relative">
-                    <!-- 关闭按钮 -->
-                    <button id="closeAdBanner" class="absolute top-2.5 right-3 text-white/80 hover:text-white">
-                        <i class="fas fa-times"></i>
-                    </button>
-                    
                     <!-- 广告内容 -->
                     <div class="flex items-center justify-between py-4 px-6">
                         <div class="flex-1 flex items-center space-x-6">
@@ -582,6 +616,7 @@
                 <div class="space-y-3" id="quickNavOptions">
                     <!-- Options will be dynamically populated by JavaScript -->
                 </div>
+                <p id="quickNavError" class="text-red-500 text-sm mt-2 hidden">最多只能选择5个快速导航入口</p>
             </div>
             <div class="p-5 border-t border-gray-200 flex justify-end space-x-3">
                 <button id="cancelQuickNav" class="px-4 py-2 text-sm text-gray-600 hover:text-gray-800">
@@ -866,6 +901,20 @@
                 textColor: 'text-[#7D33FF]',
                 link: 'trade-collection.html'
             },
+            'independent-site': {
+                title: '独立站',
+                icon: 'fa-shopping-cart',
+                bgColor: 'bg-[#7D33FF]/10',
+                textColor: 'text-[#7D33FF]',
+                link: 'independent-site.html'
+            },
+            'service-trade': {
+                title: '服务贸易',
+                icon: 'fa-handshake',
+                bgColor: 'bg-[#7D33FF]/10',
+                textColor: 'text-[#7D33FF]',
+                link: 'service-trade.html'
+            },
             'withdrawal': {
                 title: '提现',
                 icon: 'fa-wallet',
@@ -888,7 +937,7 @@
                 link: 'forex.html'
             },
             'cards': {
-                title: '卡片',
+                title: '商务卡',
                 icon: 'fa-credit-card',
                 bgColor: 'bg-[#7D33FF]/10',
                 textColor: 'text-[#7D33FF]',
@@ -967,7 +1016,8 @@
                 
                 option.innerHTML = `
                     <label class="flex items-center cursor-pointer w-full">
-                        <input type="checkbox" class="quick-nav-checkbox form-checkbox h-5 w-5 text-[#7D33FF] rounded border-gray-300"
+                        <input type="checkbox" class="quick-nav-checkbox h-5 w-5 rounded border-gray-300"
+                               style="accent-color: #7D33FF; border-color: #7D33FF;"
                                value="${key}" ${isSelected ? 'checked' : ''}>
                         <div class="ml-3 flex items-center">
                             <div class="w-8 h-8 flex items-center justify-center mr-3 rounded-full" style="background-color: rgba(125, 51, 255, 0.1)">
@@ -985,9 +1035,17 @@
             document.querySelectorAll('.quick-nav-checkbox').forEach(checkbox => {
                 checkbox.addEventListener('change', function() {
                     const selectedCount = document.querySelectorAll('.quick-nav-checkbox:checked').length;
+                    const errorMessage = document.getElementById('quickNavError');
+                    
                     if (selectedCount > 5) {
                         this.checked = false;
-                        alert('最多只能选择5个快速导航入口');
+                        errorMessage.classList.remove('hidden');
+                        errorMessage.classList.add('animate-shake');
+                        setTimeout(() => {
+                            errorMessage.classList.remove('animate-shake');
+                        }, 500);
+                    } else {
+                        errorMessage.classList.add('hidden');
                     }
                 });
             });

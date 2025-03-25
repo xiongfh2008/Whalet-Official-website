@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>添加收款人 - Whalet</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            background-color: #f9fafb;
+            font-family: 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+        }
+        .form-input {
+            height: 40px;
+            padding: 8px 12px;
+            font-size: 14px;
+            width: 100%;
+            border: 1px solid #E5E7EB;
+            border-radius: 8px;
+            background-color: #fff;
+        }
+        .form-input:focus {
+            outline: none;
+            border-color: #7C3AED;
+            box-shadow: 0 0 0 1px #7C3AED;
+        }
+        .form-select {
+            height: 40px;
+            padding: 8px 12px;
+            font-size: 14px;
+            width: 100%;
+            border: 1px solid #E5E7EB;
+            border-radius: 8px;
+            background-color: #fff;
+            appearance: none;
+            padding-right: 36px;
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+            background-position: right 0.5rem center;
+            background-repeat: no-repeat;
+            background-size: 1.5em 1.5em;
+        }
+        .form-select:focus {
+            outline: none;
+            border-color: #7C3AED;
+            box-shadow: 0 0 0 1px #7C3AED;
+        }
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            color: #374151;
+        }
+        .required::after {
+            content: '*';
+            color: #EF4444;
+            margin-left: 4px;
+        }
+        .file-upload {
+            border: 2px dashed #E5E7EB;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .file-upload:hover {
+            border-color: #7C3AED;
+            background-color: #F9FAFB;
+        }
+        .alert-info {
+            background-color: #F3E8FF;
+            border: 1px solid #E9D8FD;
+            border-radius: 8px;
+            padding: 12px 16px;
+            margin-bottom: 24px;
+            color: #6B21A8;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <div class="container mx-auto px-4 py-8">
+        <div class="max-w-6xl mx-auto bg-white rounded-lg shadow-sm">
+            <!-- 头部 -->
+            <div class="p-6 border-b border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center">
+                        <a href="payee-management.html" class="text-purple-600 hover:text-purple-700 mr-2">
+                            <i class="fas fa-arrow-left"></i>
+                        </a>
+                        <a href="payee-management.html" class="text-purple-600 hover:text-purple-700 mr-4">返回</a>
+                        <h1 class="text-xl font-semibold text-gray-800">添加收款人</h1>
+                    </div>
+                    <a href="payee-management.html" class="text-gray-500 hover:text-gray-700">
+                        <i class="fas fa-times"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- 主要内容 -->
+            <div class="p-6">
+                <!-- 提示信息 -->
+                <div class="alert-info mb-6">
+                    <i class="fas fa-info-circle mr-2"></i>
+                    温馨提示：Whalet账户余额直接向您的供应商进行付款，请确保提交给我们的收款人账户信息准确无误，以免影响您正常付款。
+                </div>
+
+                <form class="space-y-6">
+                    <!-- 供应商信息 -->
+                    <div class="space-y-4">
+                        <h2 class="text-base font-medium text-gray-900">供应商信息</h2>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="form-label required">供应商类型</label>
+                                <select class="form-select">
+                                    <option value="">请选择供应商类型</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="form-label">收款方类型</label>
+                                <div class="flex items-center space-x-6 mt-2">
+                                    <label class="inline-flex items-center">
+                                        <input type="radio" name="payeeType" value="bank" class="form-radio text-purple-600" checked>
+                                        <span class="ml-2 text-sm text-gray-700">银行账号</span>
+                                    </label>
+                                    <label class="inline-flex items-center">
+                                        <input type="radio" name="payeeType" value="other" class="form-radio text-purple-600">
+                                        <span class="ml-2 text-sm text-gray-700">否</span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div>
+                                <label class="form-label">国家地区</label>
+                                <select class="form-select">
+                                    <option value="US">美国 (US)</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="form-label">收款币种</label>
+                                <select class="form-select">
+                                    <option value="USD">美元(USD)</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="form-label required">供应商名称</label>
+                                <input type="text" class="form-input" placeholder="请输入人/英文名称，必须与开户名一致">
+                            </div>
+                            <div>
+                                <label class="form-label">备注名称</label>
+                                <input type="text" class="form-input" placeholder="请输入备注名称">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 账户信息 -->
+                    <div class="space-y-4">
+                        <h2 class="text-base font-medium text-gray-900">账户信息</h2>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="form-label required">收款人名称</label>
+                                <input type="text" class="form-input" placeholder="请输入收款人名称">
+                            </div>
+                            <div>
+                                <label class="form-label required">银行名称</label>
+                                <input type="text" class="form-input" placeholder="请输入银行名称">
+                            </div>
+                            <div>
+                                <label class="form-label required">银行账号</label>
+                                <input type="text" class="form-input" placeholder="请输入银行账号">
+                            </div>
+                            <div>
+                                <label class="form-label required">银行地址</label>
+                                <input type="text" class="form-input" placeholder="请输入银行地址">
+                            </div>
+                            <div>
+                                <label class="form-label required">SwiftCode</label>
+                                <input type="text" class="form-input" placeholder="请输入SwiftCode">
+                            </div>
+                            <div>
+                                <label class="form-label required">routingNumber</label>
+                                <input type="text" class="form-input" placeholder="请输入routingNumber">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 收款人地址 -->
+                    <div class="space-y-4">
+                        <h2 class="text-base font-medium text-gray-900">收款人地址</h2>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <div>
+                                <select class="form-select" placeholder="Country">
+                                    <option value="">Country</option>
+                                </select>
+                            </div>
+                            <div>
+                                <input type="text" class="form-input" placeholder="State/Province">
+                            </div>
+                            <div>
+                                <input type="text" class="form-input" placeholder="City">
+                            </div>
+                        </div>
+                        <div>
+                            <input type="text" class="form-input" placeholder="Address">
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="form-label">收款人邮政编码</label>
+                                <input type="text" class="form-input" placeholder="请输入邮政编码">
+                            </div>
+                            <div>
+                                <label class="form-label">联系电话</label>
+                                <div class="flex space-x-2">
+                                    <select class="form-select w-24">
+                                        <option value="">区号</option>
+                                    </select>
+                                    <input type="text" class="form-input flex-1" placeholder="请输入手机号">
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="form-label">邮箱</label>
+                            <input type="email" class="form-input" placeholder="请输入邮箱">
+                        </div>
+                    </div>
+
+                    <!-- 授权 -->
+                    <div class="space-y-4">
+                        <h2 class="text-base font-medium text-gray-900">授权</h2>
+                        <div class="file-upload">
+                            <input type="file" class="hidden" accept=".pdf,.jpg,.jpeg,.png">
+                            <i class="fas fa-plus text-gray-400 text-xl mb-2"></i>
+                            <div class="text-sm text-gray-500">上传附件</div>
+                        </div>
+                        <div class="text-xs text-gray-500">
+                            请提交文件收款授权书.docx等需要的文件<br>
+                            只能上传pdf,jpg,jpeg,png文件，且不超过15M
+                        </div>
+                    </div>
+
+                    <!-- 协议同意 -->
+                    <div class="flex items-center">
+                        <input type="checkbox" class="h-4 w-4 text-purple-600 rounded border-gray-300">
+                        <label class="ml-2 text-sm text-gray-700">
+                            本人已阅读、知晓并同意 <a href="#" class="text-purple-600 hover:text-purple-800">《承诺函》</a> 条款
+                        </label>
+                    </div>
+
+                    <!-- 按钮组 -->
+                    <div class="flex justify-center space-x-4">
+                        <a href="payee-management.html" class="px-8 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50">
+                            返回
+                        </a>
+                        <button type="submit" class="px-8 py-2 bg-purple-600 text-white rounded-md text-sm font-medium hover:bg-purple-700">
+                            下一步
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 处理所有返回链接
+            document.querySelectorAll('a[href="payee-management.html"]').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    // 设置返回到第三方账户tab
+                    localStorage.setItem('activeTab', 'thirdparty');
+                    window.location.href = this.href;
+                });
+            });
+
+            // 文件上传处理
+            const fileUpload = document.querySelector('.file-upload');
+            const fileInput = fileUpload.querySelector('input[type="file"]');
+            
+            fileUpload.addEventListener('click', () => {
+                fileInput.click();
+            });
+
+            fileInput.addEventListener('change', (e) => {
+                if (e.target.files.length > 0) {
+                    const file = e.target.files[0];
+                    const fileSize = file.size / 1024 / 1024; // Convert to MB
+                    if (fileSize > 15) {
+                        alert('文件大小不能超过15M');
+                        return;
+                    }
+                    const fileName = file.name;
+                    fileUpload.querySelector('.text-sm').textContent = fileName;
+                }
+            });
+        });
+    </script>
+</body>
+</html> 

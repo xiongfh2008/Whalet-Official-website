@@ -474,6 +474,9 @@
                         <button class="tab-btn active whitespace-nowrap py-4 px-8 border-b-2 text-center text-sm font-medium">
                             提现
                         </button>
+                        <button class="tab-btn whitespace-nowrap py-4 px-8 border-b-2 text-center text-sm font-medium">
+                            我的银行卡
+                        </button>
                     </nav>
                     <div class="flex items-center space-x-6 pr-6">
                         <!-- 公告图标 -->
@@ -554,7 +557,7 @@
         <!-- Tab Contents -->
         <div class="tab-contents">
             <!-- 提现 Tab -->
-            <div id="withdrawal" class="tab-content active" x-data="{
+            <div id="withdrawal-tab" class="tab-content active" x-data="{
                 currentStep: 1,
                 selectedBank: null,
                 withdrawalAmount: '',
@@ -1114,7 +1117,10 @@
                                     <div class="flex justify-between items-start pb-4 border-b border-gray-100" x-show="withdrawalCurrency !== receivingCurrency">
                                         <div class="space-y-1">
                                             <div class="text-sm text-gray-500">汇率</div>
-                                            <div class="font-medium" x-text="`USD/CNY = ${exchangeRate}`"></div>
+                                            <div class="font-medium flex items-center space-x-2">
+                                                <span x-text="`USD/CNY = ${exchangeRate}`"></span>
+                                                <span class="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded-md" x-text="`${countdown}秒`"></span>
+                                            </div>
                                         </div>
                                     </div>
 
@@ -1279,6 +1285,72 @@
                     </div>
                 </div>
             </div>
+
+            <!-- 我的银行卡 Tab -->
+            <div id="bank-cards-tab" class="tab-content" x-show="currentTab === 'bank-cards'" x-cloak>
+                <div class="bg-white rounded-xl shadow-sm p-6">
+                    <div class="flex justify-between items-center mb-6">
+                        <h2 class="text-lg font-medium text-gray-800">我的银行卡</h2>
+                        <a href="add-bank-card.html?return_tab=bank-cards" class="text-sm text-blue-600 hover:text-blue-700 font-medium">
+                            <i class="fas fa-plus mr-1"></i>
+                            添加新卡
+                        </a>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                        <!-- Add New Card Button -->
+                        <a href="add-bank-card.html?return_tab=bank-cards" class="bank-card add-card-button">
+                            <i class="fas fa-plus-circle text-2xl text-gray-400 mb-1"></i>
+                            <span class="text-xs text-gray-600">添加新银行卡</span>
+                        </a>
+
+                        <!-- CNY Bank Card (China Mainland) -->
+                        <div class="bank-card cursor-pointer hover:shadow-md transition-shadow" onclick="showCardDetails(this)">
+                            <div class="flex justify-between items-start mb-2">
+                                <div class="flex items-center space-x-1.5">
+                                    <img src="https://cdn.jsdelivr.net/gh/lipis/flag-icons/flags/4x3/cn.svg" alt="CNY" class="bank-logo">
+                                    <span class="status-badge success">正常</span>
+                                </div>
+                                <div class="flex items-center space-x-1">
+                                    <span class="currency-tag">CNY</span>
+                                    <button class="text-gray-400 hover:text-red-500 text-xs" onclick="event.stopPropagation()">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="space-y-0.5 mt-auto">
+                                <h3 class="font-medium text-sm">中国银行</h3>
+                                <p class="text-xs text-gray-600">张三</p>
+                                <p class="text-xs text-gray-500">**** **** **** 5678</p>
+                                <div class="flex items-center mt-1">
+                                    <span class="text-xs text-blue-600 bg-blue-50 px-1.5 py-0.5 rounded-full">默认账户</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- USD Bank Card -->
+                        <div class="bank-card cursor-pointer hover:shadow-md transition-shadow" onclick="showCardDetails(this)">
+                            <div class="flex justify-between items-start mb-2">
+                                <div class="flex items-center space-x-1.5">
+                                    <img src="https://cdn.jsdelivr.net/gh/lipis/flag-icons/flags/4x3/us.svg" alt="USD" class="bank-logo">
+                                    <span class="status-badge success">正常</span>
+                                </div>
+                                <div class="flex items-center space-x-1">
+                                    <span class="currency-tag">USD</span>
+                                    <button class="text-gray-400 hover:text-red-500 text-xs" onclick="event.stopPropagation()">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="space-y-0.5 mt-auto">
+                                <h3 class="font-medium text-sm">Bank of America</h3>
+                                <p class="text-xs text-gray-600">ZHANG SAN</p>
+                                <p class="text-xs text-gray-500">**** **** **** 1234</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -1297,6 +1369,32 @@
                 if (!userBtn.contains(e.target) && !dropdownMenu.contains(e.target)) {
                     dropdownMenu.classList.add('hidden');
                 }
+            });
+
+            // Tab switching functionality
+            const tabs = document.querySelectorAll('.tab-btn');
+            const tabContents = document.querySelectorAll('.tab-content');
+
+            // Function to switch tabs
+            function switchTab(tabIndex) {
+                tabs.forEach(t => t.classList.remove('active'));
+                tabContents.forEach(c => c.classList.remove('active'));
+                tabs[tabIndex].classList.add('active');
+                tabContents[tabIndex].classList.add('active');
+            }
+
+            // Check URL parameters for tab selection
+            const urlParams = new URLSearchParams(window.location.search);
+            const returnTab = urlParams.get('return_tab');
+            if (returnTab === 'bank-cards') {
+                switchTab(1); // Switch to bank cards tab
+            }
+
+            // Add click event listeners to tabs
+            tabs.forEach((tab, index) => {
+                tab.addEventListener('click', () => {
+                    switchTab(index);
+                });
             });
         });
     </script>

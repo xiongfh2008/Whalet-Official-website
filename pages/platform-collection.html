@@ -8,6 +8,62 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="../styles/custom.css">
     <style>
+        /* 导航栏样式 */
+        .nav-container {
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            margin-bottom: 1.5rem;
+        }
+
+        .nav-border {
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        /* 用户中心下拉菜单样式 */
+        #userCenterDropdown {
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            transform-origin: top right;
+            transition: all 0.2s ease-out;
+            z-index: 50;
+        }
+
+        #userCenterDropdown.hidden {
+            display: none;
+        }
+
+        #userCenterDropdown.opacity-0 {
+            opacity: 0;
+            transform: translateY(-0.5rem);
+        }
+
+        #userCenterDropdown.opacity-100 {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* 导航栏悬停样式 */
+        .text-gray-600:hover,
+        .hover\:text-blue-600:hover,
+        button.text-gray-600:hover,
+        a.text-gray-600:hover,
+        .text-gray-400:hover {
+            color: #7D33FF !important;
+        }
+        
+        /* 图标悬停样式 */
+        button:hover i,
+        a:hover i {
+            color: #7D33FF !important;
+        }
+        
+        /* 下拉菜单悬停样式 */
+        .hover\:bg-gray-100:hover {
+            color: #7D33FF !important;
+        }
+
+        /* 原有的样式保持不变 */
         .platform-card {
             transition: all 0.3s ease;
         }
@@ -61,7 +117,79 @@
                             订单管理
                         </button>
                     </nav>
+                    <div class="flex items-center space-x-6 pr-6">
+                        <!-- 公告图标 -->
+                        <div class="relative">
+                            <a href="#" class="text-gray-600 nav-link-hover">
+                                <span class="relative">
+                                    <i class="fas fa-bell text-lg"></i>
+                                    <span class="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full"></span>
+                                </span>
+                            </a>
                         </div>
+                        
+                        <!-- 帮助 -->
+                        <a href="#" class="text-gray-600 nav-link-hover text-sm">帮助</a>
+                        
+                        <!-- 用户中心 -->
+                        <div class="relative">
+                            <button id="userCenterBtn" class="text-gray-600 nav-link-hover">
+                                <i class="fas fa-user-circle text-lg"></i>
+                            </button>
+                            <div id="userCenterDropdown" class="absolute right-0 top-full mt-1 w-64 bg-white rounded-lg shadow-lg py-3 hidden z-50">
+                                <!-- 用户信息部分 -->
+                                <div class="px-4 pb-3 border-b border-gray-100">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <h3 class="font-medium text-gray-900">张珊珊</h3>
+                                        <a href="#" class="text-xs text-blue-600 hover:text-blue-700">升级为企业</a>
+                                    </div>
+                                    <div class="flex items-center justify-between mb-2">
+                                        <div class="flex items-center">
+                                            <span class="text-sm text-gray-600">ZHANG SHANSHAN</span>
+                                            <button class="ml-2 text-gray-400 hover:text-gray-600">
+                                                <i class="fas fa-edit text-xs"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center justify-between">
+                                        <span class="text-sm text-gray-600">ID</span>
+                                        <button class="text-gray-400 hover:text-gray-600">
+                                            <i class="fas fa-copy text-xs"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <!-- 菜单选项 -->
+                                <div class="py-1">
+                                    <a href="security.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                        <i class="fas fa-shield-alt w-5 text-gray-400"></i>
+                                        安全设置
+                                    </a>
+                                    <a href="authentication-info.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                        <i class="fas fa-id-card w-5 text-gray-400"></i>
+                                        认证信息
+                                    </a>
+                                    <a href="fees.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                        <i class="fas fa-percentage w-5 text-gray-400"></i>
+                                        费率查询
+                                    </a>
+                                    <a href="coupons.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                        <i class="fas fa-gift w-5 text-gray-400"></i>
+                                        我的优惠
+                                    </a>
+                                    <a href="my-invitation.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                        <i class="fas fa-user-plus w-5 text-gray-400"></i>
+                                        我的邀请
+                                    </a>
+                                    <div class="border-t border-gray-100 my-1"></div>
+                                    <a href="logout.html" class="block px-4 py-2 text-sm text-red-600 hover:bg-gray-100">
+                                        <i class="fas fa-sign-out-alt w-5"></i>
+                                        退出
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -327,7 +455,24 @@
     </div>
 
     <script>
-        // Tab切换功能
+        // 用户中心下拉菜单
+        document.addEventListener('DOMContentLoaded', function() {
+            const userCenterBtn = document.getElementById('userCenterBtn');
+            const userCenterDropdown = document.getElementById('userCenterDropdown');
+            
+            userCenterBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                userCenterDropdown.classList.toggle('hidden');
+            });
+            
+            document.addEventListener('click', function(e) {
+                if (!userCenterDropdown.contains(e.target) && e.target !== userCenterBtn) {
+                    userCenterDropdown.classList.add('hidden');
+                }
+            });
+        });
+
+        // 原有的Tab切换功能保持不变
         document.addEventListener('DOMContentLoaded', function() {
             const tabButtons = document.querySelectorAll('.tab-btn');
             const tabContents = document.querySelectorAll('.tab-content');

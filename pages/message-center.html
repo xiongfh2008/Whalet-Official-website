@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>消息中心 - Whalet</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            background-color: #f9fafb;
+        }
+        .message-item {
+            transition: all 0.3s ease;
+        }
+        .message-item:hover {
+            background-color: #f3f4f6;
+        }
+        [data-theme="dark"] body {
+            background-color: #1a1a1a;
+        }
+        [data-theme="dark"] .bg-white {
+            background-color: #2d2d2d;
+        }
+        [data-theme="dark"] .border-gray-200 {
+            border-color: #404040;
+        }
+        [data-theme="dark"] .text-gray-600 {
+            color: #9ca3af;
+        }
+        [data-theme="dark"] .text-gray-700 {
+            color: #d1d5db;
+        }
+        [data-theme="dark"] .text-gray-800 {
+            color: #e5e7eb;
+        }
+        [data-theme="dark"] .hover\:bg-gray-50:hover {
+            background-color: #404040;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <div class="container mx-auto px-4 py-8">
+        <div class="max-w-6xl mx-auto bg-white rounded-lg shadow-sm">
+            <!-- 头部 -->
+            <div class="p-6 border-b border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center">
+                        <a href="home.html" class="text-purple-600 hover:text-purple-700 mr-2">
+                            <i class="fas fa-arrow-left"></i>
+                        </a>
+                        <a href="home.html" class="text-purple-600 hover:text-purple-700 mr-4">返回</a>
+                        <h1 class="text-xl font-semibold text-gray-800">消息中心</h1>
+                    </div>
+                    <a href="home.html" class="text-gray-500 hover:text-gray-700">
+                        <i class="fas fa-times"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- 消息列表 -->
+            <div class="p-6">
+                <!-- 消息类型切换 -->
+                <div class="flex space-x-6 mb-6">
+                    <button class="text-purple-600 font-medium pb-2 border-b-2 border-purple-600">公告</button>
+                    <button class="text-gray-500 font-medium pb-2 border-b-2 border-transparent hover:text-purple-600 hover:border-purple-600">消息</button>
+                </div>
+
+                <!-- 消息列表 -->
+                <div class="space-y-4">
+                    <!-- 清明节假期公告 -->
+                    <div class="message-item p-4 border border-gray-200 rounded-lg">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <h3 class="text-gray-800 font-medium mb-2">清明节假期公告</h3>
+                                <p class="text-gray-600 text-sm">关于2024年清明节期间收付款服务安排的通知</p>
+                            </div>
+                            <span class="text-gray-500 text-sm">2025-03-21 17:54:59</span>
+                        </div>
+                    </div>
+
+                    <!-- 春节&元宵假期公告 -->
+                    <div class="message-item p-4 border border-gray-200 rounded-lg">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <h3 class="text-gray-800 font-medium mb-2">春节&元宵假期公告</h3>
+                                <p class="text-gray-600 text-sm">关于2024年春节及元宵节期间收付款服务安排的通知</p>
+                            </div>
+                            <span class="text-gray-500 text-sm">2025-01-08 16:04:39</span>
+                        </div>
+                    </div>
+
+                    <!-- 圣诞节&元旦假期公告 -->
+                    <div class="message-item p-4 border border-gray-200 rounded-lg">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <h3 class="text-gray-800 font-medium mb-2">圣诞节&元旦假期公告</h3>
+                                <p class="text-gray-600 text-sm">关于2024年圣诞节及元旦期间收付款服务安排的通知</p>
+                            </div>
+                            <span class="text-gray-500 text-sm">2024-12-24 12:53:42</span>
+                        </div>
+                    </div>
+
+                    <!-- 2024年国庆节假期公告 -->
+                    <div class="message-item p-4 border border-gray-200 rounded-lg">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <h3 class="text-gray-800 font-medium mb-2">2024年国庆节假期公告</h3>
+                                <p class="text-gray-600 text-sm">关于2024年国庆节期间收付款服务安排的通知</p>
+                            </div>
+                            <span class="text-gray-500 text-sm">2024-09-24 14:40:51</span>
+                        </div>
+                    </div>
+
+                    <!-- 2024年中秋节假期公告 -->
+                    <div class="message-item p-4 border border-gray-200 rounded-lg">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <h3 class="text-gray-800 font-medium mb-2">2024年中秋节假期公告</h3>
+                                <p class="text-gray-600 text-sm">关于2024年中秋节期间收付款服务安排的通知</p>
+                            </div>
+                            <span class="text-gray-500 text-sm">2024-09-06 10:21:50</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 分页 -->
+                <div class="flex justify-center mt-6 space-x-2">
+                    <button class="w-8 h-8 flex items-center justify-center rounded-md border border-gray-300 text-gray-500 hover:border-purple-600 hover:text-purple-600 disabled:opacity-50 disabled:cursor-not-allowed" disabled>
+                        <i class="fas fa-chevron-left text-sm"></i>
+                    </button>
+                    <button class="w-8 h-8 flex items-center justify-center rounded-md bg-purple-600 text-white">1</button>
+                    <button class="w-8 h-8 flex items-center justify-center rounded-md border border-gray-300 text-gray-700 hover:border-purple-600 hover:text-purple-600">2</button>
+                    <button class="w-8 h-8 flex items-center justify-center rounded-md border border-gray-300 text-gray-500 hover:border-purple-600 hover:text-purple-600">
+                        <i class="fas fa-chevron-right text-sm"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 处理所有返回链接
+            document.querySelectorAll('a[href="platform-collection.html#message-center"]').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    // 存储要激活的标签页信息
+                    localStorage.setItem('activeTab', 'message-center');
+                    window.location.href = this.href;
+                });
+            });
+
+            // 处理消息类型切换
+            document.querySelectorAll('button').forEach(button => {
+                if (!button.classList.contains('w-8')) { // 排除分页按钮
+                    button.addEventListener('click', function() {
+                        // 移除所有按钮的激活状态
+                        document.querySelectorAll('button').forEach(btn => {
+                            if (!btn.classList.contains('w-8')) { // 排除分页按钮
+                                btn.classList.remove('text-purple-600', 'border-purple-600');
+                                btn.classList.add('text-gray-500', 'border-transparent');
+                            }
+                        });
+                        
+                        // 添加当前按钮的激活状态
+                        this.classList.remove('text-gray-500', 'border-transparent');
+                        this.classList.add('text-purple-600', 'border-purple-600');
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html> 
