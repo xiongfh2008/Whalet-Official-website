@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>收款人管理 - Whalet</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../styles/common.css">
+    <link rel="stylesheet" href="../styles/custom.css">
+    <style>
+        body {
+            background-color: #f9fafb;
+            font-family: 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+        }
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 1.5rem 1rem;
+        }
+        @media (min-width: 640px) {
+            .container {
+                padding: 1.5rem;
+            }
+        }
+        @media (min-width: 1024px) {
+            .container {
+                padding: 1.5rem 2rem;
+            }
+        }
+        .card {
+            transition: all 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+        .payee-card {
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+        .payee-card:hover {
+            border-color: #4f46e5;
+        }
+        .tab-btn {
+            border-bottom: 2px solid transparent;
+            color: #6b7280;
+        }
+        .tab-btn:hover {
+            color: #374151;
+            border-bottom-color: #d1d5db;
+        }
+        .tab-btn.active {
+            border-bottom: 2px solid #4f46e5;
+            color: #4f46e5;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        
+        /* 银行卡样式 */
+        .bank-logo {
+            width: 2rem;
+            height: 2rem;
+            object-fit: contain;
+            padding: 0.2rem;
+            border-radius: 9999px;
+            background: white;
+            border: 1px solid #e5e7eb;
+        }
+
+        .bank-card {
+            transition: all 0.2s ease;
+            cursor: pointer;
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 0.75rem;
+            padding: 0.875rem;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .bank-card:hover {
+            border-color: #7D33FF;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .currency-tag {
+            background-color: #f3f4f6;
+            padding: 0.15rem 0.4rem;
+            border-radius: 9999px;
+            font-size: 0.65rem;
+            color: #4b5563;
+            font-weight: 500;
+        }
+
+        .add-card-button {
+            border: 2px dashed #e5e7eb;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            min-height: 140px;
+            transition: all 0.2s ease;
+        }
+
+        .add-card-button:hover {
+            border-color: #7D33FF;
+            background-color: #f8fafc;
+        }
+
+        .status-badge {
+            padding: 0.15rem 0.5rem;
+            border-radius: 9999px;
+            font-size: 0.65rem;
+            font-weight: 500;
+        }
+        
+        .status-badge.success {
+            background-color: #ecfdf5;
+            color: #047857;
+        }
+        
+        .status-badge.pending {
+            background-color: #fef3c7;
+            color: #92400e;
+        }
+        
+        .status-badge.rejected {
+            background-color: #fee2e2;
+            color: #b91c1c;
+        }
+
+        /* User center dropdown styles */
+        #userCenterDropdown {
+            transition: all 0.2s ease-in-out;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+        #userCenterDropdown.hidden {
+            display: none;
+        }
+        #userCenterBtn {
+            cursor: pointer;
+        }
+    </style>
+    
+    <!-- 直接在头部定义切换函数，确保函数在页面加载前就定义好 -->
+    <script>
+        function toggleTab(tabName) {
+            // 切换tab样式
+            document.getElementById('tab-withdrawal').classList.remove('active');
+            document.getElementById('tab-thirdparty').classList.remove('active');
+            document.getElementById(tabName === 'withdrawal' ? 'tab-withdrawal' : 'tab-thirdparty').classList.add('active');
+            
+            // 切换内容
+            document.getElementById('withdrawal-content').classList.remove('active');
+            document.getElementById('thirdparty-content').classList.remove('active');
+            document.getElementById(tabName === 'withdrawal' ? 'withdrawal-content' : 'thirdparty-content').classList.add('active');
+        }
+
+        function showCardDetails(card) {
+            alert('显示卡详情');
+        }
+    </script>
+</head>
+<body class="bg-gray-50">
+    <div class="container mx-auto">
+        <!-- 将顶部导航和tab选项卡放在同一行 -->
+        <div class="bg-white rounded-lg shadow-sm mb-4">
+            <div class="border-b border-gray-200">
+                <div class="flex justify-between items-center">
+                    <nav class="flex justify-start -mb-px pl-6">
+                        <button onclick="switchTab('withdrawal')" id="tab-withdrawal" class="tab-btn active whitespace-nowrap py-4 px-8 border-b-2 text-center text-sm font-medium">
+                            我的银行卡
+                        </button>
+                        <button onclick="switchTab('thirdparty')" id="tab-thirdparty" class="tab-btn whitespace-nowrap py-4 px-8 border-b-2 text-center text-sm font-medium">
+                            第三方账户
+                        </button>
+                    </nav>
+                    <div class="flex items-center space-x-6 pr-6">
+                        <!-- 公告图标 -->
+                        <div class="relative">
+                            <a href="#" class="text-gray-600 hover:text-blue-600">
+                                <span class="relative">
+                                    <i class="fas fa-bell text-lg"></i>
+                                    <span class="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full"></span>
+                                </span>
+                            </a>
+                        </div>
+                        
+                        <!-- 帮助 -->
+                        <a href="#" class="text-gray-600 hover:text-blue-600 text-sm">帮助</a>
+                        
+                        <!-- 用户中心 -->
+                        <div class="relative">
+                            <button id="userCenterBtn" class="text-gray-600 hover:text-blue-600">
+                                <i class="fas fa-user-circle text-lg"></i>
+                            </button>
+                            <div id="userCenterDropdown" class="absolute right-0 top-full mt-1 w-64 bg-white rounded-lg shadow-lg py-3 hidden z-10">
+                                <!-- 用户信息部分 -->
+                                <div class="px-4 pb-3 border-b border-gray-100">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <h3 class="font-medium text-gray-900">张珊珊</h3>
+                                        <a href="#" class="text-xs text-blue-600 hover:text-blue-700">升级为企业</a>
+                                    </div>
+                                    <div class="flex items-center justify-between mb-2">
+                                        <div class="flex items-center">
+                                            <span class="text-sm text-gray-600">ZHANG SHANSHAN</span>
+                                            <button class="ml-2 text-gray-400 hover:text-gray-600">
+                                                <i class="fas fa-edit text-xs"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center justify-between">
+                                        <span class="text-sm text-gray-600">ID</span>
+                                        <button class="text-gray-400 hover:text-gray-600">
+                                            <i class="fas fa-copy text-xs"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <!-- 菜单选项 -->
+                                <div class="py-1">
+                                    <a href="security.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                        <i class="fas fa-shield-alt w-5 text-gray-400"></i>
+                                        安全设置
+                                    </a>
+                                    <a href="authentication-info.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                        <i class="fas fa-id-card w-5 text-gray-400"></i>
+                                        认证信息
+                                    </a>
+                                    <a href="fees.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                        <i class="fas fa-percentage w-5 text-gray-400"></i>
+                                        费率查询
+                                    </a>
+                                    <a href="coupons.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                        <i class="fas fa-gift w-5 text-gray-400"></i>
+                                        我的优惠
+                                    </a>
+                                    <a href="my-invitation.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                        <i class="fas fa-user-plus w-5 text-gray-400"></i>
+                                        我的邀请
+                                    </a>
+                                    <div class="border-t border-gray-100 my-1"></div>
+                                    <a href="logout.html" class="block px-4 py-2 text-sm text-red-600 hover:bg-gray-100">
+                                        <i class="fas fa-sign-out-alt w-5"></i>
+                                        退出
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 收款人管理内容区 -->
+        <div class="mt-4 mb-8">
+            <!-- 提现账户内容 -->
+            <div id="content-withdrawal" class="tab-content active bg-white rounded-xl shadow-sm p-6">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-lg font-medium text-gray-800">我的银行卡</h2>
+                    <a href="add-bank-card.html" class="text-sm text-blue-600 hover:text-blue-700 font-medium">
+                        <i class="fas fa-plus mr-1"></i>
+                        添加新卡
+                    </a>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <!-- Add New Card Button -->
+                    <a href="add-bank-card.html" class="bank-card add-card-button">
+                        <i class="fas fa-plus-circle text-2xl text-gray-400 mb-1"></i>
+                        <span class="text-xs text-gray-600">添加新银行卡</span>
+                    </a>
+
+                    <!-- CNY Bank Card (China Mainland) -->
+                    <div class="bank-card cursor-pointer hover:shadow-md transition-shadow" onclick="showCardDetails(this)">
+                        <div class="flex justify-between items-start mb-2">
+                            <div class="flex items-center space-x-1.5">
+                                <img src="https://cdn.jsdelivr.net/gh/lipis/flag-icons/flags/4x3/cn.svg" alt="CNY" class="bank-logo">
+                                <span class="status-badge success">正常</span>
+                            </div>
+                            <div class="flex items-center space-x-1">
+                                <span class="currency-tag">CNY</span>
+                                <button class="text-gray-400 hover:text-red-500 text-xs" onclick="event.stopPropagation()">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="space-y-0.5 mt-auto">
+                            <h3 class="font-medium text-sm">中国银行</h3>
+                            <p class="text-xs text-gray-600">张三</p>
+                            <p class="text-xs text-gray-500">**** **** **** 5678</p>
+                            <div class="flex items-center mt-1">
+                                <span class="text-xs text-blue-600 bg-blue-50 px-1.5 py-0.5 rounded-full">默认账户</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- USD Bank Card -->
+                    <div class="bank-card cursor-pointer hover:shadow-md transition-shadow" onclick="showCardDetails(this)">
+                        <div class="flex justify-between items-start mb-2">
+                            <div class="flex items-center space-x-1.5">
+                                <img src="https://cdn.jsdelivr.net/gh/lipis/flag-icons/flags/4x3/us.svg" alt="USD" class="bank-logo">
+                                <span class="status-badge success">正常</span>
+                            </div>
+                            <div class="flex items-center space-x-1">
+                                <span class="currency-tag">USD</span>
+                                <button class="text-gray-400 hover:text-red-500 text-xs" onclick="event.stopPropagation()">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="space-y-0.5 mt-auto">
+                            <h3 class="font-medium text-sm">Bank of America</h3>
+                            <p class="text-xs text-gray-600">ZHANG SAN</p>
+                            <p class="text-xs text-gray-500">**** **** **** 1234</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 第三方账户内容 -->
+            <div id="content-thirdparty" class="tab-content bg-white rounded-xl shadow-sm p-6">
+                <!-- 标题和添加按钮区 -->
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-lg font-medium text-gray-900">第三方账户</h2>
+                    <a href="add-payee.html" id="addPayeeBtn" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium flex items-center">
+                        <i class="fas fa-plus mr-1"></i>
+                        添加收款人
+                    </a>
+                </div>
+
+                <!-- 搜索筛选区 -->
+                <div class="mb-6">
+                    <div class="flex flex-wrap items-center gap-4">
+                        <div class="flex items-center w-64">
+                            <label class="whitespace-nowrap text-sm font-medium text-gray-700 mr-2">收款人名称：</label>
+                            <input type="text" class="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="支持模糊查询">
+                        </div>
+                        <div class="flex items-center ml-8">
+                            <label class="whitespace-nowrap text-sm font-medium text-gray-700 mr-2">类型：</label>
+                            <select class="w-32 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent appearance-none">
+                                <option value="">全部</option>
+                                <option value="personal">个人</option>
+                                <option value="corporate">企业</option>
+                            </select>
+                        </div>
+                        <div class="flex items-center">
+                            <label class="whitespace-nowrap text-sm font-medium text-gray-700 mr-2">币种：</label>
+                            <select class="w-32 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent appearance-none">
+                                <option value="">全部</option>
+                                <option value="USD">USD - 美元</option>
+                                <option value="EUR">EUR - 欧元</option>
+                                <option value="GBP">GBP - 英镑</option>
+                                <option value="JPY">JPY - 日元</option>
+                                <option value="SGD">SGD - 新加坡元</option>
+                                <option value="AUD">AUD - 澳元</option>
+                            </select>
+                        </div>
+                        <div>
+                            <button class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium">
+                                搜索
+                            </button>
+                            <button class="px-4 py-2 border border-gray-300 hover:bg-gray-50 rounded-lg text-sm font-medium text-gray-700 ml-2">
+                                重置
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 收款人列表 -->
+                <div class="w-full">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead>
+                            <tr>
+                                <th class="w-[40px] px-2 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    <input type="checkbox" class="rounded text-blue-600">
+                                </th>
+                                <th class="w-[80px] px-2 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    类型
+                                </th>
+                                <th class="w-[100px] px-2 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    供应商类型
+                                </th>
+                                <th class="w-[160px] px-2 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    收款人名称
+                                </th>
+                                <th class="w-[120px] px-2 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    备注名称
+                                </th>
+                                <th class="w-[100px] px-2 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    账户类型
+                                </th>
+                                <th class="w-[120px] px-2 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    银行机构
+                                </th>
+                                <th class="w-[120px] px-2 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    银行账号
+                                </th>
+                                <th class="w-[80px] px-2 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    币种
+                                </th>
+                                <th class="w-[80px] px-2 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    状态
+                                </th>
+                                <th class="w-[100px] px-2 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    操作
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">
+                            <!-- 示例数据行 1 -->
+                            <tr>
+                                <td class="px-2 py-4 whitespace-nowrap">
+                                    <input type="checkbox" class="rounded text-blue-600">
+                                </td>
+                                <td class="px-2 py-4 whitespace-nowrap">
+                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-purple-100 text-purple-800">
+                                        企业
+                                    </span>
+                                </td>
+                                <td class="px-2 py-4 whitespace-nowrap text-sm text-gray-600">
+                                    物料供应商
+                                </td>
+                                <td class="px-2 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                                    American Supplier Inc.
+                                </td>
+                                <td class="px-2 py-4 whitespace-nowrap text-sm text-gray-600">
+                                    美国供应商
+                                </td>
+                                <td class="px-2 py-4 whitespace-nowrap text-sm text-gray-600">
+                                    企业账户
+                                </td>
+                                <td class="px-2 py-4 whitespace-nowrap text-sm text-gray-600">
+                                    Bank of America
+                                </td>
+                                <td class="px-2 py-4 whitespace-nowrap text-sm text-gray-600">
+                                    ****5678
+                                </td>
+                                <td class="px-2 py-4 whitespace-nowrap text-sm text-gray-600">
+                                    USD
+                                </td>
+                                <td class="px-2 py-4 whitespace-nowrap">
+                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                        正常
+                                    </span>
+                                </td>
+                                <td class="px-2 py-4 whitespace-nowrap text-sm text-gray-500">
+                                    <a href="#" class="text-blue-600 hover:text-blue-900 mr-2">详情</a>
+                                    <a href="#" class="text-red-600 hover:text-red-900">删除</a>
+                                </td>
+                            </tr>
+                            
+                            <!-- 示例数据行 2 -->
+                            <tr>
+                                <td class="px-2 py-4 whitespace-nowrap">
+                                    <input type="checkbox" class="rounded text-blue-600">
+                                </td>
+                                <td class="px-2 py-4 whitespace-nowrap">
+                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-purple-100 text-purple-800">
+                                        企业
+                                    </span>
+                                </td>
+                                <td class="px-2 py-4 whitespace-nowrap text-sm text-gray-600">
+                                    服务供应商
+                                </td>
+                                <td class="px-2 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                                    European Trading Ltd.
+                                </td>
+                                <td class="px-2 py-4 whitespace-nowrap text-sm text-gray-600">
+                                    欧洲贸易
+                                </td>
+                                <td class="px-2 py-4 whitespace-nowrap text-sm text-gray-600">
+                                    企业账户
+                                </td>
+                                <td class="px-2 py-4 whitespace-nowrap text-sm text-gray-600">
+                                    Deutsche Bank
+                                </td>
+                                <td class="px-2 py-4 whitespace-nowrap text-sm text-gray-600">
+                                    ****3456
+                                </td>
+                                <td class="px-2 py-4 whitespace-nowrap text-sm text-gray-600">
+                                    EUR
+                                </td>
+                                <td class="px-2 py-4 whitespace-nowrap">
+                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
+                                        审核中
+                                    </span>
+                                </td>
+                                <td class="px-2 py-4 whitespace-nowrap text-sm text-gray-500">
+                                    <a href="#" class="text-blue-600 hover:text-blue-900 mr-2">详情</a>
+                                    <a href="#" class="text-red-600 hover:text-red-900">删除</a>
+                                </td>
+                            </tr>
+                            
+                            <!-- 示例数据行 3 -->
+                            <tr>
+                                <td class="px-2 py-4 whitespace-nowrap">
+                                    <input type="checkbox" class="rounded text-blue-600">
+                                </td>
+                                <td class="px-2 py-4 whitespace-nowrap">
+                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-purple-100 text-purple-800">
+                                        个人
+                                    </span>
+                                </td>
+                                <td class="px-2 py-4 whitespace-nowrap text-sm text-gray-600">
+                                    自由职业者
+                                </td>
+                                <td class="px-2 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                                    John Smith
+                                </td>
+                                <td class="px-2 py-4 whitespace-nowrap text-sm text-gray-600">
+                                    设计师John
+                                </td>
+                                <td class="px-2 py-4 whitespace-nowrap text-sm text-gray-600">
+                                    个人账户
+                                </td>
+                                <td class="px-2 py-4 whitespace-nowrap text-sm text-gray-600">
+                                    Barclays
+                                </td>
+                                <td class="px-2 py-4 whitespace-nowrap text-sm text-gray-600">
+                                    ****7890
+                                </td>
+                                <td class="px-2 py-4 whitespace-nowrap text-sm text-gray-600">
+                                    GBP
+                                </td>
+                                <td class="px-2 py-4 whitespace-nowrap">
+                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
+                                        审核拒绝
+                                    </span>
+                                </td>
+                                <td class="px-2 py-4 whitespace-nowrap text-sm text-gray-500">
+                                    <a href="#" class="text-blue-600 hover:text-blue-900 mr-2">详情</a>
+                                    <a href="#" class="text-red-600 hover:text-red-900">删除</a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <!-- 分页 -->
+                <div class="mt-6 flex items-center justify-between">
+                    <div class="text-sm text-gray-700">
+                        显示 <span class="font-medium">1</span> 到 <span class="font-medium">3</span> 条，共 <span class="font-medium">12</span> 条记录
+                    </div>
+                    <div class="flex-1 flex justify-center">
+                        <nav class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
+                            <a href="#" class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+                                <span class="sr-only">上一页</span>
+                                <i class="fas fa-chevron-left text-xs"></i>
+                            </a>
+                            <a href="#" class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-purple-100 text-sm font-medium text-purple-600 hover:bg-purple-200">
+                                1
+                            </a>
+                            <a href="#" class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">
+                                2
+                            </a>
+                            <a href="#" class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">
+                                3
+                            </a>
+                            <a href="#" class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+                                <span class="sr-only">下一页</span>
+                                <i class="fas fa-chevron-right text-xs"></i>
+                            </a>
+                        </nav>
+                    </div>
+                    <div class="text-sm text-gray-700 flex items-center">
+                        跳转至
+                        <input type="number" min="1" class="w-12 mx-2 px-2 py-1 border border-gray-300 rounded-md text-center">
+                        页
+                        <button class="ml-2 px-3 py-1 border border-gray-300 rounded-md hover:bg-gray-50">
+                            确定
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 添加收款人弹窗 -->
+        <div id="addPayeeModal" class="fixed inset-0 z-50 overflow-y-auto hidden" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+            <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+                <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
+                <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+                <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+                    <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                        <div class="flex justify-between items-start pb-3 border-b border-gray-200">
+                            <h3 class="text-lg leading-6 font-medium text-gray-900" id="modal-title">
+                                添加收款人
+                            </h3>
+                            <button id="closeAddPayeeModal" class="text-gray-400 hover:text-gray-500">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                        <div class="mt-4 space-y-4">
+                            <div>
+                                <label for="payeeType" class="block text-sm font-medium text-gray-700 mb-1">收款人类型<span class="text-red-500 ml-0.5">*</span></label>
+                                <div class="flex space-x-4">
+                                    <div class="flex items-center">
+                                        <input id="payeeTypePersonal" name="payeeType" type="radio" class="h-4 w-4 text-blue-600 border-gray-300" checked>
+                                        <label for="payeeTypePersonal" class="ml-2 block text-sm text-gray-700">个人</label>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <input id="payeeTypeBusiness" name="payeeType" type="radio" class="h-4 w-4 text-blue-600 border-gray-300">
+                                        <label for="payeeTypeBusiness" class="ml-2 block text-sm text-gray-700">企业</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <label for="payeeName" class="block text-sm font-medium text-gray-700 mb-1">收款人名称<span class="text-red-500 ml-0.5">*</span></label>
+                                <input type="text" id="payeeName" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="请输入收款人名称">
+                            </div>
+                            <div>
+                                <label for="payeeNickname" class="block text-sm font-medium text-gray-700 mb-1">备注名称</label>
+                                <input type="text" id="payeeNickname" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="请输入备注名称">
+                            </div>
+                            <div>
+                                <label for="bankName" class="block text-sm font-medium text-gray-700 mb-1">银行名称<span class="text-red-500 ml-0.5">*</span></label>
+                                <input type="text" id="bankName" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="请输入银行名称">
+                            </div>
+                            <div>
+                                <label for="accountNumber" class="block text-sm font-medium text-gray-700 mb-1">银行账号<span class="text-red-500 ml-0.5">*</span></label>
+                                <input type="text" id="accountNumber" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="请输入银行账号">
+                            </div>
+                            <div>
+                                <label for="currency" class="block text-sm font-medium text-gray-700 mb-1">币种<span class="text-red-500 ml-0.5">*</span></label>
+                                <select id="currency" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent appearance-none">
+                                    <option value="USD">USD - 美元</option>
+                                    <option value="EUR">EUR - 欧元</option>
+                                    <option value="GBP">GBP - 英镑</option>
+                                    <option value="JPY">JPY - 日元</option>
+                                    <option value="SGD">SGD - 新加坡元</option>
+                                    <option value="AUD">AUD - 澳元</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                        <button type="button" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-600 text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:ml-3 sm:w-auto sm:text-sm">
+                            保存
+                        </button>
+                        <button type="button" class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
+                            取消
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script>
+        // 定义全局的tab切换函数
+        window.switchTab = function(tabName) {
+            console.log('Switching to tab:', tabName);
+            
+            // 获取所有tab按钮和内容
+            const tabs = document.querySelectorAll('.tab-btn');
+            const contents = document.querySelectorAll('.tab-content');
+            
+            // 移除所有active类
+            tabs.forEach(tab => tab.classList.remove('active'));
+            contents.forEach(content => content.classList.remove('active'));
+            
+            // 添加active类到选中的tab和内容
+            document.getElementById('tab-' + tabName).classList.add('active');
+            document.getElementById('content-' + tabName).classList.add('active');
+        }
+
+        // 在页面加载完成后初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Page loaded, initializing tabs...');
+            
+            // 检查是否有存储的活动标签
+            const activeTab = localStorage.getItem('activeTab') || 'withdrawal';
+            switchTab(activeTab);
+            
+            // 清除存储的活动标签
+            localStorage.removeItem('activeTab');
+            
+            // 用户中心下拉菜单
+            const userCenterBtn = document.getElementById('userCenterBtn');
+            const userCenterDropdown = document.getElementById('userCenterDropdown');
+            
+            if (userCenterBtn && userCenterDropdown) {
+                userCenterBtn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    userCenterDropdown.classList.toggle('hidden');
+                });
+                
+                document.addEventListener('click', function(e) {
+                    if (!userCenterDropdown.contains(e.target) && e.target !== userCenterBtn) {
+                        userCenterDropdown.classList.add('hidden');
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html> 

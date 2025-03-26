@@ -1,0 +1,1375 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>实名认证过期</title>
+    <link rel="stylesheet" href="../styles/main.css">
+    <link rel="stylesheet" href="../styles/header.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #7D33FF;
+            --primary-hover: #6929D4;
+            --primary-light: rgba(125, 51, 255, 0.1);
+            --bg-color: #FFFFFF;
+            --text-primary: #1F1F1F;
+            --text-secondary: #666666;
+            --border-color: #E5E5E5;
+            --success-color: #34C759;
+            --card-shadow: 0 2px 8px rgba(125, 51, 255, 0.08);
+            --transition: all 0.2s ease-in-out;
+            --header-height: 56px;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            color: var(--text-primary);
+            line-height: 1.5;
+            background-color: #F8F7FF;
+            margin: 0;
+            padding: 0;
+            padding-top: var(--header-height);
+        }
+
+        /* Header styles */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: var(--header-height);
+            background: white;
+            display: flex;
+            align-items: center;
+            padding: 0 24px;
+            box-shadow: 0 1px 0 rgba(0, 0, 0, 0.05);
+            z-index: 1000;
+        }
+
+        .header-logo {
+            height: 32px;
+            margin-right: 24px;
+            display: flex;
+            align-items: center;
+        }
+
+        .header-logo img {
+            height: 100%;
+            width: auto;
+        }
+
+        .header-divider {
+            width: 1px;
+            height: 16px;
+            background-color: var(--border-color);
+            margin: 0 16px;
+        }
+
+        .header-title {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-secondary);
+        }
+
+        .header-close {
+            margin-left: auto;
+            color: var(--text-secondary);
+            cursor: pointer;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 4px;
+            transition: var(--transition);
+        }
+
+        .header-close:hover {
+            background-color: rgba(0, 0, 0, 0.04);
+            color: var(--text-primary);
+        }
+
+        .verification-container {
+            max-width: 1000px;
+            margin: 24px auto;
+            padding: 0 24px;
+        }
+
+        h1 {
+            font-size: 24px;
+            font-weight: 600;
+            margin: 0 0 8px 0;
+            color: var(--text-primary);
+        }
+
+        .page-description {
+            color: var(--text-secondary);
+            font-size: 14px;
+            margin: 0 0 32px 0;
+        }
+
+        .verification-types {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .verification-type {
+            background: var(--bg-color);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 16px;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            text-align: left;
+            min-height: 56px;
+            gap: 12px;
+        }
+
+        .verification-type:hover {
+            border-color: var(--primary-color);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(125, 51, 255, 0.12);
+            background-color: var(--primary-light);
+        }
+
+        .verification-type.selected {
+            border-color: var(--primary-color);
+            background-color: var(--primary-light);
+            box-shadow: 0 4px 12px rgba(125, 51, 255, 0.12);
+        }
+
+        .verification-type-icon {
+            font-size: 14px;
+            color: var(--primary-color);
+            height: 26px;
+            width: 26px;
+            min-width: 26px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--primary-light);
+            border-radius: 50%;
+        }
+
+        .verification-type-content {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .verification-type-title {
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 2px;
+            color: var(--text-primary);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .verification-type-desc {
+            font-size: 11px;
+            color: var(--text-secondary);
+            line-height: 1.2;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .document-requirements {
+            background-color: var(--bg-color);
+            padding: 24px;
+            border-radius: 12px;
+            margin-top: 24px;
+            border: 1px solid var(--border-color);
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .document-requirements h3 {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+        }
+
+        .document-requirements h3:before {
+            content: "";
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 4px;
+            height: 18px;
+            background-color: var(--primary-color);
+            border-radius: 2px;
+            margin-right: 12px;
+        }
+
+        .document-list {
+            list-style-type: none;
+            padding: 0;
+            margin: 0 0 0 16px;
+        }
+
+        .document-list li {
+            margin-bottom: 12px;
+            padding-left: 28px;
+            position: relative;
+            color: var(--text-secondary);
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+        }
+
+        .document-list li:last-child {
+            margin-bottom: 0;
+        }
+
+        .document-list li:before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 6px;
+            height: 6px;
+            background-color: var(--primary-color);
+            border-radius: 50%;
+        }
+
+        .example-btn {
+            padding: 4px 8px;
+            font-size: 12px;
+            color: var(--primary-color);
+            background: var(--primary-light);
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: var(--transition);
+            white-space: nowrap;
+        }
+
+        .example-btn:hover {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .upload-section {
+            margin-top: 32px;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        .upload-area {
+            border: 2px dashed var(--border-color);
+            border-radius: 8px;
+            padding: 24px;
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition);
+            background-color: #FAFAFA;
+            position: relative;
+            min-height: 160px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .upload-area:hover {
+            border-color: var(--primary-color);
+            background-color: var(--primary-light);
+        }
+
+        .file-input {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        .upload-content {
+            pointer-events: none;
+        }
+
+        .upload-content i {
+            font-size: 32px;
+            color: var(--primary-color);
+            margin-bottom: 12px;
+        }
+
+        .upload-text {
+            font-size: 14px;
+            color: var(--text-primary);
+            margin: 8px 0;
+        }
+
+        .upload-hint {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin: 4px 0 0 0;
+        }
+
+        .example-link {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        .example-link:hover {
+            text-decoration: underline;
+        }
+
+        .button-group {
+            display: flex;
+            justify-content: center;
+            margin-top: 24px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border-color);
+            gap: 12px;
+            flex-direction: row;
+        }
+
+        .agreement-checkbox {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+
+        .agreement-checkbox input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            cursor: pointer;
+            accent-color: var(--primary-color);
+        }
+
+        .agreement-checkbox a {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        .agreement-checkbox a:hover {
+            text-decoration: underline;
+        }
+
+        .submit-btn {
+            padding: 12px 32px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 500;
+            transition: var(--transition);
+            align-self: flex-start;
+            width: fit-content;
+        }
+
+        .submit-btn:hover {
+            background-color: var(--primary-hover);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(125, 51, 255, 0.2);
+        }
+
+        .submit-btn:disabled {
+            background-color: #B794FF;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        @media (max-width: 768px) {
+            .verification-types {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 6px;
+            }
+            
+            .verification-container {
+                margin: 16px;
+                padding: 16px;
+            }
+
+            .verification-type {
+                padding: 6px 10px;
+                min-height: 44px;
+                gap: 10px;
+            }
+
+            .verification-type-icon {
+                font-size: 12px;
+                height: 22px;
+                width: 22px;
+                min-width: 22px;
+            }
+
+            .verification-type-title {
+                font-size: 12px;
+                margin-bottom: 1px;
+            }
+
+            .verification-type-desc {
+                font-size: 10px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .verification-types {
+                grid-template-columns: 1fr;
+                max-width: 100%;
+            }
+        }
+
+        .document-list li span {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .document-list li .requirement-desc {
+            font-size: 12px;
+            color: #999;
+            margin-top: 4px;
+            display: block;
+        }
+
+        .download-link {
+            color: var(--primary-color);
+            text-decoration: underline;
+            cursor: pointer;
+        }
+
+        .enterprise-form {
+            background: white;
+            padding: 24px;
+            border-radius: 8px;
+            box-shadow: var(--card-shadow);
+        }
+
+        .form-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin: 0 0 20px 0;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+
+        .form-grid .form-group {
+            margin-bottom: 0;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 500;
+            color: var(--text-primary);
+            font-size: 14px;
+        }
+
+        .form-group label.required:after {
+            content: "*";
+            color: #ff4d4f;
+            margin-left: 4px;
+        }
+
+        .form-group input[type="text"],
+        .form-group input[type="date"] {
+            width: 100%;
+            padding: 8px 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-size: 14px;
+            height: 36px;
+            box-sizing: border-box;
+            background-color: #F5F5F5;
+        }
+
+        .form-group input[readonly] {
+            background-color: #f5f5f5;
+            cursor: not-allowed;
+        }
+
+        .upload-preview {
+            border: 1px solid var(--border-color);
+            padding: 12px;
+            border-radius: 4px;
+            margin-bottom: 6px;
+        }
+
+        .upload-preview img {
+            max-width: 160px;
+            height: auto;
+            display: block;
+        }
+
+        .image-id {
+            margin-top: 6px;
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .date-input-group {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .date-input-group input[type="date"] {
+            flex: 1;
+            background-color: white;
+        }
+
+        .checkbox-label {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        .checkbox-label input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            margin: 0;
+        }
+
+        .btn-back,
+        .btn-next {
+            padding: 0 24px;
+            border-radius: 4px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 14px;
+            height: 40px;
+            min-width: 96px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-back {
+            background: white;
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+        }
+
+        .btn-next {
+            background: var(--primary-color);
+            border: none;
+            color: white;
+        }
+
+        .btn-back:hover {
+            background: #f5f5f5;
+            border-color: #d9d9d9;
+        }
+
+        .btn-next:hover {
+            background: var(--primary-hover);
+            box-shadow: 0 2px 4px rgba(125, 51, 255, 0.2);
+        }
+
+        .address-group {
+            margin-bottom: 24px;
+        }
+
+        .address-group .address-title {
+            display: flex;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .address-group .address-title label {
+            font-weight: 500;
+            color: var(--text-primary);
+            font-size: 14px;
+            margin-right: 16px;
+        }
+
+        .address-group .address-title label.required:after {
+            content: "*";
+            color: #ff4d4f;
+            margin-left: 4px;
+        }
+
+        .address-radio-group {
+            display: flex;
+            gap: 24px;
+            margin-bottom: 12px;
+        }
+
+        .address-radio-label {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        .address-radio-label input[type="radio"] {
+            width: 16px;
+            height: 16px;
+            margin: 0;
+            accent-color: var(--primary-color);
+        }
+
+        .address-selects {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .address-selects select {
+            width: 100%;
+            padding: 8px 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-size: 14px;
+            height: 36px;
+            background-color: white;
+            cursor: pointer;
+        }
+
+        .address-detail {
+            width: 100%;
+            padding: 8px 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-size: 14px;
+            height: 36px;
+            box-sizing: border-box;
+            background-color: white;
+        }
+
+        .address-detail::placeholder {
+            color: var(--text-secondary);
+        }
+
+        .step-content {
+            display: none;
+        }
+
+        .step-content.active {
+            display: block;
+        }
+
+        .member-form {
+            background: white;
+            padding: 24px;
+            border-radius: 8px;
+            box-shadow: var(--card-shadow);
+        }
+
+        .upload-photos {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+
+        .upload-photo-item {
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 24px;
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition);
+            background-color: white;
+            aspect-ratio: 16/9;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            position: relative;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        .upload-photo-item:hover {
+            border-color: var(--primary-color);
+            background-color: var(--primary-light);
+            box-shadow: 0 4px 8px rgba(125, 51, 255, 0.1);
+        }
+
+        .upload-photo-item input[type="file"] {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            cursor: pointer;
+            z-index: 1;
+        }
+
+        .upload-photo-item i {
+            font-size: 24px;
+            color: var(--primary-color);
+            margin-bottom: 4px;
+        }
+
+        .upload-photo-item span {
+            font-size: 14px;
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+
+        .upload-photo-item .example-link {
+            font-size: 12px;
+            color: var(--primary-color);
+            text-decoration: none;
+            margin-top: 4px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .upload-photo-item .example-link:hover {
+            text-decoration: underline;
+        }
+
+        .upload-hint {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-top: 12px;
+            padding: 8px 12px;
+            background-color: #F8F9FA;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .upload-hint:before {
+            content: "\f05a";
+            font-family: "Font Awesome 5 Free";
+            font-weight: 900;
+            color: var(--primary-color);
+        }
+
+        .id-validity {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+
+        .id-validity .date-input {
+            flex: 1;
+        }
+
+        .link-primary {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        .link-primary:hover {
+            text-decoration: underline;
+        }
+
+        .member-form .form-group input[type="text"],
+        .member-form .form-group input[type="date"] {
+            width: 100%;
+            padding: 8px 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-size: 14px;
+            height: 36px;
+            box-sizing: border-box;
+            background-color: white;
+        }
+
+        .member-form .form-group input[readonly] {
+            background-color: white;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+    <!--实名认证顶部导航栏-->
+    <div class="header">
+        <div class="header-logo">
+            <img src="../assets/images/whaletlogo2.png" alt="Whalet Logo">
+        </div>
+        <div class="header-divider"></div>
+        <span class="header-title">实名认证过期</span>
+        <i class="fas fa-times header-close" onclick="closeHeader()"></i>
+    </div>
+
+    <div class="verification-container">
+        <div class="step-content active" id="step1">
+            <!-- Enterprise Information Form -->
+            <div class="enterprise-form">
+                <h2 class="form-title">企业信息</h2>
+
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>企业名称</label>
+                        <input type="text" value="阿尔无法" readonly>
+                </div>
+
+                    <div class="form-group">
+                        <label>企业英文名</label>
+                        <input type="text" value="sdfsa df" readonly>
+                </div>
+
+                    <div class="form-group">
+                        <label>统一社会信用代码</label>
+                        <input type="text" value="2342342335" readonly>
+            </div>
+
+                    <div class="form-group">
+                        <label>企业成立日期</label>
+                        <input type="text" value="2024-07-03" readonly>
+                </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="required">营业执照照片</label>
+                    <div class="upload-area">
+                        <input type="file" id="license-upload" accept="image/jpeg,image/png,image/bmp" class="file-input">
+                        <div class="upload-content">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                            <p class="upload-text">点击或拖拽文件到这里上传</p>
+                            <p class="upload-hint">支持 jpg、png、jpeg、bmp 格式，文件不超过15M <a href="#" class="example-link">查看示例</a></p>
+            </div>
+                </div>
+                </div>
+
+                <div class="address-group">
+                    <div class="address-title">
+                        <label class="required">企业注册地址</label>
+            </div>
+                    <div class="address-selects">
+                        <select id="reg-province" required>
+                            <option value="">选择省份</option>
+                            <option value="beijing">北京市</option>
+                        </select>
+                        <select id="reg-city" required>
+                            <option value="">选择城市</option>
+                            <option value="beijing-city">北京市</option>
+                        </select>
+                        <select id="reg-district" required>
+                            <option value="">选择区县</option>
+                            <option value="dongcheng">东城区</option>
+                        </select>
+                    </div>
+                    <input type="text" class="address-detail" id="reg-address-detail" placeholder="请输入详细地址" required>
+        </div>
+
+                <div class="address-group">
+                    <div class="address-title">
+                        <label class="required">实际经营地址</label>
+                    </div>
+                    <div class="address-radio-group">
+                        <label class="address-radio-label">
+                            <input type="radio" name="address-same" value="yes" required>
+                            <span>与企业注册地址相同</span>
+                </label>
+                        <label class="address-radio-label">
+                            <input type="radio" name="address-same" value="no" required>
+                            <span>与企业注册地址不同</span>
+                        </label>
+            </div>
+                    <div class="address-selects" id="actual-address-selects" style="display: none;">
+                        <select id="actual-province" required>
+                            <option value="">选择省份</option>
+                            <option value="beijing">北京市</option>
+                        </select>
+                        <select id="actual-city" required>
+                            <option value="">选择城市</option>
+                            <option value="beijing-city">北京市</option>
+                        </select>
+                        <select id="actual-district" required>
+                            <option value="">选择区县</option>
+                            <option value="dongcheng">东城区</option>
+                        </select>
+                    </div>
+                    <input type="text" class="address-detail" id="actual-address-detail" placeholder="请输入详细地址" required style="display: none;">
+        </div>
+
+                <div class="form-group">
+                    <label class="required">企业到期日期</label>
+                    <div class="date-input-group">
+                        <input type="date" value="2025-03-27" required>
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="long-term">
+                            <span>长期</span>
+                </label>
+            </div>
+        </div>
+
+            <div class="button-group">
+                    <button class="btn-back">返回</button>
+                    <button class="btn-next" onclick="showStep(2)">下一步</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="step-content" id="step2">
+            <!-- 成员信息表单 -->
+            <div class="member-form">
+                <h2 class="form-title">成员信息</h2>
+                
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>成员所属</label>
+                        <input type="text" value="成员所属地区 中国大陆地区" readonly>
+                    </div>
+
+                    <div class="form-group">
+                        <label>真实姓名</label>
+                        <input type="text" value="吴文伟" readonly>
+                    </div>
+
+                    <div class="form-group">
+                        <label>英文名称</label>
+                        <input type="text" value="WU WEN WEI" readonly>
+                    </div>
+
+                    <div class="form-group">
+                        <label>成员身份</label>
+                        <input type="text" value="法人代表/实际控制人" readonly>
+                    </div>
+
+                    <div class="form-group">
+                        <label>持股比例</label>
+                        <input type="text" value="34%" readonly>
+                    </div>
+
+                    <div class="form-group">
+                        <label>证件号码</label>
+                        <input type="text" value="350*******5215" readonly>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="required">证件照片</label>
+                    <div class="upload-photos">
+                        <div class="upload-photo-item">
+                            <input type="file" accept="image/*">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                            <span>身份证正面照</span>
+                            <a href="#" class="example-link" onclick="showIdCardExample('front')">查看示例</a>
+                        </div>
+                        <div class="upload-photo-item">
+                            <input type="file" accept="image/*">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                            <span>身份证背面照</span>
+                            <a href="#" class="example-link" onclick="showIdCardExample('back')">查看示例</a>
+                        </div>
+                    </div>
+                    <p class="upload-hint">请确认信息无误，证件照片清晰可见，照片支持jpg、png、jpeg、bmp，文件不超过5M</p>
+                </div>
+
+                <div class="form-group">
+                    <label class="required">证件有效期</label>
+                    <div class="id-validity">
+                        <input type="date" class="date-input" required>
+                        <span>至</span>
+                        <input type="date" class="date-input" required>
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="id-long-term">
+                            <span>长期</span>
+                </label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="required">证件地址</label>
+                    <div class="address-selects">
+                        <select id="id-province" required>
+                            <option value="">选择省份</option>
+                            <option value="beijing">北京市</option>
+                        </select>
+                        <select id="id-city" required>
+                            <option value="">选择城市</option>
+                            <option value="beijing-city">北京市</option>
+                        </select>
+                        <select id="id-district" required>
+                            <option value="">选择区县</option>
+                            <option value="dongcheng">东城区</option>
+                        </select>
+                    </div>
+                    <input type="text" class="address-detail" id="id-address-detail" placeholder="请输入详细地址" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="required">居住地址</label>
+                    <div class="address-radio-group">
+                        <label class="address-radio-label">
+                            <input type="radio" name="living-address-same" value="yes" required>
+                            <span>与证件地址相同</span>
+                        </label>
+                        <label class="address-radio-label">
+                            <input type="radio" name="living-address-same" value="no" required>
+                            <span>与证件地址不同</span>
+                        </label>
+                    </div>
+                    <div id="living-address-fields" style="display: none;">
+                        <div class="address-selects">
+                            <select id="living-province" required>
+                                <option value="">选择省份</option>
+                                <option value="beijing">北京市</option>
+                            </select>
+                            <select id="living-city" required>
+                                <option value="">选择城市</option>
+                                <option value="beijing-city">北京市</option>
+                            </select>
+                            <select id="living-district" required>
+                                <option value="">选择区县</option>
+                                <option value="dongcheng">东城区</option>
+                            </select>
+                        </div>
+                        <input type="text" class="address-detail" id="living-address-detail" placeholder="请输入详细地址" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="checkbox-label">
+                        <input type="checkbox" required>
+                        <span>本人已阅读、知晓并同意 <a href="#" class="link-primary">《承诺函》</a> 等款</span>
+                    </label>
+                </div>
+
+                <div class="button-group">
+                    <button class="btn-back" onclick="showStep(1)">上一步</button>
+                    <button class="btn-next" onclick="submitForm()">提交</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function selectType(type) {
+            // Remove selected class from all types
+            document.querySelectorAll('.verification-type').forEach(el => {
+                el.classList.remove('selected');
+            });
+
+            // Hide all requirement sections with fade out effect
+            document.querySelectorAll('.document-requirements').forEach(el => {
+                el.style.opacity = '0';
+                setTimeout(() => {
+                    el.style.display = 'none';
+                }, 300);
+            });
+
+            // Show selected type's requirements with fade in effect
+            setTimeout(() => {
+                document.querySelector(`#${type}-requirements`).style.display = 'block';
+                requestAnimationFrame(() => {
+                    document.querySelector(`#${type}-requirements`).style.opacity = '1';
+                });
+            }, 300);
+
+            // Add selected class to clicked type
+            document.querySelector(`.verification-type:nth-child(${
+                type === 'mainland-personal' ? '1' : 
+                type === 'mainland-business' ? '2' : '3'
+            })`).classList.add('selected');
+        }
+
+        function submitVerification() {
+            const selectedType = document.querySelector('.verification-type.selected');
+            const typeIndex = Array.from(document.querySelectorAll('.verification-type')).indexOf(selectedType);
+            const btn = document.querySelector('.submit-btn');
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 提交中...';
+            
+            // Simulate API call
+            setTimeout(() => {
+                if (typeIndex === 0) { // Personal account
+                    window.location.href = './personal-verification.html';
+                } else if (typeIndex === 1) { // Mainland business account
+                    window.location.href = './mainland-business-verification.html';
+                } else { // Hong Kong business account
+                    window.location.href = './hk-business-verification.html';
+                }
+            }, 1500);
+        }
+
+        function showExample(type) {
+            alert(`这里将显示${type}的示例图片`);
+            // 这里可以实现弹窗显示对应类型的示例图片
+        }
+
+        function downloadForm() {
+            alert('开始下载开户申请表');
+            // 这里实现下载开户申请表的逻辑
+        }
+
+        function toggleSubmitButton(type) {
+            const container = document.getElementById(`${type}-requirements`);
+            const checkbox = container.querySelector('input[type="checkbox"]');
+            const submitBtn = container.querySelector('.submit-btn');
+            submitBtn.disabled = !checkbox.checked;
+        }
+
+        function showAgreement() {
+            alert('这里将显示承诺函内容');
+            // 这里实现显示承诺函的逻辑
+            return false; // 阻止链接默认行为
+        }
+
+        function closeHeader() {
+            // 这里实现关闭header的逻辑
+        }
+
+        // 页面加载时初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            const uploadArea = document.querySelector('.upload-area');
+            const fileInput = document.querySelector('.file-input');
+
+            // Highlight drop zone when file is dragged over
+            uploadArea.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                uploadArea.style.borderColor = 'var(--primary-color)';
+                uploadArea.style.backgroundColor = 'var(--primary-light)';
+            });
+
+            uploadArea.addEventListener('dragleave', (e) => {
+                e.preventDefault();
+                uploadArea.style.borderColor = 'var(--border-color)';
+                uploadArea.style.backgroundColor = '#FAFAFA';
+            });
+
+            uploadArea.addEventListener('drop', (e) => {
+                e.preventDefault();
+                uploadArea.style.borderColor = 'var(--border-color)';
+                uploadArea.style.backgroundColor = '#FAFAFA';
+                
+                const files = e.dataTransfer.files;
+                if (files.length) {
+                    fileInput.files = files;
+                    handleFileUpload(files[0]);
+                }
+            });
+
+            fileInput.addEventListener('change', (e) => {
+                if (e.target.files.length) {
+                    handleFileUpload(e.target.files[0]);
+                }
+            });
+
+            function handleFileUpload(file) {
+                // Add your file upload logic here
+                console.log('File selected:', file.name);
+                // You can add preview logic or immediate upload logic here
+            }
+
+            // 处理实际经营地址是否与注册地址相同的逻辑
+            const addressSameRadios = document.querySelectorAll('input[name="address-same"]');
+            const actualAddressSelects = document.getElementById('actual-address-selects');
+            const actualAddressDetail = document.getElementById('actual-address-detail');
+
+            addressSameRadios.forEach(radio => {
+                radio.addEventListener('change', function() {
+                    const isSameAddress = this.value === 'yes';
+                    actualAddressSelects.style.display = isSameAddress ? 'none' : 'grid';
+                    actualAddressDetail.style.display = isSameAddress ? 'none' : 'block';
+                    
+                    if (isSameAddress) {
+                        // 复制注册地址的值到实际经营地址
+                        document.getElementById('actual-province').value = document.getElementById('reg-province').value;
+                        document.getElementById('actual-city').value = document.getElementById('reg-city').value;
+                        document.getElementById('actual-district').value = document.getElementById('reg-district').value;
+                        actualAddressDetail.value = document.getElementById('reg-address-detail').value;
+                    }
+                });
+            });
+
+            // 这里可以添加省市区三级联动的具体实现
+            // 示例：当选择省份时更新城市选项，当选择城市时更新区县选项
+            function updateCityOptions(provinceSelect, citySelect) {
+                // 根据选择的省份更新城市选项
+                const selectedProvince = provinceSelect.value;
+                // 这里添加实际的城市数据更新逻辑
+            }
+
+            function updateDistrictOptions(citySelect, districtSelect) {
+                // 根据选择的城市更新区县选项
+                const selectedCity = citySelect.value;
+                // 这里添加实际的区县数据更新逻辑
+            }
+
+            // 为选择框添加change事件监听器
+            ['reg', 'actual'].forEach(prefix => {
+                const provinceSelect = document.getElementById(`${prefix}-province`);
+                const citySelect = document.getElementById(`${prefix}-city`);
+                const districtSelect = document.getElementById(`${prefix}-district`);
+
+                provinceSelect.addEventListener('change', () => {
+                    updateCityOptions(provinceSelect, citySelect);
+                });
+
+                citySelect.addEventListener('change', () => {
+                    updateDistrictOptions(citySelect, districtSelect);
+                });
+            });
+
+            // 处理居住地址是否与证件地址相同
+            const livingAddressRadios = document.querySelectorAll('input[name="living-address-same"]');
+            const livingAddressFields = document.getElementById('living-address-fields');
+
+            livingAddressRadios.forEach(radio => {
+                radio.addEventListener('change', function() {
+                    livingAddressFields.style.display = this.value === 'no' ? 'block' : 'none';
+                    if (this.value === 'yes') {
+                        // 复制证件地址的值到居住地址
+                        document.getElementById('living-province').value = document.getElementById('id-province').value;
+                        document.getElementById('living-city').value = document.getElementById('id-city').value;
+                        document.getElementById('living-district').value = document.getElementById('id-district').value;
+                        document.getElementById('living-address-detail').value = document.getElementById('id-address-detail').value;
+                    }
+                });
+            });
+
+            // 处理证件照片上传
+            document.querySelectorAll('.upload-photo-item').forEach(item => {
+                const input = item.querySelector('input[type="file"]');
+                input.addEventListener('change', function() {
+                    if (this.files && this.files[0]) {
+                        // 处理文件上传逻辑
+                        const icon = item.querySelector('i');
+                        icon.className = 'fas fa-check';
+                        icon.style.color = 'var(--success-color)';
+                    }
+                });
+            });
+
+            // 处理证件有效期长期选项
+            const idLongTermCheckbox = document.querySelector('input[name="id-long-term"]');
+            const idValidityInputs = document.querySelectorAll('.id-validity .date-input');
+            
+            idLongTermCheckbox.addEventListener('change', function() {
+                idValidityInputs.forEach(input => {
+                    input.disabled = this.checked;
+                    if (this.checked) {
+                        input.value = '';
+                    }
+                });
+            });
+        });
+
+        // 添加步骤切换功能
+        function showStep(stepNumber) {
+            document.querySelectorAll('.step-content').forEach(step => {
+                step.classList.remove('active');
+            });
+            document.getElementById(`step${stepNumber}`).classList.add('active');
+        }
+
+        function submitForm() {
+            // 处理表单提交逻辑
+            alert('提交成功！');
+        }
+
+        function showIdCardExample(type) {
+            const title = type === 'front' ? '身份证正面照示例' : '身份证背面照示例';
+            const imgSrc = type === 'front' ? '../assets/images/id-card-front-example.png' : '../assets/images/id-card-back-example.png';
+            
+            // 创建模态框
+            const modal = document.createElement('div');
+            modal.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.5);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                z-index: 1000;
+            `;
+
+            // 创建内容容器
+            const content = document.createElement('div');
+            content.style.cssText = `
+                background: white;
+                padding: 24px;
+                border-radius: 8px;
+                max-width: 90%;
+                max-height: 90%;
+                position: relative;
+            `;
+
+            // 添加关闭按钮
+            const closeBtn = document.createElement('button');
+            closeBtn.innerHTML = '×';
+            closeBtn.style.cssText = `
+                position: absolute;
+                top: 8px;
+                right: 8px;
+                border: none;
+                background: none;
+                font-size: 24px;
+                cursor: pointer;
+                color: #666;
+            `;
+            closeBtn.onclick = () => modal.remove();
+
+            // 添加标题
+            const titleEl = document.createElement('h3');
+            titleEl.textContent = title;
+            titleEl.style.cssText = `
+                margin: 0 0 16px 0;
+                font-size: 18px;
+                color: var(--text-primary);
+            `;
+
+            // 添加示例图片
+            const img = document.createElement('img');
+            img.src = imgSrc;
+            img.alt = title;
+            img.style.cssText = `
+                max-width: 100%;
+                height: auto;
+                border-radius: 4px;
+            `;
+
+            content.appendChild(closeBtn);
+            content.appendChild(titleEl);
+            content.appendChild(img);
+            modal.appendChild(content);
+            document.body.appendChild(modal);
+
+            // 点击模态框背景关闭
+            modal.onclick = (e) => {
+                if (e.target === modal) modal.remove();
+            };
+        }
+    </script>
+</body>
+</html> 

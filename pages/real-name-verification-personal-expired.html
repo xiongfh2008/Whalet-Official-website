@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>实名认证过期</title>
+    <link rel="stylesheet" href="../styles/main.css">
+    <link rel="stylesheet" href="../styles/header.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #7D33FF;
+            --primary-hover: #6929D4;
+            --primary-light: rgba(125, 51, 255, 0.1);
+            --bg-color: #FFFFFF;
+            --text-primary: #1F1F1F;
+            --text-secondary: #666666;
+            --border-color: #E5E5E5;
+            --success-color: #34C759;
+            --card-shadow: 0 2px 8px rgba(125, 51, 255, 0.08);
+            --transition: all 0.2s ease-in-out;
+            --header-height: 56px;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            color: var(--text-primary);
+            line-height: 1.5;
+            background-color: #F8F7FF;
+            margin: 0;
+            padding: 0;
+            padding-top: var(--header-height);
+        }
+
+        /* Header styles */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: var(--header-height);
+            background: white;
+            display: flex;
+            align-items: center;
+            padding: 0 24px;
+            box-shadow: 0 1px 0 rgba(0, 0, 0, 0.05);
+            z-index: 1000;
+        }
+
+        .header-logo {
+            height: 32px;
+            margin-right: 24px;
+            display: flex;
+            align-items: center;
+        }
+
+        .header-logo img {
+            height: 100%;
+            width: auto;
+        }
+
+        .header-divider {
+            width: 1px;
+            height: 16px;
+            background-color: var(--border-color);
+            margin: 0 16px;
+        }
+
+        .header-title {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-secondary);
+        }
+
+        .header-close {
+            margin-left: auto;
+            color: var(--text-secondary);
+            cursor: pointer;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 4px;
+            transition: var(--transition);
+        }
+
+        .header-close:hover {
+            background-color: rgba(0, 0, 0, 0.04);
+            color: var(--text-primary);
+        }
+
+        .verification-container {
+            max-width: 1000px;
+            margin: 16px auto;
+            padding: 0 16px;
+        }
+
+        .form-container {
+            background: white;
+            border-radius: 8px;
+            padding: 24px;
+            margin-top: 16px;
+            box-shadow: var(--card-shadow);
+        }
+
+        .form-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin: 0 0 24px 0;
+            color: var(--text-primary);
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 0;
+            position: relative;
+        }
+
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--text-primary);
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        .form-group label.required::before {
+            content: "*";
+            color: #ff4d4f;
+            margin-right: 4px;
+        }
+
+        .form-control {
+            width: 100%;
+            height: 40px;
+            padding: 8px 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 14px;
+            transition: var(--transition);
+            box-sizing: border-box;
+        }
+
+        .form-control:disabled,
+        .form-control[readonly] {
+            background-color: #f5f5f5;
+            color: var(--text-secondary);
+            cursor: not-allowed;
+        }
+
+        .upload-area {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            margin-top: 8px;
+        }
+
+        .upload-box {
+            width: 100%;
+            height: 120px;
+            border: 2px dashed var(--border-color);
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+            background-color: #fafafa;
+            gap: 8px;
+            box-sizing: border-box;
+        }
+
+        .upload-box:hover,
+        .upload-box.dragover {
+            border-color: var(--primary-color);
+            background-color: var(--primary-light);
+        }
+
+        .upload-box i {
+            font-size: 24px;
+            color: var(--primary-color);
+        }
+
+        .upload-hint {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-top: 8px;
+            text-align: center;
+            line-height: 1.4;
+        }
+
+        .upload-hint.example {
+            color: var(--primary-color);
+            font-size: 12px;
+            margin-top: 4px;
+        }
+
+        .date-inputs {
+            display: flex;
+            gap: 16px;
+            align-items: center;
+        }
+
+        .date-input {
+            flex: 1;
+            position: relative;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            margin-left: 16px;
+            white-space: nowrap;
+        }
+
+        .radio-group {
+            display: flex;
+            gap: 24px;
+            margin-top: 8px;
+            align-items: center;
+        }
+
+        .radio-label, 
+        .checkbox-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            color: var(--text-primary);
+            user-select: none;
+        }
+
+        .location-group {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .location-select {
+            width: 100%;
+            height: 40px;
+        }
+
+        .detail-address {
+            margin-top: 12px;
+            width: 100%;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            margin-top: 24px;
+        }
+
+        .btn {
+            padding: 8px 24px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            min-width: 100px;
+            height: 40px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-primary {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-hover);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--primary-color);
+            color: var(--primary-color);
+        }
+
+        .agreement-checkbox {
+            text-align: center;
+            margin: 24px 0 16px;
+        }
+
+        .agreement-link {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        .agreement-link:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            .verification-container {
+                margin: 12px;
+                padding: 0 12px;
+            }
+
+            .form-container {
+                padding: 16px;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+
+            .form-group {
+                margin-bottom: 16px;
+            }
+
+            .upload-area {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+
+            .upload-box {
+                height: 100px;
+            }
+
+            .date-inputs {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+
+            .location-group {
+                grid-template-columns: 1fr;
+                gap: 8px;
+            }
+
+            .btn-group {
+                flex-direction: column;
+                gap: 8px;
+            }
+
+            .btn {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .verification-container {
+                margin: 16px;
+                padding: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!--实名认证顶部导航栏-->
+    <div class="header">
+        <div class="header-logo">
+            <img src="../assets/images/whaletlogo2.png" alt="Whalet Logo">
+        </div>
+        <div class="header-divider"></div>
+        <span class="header-title">实名认证过期</span>
+        <i class="fas fa-times header-close" onclick="closeHeader()"></i>
+    </div>
+
+    <div class="verification-container">
+        <div class="form-container">
+            <h1 class="form-title">个人信息</h1>
+            <form id="verificationForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>证件类型</label>
+                        <input type="text" class="form-control" value="中国大陆第二代身份证" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label>真实姓名</label>
+                        <input type="text" class="form-control" value="马西天" readonly>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>英文名称</label>
+                        <input type="text" class="form-control" value="MA XI TIAN" readonly>
+                </div>
+                    <div class="form-group">
+                        <label>证件号码</label>
+                        <input type="text" class="form-control" value="350********4492" readonly>
+            </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group full-width">
+                        <label class="required">证件照片</label>
+                        <div class="upload-area">
+                            <div class="upload-box">
+                                <i class="fas fa-plus"></i>
+                                <span class="upload-hint">身份证人像面</span>
+                                <span class="upload-hint example">示例</span>
+                            </div>
+                            <div class="upload-box">
+                                <i class="fas fa-plus"></i>
+                                <span class="upload-hint">身份证国徽面</span>
+                                <span class="upload-hint example">示例</span>
+                </div>
+            </div>
+                        <div class="upload-hint">请确认信息无误，证件照片清晰可见，图片支持jpg、png、jpeg、bmp，文件不超过5M，支持拖拽上传</div>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group full-width">
+                        <label class="required">证件有效期</label>
+                        <div class="date-inputs">
+                            <div class="date-input">
+                                <input type="date" class="form-control" placeholder="开始日期">
+                            </div>
+                            <div class="date-input">
+                                <input type="date" class="form-control" placeholder="结束日期">
+                            </div>
+                            <div class="checkbox-group">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="longTerm">
+                                    <span>长期</span>
+                                </label>
+                            </div>
+                </div>
+            </div>
+        </div>
+
+                <div class="form-row">
+                    <div class="form-group full-width">
+                        <label class="required">证件地址</label>
+                        <div class="location-group">
+                            <select class="form-control location-select">
+                                <option>北京市</option>
+                            </select>
+                            <select class="form-control location-select">
+                                <option>北京城区</option>
+                            </select>
+                            <select class="form-control location-select">
+                                <option>东城区</option>
+                            </select>
+                        </div>
+                        <input type="text" class="form-control detail-address" value="东城区">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group full-width">
+                        <label class="required">居住地址</label>
+                        <div class="radio-group">
+                            <label class="radio-label">
+                                <input type="radio" name="addressType" checked>
+                                <span>与证件地址相同</span>
+                            </label>
+                            <label class="radio-label">
+                                <input type="radio" name="addressType">
+                                <span>与证件地址不同</span>
+                </label>
+                        </div>
+            </div>
+        </div>
+
+                <div class="form-row">
+                    <div class="form-group full-width">
+                        <label class="required">验证方式</label>
+                        <div class="radio-group">
+                            <label class="radio-label">
+                                <input type="radio" name="verifyMethod" required>
+                                <span>手持拍照</span>
+                            </label>
+                            <label class="radio-label">
+                                <input type="radio" name="verifyMethod" required>
+                                <span>人脸识别</span>
+                </label>
+                        </div>
+            </div>
+        </div>
+
+                <div class="agreement-checkbox">
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="agreement">
+                        <span>本人已阅读、知晓并同意<a href="#" class="agreement-link">《承诺函》</a>条款</span>
+                </label>
+                </div>
+
+                <div class="btn-group">
+                    <button type="submit" class="btn btn-primary">提交</button>
+                    <button type="button" class="btn btn-secondary">返回</button>
+            </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            function closeHeader() {
+                // 这里实现关闭header的逻辑
+            }
+
+            // 处理拖拽上传
+            function setupDragAndDrop() {
+                const uploadBoxes = document.querySelectorAll('.upload-box');
+                
+                uploadBoxes.forEach(box => {
+                    // 阻止默认拖拽行为
+                    ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+                        box.addEventListener(eventName, preventDefaults, false);
+                    });
+
+                    // 添加拖拽进入效果
+                    ['dragenter', 'dragover'].forEach(eventName => {
+                        box.addEventListener(eventName, highlight, false);
+                    });
+
+                    // 移除拖拽进入效果
+                    ['dragleave', 'drop'].forEach(eventName => {
+                        box.addEventListener(eventName, unhighlight, false);
+                    });
+
+                    // 处理文件拖放
+                    box.addEventListener('drop', handleDrop, false);
+                });
+            }
+
+            function preventDefaults(e) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+
+            function highlight(e) {
+                e.currentTarget.classList.add('dragover');
+            }
+
+            function unhighlight(e) {
+                e.currentTarget.classList.remove('dragover');
+            }
+
+            function handleDrop(e) {
+                const dt = e.dataTransfer;
+                const files = dt.files;
+                handleFiles(files, e.currentTarget);
+            }
+
+            function handleFiles(files, uploadBox) {
+                if (files.length > 0) {
+                    const file = files[0];
+                    // 检查文件类型
+                    const validTypes = ['image/jpeg', 'image/png', 'image/bmp'];
+                    if (!validTypes.includes(file.type)) {
+                        alert('请上传jpg、png或bmp格式的图片');
+                        return;
+                    }
+                    // 检查文件大小（5MB）
+                    if (file.size > 5 * 1024 * 1024) {
+                        alert('文件大小不能超过5MB');
+                        return;
+                    }
+                    // TODO: 处理文件上传
+                    console.log('File to upload:', file);
+                }
+            }
+
+            document.getElementById('verificationForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                // Handle form submission
+            });
+
+            // 初始化拖拽上传功能
+            setupDragAndDrop();
+        });
+    </script>
+</body>
+</html> 

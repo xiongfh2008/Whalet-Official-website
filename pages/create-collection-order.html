@@ -168,21 +168,22 @@
         }
     </style>
 </head>
-<body>
+<body class="bg-gray-50">
     <div class="container mx-auto px-4 py-8">
-        <!-- 表单容器 -->
-        <div class="form-section">
-            <!-- 顶部导航 -->
-            <div class="flex items-center justify-between h-16 px-6 border-b border-gray-200">
-                <div class="flex items-center space-x-4">
-                    <a href="trade-collection.html" class="flex items-center">
-                        <i class="fas fa-arrow-left text-[#7D33FF] mr-2"></i>
-                        <span class="text-[#7D33FF] mr-4">返回</span>
-                        <span class="text-lg font-medium">创建收款单</span>
+        <div class="max-w-6xl mx-auto bg-white rounded-lg shadow-sm">
+            <!-- 头部 -->
+            <div class="p-6 border-b border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center">
+                        <a href="trade-collection.html" class="text-purple-600 hover:text-purple-700 mr-2">
+                            <i class="fas fa-arrow-left"></i>
+                        </a>
+                        <a href="trade-collection.html" class="text-purple-600 hover:text-purple-700 mr-4">返回</a>
+                        <h1 class="text-xl font-semibold text-gray-800">创建收款单</h1>
+                    </div>
+                    <a href="trade-collection.html" class="text-gray-500 hover:text-gray-700">
+                        <i class="fas fa-times"></i>
                     </a>
-                </div>
-                <div>
-                    <a href="trade-collection.html" class="text-gray-400 hover:text-gray-600 text-xl">×</a>
                 </div>
             </div>
 
@@ -209,75 +210,140 @@
             </div>
 
             <!-- 提示信息 -->
-            <div class="p-6 bg-[#F8F5FF] border-b border-[#E5E7EB]">
-                <div class="flex items-start">
-                    <div class="flex-shrink-0 mt-1">
-                        <i class="fas fa-info-circle text-[#7D33FF]"></i>
+            <div class="p-4 bg-purple-50 border-b border-gray-200">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <i class="fas fa-info-circle text-purple-600"></i>
                     </div>
                     <div class="ml-3">
-                        <p class="text-sm text-[#7D33FF]">
+                        <p class="text-sm text-purple-600">
                             请根据页面指引提供相应的订单信息，这将提高入账及结汇提现的审核时效和通过率
                         </p>
                     </div>
                 </div>
             </div>
 
-            <form id="orderForm" class="p-8">
+            <form id="orderForm" class="p-6">
                 <!-- 订单信息 -->
-                <div id="step1" class="space-y-8">
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div id="step1" class="space-y-6">
+                    <!-- 必填项说明 -->
+                    <div class="text-sm text-gray-500 mb-4">
+                        <span class="text-red-500">*</span> 为必填项
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <!-- 贸易国家/地区 -->
                         <div>
-                            <label class="form-label">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">
                                 贸易国家/地区 <span class="text-red-500">*</span>
                             </label>
-                            <input type="text" required
-                                class="form-input w-full rounded-md border-gray-300 shadow-sm focus:ring-2"
-                                placeholder="请选择买家所在国家或地区">
+                            <div class="relative">
+                                <input type="text" required
+                                    class="w-full p-2 pr-10 border border-gray-300 rounded-md focus:ring-purple-500 focus:border-purple-500 cursor-pointer bg-white"
+                                    placeholder="请选择买家所在国家或地区"
+                                    id="tradeCountryInput"
+                                    readonly>
+                                <div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
+                                    <i class="fas fa-chevron-down text-gray-400"></i>
+                                </div>
+                                <div id="tradeCountryDropdown" class="hidden absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-y-auto">
+                                    <div class="sticky top-0 bg-white border-b border-gray-200">
+                                        <input type="text" 
+                                            class="w-full p-2 border-0 focus:ring-0 text-sm"
+                                            placeholder="搜索国家/地区"
+                                            id="tradeCountrySearch">
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
                         <!-- 买家英文名 -->
                         <div>
-                            <label class="form-label">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">
                                 买家英文名 <span class="text-red-500">*</span>
                             </label>
                             <input type="text" required
-                                class="form-input w-full rounded-md border-gray-300 shadow-sm focus:ring-2"
+                                class="w-full p-2 border border-gray-300 rounded-md focus:ring-purple-500 focus:border-purple-500"
                                 placeholder="请输入买家英文名">
+                        </div>
+
+                        <!-- 买家付款行所在地 -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">
+                                买家付款行所在地
+                            </label>
+                            <div class="relative">
+                                <input type="text"
+                                    class="w-full p-2 pr-10 border border-gray-300 rounded-md focus:ring-purple-500 focus:border-purple-500 cursor-pointer bg-white"
+                                    placeholder="请选择国家/地区"
+                                    id="bankCountryInput"
+                                    readonly>
+                                <div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
+                                    <i class="fas fa-chevron-down text-gray-400"></i>
+                                </div>
+                                <div id="bankCountryDropdown" class="hidden absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-y-auto">
+                                    <div class="sticky top-0 bg-white border-b border-gray-200">
+                                        <input type="text" 
+                                            class="w-full p-2 border-0 focus:ring-0 text-sm"
+                                            placeholder="搜索国家/地区"
+                                            id="bankCountrySearch">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 买家付款银行 -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">
+                                买家付款银行
+                            </label>
+                            <input type="text"
+                                class="w-full p-2 border border-gray-300 rounded-md focus:ring-purple-500 focus:border-purple-500"
+                                placeholder="请输入买家付款银行名称">
+                        </div>
+
+                        <!-- 买家付款银行账号 -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">
+                                买家付款银行账号
+                            </label>
+                            <input type="text"
+                                class="w-full p-2 border border-gray-300 rounded-md focus:ring-purple-500 focus:border-purple-500"
+                                placeholder="请输入买家付款银行账号">
                         </div>
 
                         <!-- 订单编号 -->
                         <div>
-                            <label class="form-label">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">
                                 订单编号 <span class="text-red-500">*</span>
                             </label>
                             <input type="text" required
-                                class="form-input w-full rounded-md border-gray-300 shadow-sm focus:ring-2"
+                                class="w-full p-2 border border-gray-300 rounded-md focus:ring-purple-500 focus:border-purple-500"
                                 placeholder="请输入订单编号">
                         </div>
 
                         <!-- 交易日期 -->
                         <div>
-                            <label class="form-label">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">
                                 交易日期 <span class="text-red-500">*</span>
                             </label>
                             <input type="date" required
-                                class="form-input w-full rounded-md border-gray-300 shadow-sm focus:ring-2">
+                                class="w-full p-2 border border-gray-300 rounded-md focus:ring-purple-500 focus:border-purple-500">
                         </div>
 
                         <!-- 订单总额 -->
                         <div class="flex space-x-4">
                             <div class="flex-1">
-                                <label class="form-label">
+                                <label class="block text-sm font-medium text-gray-700 mb-2">
                                     订单总额 <span class="text-red-500">*</span>
                                 </label>
                                 <input type="number" required
-                                    class="form-input w-full rounded-md border-gray-300 shadow-sm focus:ring-2"
+                                    class="w-full p-2 border border-gray-300 rounded-md focus:ring-purple-500 focus:border-purple-500"
                                     placeholder="请输入订单总额">
                             </div>
                             <div class="w-32">
-                                <label class="form-label">币种</label>
-                                <select class="form-select w-full rounded-md border-gray-300 shadow-sm focus:ring-2">
+                                <label class="block text-sm font-medium text-gray-700 mb-2">币种</label>
+                                <select class="w-full p-2 border border-gray-300 rounded-md focus:ring-purple-500 focus:border-purple-500">
                                     <option value="USD">USD</option>
                                     <option value="EUR">EUR</option>
                                     <option value="GBP">GBP</option>
@@ -288,10 +354,10 @@
 
                         <!-- 付款方式 -->
                         <div>
-                            <label class="form-label">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">
                                 付款方式 <span class="text-red-500">*</span>
                             </label>
-                            <select required class="form-select w-full rounded-md border-gray-300 shadow-sm focus:ring-2">
+                            <select required class="w-full p-2 border border-gray-300 rounded-md focus:ring-purple-500 focus:border-purple-500">
                                 <option value="">请选择付款方式</option>
                                 <option value="deposit">预付款+尾款</option>
                                 <option value="full">全款</option>
@@ -300,10 +366,10 @@
 
                         <!-- 商品类型 -->
                         <div>
-                            <label class="form-label">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">
                                 商品类型 <span class="text-red-500">*</span>
                             </label>
-                            <select required class="form-select w-full rounded-md border-gray-300 shadow-sm focus:ring-2">
+                            <select required class="w-full p-2 border border-gray-300 rounded-md focus:ring-purple-500 focus:border-purple-500">
                                 <option value="">请选择商品类型</option>
                                 <option value="electronics">电子产品</option>
                                 <option value="clothing">服装</option>
@@ -312,37 +378,37 @@
 
                         <!-- 商品英文名 -->
                         <div>
-                            <label class="form-label">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">
                                 商品英文名 <span class="text-red-500">*</span>
                             </label>
                             <input type="text" required
-                                class="form-input w-full rounded-md border-gray-300 shadow-sm focus:ring-2"
+                                class="w-full p-2 border border-gray-300 rounded-md focus:ring-purple-500 focus:border-purple-500"
                                 placeholder="请输入商品英文名">
                         </div>
 
                         <!-- 商品中文名 -->
                         <div>
-                            <label class="form-label">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">
                                 商品中文名 <span class="text-red-500">*</span>
                             </label>
                             <input type="text" required
-                                class="form-input w-full rounded-md border-gray-300 shadow-sm focus:ring-2"
+                                class="w-full p-2 border border-gray-300 rounded-md focus:ring-purple-500 focus:border-purple-500"
                                 placeholder="请输入商品中文名">
                         </div>
 
                         <!-- 商品数量 -->
                         <div class="flex space-x-4">
                             <div class="flex-1">
-                                <label class="form-label">
+                                <label class="block text-sm font-medium text-gray-700 mb-2">
                                     商品数量 <span class="text-red-500">*</span>
                                 </label>
                                 <input type="number" required
-                                    class="form-input w-full rounded-md border-gray-300 shadow-sm focus:ring-2"
+                                    class="w-full p-2 border border-gray-300 rounded-md focus:ring-purple-500 focus:border-purple-500"
                                     placeholder="请输入商品数量">
                             </div>
                             <div class="w-32">
-                                <label class="form-label">单位</label>
-                                <select class="form-select w-full rounded-md border-gray-300 shadow-sm focus:ring-2">
+                                <label class="block text-sm font-medium text-gray-700 mb-2">单位</label>
+                                <select class="w-full p-2 border border-gray-300 rounded-md focus:ring-purple-500 focus:border-purple-500">
                                     <option value="PCS">PCS(只)</option>
                                     <option value="SETS">SETS(套)</option>
                                     <option value="G">G(斤)</option>
@@ -358,32 +424,28 @@
 
                     <!-- 商品/店铺地址 -->
                     <div>
-                        <label class="form-label">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">
                             商品/店铺地址 <span class="text-red-500">*</span>
                         </label>
                         <input type="text" required
-                            class="form-input w-full rounded-md border-gray-300 shadow-sm focus:ring-2"
+                            class="w-full p-2 border border-gray-300 rounded-md focus:ring-purple-500 focus:border-purple-500"
                             placeholder="请输入商品/店铺地址">
                     </div>
 
                     <!-- 发票附件 -->
                     <div>
-                        <label class="form-label">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">
                             发票附件（PI/CI） <span class="text-red-500">*</span>
                         </label>
-                        <div class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md">
-                            <div class="space-y-1 text-center">
+                        <div class="border-2 border-dashed border-gray-300 rounded-lg p-6 upload-area" id="invoiceUploadArea">
+                            <div class="text-center">
                                 <i class="fas fa-cloud-upload-alt text-gray-400 text-3xl mb-3"></i>
-                                <div class="flex text-sm text-gray-600">
-                                    <label class="relative cursor-pointer bg-white rounded-md font-medium text-indigo-600 hover:text-indigo-500">
-                                        <span>上传文件</span>
-                                        <input type="file" class="sr-only" multiple accept=".jpg,.jpeg,.png,.pdf">
-                                    </label>
-                                </div>
-                                <p class="text-xs text-gray-500">
-                                    请上传CI或PC，最少传一项，更多的发票附件，有利于加快审核速度<br>
-                                    支持JPG、JPEG、PNG、PDF四种格式，最多上传6个
-                                </p>
+                                <p class="text-sm text-gray-500 mb-2">拖拽文件到此处或点击选择文件</p>
+                                <input type="file" class="hidden" id="invoiceInput" multiple accept=".jpg,.jpeg,.png,.pdf">
+                                <button type="button" onclick="document.getElementById('invoiceInput').click()" class="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-md text-sm">
+                                    选择文件
+                                </button>
+                                <p class="text-xs text-gray-500 mt-2">请上传CI或PC，最少传一项，更多的发票附件，有利于加快审核速度<br>支持JPG、JPEG、PNG、PDF四种格式，最多上传6个</p>
                             </div>
                         </div>
                     </div>
@@ -392,68 +454,64 @@
                 <!-- 物流信息 -->
                 <div id="step2" class="hidden space-y-6">
                     <div>
-                        <label class="form-label">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">
                             物流信息 <span class="text-red-500">*</span>
                         </label>
                         <div class="flex space-x-4">
                             <label class="inline-flex items-center">
-                                <input type="radio" name="shipping_status" value="shipped" class="form-radio text-indigo-600">
-                                <span class="ml-2">已发货</span>
+                                <input type="radio" name="shipping_status" value="shipped" class="form-radio text-purple-600">
+                                <span class="ml-2 text-sm text-gray-700">已发货</span>
                             </label>
                             <label class="inline-flex items-center">
-                                <input type="radio" name="shipping_status" value="not_shipped" class="form-radio text-indigo-600">
-                                <span class="ml-2">未发货</span>
+                                <input type="radio" name="shipping_status" value="not_shipped" class="form-radio text-purple-600">
+                                <span class="ml-2 text-sm text-gray-700">未发货</span>
                             </label>
                         </div>
                     </div>
 
                     <!-- 发货日期 -->
                     <div>
-                        <label class="form-label">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">
                             发货日期 <span class="text-red-500">*</span>
                         </label>
                         <input type="date" required
-                            class="form-input w-full rounded-md border-gray-300 shadow-sm focus:ring-2">
+                            class="w-full p-2 border border-gray-300 rounded-md focus:ring-purple-500 focus:border-purple-500">
                     </div>
 
                     <!-- 物流公司 -->
                     <div>
-                        <label class="form-label">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">
                             物流公司 <span class="text-red-500">*</span>
                         </label>
                         <input type="text" required
-                            class="form-input w-full rounded-md border-gray-300 shadow-sm focus:ring-2"
+                            class="w-full p-2 border border-gray-300 rounded-md focus:ring-purple-500 focus:border-purple-500"
                             placeholder="请输入物流公司名称">
                     </div>
 
                     <!-- 发货凭证 -->
                     <div>
-                        <label class="form-label">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">
                             发货凭证 <span class="text-red-500">*</span>
                         </label>
-                        <div class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md">
-                            <div class="space-y-1 text-center">
+                        <div class="border-2 border-dashed border-gray-300 rounded-lg p-6 upload-area" id="shippingUploadArea">
+                            <div class="text-center">
                                 <i class="fas fa-cloud-upload-alt text-gray-400 text-3xl mb-3"></i>
-                                <div class="flex text-sm text-gray-600">
-                                    <label class="relative cursor-pointer bg-white rounded-md font-medium text-indigo-600 hover:text-indigo-500">
-                                        <span>上传文件</span>
-                                        <input type="file" class="sr-only" multiple accept=".jpg,.jpeg,.png,.pdf">
-                                    </label>
-                                </div>
-                                <p class="text-xs text-gray-500">
-                                    海运提单，快递面单，空运提单等有效的发货凭证<br>
-                                    支持JPG、JPEG、PNG、PDF四种格式，最多上传6个
-                                </p>
+                                <p class="text-sm text-gray-500 mb-2">拖拽文件到此处或点击选择文件</p>
+                                <input type="file" class="hidden" id="shippingInput" multiple accept=".jpg,.jpeg,.png,.pdf">
+                                <button type="button" onclick="document.getElementById('shippingInput').click()" class="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-md text-sm">
+                                    选择文件
+                                </button>
+                                <p class="text-xs text-gray-500 mt-2">海运提单，快递面单，空运提单等有效的发货凭证<br>支持JPG、JPEG、PNG、PDF四种格式，最多上传6个</p>
                             </div>
                         </div>
                     </div>
 
                     <!-- 成交方式 -->
                     <div>
-                        <label class="form-label">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">
                             成交方式 <span class="text-red-500">*</span>
                         </label>
-                        <select required class="form-select w-full rounded-md border-gray-300 shadow-sm focus:ring-2">
+                        <select required class="w-full p-2 border border-gray-300 rounded-md focus:ring-purple-500 focus:border-purple-500">
                             <option value="">请选择成交方式</option>
                             <option value="EXW">EXW</option>
                             <option value="FAC">FAC</option>
@@ -464,19 +522,18 @@
                 <!-- 其他信息 -->
                 <div id="step3" class="hidden space-y-6">
                     <div>
-                        <label class="form-label">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">
                             其他附件
                         </label>
-                        <div class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md">
-                            <div class="space-y-1 text-center">
+                        <div class="border-2 border-dashed border-gray-300 rounded-lg p-6 upload-area" id="otherUploadArea">
+                            <div class="text-center">
                                 <i class="fas fa-cloud-upload-alt text-gray-400 text-3xl mb-3"></i>
-                                <div class="flex text-sm text-gray-600">
-                                    <label class="relative cursor-pointer bg-white rounded-md font-medium text-indigo-600 hover:text-indigo-500">
-                                        <span>上传文件</span>
-                                        <input type="file" class="sr-only" multiple accept=".jpg,.jpeg,.png,.pdf">
-                                    </label>
-                                </div>
-                                <p class="text-xs text-gray-500">
+                                <p class="text-sm text-gray-500 mb-2">拖拽文件到此处或点击选择文件</p>
+                                <input type="file" class="hidden" id="otherInput" multiple accept=".jpg,.jpeg,.png,.pdf">
+                                <button type="button" onclick="document.getElementById('otherInput').click()" class="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-md text-sm">
+                                    选择文件
+                                </button>
+                                <p class="text-xs text-gray-500 mt-2">
                                     当收货方与付款人不一致时，如为贵司多次合作的老买家，您可一并补充历史付款水单；<br>
                                     如为新买家，您可补充相关资料佐证合理的代付款关系；<br>
                                     如为合规的第三方代付，建议提醒付款人在汇款时添加含交易背景的汇款附言，可能可以加速入账。<br>
@@ -489,40 +546,35 @@
 
                     <!-- 备注 -->
                     <div>
-                        <label class="form-label">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">
                             备注
                         </label>
                         <textarea
-                            class="form-textarea w-full rounded-md border-gray-300 shadow-sm focus:ring-2"
+                            class="w-full p-2 border border-gray-300 rounded-md focus:ring-purple-500 focus:border-purple-500"
                             rows="4"
                             placeholder="可填写关于订单、物流的补充说明或者更多联系方式"></textarea>
                     </div>
 
                     <!-- 承诺函 -->
-                    <div class="flex items-start">
-                        <div class="flex items-center h-5">
-                            <input type="checkbox" required
-                                class="form-checkbox h-4 w-4 text-indigo-600 border-gray-300 rounded">
-                        </div>
-                        <div class="ml-3 text-sm">
-                            <label class="font-medium text-gray-700">本人已阅读、知晓并同意《承诺函》条款</label>
-                        </div>
+                    <div class="flex items-center">
+                        <input type="checkbox" required class="h-4 w-4 text-purple-600 rounded border-gray-300">
+                        <label class="ml-2 text-sm text-gray-600">
+                            本人已阅读、知晓并同意 <a href="#" class="text-purple-600 hover:text-purple-800">《承诺函》</a> 条款
+                        </label>
                     </div>
                 </div>
 
                 <!-- 按钮组 -->
-                <div class="btn-group">
-                    <div class="flex justify-center items-center space-x-4 w-full">
-                        <button type="button" id="prevBtn" class="hidden px-6 py-3 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 transition-all duration-200 flex items-center">
-                            <i class="fas fa-arrow-left mr-2"></i>上一步
-                        </button>
-                        <button type="button" id="nextBtn" class="primary-btn px-6 py-3 rounded-lg text-sm font-medium flex items-center shadow-lg shadow-indigo-200">
-                            下一步<i class="fas fa-arrow-right ml-2"></i>
-                        </button>
-                        <button type="submit" id="submitBtn" class="hidden primary-btn px-6 py-3 rounded-lg text-sm font-medium flex items-center shadow-lg shadow-indigo-200">
-                            提交<i class="fas fa-check ml-2"></i>
-                        </button>
-                    </div>
+                <div class="flex justify-center space-x-4 mt-8">
+                    <button type="button" id="prevBtn" class="hidden px-8 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50">
+                        上一步
+                    </button>
+                    <button type="button" id="nextBtn" class="px-8 py-2 bg-purple-600 text-white rounded-md text-sm font-medium hover:bg-purple-700">
+                        下一步
+                    </button>
+                    <button type="submit" id="submitBtn" class="hidden px-8 py-2 bg-purple-600 text-white rounded-md text-sm font-medium hover:bg-purple-700">
+                        提交
+                    </button>
                 </div>
             </form>
         </div>
@@ -536,6 +588,69 @@
             const prevBtn = document.getElementById('prevBtn');
             const nextBtn = document.getElementById('nextBtn');
             const submitBtn = document.getElementById('submitBtn');
+
+            // 文件上传区域配置
+            const uploadAreas = [
+                { area: 'invoiceUploadArea', input: 'invoiceInput' },
+                { area: 'shippingUploadArea', input: 'shippingInput' },
+                { area: 'otherUploadArea', input: 'otherInput' }
+            ];
+
+            // 为每个上传区域添加拖拽功能
+            uploadAreas.forEach(config => {
+                const area = document.getElementById(config.area);
+                const input = document.getElementById(config.input);
+
+                // 阻止默认拖拽行为
+                ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+                    area.addEventListener(eventName, preventDefaults, false);
+                });
+
+                // 添加拖拽效果
+                ['dragenter', 'dragover'].forEach(eventName => {
+                    area.addEventListener(eventName, highlight, false);
+                });
+
+                ['dragleave', 'drop'].forEach(eventName => {
+                    area.addEventListener(eventName, unhighlight, false);
+                });
+
+                // 处理文件拖放
+                area.addEventListener('drop', handleDrop, false);
+
+                function preventDefaults(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                }
+
+                function highlight(e) {
+                    area.classList.add('border-purple-500', 'bg-purple-50');
+                }
+
+                function unhighlight(e) {
+                    area.classList.remove('border-purple-500', 'bg-purple-50');
+                }
+
+                function handleDrop(e) {
+                    const dt = e.dataTransfer;
+                    const files = dt.files;
+                    input.files = files;
+                    // 触发change事件以更新UI
+                    const event = new Event('change');
+                    input.dispatchEvent(event);
+                }
+
+                // 处理文件选择
+                input.addEventListener('change', function(e) {
+                    const files = this.files;
+                    if (files.length > 0) {
+                        const fileList = Array.from(files).map(file => file.name).join(', ');
+                        area.querySelector('p.text-sm.text-gray-500').textContent = `已选择 ${files.length} 个文件`;
+                    } else {
+                        area.querySelector('p.text-sm.text-gray-500').textContent = '拖拽文件到此处或点击选择文件';
+                    }
+                });
+            });
 
             function updateStepDisplay() {
                 // 隐藏所有步骤
@@ -584,6 +699,111 @@
                 e.preventDefault();
                 // 在这里处理表单提交
                 console.log('Form submitted');
+            });
+
+            // 国家/地区数据
+            const countries = [
+                { code: 'US', name: '美国' },
+                { code: 'GB', name: '英国' },
+                { code: 'DE', name: '德国' },
+                { code: 'FR', name: '法国' },
+                { code: 'IT', name: '意大利' },
+                { code: 'ES', name: '西班牙' },
+                { code: 'JP', name: '日本' },
+                { code: 'KR', name: '韩国' },
+                { code: 'CN', name: '中国' },
+                { code: 'HK', name: '香港' },
+                { code: 'TW', name: '台湾' },
+                { code: 'SG', name: '新加坡' },
+                { code: 'AU', name: '澳大利亚' },
+                { code: 'CA', name: '加拿大' },
+                { code: 'BR', name: '巴西' },
+                { code: 'IN', name: '印度' },
+                { code: 'RU', name: '俄罗斯' },
+                { code: 'AE', name: '阿联酋' },
+                { code: 'SA', name: '沙特阿拉伯' },
+                { code: 'ZA', name: '南非' }
+            ];
+
+            // 创建国家/地区下拉框功能
+            function createCountryDropdown(inputId, dropdownId, searchId) {
+                const input = document.getElementById(inputId);
+                const dropdown = document.getElementById(dropdownId);
+                const search = document.getElementById(searchId);
+
+                // 点击输入框时显示下拉框
+                input.addEventListener('click', function(e) {
+                    dropdown.classList.remove('hidden');
+                    search.focus();
+                    renderCountryList(search.value.toLowerCase(), dropdown, input);
+                });
+
+                // 处理搜索框输入
+                search.addEventListener('input', function(e) {
+                    renderCountryList(e.target.value.toLowerCase(), dropdown, input);
+                });
+
+                // 阻止搜索框的点击事件冒泡
+                search.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                });
+            }
+
+            // 渲染国家列表
+            function renderCountryList(searchTerm, dropdown, input) {
+                const searchBox = dropdown.querySelector('input');
+                dropdown.innerHTML = ''; // 清空现有内容
+
+                // 重新添加搜索框
+                const searchDiv = document.createElement('div');
+                searchDiv.className = 'sticky top-0 bg-white border-b border-gray-200';
+                searchDiv.innerHTML = `
+                    <input type="text" 
+                        class="w-full p-2 border-0 focus:ring-0 text-sm"
+                        placeholder="搜索国家/地区"
+                        value="${searchTerm}">
+                `;
+                dropdown.appendChild(searchDiv);
+
+                // 过滤并显示国家列表
+                const filteredCountries = countries.filter(country => 
+                    country.name.toLowerCase().includes(searchTerm) ||
+                    country.code.toLowerCase().includes(searchTerm)
+                );
+
+                filteredCountries.forEach(country => {
+                    const div = document.createElement('div');
+                    div.className = 'px-4 py-2 hover:bg-purple-50 cursor-pointer';
+                    div.textContent = `${country.name} (${country.code})`;
+                    div.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        input.value = country.name;
+                        dropdown.classList.add('hidden');
+                    });
+                    dropdown.appendChild(div);
+                });
+
+                // 重新绑定搜索框事件
+                const newSearchBox = dropdown.querySelector('input');
+                newSearchBox.addEventListener('click', e => e.stopPropagation());
+                newSearchBox.addEventListener('input', e => {
+                    renderCountryList(e.target.value.toLowerCase(), dropdown, input);
+                });
+            }
+
+            // 初始化两个国家/地区下拉框
+            createCountryDropdown('tradeCountryInput', 'tradeCountryDropdown', 'tradeCountrySearch');
+            createCountryDropdown('bankCountryInput', 'bankCountryDropdown', 'bankCountrySearch');
+
+            // 点击其他地方时隐藏所有下拉框
+            document.addEventListener('click', function(e) {
+                const dropdowns = document.querySelectorAll('[id$="Dropdown"]');
+                dropdowns.forEach(dropdown => {
+                    const input = document.getElementById(dropdown.id.replace('Dropdown', 'Input'));
+                    if (!input.contains(e.target) && !dropdown.contains(e.target)) {
+                        dropdown.classList.add('hidden');
+                    }
+                });
             });
 
             // 初始化显示

@@ -126,7 +126,7 @@
             background: #94a3b8;
         }
 
-        /* 新增导航栏样式 */
+        /* 新增导航栏样式*/
         .tab-btn {
             position: relative;
             transition: all 0.3s ease;
@@ -154,7 +154,7 @@
 </head>
 <body class="min-h-screen bg-gray-50">
     <div class="container mx-auto px-4 py-6">
-        <!-- 顶部导航和主标签页 -->
+        <!-- 顶部导航和主标签-->
         <div class="bg-white rounded-lg shadow-sm mb-6">
             <div class="border-b border-gray-200">
                 <div class="flex justify-between items-center px-6">
@@ -187,7 +187,7 @@
                                 <!-- 用户信息部分 -->
                                 <div class="px-4 pb-3 border-b border-gray-100">
                                     <div class="flex items-center justify-between mb-2">
-                                        <h3 class="font-medium text-gray-900">张珊珊</h3>
+                                        <h3 class="font-medium text-gray-900">张珊</h3>
                                         <a href="#" class="text-xs text-blue-600 hover:text-blue-700">升级为企业</a>
                                     </div>
                                     <div class="flex items-center justify-between mb-2">
@@ -267,9 +267,9 @@
                 <div class="flex items-start">
                     <i class="fas fa-info-circle text-[#7D33FF] mt-0.5 mr-2 text-base"></i>
                     <div class="text-sm text-[#7D33FF]">
-                        <span>亲爱的商务卡用户：</span>
-                        <span class="block mt-1">因发卡机构或扣款平台会存在系统推送账单延迟的可能，导致商务卡余额非实时展示，请您确保商务卡余额充足，并及时关注扣款明细情况，给您带来的不便，敬请谅解。</span>
-                        <span class="block mt-1">如有疑问，请联系客服经理，感谢您对易鲸的支持！</span>
+                        <span>亲爱的商务卡用户</span>
+                        <span class="block mt-1">因发卡机构或扣款平台会存在系统推送账单延迟的可能，导致商务卡余额非实时展示，请您确保商务卡余额充足，并及时关注扣款明细情况，给您带来的不便，敬请谅解</span>
+                        <span class="block mt-1">如有疑问，请联系客服经理，感谢您对易鲸的支持</span>
                     </div>
                 </div>
             </div>
@@ -279,7 +279,7 @@
                 <div class="flex justify-between items-center mb-6">
                     <h2 class="text-xl font-semibold text-gray-800">卡片管理</h2>
                     <a href="apply-card.html" style="background-color: #7D33FF; color: white; padding: 10px 24px; border-radius: 8px; font-weight: 500; display: inline-flex; align-items: center; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
-                        <i class="fas fa-plus mr-2"></i>申请新卡片
+                        <i class="fas fa-plus mr-2"></i>申请新卡
                     </a>
                 </div>
 
@@ -291,11 +291,11 @@
                            maxlength="4"
                            style="width: 120px;">
                     <input type="text" 
-                           placeholder="持有人" 
+                           placeholder="持有者" 
                            class="px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-blue-500 transition duration-200"
                            style="width: 120px;">
                     <input type="text" 
-                           placeholder="备注名" 
+                           placeholder="备注" 
                            class="px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-blue-500 transition duration-200"
                            style="width: 120px;">
                     <select class="px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-blue-500 transition duration-200"
@@ -324,8 +324,8 @@
                         <thead>
                             <tr class="border-b border-gray-200">
                                 <th class="text-left py-3 px-4 text-sm font-medium text-gray-500">卡号</th>
-                                <th class="text-left py-3 px-4 text-sm font-medium text-gray-500">持有人</th>
-                                <th class="text-left py-3 px-4 text-sm font-medium text-gray-500">备注名</th>
+                                <th class="text-left py-3 px-4 text-sm font-medium text-gray-500">持有者</th>
+                                <th class="text-left py-3 px-4 text-sm font-medium text-gray-500">备注</th>
                                 <th class="text-left py-3 px-4 text-sm font-medium text-gray-500">状态</th>
                                 <th class="text-left py-3 px-4 text-sm font-medium text-gray-500">余额</th>
                                 <th class="text-left py-3 px-4 text-sm font-medium text-gray-500">操作</th>
@@ -343,11 +343,11 @@
                                     </div>
                                 </td>
                                 <td class="py-4 px-4">
-                                    <span class="text-gray-700">张珊珊</span>
+                                    <span class="text-gray-700">张珊</span>
                                 </td>
                                 <td class="py-4 px-4">
                                     <div class="flex items-center">
-                                        <span class="text-gray-700">日常消费卡</span>
+                                        <span class="text-gray-700">日常消费</span>
                                         <button class="ml-2 text-gray-400 hover:text-gray-600">
                                             <i class="fas fa-edit text-xs"></i>
                                         </button>
@@ -360,7 +360,7 @@
                                 <td class="py-4 px-4">
                                     <div class="flex space-x-3 items-center">
                                         <a href="card-details.html" class="text-blue-600 hover:text-blue-800 transition duration-200">详情</a>
-                                        <button class="text-blue-600 hover:text-blue-800 transition duration-200">充值</button>
+                                        <button class="text-blue-600 hover:text-blue-800 transition duration-200" id="rechargeButton">充值</button>
                                         <div class="relative" x-data="{ open: false }">
                                             <button @click="open = !open" class="text-gray-500 hover:text-gray-700 transition duration-200">
                                                 更多 <i class="fas fa-chevron-down ml-1 text-xs"></i>
@@ -392,7 +392,7 @@
                                 </td>
                                 <td class="py-4 px-4">
                                     <div class="flex items-center">
-                                        <span class="text-gray-700">商务差旅卡</span>
+                                        <span class="text-gray-700">商务差旅</span>
                                         <button class="ml-2 text-gray-400 hover:text-gray-600">
                                             <i class="fas fa-edit text-xs"></i>
                                         </button>
@@ -436,7 +436,7 @@
                                 </td>
                                 <td class="py-4 px-4">
                                     <div class="flex items-center">
-                                        <span class="text-gray-700">团队采购卡</span>
+                                        <span class="text-gray-700">团队采购</span>
                                         <button class="ml-2 text-gray-400 hover:text-gray-600">
                                             <i class="fas fa-edit text-xs"></i>
                                         </button>
@@ -464,7 +464,7 @@
             <div class="mb-4">
                 <div class="balance-card p-4 text-white">
                     <div class="grid grid-cols-3 gap-4">
-                        <!-- 充值统计 -->
+                        <!-- 充值统计-->
                         <div class="flex items-center">
                             <div class="bg-blue-500 bg-opacity-30 rounded-full p-2 mr-3">
                                 <i class="fas fa-arrow-down text-sm"></i>
@@ -477,7 +477,7 @@
                                 <div class="flex items-center mt-1 text-xs">
                                     <span class="mr-3">笔数: 42</span>
                                     <div class="flex items-center">
-                                        <span>成功率: 98.5%</span>
+                                        <span>成功率 98.5%</span>
                                     </div>
                                 </div>
                             </div>
@@ -496,13 +496,13 @@
                                 <div class="flex items-center mt-1 text-xs">
                                     <span class="mr-3">笔数: 128</span>
                                     <div class="flex items-center">
-                                        <span>成功率: 97.2%</span>
+                                        <span>成功率 97.2%</span>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         
-                        <!-- 退款统计 -->
+                        <!-- 退款统计-->
                         <div class="flex items-center">
                             <div class="bg-green-500 bg-opacity-30 rounded-full p-2 mr-3">
                                 <i class="fas fa-undo text-sm"></i>
@@ -515,7 +515,7 @@
                                 <div class="flex items-center mt-1 text-xs">
                                     <span class="mr-3">笔数: 16</span>
                                     <div class="flex items-center">
-                                        <span>成功率: 94.8%</span>
+                                        <span>成功率 94.8%</span>
                                     </div>
                                 </div>
                             </div>
@@ -524,10 +524,10 @@
                 </div>
             </div>
             
-            <!-- 合并的交易记录 -->
+            <!-- 合并的交易记录-->
             <div class="section-card p-6">
                 <div class="flex justify-between items-start mb-6">
-                    <!-- 左侧标签页 -->
+                    <!-- 左侧标签-->
                     <div class="flex space-x-6 items-center">
                         <button id="rechargeTab" class="tab-button px-4 py-2 text-sm font-medium text-[#7D33FF] active">充值记录</button>
                         <button id="usageTab" class="tab-button px-4 py-2 text-sm font-medium text-gray-500">使用明细</button>
@@ -635,7 +635,7 @@
                             </div>
                             <div class="text-right">
                                 <p class="text-lg font-semibold text-green-600">+1,000.00 USD</p>
-                                <p class="text-sm text-gray-500">手续费: 30.00 USD</p>
+                                <p class="text-sm text-gray-500">手续费 30.00 USD</p>
                             </div>
                         </div>
                     </div>
@@ -659,7 +659,7 @@
                             </div>
                             <div class="text-right">
                                 <p class="text-lg font-semibold text-red-600">-100.00 USD</p>
-                                <p class="text-sm text-gray-500">手续费: 3.00 USD</p>
+                                <p class="text-sm text-gray-500">手续费 3.00 USD</p>
                             </div>
                         </div>
                     </div>
@@ -677,9 +677,105 @@
         </div>
     </div>
 
+    <!-- 充值弹框 -->
+    <div id="rechargeModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50">
+        <div class="min-h-screen flex items-center justify-center p-4">
+            <div class="bg-white rounded-2xl w-[520px] shadow-2xl">
+                <!-- 头部 -->
+                <div class="flex justify-between items-center px-6 py-4 border-b border-gray-100">
+                    <h3 class="text-lg font-medium text-gray-900">充值</h3>
+                    <button id="closeRechargeModal" class="text-gray-400 hover:text-gray-600 transition-colors p-1">
+                        <i class="fas fa-times text-lg"></i>
+                    </button>
+                </div>
+                
+                <!-- 充值表单-->
+                <div class="px-6 py-6">
+                    <!-- 账户信息卡片 -->
+                    <div class="bg-[#F5F3FF] rounded-xl p-5 mb-6">
+                        <div class="space-y-4">
+                            <div class="flex justify-between items-center">
+                                <div class="text-gray-500 text-sm">余额</div>
+                                <div class="flex items-center">
+                                    <span class="text-[#7D33FF] font-medium">2,010.18 USD</span>
+                                </div>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <div class="flex items-center">
+                                    <div class="text-gray-500 text-sm">充值到卡</div>
+                                    <div class="ml-2">
+                                        <span class="text-gray-600">************9654</span>
+                                    </div>
+                                </div>
+                                <span class="text-[#7D33FF] font-medium">0.00 USD</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 充值金额-->
+                    <div class="mb-6">
+                        <div class="flex items-center mb-2">
+                            <span class="text-red-500 mr-1">*</span>
+                            <label class="text-sm text-gray-900">充值金额</label>
+                        </div>
+                        <div class="relative">
+                            <input type="text" 
+                                class="w-full h-11 px-4 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#7D33FF]/20 focus:border-[#7D33FF] transition-all"
+                                placeholder="当前可用余额2010.18USD">
+                        </div>
+                    </div>
+
+                    <!-- 手续费-->
+                    <div class="mb-6">
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-gray-500">手续费</span>
+                            <span class="text-sm text-gray-900">30.00 USD</span>
+                        </div>
+                    </div>
+
+                    <!-- 交易密码 -->
+                    <div class="mb-6">
+                        <div class="flex items-center mb-2">
+                            <span class="text-red-500 mr-1">*</span>
+                            <label class="text-sm text-gray-900">交易密码</label>
+                        </div>
+                        <div class="relative">
+                            <input type="password" 
+                                class="w-full h-11 px-4 pr-12 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#7D33FF]/20 focus:border-[#7D33FF] transition-all"
+                                placeholder="请输入交易密码">
+                            <div class="absolute inset-y-0 right-0 flex items-center pr-3">
+                                <button class="text-gray-400 hover:text-gray-600 transition-colors">
+                                    <i class="far fa-eye text-lg"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="mt-2 flex justify-end">
+                            <button class="text-sm" style="color: #7D33FF;">
+                                忘记交易密码？
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 按钮组 -->
+                <div class="px-6 py-4 bg-gray-50 rounded-b-2xl border-t border-gray-100">
+                    <div class="flex justify-end space-x-3">
+                        <button id="cancelRecharge" 
+                            class="h-10 px-6 border border-gray-200 rounded-lg text-gray-600 hover:bg-gray-100 transition-colors text-sm font-medium">
+                            取消
+                        </button>
+                        <button id="confirmRecharge" 
+                            class="h-10 px-6 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium">
+                            确定充值
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
-        // 页面加载时设置默认状态
-        document.addEventListener('DOMContentLoaded', () => {
+        document.addEventListener('DOMContentLoaded', function() {
             // 设置卡片管理为默认选中状态
             cardManageMainTab.classList.add('active', 'text-[#7D33FF]', 'border-[#7D33FF]');
             cardManageMainTab.classList.remove('text-gray-500', 'border-transparent');
@@ -698,16 +794,16 @@
 
             // 添加卡片管理板块 tab 按钮的点击事件处理
             const tabButtons = document.querySelectorAll('.tab-button');
-            tabButtons.forEach(button => {
-                button.addEventListener('click', () => {
-                    // 移除所有 tab 的选中状态
-                    tabButtons.forEach(btn => {
+            tabButtons.forEach(function(button) {
+                button.addEventListener('click', function() {
+                    // 移除所有tab 的选中状态
+                    tabButtons.forEach(function(btn) {
                         btn.classList.remove('active');
                         btn.classList.remove('text-[#7D33FF]');
                         btn.classList.add('text-gray-500');
                     });
 
-                    // 设置当前点击的 tab 为选中状态
+                    // 设置当前点击tab 为选中状态
                     button.classList.add('active');
                     button.classList.remove('text-gray-500');
                     button.classList.add('text-[#7D33FF]');
@@ -926,6 +1022,65 @@
             if (!userCenterBtn.contains(event.target) && !userCenterDropdown.contains(event.target)) {
                 userCenterDropdown.classList.add('hidden');
             }
+        });
+
+        // 充值弹框相关的JavaScript
+        const rechargeModal = document.getElementById('rechargeModal');
+        const closeRechargeModal = document.getElementById('closeRechargeModal');
+        const cancelRecharge = document.getElementById('cancelRecharge');
+        const confirmRecharge = document.getElementById('confirmRecharge');
+
+        // 显示充值弹框
+        function showRechargeModal() {
+            rechargeModal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden'; // 防止背景滚动
+            // 设置弹框宽度
+            const modalContent = rechargeModal.querySelector('.bg-white');
+            if (modalContent) {
+                modalContent.style.width = '520px';
+            }
+        }
+
+        // 隐藏充值弹框
+        function hideRechargeModal() {
+            rechargeModal.classList.add('hidden');
+            document.body.style.overflow = ''; // 恢复背景滚动
+        }
+
+        // 为所有充值按钮添加点击事件
+        document.querySelectorAll('button').forEach(button => {
+            if (button.textContent.trim() === '充值') {
+                button.addEventListener('click', showRechargeModal);
+            }
+        });
+
+        // 关闭按钮事件
+        closeRechargeModal.addEventListener('click', hideRechargeModal);
+        cancelRecharge.addEventListener('click', hideRechargeModal);
+
+        // 点击弹框外部关闭弹框
+        rechargeModal.addEventListener('click', (e) => {
+            if (e.target === rechargeModal) {
+                hideRechargeModal();
+            }
+        });
+
+        // 确认充值事件
+        confirmRecharge.addEventListener('click', () => {
+            // TODO: 实现充值逻辑
+            console.log('执行充值操作');
+            hideRechargeModal();
+        });
+
+        // 切换密码显示/隐藏
+        const passwordInput = document.querySelector('input[type="password"]');
+        const togglePassword = document.querySelector('.fa-eye').parentElement;
+        
+        togglePassword.addEventListener('click', () => {
+            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordInput.setAttribute('type', type);
+            togglePassword.querySelector('i').classList.toggle('fa-eye');
+            togglePassword.querySelector('i').classList.toggle('fa-eye-slash');
         });
     </script>
 </body>

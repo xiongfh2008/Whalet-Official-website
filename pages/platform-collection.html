@@ -222,11 +222,12 @@
                         <span class="mr-2 text-sm font-medium text-gray-700">状态:</span>
                         <select class="p-2 text-sm border border-gray-300 rounded-md">
                             <option value="">全部</option>
-                            <option value="active">正常</option>
-                            <option value="suspended">已暂停</option>
-                            <option value="closed">已关闭</option>
+                            <option value="normal">正常</option>
+                            <option value="reviewing">审核中</option>
+                            <option value="pending">待完善</option>
+                            <option value="unavailable">不可用</option>
                         </select>
-                        </div>
+                    </div>
                     <div class="flex items-center">
                         <input type="text" placeholder="店铺名称/支持模糊查询" class="p-2 text-sm border border-gray-300 rounded-md w-64">
                     </div>
@@ -267,7 +268,7 @@
                         </tr>
                     </thead>
                     <tbody class="bg-white divide-y divide-gray-200">
-                        <!-- 示例数据行 -->
+                        <!-- 正常状态 -->
                         <tr>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                                 Amazon
@@ -287,7 +288,126 @@
                                 </span>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                <a href="account-details.html" class="text-indigo-600 hover:text-indigo-900 mr-2">查看账户</a>
+                                <a href="account-details.html" class="text-indigo-600 hover:text-indigo-900 mr-2">详情</a>
+                                <span id="bindingButton" class="hidden">
+                                    <a href="apply-collection-account-binding.html?returnUrl=platform-collection.html" class="text-indigo-600 hover:text-indigo-900">绑定店铺</a>
+                                </span>
+                                <span id="rebindingButton" class="hidden">
+                                    <a href="apply-collection-account-binding-back.html?returnUrl=platform-collection.html" class="text-indigo-600 hover:text-indigo-900">重新绑定</a>
+                                </span>
+                            </td>
+                        </tr>
+                        <!-- 审核中状态 -->
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                Shopify
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                My Shopify Store
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                USD
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                2024-03-19 15:45:00
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
+                                    审核中
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                <a href="account-details.html" class="text-indigo-600 hover:text-indigo-900 mr-2">详情</a>
+                                <span id="bindingButton" class="hidden">
+                                    <a href="apply-collection-account-binding.html?returnUrl=platform-collection.html" class="text-indigo-600 hover:text-indigo-900">绑定店铺</a>
+                                </span>
+                                <span id="rebindingButton" class="hidden">
+                                    <a href="apply-collection-account-binding-back.html?returnUrl=platform-collection.html" class="text-indigo-600 hover:text-indigo-900">重新绑定</a>
+                                </span>
+                            </td>
+                        </tr>
+                        <!-- 待完善状态 -->
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                eBay
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                My eBay Store
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                USD
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                2024-03-18 09:20:00
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
+                                    待完善
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                <a href="account-details.html" class="text-indigo-600 hover:text-indigo-900 mr-2">详情</a>
+                                <span id="bindingButton" class="hidden">
+                                    <a href="apply-collection-account-binding.html?returnUrl=platform-collection.html" class="text-indigo-600 hover:text-indigo-900">绑定店铺</a>
+                                </span>
+                                <span id="rebindingButton" class="hidden">
+                                    <a href="apply-collection-account-binding-back.html?returnUrl=platform-collection.html" class="text-indigo-600 hover:text-indigo-900">重新绑定</a>
+                                </span>
+                            </td>
+                        </tr>
+                        <!-- 待完善状态（需要重新绑定） -->
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                Stripe
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                My Stripe Store
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                USD
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                2024-03-16 11:30:00
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
+                                    待完善
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                <a href="account-details.html" class="text-indigo-600 hover:text-indigo-900 mr-2">详情</a>
+                                <span id="rebindingButton">
+                                    <a href="apply-collection-account-binding-back.html?returnUrl=platform-collection.html" class="text-indigo-600 hover:text-indigo-900">重新绑定</a>
+                                </span>
+                            </td>
+                        </tr>
+                        <!-- 不可用状态 -->
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                PayPal
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                My PayPal Store
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                USD
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                2024-03-17 14:15:00
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
+                                    不可用
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                <a href="account-details.html" class="text-indigo-600 hover:text-indigo-900 mr-2">详情</a>
+                                <span id="bindingButton" class="hidden">
+                                    <a href="apply-collection-account-binding.html?returnUrl=platform-collection.html" class="text-indigo-600 hover:text-indigo-900">绑定店铺</a>
+                                </span>
+                                <span id="rebindingButton" class="hidden">
+                                    <a href="apply-collection-account-binding-back.html?returnUrl=platform-collection.html" class="text-indigo-600 hover:text-indigo-900">重新绑定</a>
+                                </span>
                             </td>
                         </tr>
                     </tbody>
@@ -488,6 +608,28 @@
                     const tabId = button.getAttribute('data-tab');
                     document.getElementById(tabId).classList.add('active');
                 });
+            });
+        });
+
+        // 处理店铺状态和绑定按钮的显示
+        document.addEventListener('DOMContentLoaded', function() {
+            const statusCells = document.querySelectorAll('td:has(span.px-2.inline-flex)');
+            
+            statusCells.forEach(cell => {
+                const statusText = cell.textContent.trim();
+                const bindingButton = cell.parentElement.querySelector('#bindingButton');
+                const rebindingButton = cell.parentElement.querySelector('#rebindingButton');
+                
+                if (statusText === '待完善') {
+                    // 这里可以根据实际业务逻辑决定显示"绑定店铺"还是"重新绑定"
+                    // 示例：根据店铺是否已经绑定过来决定
+                    const hasBeenBound = false; // 这里应该根据实际数据来判断
+                    if (hasBeenBound) {
+                        rebindingButton.classList.remove('hidden');
+                    } else {
+                        bindingButton.classList.remove('hidden');
+                    }
+                }
             });
         });
     </script>

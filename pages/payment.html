@@ -6,6 +6,48 @@
     <title>付款 - Whalet</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        // 页面加载完成时的处理
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Payment page loaded');
+            
+            // 确保默认显示单笔付款tab
+            const singlePaymentTab = document.getElementById('singlePaymentTab');
+            const payeeManagementTab = document.getElementById('payeeManagementTab');
+            const singlePaymentContent = document.getElementById('singlePaymentContent');
+            const payeeManagementContent = document.getElementById('payeeManagementContent');
+
+            if (singlePaymentTab && payeeManagementTab && singlePaymentContent && payeeManagementContent) {
+                // 默认显示单笔付款
+                singlePaymentTab.classList.add('active');
+                singlePaymentContent.classList.add('active');
+                payeeManagementTab.classList.remove('active');
+                payeeManagementContent.classList.remove('active');
+
+                // 添加tab切换事件
+                singlePaymentTab.addEventListener('click', function() {
+                    singlePaymentTab.classList.add('active');
+                    singlePaymentContent.classList.add('active');
+                    payeeManagementTab.classList.remove('active');
+                    payeeManagementContent.classList.remove('active');
+                });
+
+                payeeManagementTab.addEventListener('click', function() {
+                    payeeManagementTab.classList.add('active');
+                    payeeManagementContent.classList.add('active');
+                    singlePaymentTab.classList.remove('active');
+                    singlePaymentContent.classList.remove('active');
+                });
+            } else {
+                console.error('Some elements not found:', {
+                    singlePaymentTab: !!singlePaymentTab,
+                    payeeManagementTab: !!payeeManagementTab,
+                    singlePaymentContent: !!singlePaymentContent,
+                    payeeManagementContent: !!payeeManagementContent
+                });
+            }
+        });
+    </script>
     <style>
         body {
             background-color: #f9fafb;
@@ -525,9 +567,14 @@
                 <div class="space-y-6">
                     <!-- 账户类型和收款人信息 -->
                     <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
-                        <div>
-                            <p class="text-sm text-gray-600">账户类型：<span class="text-gray-900">银行账号</span></p>
-                            <p class="text-sm text-gray-600 mt-2">收款人：<span class="text-gray-900">American Supplier Inc.</span></p>
+                        <div class="flex items-center space-x-3 text-sm">
+                            <span class="text-gray-900 font-medium">American Supplier Inc.</span>
+                            <span class="text-gray-500">|</span>
+                            <span class="text-gray-600">Bank of America</span>
+                            <span class="text-gray-500">|</span>
+                            <span class="text-gray-600">****5678</span>
+                            <span class="text-gray-500">|</span>
+                            <span class="text-gray-600">USD</span>
                         </div>
                         <button id="backToStep1" style="color: #7D33FF !important" class="text-sm">修改</button>
                     </div>
@@ -753,13 +800,16 @@
                 <div class="space-y-6">
                     <!-- 银行卡信息 -->
                     <div class="p-4 bg-gray-50 rounded-lg">
-                        <div class="flex justify-between items-start mb-3">
-                            <div>
-                                <h4 class="text-sm text-gray-600">银行卡信息</h4>
-                                <p class="text-base font-medium text-gray-900 mt-1">ZHI ZUN BAO</p>
-                                <p class="text-sm text-gray-500 mt-1">DBS Bank (Hong Kong) Limited (5678) 美国</p>
+                        <div class="flex items-center">
+                            <div class="flex items-center space-x-3 text-sm">
+                                <span class="text-gray-900 font-medium">American Supplier Inc.</span>
+                                <span class="text-gray-500">|</span>
+                                <span class="text-gray-600">Bank of America</span>
+                                <span class="text-gray-500">|</span>
+                                <span class="text-gray-600">****5678</span>
+                                <span class="text-gray-500">|</span>
+                                <span class="text-gray-600">USD</span>
                             </div>
-                            <button id="backToStep2" style="color: #7D33FF !important" class="text-sm">修改</button>
                         </div>
                     </div>
 
@@ -813,7 +863,7 @@
                         <button id="backToStep2Btn" class="px-6 py-2 border border-gray-300 text-gray-700 rounded-lg text-sm font-medium hover:bg-gray-50">
                             上一步
                         </button>
-                        <button type="submit" class="px-6 py-2 btn-primary text-white rounded-lg text-sm font-medium">
+                        <button id="confirmPaymentBtn" type="submit" class="px-6 py-2 btn-primary text-white rounded-lg text-sm font-medium">
                             确认付款
                         </button>
                     </div>
@@ -839,7 +889,7 @@
                     <!-- 操作链接 -->
                     <div class="flex items-center justify-center space-x-2">
                         <span class="text-gray-600">您可能需要：</span>
-                        <a href="#" style="color: #7D33FF !important" class="font-medium hover:underline">继续付款</a>
+                        <a href="#" id="continuePaymentBtn" style="color: #7D33FF !important" class="font-medium hover:underline">继续付款</a>
                     </div>
                 </div>
             </div>
@@ -857,27 +907,30 @@
                     </div>
                     <div class="space-y-4">
                         <!-- 收款人卡片 -->
-                        <div class="flex items-center p-3 border border-gray-200 rounded-lg hover:border-blue-500 cursor-pointer transition-colors">
-                            <div class="w-10 h-10 rounded-full bg-[#7D33FF]/10 flex items-center justify-center text-[#7D33FF] font-bold">
-                                AS
+                        <div class="flex items-center p-3 border border-gray-200 rounded-lg hover:border-blue-500 cursor-pointer transition-colors relative" onclick="selectFrequentPayee('payee1', 'American Supplier Inc.', 'bank', 'Bank of America', 'USD')">
+                            <!-- Account type indicator in upper right corner -->
+                            <div class="absolute top-2 right-2">
+                                <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium" style="background-color: rgba(125, 51, 255, 0.1); color: #7D33FF;">银行账户</span>
                             </div>
                             <div class="ml-3 flex-1">
                                 <h4 class="text-sm font-medium text-gray-900">American Supplier Inc. <span class="text-gray-500">(美国供应商)</span></h4>
                                 <p class="text-xs text-gray-500">Bank of America | USD</p>
                             </div>
                         </div>
-                        <div class="flex items-center p-3 border border-gray-200 rounded-lg hover:border-blue-500 cursor-pointer transition-colors">
-                            <div class="w-10 h-10 rounded-full bg-[#7D33FF]/10 flex items-center justify-center text-[#7D33FF] font-bold">
-                                ET
+                        <div class="flex items-center p-3 border border-gray-200 rounded-lg hover:border-blue-500 cursor-pointer transition-colors relative" onclick="selectFrequentPayee('payee2', 'European Trading Ltd.', 'bank', 'Deutsche Bank', 'EUR')">
+                            <!-- Account type indicator in upper right corner -->
+                            <div class="absolute top-2 right-2">
+                                <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium" style="background-color: rgba(125, 51, 255, 0.1); color: #7D33FF;">银行账户</span>
                             </div>
                             <div class="ml-3 flex-1">
                                 <h4 class="text-sm font-medium text-gray-900">European Trading Ltd. <span class="text-gray-500">(欧洲贸易)</span></h4>
                                 <p class="text-xs text-gray-500">Deutsche Bank | EUR</p>
                             </div>
                         </div>
-                        <div class="flex items-center p-3 border border-gray-200 rounded-lg hover:border-blue-500 cursor-pointer transition-colors">
-                            <div class="w-10 h-10 rounded-full bg-[#7D33FF]/10 flex items-center justify-center text-[#7D33FF] font-bold">
-                                AT
+                        <div class="flex items-center p-3 border border-gray-200 rounded-lg hover:border-blue-500 cursor-pointer transition-colors relative" onclick="selectFrequentPayee('payee3', 'Asia Tech Co., Ltd.', 'wallet', 'DBS Bank', 'SGD')">
+                            <!-- Account type indicator in upper right corner -->
+                            <div class="absolute top-2 right-2">
+                                <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium" style="background-color: rgba(125, 51, 255, 0.1); color: #7D33FF;">电子钱包</span>
                             </div>
                             <div class="ml-3 flex-1">
                                 <h4 class="text-sm font-medium text-gray-900">Asia Tech Co., Ltd. <span class="text-gray-500">(亚洲科技)</span></h4>
@@ -927,7 +980,7 @@
                 <div class="mb-6">
                     <div class="flex justify-between items-center mb-6">
                         <h3 class="text-lg font-medium text-gray-900">收款人管理</h3>
-                        <a href="add-payee.html" class="px-4 py-2 bg-[#7D33FF] text-white rounded-lg text-sm font-medium flex items-center hover:bg-[#6929CC]">
+                        <a href="add-payee.html" onclick="localStorage.setItem('returnToPaymentTab', 'payee-management')" class="px-4 py-2 border border-gray-300 text-gray-900 rounded-lg text-sm font-medium flex items-center hover:bg-gray-50">
                             <i class="fas fa-plus mr-2"></i>
                             添加收款人
                         </a>
@@ -951,7 +1004,7 @@
                                 <option value="">全部</option>
                             </select>
                         </div>
-                        <button class="px-6 py-2 bg-[#7D33FF] text-white rounded-lg text-sm font-medium">查询</button>
+                        <button class="px-6 py-2 border border-gray-300 text-gray-900 rounded-lg text-sm font-medium hover:bg-gray-50">查询</button>
                         <button class="text-gray-600 hover:text-[#7D33FF] text-sm font-medium">重置</button>
                     </div>
 
@@ -1273,7 +1326,7 @@
             <div class="mb-6">
                 <div class="flex justify-between items-center mb-6">
                     <h3 class="text-lg font-medium text-gray-900">收款人管理</h3>
-                    <a href="add-payee.html" class="px-4 py-2 bg-[#7D33FF] text-white rounded-lg text-sm font-medium flex items-center hover:bg-[#6929CC]">
+                    <a href="add-payee.html" onclick="localStorage.setItem('returnToPaymentTab', 'payee-management')" class="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-medium flex items-center hover:bg-blue-700">
                         <i class="fas fa-plus mr-2"></i>
                         添加收款人
                     </a>
@@ -1297,7 +1350,7 @@
                             <option value="">全部</option>
                         </select>
                     </div>
-                    <button class="px-6 py-2 bg-[#7D33FF] text-white rounded-lg text-sm font-medium">查询</button>
+                    <button class="px-6 py-2 bg-blue-600 text-white rounded-lg text-sm font-medium hover:bg-blue-700">查询</button>
                     <button class="text-gray-600 hover:text-[#7D33FF] text-sm font-medium">重置</button>
                 </div>
 
@@ -1479,10 +1532,10 @@
             });
 
             // Check if returning from add-payee page
-            const storedTab = localStorage.getItem('activeTab');
-            if (storedTab) {
-                switchTab(storedTab);
-                localStorage.removeItem('activeTab'); // Clear stored tab
+            const returnToTab = localStorage.getItem('returnToPaymentTab');
+            if (returnToTab) {
+                switchTab(returnToTab);
+                localStorage.removeItem('returnToPaymentTab'); // Clear stored tab
             } else {
                 // Initialize with single payment tab active
                 switchTab('single-payment');
@@ -1534,25 +1587,25 @@
                 switch(step) {
                     case 1:
                         if (step1Content) {
-                        step1Content.classList.remove('hidden');
+                            step1Content.classList.remove('hidden');
                             console.log('Showing step 1');
                         }
                         break;
                     case 2:
                         if (step2Content) {
-                        step2Content.classList.remove('hidden');
+                            step2Content.classList.remove('hidden');
                             console.log('Showing step 2');
                         }
                         break;
                     case 3:
                         if (step3Content) {
-                        step3Content.classList.remove('hidden');
+                            step3Content.classList.remove('hidden');
                             console.log('Showing step 3');
                         }
                         break;
                     case 'success':
                         if (paymentSuccess) {
-                        paymentSuccess.classList.remove('hidden');
+                            paymentSuccess.classList.remove('hidden');
                             console.log('Showing success');
                         }
                         break;
@@ -1725,6 +1778,173 @@
             // Toggle receive currency dropdown
             // Initial exchange rate check
             updateExchangeRate();
+
+            // 添加账户类型切换处理
+            const bankAccountRadio = document.getElementById('bankAccount');
+            const eWalletRadio = document.getElementById('eWallet');
+            const cashWithdrawalRadio = document.getElementById('cashWithdrawal');
+
+            // 电子钱包收款人数据
+            const eWalletPayees = [
+                {
+                    id: 'ewallet1',
+                    name: 'John Smith',
+                    currency: 'USD',
+                    nickname: 'JS Digital',
+                    walletName: 'Digital Wallet Pro',
+                    phone: '137****8899'
+                },
+                {
+                    id: 'ewallet2',
+                    name: 'Sarah Wilson',
+                    currency: 'EUR',
+                    nickname: 'SW Pay',
+                    walletName: 'E-Pay Plus',
+                    phone: '186****3344'
+                }
+            ];
+
+            // 银行账户收款人数据
+            const bankPayees = [
+                {
+                    id: 'payee1',
+                    name: 'American Supplier Inc.',
+                    alias: '美国供应商',
+                    bank: 'Bank of America',
+                    currency: 'USD'
+                },
+                {
+                    id: 'payee2',
+                    name: 'European Trading Ltd.',
+                    alias: '欧洲贸易',
+                    bank: 'Deutsche Bank',
+                    currency: 'EUR'
+                },
+                {
+                    id: 'payee3',
+                    name: 'Asia Tech Co., Ltd.',
+                    alias: '亚洲科技',
+                    bank: 'DBS Bank',
+                    currency: 'SGD'
+                }
+            ];
+
+            function updatePayeeList(accountType) {
+                const payeeListContainer = document.querySelector('.border.border-gray-200.rounded-lg.overflow-hidden');
+                let html = '';
+
+                if (accountType === 'wallet') {
+                    // 渲染电子钱包收款人列表
+                    eWalletPayees.forEach(payee => {
+                        html += `
+                            <div class="payee-card p-4 border-b border-gray-200 hover:bg-gray-50" onclick="selectPayee('${payee.id}')">
+                                <div class="flex items-center">
+                                    <div class="flex-none">
+                                        <input type="radio" name="payee" value="${payee.id}" class="w-4 h-4 text-[#7D33FF] border-gray-300 focus:ring-[#7D33FF] checked:bg-[#7D33FF] checked:hover:bg-[#7D33FF] checked:focus:bg-[#7D33FF]">
+                                    </div>
+                                    <div class="flex-1 ml-4">
+                                        <div class="flex justify-between items-start">
+                                            <div>
+                                                <h4 class="font-medium text-gray-900">${payee.name} <span class="text-gray-500">(${payee.nickname})</span></h4>
+                                                <p class="text-xs text-gray-500">${payee.walletName} | ${payee.phone}</p>
+                                            </div>
+                                            <span class="px-2 py-1 bg-gray-100 rounded text-xs font-medium text-gray-600">${payee.currency}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                    });
+                } else if (accountType === 'bank') {
+                    // 渲染银行账户收款人列表
+                    bankPayees.forEach(payee => {
+                        html += `
+                            <div class="payee-card p-4 border-b border-gray-200 hover:bg-gray-50" onclick="selectPayee('${payee.id}')">
+                                <div class="flex items-center">
+                                    <div class="flex-none">
+                                        <input type="radio" name="payee" value="${payee.id}" class="w-4 h-4 text-[#7D33FF] border-gray-300 focus:ring-[#7D33FF] checked:bg-[#7D33FF] checked:hover:bg-[#7D33FF] checked:focus:bg-[#7D33FF]">
+                                    </div>
+                                    <div class="flex-1 ml-4">
+                                        <div class="flex justify-between items-start">
+                                            <div>
+                                                <h4 class="font-medium text-gray-900">${payee.name} <span class="text-gray-500">(${payee.alias})</span></h4>
+                                                <p class="text-xs text-gray-500">${payee.bank} | ${payee.currency}</p>
+                                            </div>
+                                            <span class="px-2 py-1 bg-gray-100 rounded text-xs font-medium text-gray-600">${payee.currency}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                    });
+                }
+
+                payeeListContainer.innerHTML = html;
+            }
+
+            // 添加账户类型切换事件监听
+            [bankAccountRadio, eWalletRadio, cashWithdrawalRadio].forEach(radio => {
+                radio.addEventListener('change', function() {
+                    updatePayeeList(this.value);
+                });
+            });
+
+            // 初始化显示银行账户收款人列表
+            updatePayeeList('bank');
+
+            // 添加常用收款人选择函数
+            window.selectFrequentPayee = function(payeeId, payeeName, accountType, bank, currency) {
+                // 设置对应的账户类型
+                const accountTypeRadios = document.getElementsByName('accountType');
+                accountTypeRadios.forEach(radio => {
+                    if ((accountType === 'bank' && radio.value === 'bank') ||
+                        (accountType === 'wallet' && radio.value === 'wallet')) {
+                        radio.checked = true;
+                    }
+                });
+
+                // 选中对应的收款人
+                const payeeRadios = document.getElementsByName('payee');
+                payeeRadios.forEach(radio => {
+                    if (radio.value === payeeId) {
+                        radio.checked = true;
+                        const payeeCard = radio.closest('.payee-card');
+                        if (payeeCard) {
+                            document.querySelectorAll('.payee-card').forEach(card => {
+                                card.classList.remove('bg-[#7D33FF]/5');
+                            });
+                            payeeCard.classList.add('bg-[#7D33FF]/5');
+                        }
+                    }
+                });
+
+                // 切换到第二步
+                switchStep(2);
+            };
+
+            // 添加确认付款按钮点击事件
+            const confirmPaymentBtn = document.getElementById('confirmPaymentBtn');
+            if (confirmPaymentBtn) {
+                confirmPaymentBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    console.log('Confirm payment button clicked');
+                    switchStep('success');
+                });
+            }
+
+            // 添加继续付款按钮点击事件
+            const continuePaymentBtn = document.getElementById('continuePaymentBtn');
+            if (continuePaymentBtn) {
+                continuePaymentBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    console.log('Continue payment button clicked');
+                    // 重置所有表单
+                    const paymentForms = document.querySelectorAll('form');
+                    paymentForms.forEach(form => form.reset());
+                    // 切换到第一步
+                    switchStep(1);
+                });
+            }
         });
     </script>
 

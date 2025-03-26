@@ -164,7 +164,7 @@
         #help-button:hover {
             background: #4338ca;
         }
-        /* 引导提示样式 */
+        /* 引导提示遮罩和提示框 */
         .tour-overlay {
             position: fixed;
             top: 0;
@@ -176,7 +176,7 @@
             display: none;
         }
         .tour-tooltip {
-            position: absolute;
+            position: fixed;
             background: white;
             padding: 16px;
             border-radius: 8px;
@@ -197,15 +197,21 @@
             height: 0;
         }
         .tour-tooltip h3 {
-            color: #4f46e5;
+            color: #7D33FF;
             font-size: 16px;
             margin-bottom: 8px;
+            font-weight: 600;
         }
         .tour-tooltip p {
             color: #4b5563;
             font-size: 14px;
             line-height: 1.6;
             margin-bottom: 16px;
+        }
+        .tour-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
         }
         .tour-tooltip button {
             background: #7D33FF;
@@ -214,15 +220,28 @@
             border-radius: 4px;
             border: none;
             cursor: pointer;
+            font-weight: 500;
+            transition: all 0.2s;
         }
         .tour-tooltip button:hover {
             background: #6929D4;
+        }
+        .tour-tooltip .prev-step {
+            background: #6b7280;
+        }
+        .tour-tooltip .prev-step:hover {
+            background: #4b5563;
+        }
+        .tour-tooltip .prev-step.hidden {
+            display: none;
         }
         /* 高亮菜单项样式 */
         .highlight-menu {
             position: relative;
             z-index: 1002;
             background: white !important;
+            box-shadow: 0 0 0 2px #7D33FF !important;
+            border-radius: 8px !important;
         }
         
         /* 活动弹框样式 */
@@ -698,7 +717,10 @@
     <div class="tour-tooltip">
         <h3></h3>
         <p></p>
-        <button class="next-step">下一步</button>
+        <div class="tour-buttons">
+            <button class="prev-step">上一步</button>
+            <button class="next-step">下一步</button>
+        </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/shepherd.js@10.0.1/dist/js/shepherd.min.js"></script>
@@ -747,10 +769,24 @@
             currentPage = page;
             
             // 如果是完整的页面路径，直接使用
+            let targetUrl;
             if (page.endsWith('.html')) {
-                mainContent.src = page;
+                targetUrl = page;
             } else if (pageUrls[page]) {
-                mainContent.src = pageUrls[page];
+                targetUrl = pageUrls[page];
+            }
+
+            if (targetUrl) {
+                console.log('Loading page:', targetUrl);
+                mainContent.src = targetUrl;
+                mainContent.onerror = function() {
+                    console.error('Failed to load page:', targetUrl);
+                };
+                mainContent.onload = function() {
+                    console.log('Page loaded successfully:', targetUrl);
+                };
+            } else {
+                console.error('Page URL not found for:', page);
             }
             
             // 更新活动菜单状态
@@ -773,6 +809,246 @@
                     }
                 }
             });
+        }
+
+        // 引导步骤配置
+        const tourSteps = [
+            {
+                element: '[data-page="my-assets"]',
+                title: '账户总览',
+                text: '在"我的资产"中查看可用/不可用余额；在"银行账户"中查看已开通的所有银行账户信息及进行相关操作'
+            },
+            {
+                element: '#submenu-collection .menu-item[data-page="pages/platform-collection.html"]',
+                title: '电商平台',
+                text: '点击进入后，可以：1. 申请电商平台收款账户；2. 管理电商平台店铺；3. 上传电商平台订单获取认证额度',
+                beforeShow: () => {
+                    const submenu = document.getElementById('submenu-collection');
+                    if (submenu) {
+                        submenu.classList.add('open');
+                    }
+                }
+            },
+            {
+                element: '#submenu-collection .menu-item[data-page="pages/independent-site.html"]',
+                title: '独立站',
+                text: '点击进入后，可以：1. 申请独立站收款账户；2. 管理独立站店铺；3. 上传独立站订单获取认证额度',
+                beforeShow: () => {
+                    const submenu = document.getElementById('submenu-collection');
+                    if (submenu) {
+                        submenu.classList.add('open');
+                    }
+                }
+            },
+            {
+                element: '#submenu-collection .menu-item[data-page="pages/service-trade.html"]',
+                title: '服务贸易',
+                text: '点击进入后，可以：1. 申请服务贸易收款账户；2. 管理服务贸易平台账户；3. 上传服务贸易订单获取认证额度',
+                beforeShow: () => {
+                    const submenu = document.getElementById('submenu-collection');
+                    if (submenu) {
+                        submenu.classList.add('open');
+                    }
+                }
+            },
+            {
+                element: '#submenu-collection .menu-item[data-page="pages/trade-collection-notice.html"]',
+                title: '外贸收款',
+                text: '点击进入后，可以：1. 查看外贸收款到账记录；2. 关联外贸订单；3. 上传和管理外贸订单',
+                beforeShow: () => {
+                    const submenu = document.getElementById('submenu-collection');
+                    if (submenu) {
+                        submenu.classList.add('open');
+                    }
+                }
+            },
+            {
+                element: '#submenu-collection .menu-item[data-page="pages/holder-management.html"]',
+                title: '持有人',
+                text: '点击进入后，可以管理申请收款账户时需要选择的持有人信息',
+                beforeShow: () => {
+                    const submenu = document.getElementById('submenu-collection');
+                    if (submenu) {
+                        submenu.classList.add('open');
+                    }
+                }
+            },
+            {
+                element: '#submenu-acquiring .menu-item[data-page="bill-collection"]',
+                title: '账单收款',
+                text: '点击进入后，可以创建支付链接，用于收款',
+                beforeShow: () => {
+                    const parentMenuItem = document.querySelector('[data-toggle="submenu-acquiring"]');
+                    if (parentMenuItem) {
+                        const submenu = document.getElementById('submenu-acquiring');
+                        if (submenu) {
+                            submenu.classList.add('open');
+                            const chevron = parentMenuItem.querySelector('.submenu-toggle');
+                            if (chevron) {
+                                chevron.classList.replace('fa-chevron-down', 'fa-chevron-up');
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                element: '#submenu-acquiring .menu-item[data-page="transaction-list"]',
+                title: '交易清单',
+                text: '点击进入后，可以：1. 查看买家的支付记录；2. 查看商家发起的退款记录',
+                beforeShow: () => {
+                    const parentMenuItem = document.querySelector('[data-toggle="submenu-acquiring"]');
+                    if (parentMenuItem) {
+                        const submenu = document.getElementById('submenu-acquiring');
+                        if (submenu) {
+                            submenu.classList.add('open');
+                            const chevron = parentMenuItem.querySelector('.submenu-toggle');
+                            if (chevron) {
+                                chevron.classList.replace('fa-chevron-down', 'fa-chevron-up');
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                element: '[data-page="forex"]',
+                title: '外汇兑换',
+                text: '点击进入后，可以发起不同币种之间的货币兑换'
+            },
+            {
+                element: '[data-page="business-card"]',
+                title: '商务卡（鲸卡）',
+                text: '点击进入后，可以使用原鲸卡服务的相关功能'
+            },
+            {
+                element: '#submenu-payment',
+                title: '提现付款',
+                text: '点击展开后，可以选择：1. 提现功能；2. 付款功能',
+                beforeShow: () => {
+                    const parentMenuItem = document.querySelector('[data-toggle="submenu-payment"]');
+                    if (parentMenuItem) {
+                        const submenu = document.getElementById('submenu-payment');
+                        if (submenu) {
+                            submenu.classList.add('open');
+                            const chevron = parentMenuItem.querySelector('.submenu-toggle');
+                            if (chevron) {
+                                chevron.classList.replace('fa-chevron-down', 'fa-chevron-up');
+                            }
+                        }
+                    }
+                }
+            }
+        ];
+
+        // 引导功能实现
+        function initTour() {
+            console.log('Initializing tour...');
+            let currentStep = 0;
+            const overlay = document.querySelector('.tour-overlay');
+            const tooltip = document.querySelector('.tour-tooltip');
+            const nextButton = tooltip.querySelector('.next-step');
+            const prevButton = tooltip.querySelector('.prev-step');
+            let currentHighlight = null;
+
+            function showStep(step) {
+                console.log('Showing step:', step);
+                const targetElement = document.querySelector(step.element);
+                if (!targetElement) {
+                    console.error('Target element not found:', step.element);
+                    return;
+                }
+
+                // 执行步骤前的准备工作
+                if (step.beforeShow) {
+                    step.beforeShow();
+                }
+
+                // 移除之前的高亮
+                if (currentHighlight) {
+                    currentHighlight.classList.remove('highlight-menu');
+                }
+
+                // 设置新的高亮
+                targetElement.classList.add('highlight-menu');
+                currentHighlight = targetElement;
+
+                // 显示遮罩和提示框
+                overlay.style.display = 'block';
+                tooltip.style.display = 'block';
+
+                // 更新提示内容
+                tooltip.querySelector('h3').textContent = step.title;
+                tooltip.querySelector('p').textContent = step.text;
+
+                // 更新按钮状态
+                prevButton.classList.toggle('hidden', currentStep === 0);
+                nextButton.textContent = currentStep === tourSteps.length - 1 ? '完成' : '下一步';
+
+                // 计算提示框位置
+                const rect = targetElement.getBoundingClientRect();
+                const tooltipHeight = tooltip.offsetHeight;
+                
+                // 将提示框垂直居中对齐到目标元素
+                const targetMiddle = rect.top + rect.height / 2;
+                const tooltipTop = targetMiddle - tooltipHeight / 2;
+                
+                // 设置提示框位置，确保箭头指向目标元素的中间
+                tooltip.style.left = `${rect.right + 20}px`;
+                tooltip.style.top = `${tooltipTop}px`;
+
+                // 确保目标元素在视图中可见
+                targetElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+
+            function nextStep() {
+                console.log('Moving to next step');
+                if (currentStep < tourSteps.length - 1) {
+                    currentStep++;
+                    showStep(tourSteps[currentStep]);
+                } else {
+                    endTour();
+                }
+            }
+
+            function prevStep() {
+                console.log('Moving to previous step');
+                if (currentStep > 0) {
+                    currentStep--;
+                    showStep(tourSteps[currentStep]);
+                }
+            }
+
+            function endTour() {
+                console.log('Ending tour');
+                overlay.style.display = 'none';
+                tooltip.style.display = 'none';
+                if (currentHighlight) {
+                    currentHighlight.classList.remove('highlight-menu');
+                }
+                localStorage.setItem('tourCompleted', 'true');
+            }
+
+            // 绑定事件
+            nextButton.addEventListener('click', nextStep);
+            prevButton.addEventListener('click', prevStep);
+            overlay.addEventListener('click', endTour);
+
+            // 添加帮助按钮点击事件
+            const helpButton = document.getElementById('help-button');
+            if (helpButton) {
+                helpButton.addEventListener('click', () => {
+                    console.log('Help button clicked');
+                    currentStep = 0;
+                    showStep(tourSteps[0]);
+                });
+            }
+
+            // 如果是首次访问，自动开始引导
+            if (!localStorage.getItem('tourCompleted')) {
+                console.log('Starting tour automatically');
+                setTimeout(() => {
+                    showStep(tourSteps[0]);
+                }, 1000);
+            }
         }
 
         // 初始化事件监听
@@ -824,7 +1100,72 @@
             // 初始化页面
             const initialPage = window.location.hash.slice(1) || 'home';
             loadPage(initialPage);
+
+            // 初始化引导功能
             initTour();
+
+            // 问卷弹框相关代码
+            const modal = document.getElementById('activity-modal');
+            if (modal) {
+                // 检查是否已经显示过弹框
+                function checkCookie() {
+                    const cookies = document.cookie.split(';');
+                    for (let cookie of cookies) {
+                        cookie = cookie.trim();
+                        if (cookie.startsWith('surveyPromptShown=')) {
+                            return true;
+                        }
+                    }
+                    return false;
+                }
+
+                // 关闭弹框函数
+                function closeActivityModal() {
+                    modal.classList.add('hidden');
+                    // 设置cookie，24小时内不再显示
+                    document.cookie = "surveyPromptShown=true; max-age=86400; path=/";
+                }
+
+                // 如果已经显示过，就不再显示
+                if (!checkCookie()) {
+                    // 显示问卷调查弹框（页面加载0.5秒后）
+                    setTimeout(() => {
+                        modal.classList.remove('hidden');
+                        
+                        // 绑定关闭按钮事件
+                        const closeX = document.getElementById('activity-close-x');
+                        if (closeX) {
+                            closeX.addEventListener('click', function(e) {
+                                e.preventDefault();
+                                e.stopPropagation();
+                                closeActivityModal();
+                            });
+                        }
+                        
+                        // 绑定"稍后再说"按钮事件
+                        const closeBtn = document.getElementById('activity-close-btn');
+                        if (closeBtn) {
+                            closeBtn.addEventListener('click', closeActivityModal);
+                        }
+                        
+                        // 绑定参与问卷按钮事件
+                        const submitBtn = document.getElementById('submit-survey-btn');
+                        if (submitBtn) {
+                            submitBtn.addEventListener('click', function() {
+                                alert('即将跳转到问卷调查页面，感谢您的参与！');
+                                closeActivityModal();
+                            });
+                        }
+                        
+                        // 点击弹框外部区域关闭弹框
+                        modal.addEventListener('click', function(e) {
+                            if (e.target === modal) {
+                                closeActivityModal();
+                            }
+                        });
+                    }, 500);
+                }
+            }
         });
 
         // 切换侧边栏
@@ -847,191 +1188,6 @@
         window.addEventListener('popstate', event => {
             if (event.state && event.state.page) {
                 loadPage(event.state.page);
-            }
-        });
-
-        // 引导步骤配置
-        const tourSteps = [
-            {
-                element: '[data-page="platform-collection"]',
-                title: '平台收款',
-                text: '平台收款的申请收款账户、持有人管理、结汇订单上传等相关功能',
-                beforeShow: () => {
-                    const submenu = document.getElementById('submenu-collection');
-                    submenu.classList.add('open');
-                }
-            },
-            {
-                element: '[data-page="trade-collection"]',
-                title: '外贸收款',
-                text: '外贸收款的申请收款账户、关联订单、上传外贸订单等相关功能',
-                beforeShow: () => {
-                    const submenu = document.getElementById('submenu-collection');
-                    submenu.classList.add('open');
-                }
-            },
-            {
-                element: '[data-toggle="submenu-acquiring"]',
-                title: '收单功能',
-                text: '收单相关的账单收款和支付/退款记录在此处'
-            },
-            {
-                element: '[data-page="cards"]',
-                title: '卡功能',
-                text: '原鲸卡服务相关的功能在此处'
-            },
-            {
-                element: '[data-toggle="submenu-payment"]',
-                title: '提现付款功能',
-                text: '提现/付款相关功能在此处'
-            }
-        ];
-
-        // 引导功能实现
-        function initTour() {
-            let currentStep = 0;
-            const overlay = document.querySelector('.tour-overlay');
-            const tooltip = document.querySelector('.tour-tooltip');
-            const nextButton = tooltip.querySelector('.next-step');
-            let currentHighlight = null;
-
-            function showStep(step) {
-                const targetElement = document.querySelector(step.element);
-                if (!targetElement) return;
-
-                // 执行步骤前的准备工作
-                if (step.beforeShow) {
-                    step.beforeShow();
-                }
-
-                // 移除之前的高亮
-                if (currentHighlight) {
-                    currentHighlight.classList.remove('highlight-menu');
-                }
-
-                // 设置新的高亮
-                targetElement.classList.add('highlight-menu');
-                currentHighlight = targetElement;
-
-                // 显示遮罩和提示框
-                overlay.style.display = 'block';
-                tooltip.style.display = 'block';
-
-                // 更新提示内容
-                tooltip.querySelector('h3').textContent = step.title;
-                tooltip.querySelector('p').textContent = step.text;
-
-                // 更新按钮文本
-                nextButton.textContent = currentStep === tourSteps.length - 1 ? '完成' : '下一步';
-
-                // 计算提示框位置
-                const rect = targetElement.getBoundingClientRect();
-                const tooltipHeight = tooltip.offsetHeight;
-                
-                // 将提示框垂直居中对齐到目标元素
-                const targetMiddle = rect.top + rect.height / 2;
-                const tooltipTop = targetMiddle - tooltipHeight / 2;
-                
-                // 设置提示框位置，确保箭头指向目标元素的中间
-                tooltip.style.left = `${rect.right + 20}px`;
-                tooltip.style.top = `${tooltipTop}px`;
-            }
-
-            function nextStep() {
-                if (currentStep < tourSteps.length - 1) {
-                    currentStep++;
-                    showStep(tourSteps[currentStep]);
-                } else {
-                    endTour();
-                }
-            }
-
-            function endTour() {
-                overlay.style.display = 'none';
-                tooltip.style.display = 'none';
-                if (currentHighlight) {
-                    currentHighlight.classList.remove('highlight-menu');
-                }
-                localStorage.setItem('tourCompleted', 'true');
-            }
-
-            // 绑定事件
-            nextButton.addEventListener('click', nextStep);
-            overlay.addEventListener('click', endTour);
-
-            // 添加帮助按钮点击事件
-            document.getElementById('help-button').addEventListener('click', () => {
-                currentStep = 0;
-                showStep(tourSteps[0]);
-            });
-
-            // 如果是首次访问，自动开始引导
-            if (!localStorage.getItem('tourCompleted')) {
-                setTimeout(() => {
-                    showStep(tourSteps[0]);
-                }, 500);
-            }
-        }
-
-        // 活动弹框相关代码
-        document.addEventListener('DOMContentLoaded', function() {
-            // 显示问卷调查弹框（页面加载0.5秒后）
-            setTimeout(() => {
-                document.getElementById('activity-modal').classList.remove('hidden');
-                
-                // 直接在这里绑定关闭按钮事件，确保在显示弹框后绑定
-                const closeX = document.getElementById('activity-close-x');
-                if (closeX) {
-                    closeX.addEventListener('click', function(e) {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        console.log('关闭按钮被点击');
-                        closeActivityModal();
-                    });
-                }
-                
-                document.getElementById('activity-close-btn').addEventListener('click', closeActivityModal);
-                
-                // 参与问卷按钮事件
-                document.getElementById('submit-survey-btn').addEventListener('click', function() {
-                    // 这里可以添加打开问卷调查页面的代码
-                    // 例如：window.open('https://example.com/survey', '_blank');
-                    
-                    alert('即将跳转到问卷调查页面，感谢您的参与！');
-                    closeActivityModal();
-                });
-                
-                // 点击弹框外部区域关闭弹框
-                document.getElementById('activity-modal').addEventListener('click', function(e) {
-                    if (e.target === document.getElementById('activity-modal')) {
-                        closeActivityModal();
-                    }
-                });
-            }, 500);
-            
-            // 关闭弹框函数
-            function closeActivityModal() {
-                console.log('关闭弹框函数被调用');
-                document.getElementById('activity-modal').classList.add('hidden');
-                // 设置cookie，24小时内不再显示
-                document.cookie = "surveyPromptShown=true; max-age=86400; path=/";
-            }
-            
-            // 检查是否已经显示过弹框
-            function checkCookie() {
-                const cookies = document.cookie.split(';');
-                for (let cookie of cookies) {
-                    cookie = cookie.trim();
-                    if (cookie.startsWith('surveyPromptShown=')) {
-                        return true;
-                    }
-                }
-                return false;
-            }
-            
-            // 如果已经显示过，就不再显示
-            if (checkCookie()) {
-                document.getElementById('activity-modal').classList.add('hidden');
             }
         });
 
