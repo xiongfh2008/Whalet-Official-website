@@ -21,6 +21,15 @@
             color: #111827;
         }
         
+        /* 添加紫色按钮样式 */
+        .text-\[\#7D33FF\] {
+            color: #7D33FF !important;
+        }
+        
+        .hover\:text-\[\#6929CC\]:hover {
+            color: #6929CC !important;
+        }
+        
         .card {
             transition: all 0.3s ease;
             border: 1px solid #e5e7eb;
@@ -1282,6 +1291,163 @@
                             </table>
                             </div>
                         </div>
+
+                        <!-- 可用额度板块 -->
+                        <div class="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden mt-4">
+                            <div class="px-4 py-4 bg-gradient-to-r from-gray-50 to-white border-b border-gray-200">
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center space-x-3">
+                                        <div class="w-8 h-8 bg-gray-100 rounded-lg flex items-center justify-center">
+                                            <i class="fas fa-wallet text-gray-600"></i>
+                                        </div>
+                                        <h3 class="text-lg font-medium text-gray-800">可用额度</h3>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- 提示信息 -->
+                            <div class="p-2 bg-yellow-50 border-b border-yellow-100">
+                                <div class="flex items-start space-x-1.5">
+                                    <i class="fas fa-exclamation-circle text-yellow-600 text-xs mt-0.5"></i>
+                                    <p class="text-xs text-yellow-700 leading-4">
+                                        根据境内监管要求，人民币结汇需要您提供真实的贸易订单信息作为结汇依据，请授权店铺或上传相关交易记录
+                                    </p>
+                                </div>
+                            </div>
+                            
+                            <div class="p-3" x-data="{ expanded: false }">
+                                <div class="space-y-3">
+                                    <!-- 美元总额度 -->
+                                    <div class="flex items-center justify-between p-2 hover:bg-gray-50 rounded-lg group">
+                                        <div class="flex items-center space-x-3">
+                                            <img src="https://cdn.jsdelivr.net/gh/lipis/flag-icons/flags/4x3/us.svg" 
+                                                 alt="USD" 
+                                                 class="w-6 h-4 object-cover rounded">
+                                            <div>
+                                                <div class="text-sm font-medium">美元总额度 (USD)</div>
+                                                <div class="text-lg font-semibold">$ 165,068.70</div>
+                                            </div>
+                                        </div>
+                                        <button class="text-[#7D33FF] hover:text-[#6929CC] text-sm"
+                                                @click="$refs.balanceDetailsModal.showModal()">
+                                            详情
+                                        </button>
+                                    </div>
+
+                                    <!-- 欧元总额度 -->
+                                    <div class="flex items-center justify-between p-2 hover:bg-gray-50 rounded-lg group">
+                                        <div class="flex items-center space-x-3">
+                                            <img src="https://cdn.jsdelivr.net/gh/lipis/flag-icons/flags/4x3/eu.svg" 
+                                                 alt="EUR" 
+                                                 class="w-6 h-4 object-cover rounded">
+                                            <div>
+                                                <div class="text-sm font-medium">欧元总额度 (EUR)</div>
+                                                <div class="text-lg font-semibold">€ 15,230.00</div>
+                                            </div>
+                                        </div>
+                                        <button class="text-[#7D33FF] hover:text-[#6929CC] text-sm"
+                                                @click="$refs.balanceDetailsModal.showModal()">
+                                            详情
+                                        </button>
+                                    </div>
+
+                                    <!-- 英镑总额度 -->
+                                    <div class="flex items-center justify-between p-2 hover:bg-gray-50 rounded-lg group">
+                                        <div class="flex items-center space-x-3">
+                                            <img src="https://cdn.jsdelivr.net/gh/lipis/flag-icons/flags/4x3/gb.svg" 
+                                                 alt="GBP" 
+                                                 class="w-6 h-4 object-cover rounded">
+                                            <div>
+                                                <div class="text-sm font-medium">英镑总额度 (GBP)</div>
+                                                <div class="text-lg font-semibold">£ 8,450.00</div>
+                                            </div>
+                                        </div>
+                                        <button class="text-[#7D33FF] hover:text-[#6929CC] text-sm"
+                                                @click="$refs.balanceDetailsModal.showModal()">
+                                            详情
+                                        </button>
+                                    </div>
+
+                                    <!-- 展开/收起按钮 -->
+                                    <button 
+                                        @click="expanded = !expanded"
+                                        class="w-full py-1 text-sm text-gray-500 hover:text-gray-700 flex items-center justify-center group"
+                                    >
+                                        <span x-text="expanded ? '收起' : '展开'"></span>
+                                        <i class="fas fa-chevron-down ml-1 transition-transform duration-200"
+                                           :class="expanded ? 'transform rotate-180' : ''"></i>
+                                    </button>
+
+                                    <!-- 更多币种（展开时显示） -->
+                                    <div x-show="expanded" x-collapse>
+                                        <!-- 日元总额度 -->
+                                        <div class="flex items-center justify-between p-2 hover:bg-gray-50 rounded-lg group">
+                                            <div class="flex items-center space-x-3">
+                                                <img src="https://cdn.jsdelivr.net/gh/lipis/flag-icons/flags/4x3/jp.svg" 
+                                                     alt="JPY" 
+                                                     class="w-6 h-4 object-cover rounded">
+                                                <div>
+                                                    <div class="text-sm font-medium">日元总额度 (JPY)</div>
+                                                    <div class="text-lg font-semibold">¥ 2,350,000</div>
+                                                </div>
+                                            </div>
+                                            <button class="text-[#7D33FF] hover:text-[#6929CC] text-sm"
+                                                    @click="$refs.balanceDetailsModal.showModal()">
+                                                详情
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 余额详情弹框 -->
+                        <dialog x-ref="balanceDetailsModal" class="rounded-lg shadow-xl p-0 w-full max-w-lg">
+                            <div class="bg-white rounded-lg overflow-hidden">
+                                <!-- 弹框标题 -->
+                                <div class="px-6 py-4 bg-gradient-to-r from-gray-50 to-white border-b border-gray-200">
+                                    <div class="flex items-center justify-between">
+                                        <div class="flex items-center space-x-3">
+                                            <img src="https://cdn.jsdelivr.net/gh/lipis/flag-icons/flags/4x3/us.svg" 
+                                                 alt="USD" 
+                                                 class="w-8 h-6 object-cover rounded">
+                                            <div>
+                                                <div class="text-sm text-gray-600">美元总额度 (USD)</div>
+                                                <div class="text-2xl font-semibold">$ 165,068.70</div>
+                                            </div>
+                                        </div>
+                                        <button @click="$refs.balanceDetailsModal.close()" class="text-gray-400 hover:text-gray-600">
+                                            <i class="fas fa-times"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                
+                                <!-- 弹框内容 -->
+                                <div class="p-6">
+                                    <div class="space-y-3">
+                                        <div class="flex justify-between items-center py-2 border-b border-gray-100">
+                                            <span class="text-sm text-gray-600">Magento</span>
+                                            <span class="text-sm font-medium">$ 45,431.52</span>
+                                        </div>
+                                        
+                                        <div class="flex justify-between items-center py-2 border-b border-gray-100">
+                                            <span class="text-sm text-gray-600">XShoppy</span>
+                                            <span class="text-sm font-medium">$ 264.97</span>
+                                        </div>
+                                        
+                                        <div class="flex justify-between items-center py-2 border-b border-gray-100">
+                                            <span class="text-sm text-gray-600">其他自建站</span>
+                                            <span class="text-sm font-medium">$ 91,790.12</span>
+                                        </div>
+                                        
+                                        <div class="flex justify-between items-center py-2">
+                                            <span class="text-sm text-gray-600">GoogleAdSense</span>
+                                            <span class="text-sm font-medium">$ 27,582.09</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </dialog>
                     </div>
                 </div>
             </div>

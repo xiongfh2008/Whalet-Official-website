@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>账户详情 - Whalet</title>
+    <title>店铺详情 - Whalet</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="../styles/custom.css">
@@ -126,11 +126,11 @@
                 <!-- 顶部导航栏 -->
                 <div class="p-4 border-b border-gray-200">
                     <div class="flex items-center">
-                        <a href="my-assets.html#bank-accounts" class="mr-4 flex items-center" style="color: #7D33FF;">
+                        <a href="javascript:history.back()" class="mr-4 flex items-center" style="color: #7D33FF;">
                             <i class="fas fa-arrow-left"></i>
                             <span class="ml-1 text-sm">返回</span>
                         </a>
-                        <h1 class="text-xl font-medium text-gray-900">账户详情</h1>
+                        <h1 class="text-xl font-medium text-gray-900">店铺详情</h1>
                     </div>
                 </div>
 
@@ -141,30 +141,30 @@
                         <!-- 第一行：经营平台和绑定店铺按钮 -->
                         <div class="flex justify-between items-center mb-4">
                             <div class="flex items-center">
-                                <img src="https://logo.clearbit.com/amazon.com" alt="Amazon" class="h-8 w-8 rounded-full">
-                                <span class="ml-3 text-lg font-medium">亚马逊北美站</span>
+                                <img src="https://logo.clearbit.com/paypal.com" alt="PayPal" class="h-8 w-8 rounded-full">
+                                <span class="ml-3 text-lg font-medium">PayPal</span>
                             </div>
-                            <button class="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-md text-sm font-medium transition-colors duration-200">
+                            <a href="apply-collection-account-binding.html" class="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-md text-sm font-medium transition-colors duration-200">
                                 绑定店铺
-                            </button>
+                            </a>
                         </div>
                         
                         <!-- 第二行：店铺信息 -->
                         <div class="flex items-center space-x-12">
                             <div class="flex items-center">
                                 <span class="text-gray-600">店铺名称：</span>
-                                <span class="text-gray-900 ml-2">Global Tech Store</span>
+                                <span class="text-gray-900 ml-2">PayPal Business Account</span>
                             </div>
                             <div class="flex items-center">
                                 <span class="text-gray-600">店铺别名：</span>
-                                <span id="shopAlias" class="text-gray-900 ml-2">美国电子产品店</span>
+                                <span id="shopAlias" class="text-gray-900 ml-2">PayPal商业账户</span>
                                 <button onclick="editShopAlias()" class="ml-2 text-gray-400 hover:text-gray-600">
                                     <i class="fas fa-edit text-xs"></i>
                                 </button>
                             </div>
                             <div class="flex items-center">
                                 <span class="text-gray-600">店铺链接：</span>
-                                <span class="text-gray-900 ml-2">https://www.amazon.com/shop/globaltechstore</span>
+                                <span class="text-gray-900 ml-2">https://www.paypal.com/businessmanage/account/homepage</span>
                             </div>
                         </div>
                     </div>
@@ -208,21 +208,7 @@
                                             </button>
                                         </div>
                                         <div class="flex justify-between items-center">
-                                            <a href="#" class="custom-purple custom-purple-hover text-sm" onclick="showAccountDetailsModal()">查看账户详情</a>
-                                            <div class="flex space-x-2">
-                                                <button class="p-1 text-sm text-gray-600 hover:text-[#7D33FF]" title="申请银行证明信">
-                                                    <i class="fas fa-file-alt"></i>
-                                                </button>
-                                                <button class="p-1 text-sm text-red-600 hover:text-red-800" title="注销账户">
-                                                    <i class="fas fa-trash-alt"></i>
-                                                </button>
-                                                <button class="p-1 text-sm custom-purple custom-purple-hover" title="付费延长">
-                                                    <i class="fas fa-clock"></i>
-                                                </button>
-                                                <button class="p-1 text-sm text-green-600 hover:text-green-800" title="开启自动续费">
-                                                    <i class="fas fa-sync"></i>
-                                                </button>
-                                            </div>
+                                            <a href="collection-account-details.html" class="custom-purple custom-purple-hover text-sm">查看账户详情</a>
                                         </div>
                                     </div>
 
@@ -242,21 +228,7 @@
                                             </button>
                                         </div>
                                         <div class="flex justify-between items-center">
-                                            <a href="#" class="custom-purple custom-purple-hover text-sm" onclick="showAccountDetailsModal()">查看账户详情</a>
-                                            <div class="flex space-x-2">
-                                                <button class="p-1 text-sm text-gray-600 hover:text-[#7D33FF]" title="申请银行证明信">
-                                                    <i class="fas fa-file-alt"></i>
-                                                </button>
-                                                <button class="p-1 text-sm text-red-600 hover:text-red-800" title="注销账户">
-                                                    <i class="fas fa-trash-alt"></i>
-                                                </button>
-                                                <button class="p-1 text-sm custom-purple custom-purple-hover" title="付费延长">
-                                                    <i class="fas fa-clock"></i>
-                                                </button>
-                                                <button class="p-1 text-sm text-green-600 hover:text-green-800" title="开启自动续费">
-                                                    <i class="fas fa-sync"></i>
-                                                </button>
-                                            </div>
+                                            <a href="collection-account-details.html" class="custom-purple custom-purple-hover text-sm">查看账户详情</a>
                                         </div>
                                     </div>
 
@@ -533,6 +505,80 @@
         </div>
     </div>
 
+    <!-- 添加收款账户模态窗 -->
+    <div id="addAccountModal" class="modal">
+        <div class="modal-content max-w-sm">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-lg font-medium">添加收款账户</h3>
+                <button onclick="closeAddAccountModal()" class="text-gray-400 hover:text-gray-600">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="space-y-4">
+                <div class="flex flex-col">
+                    <label class="mb-1 text-sm text-gray-700 flex items-center">
+                        <span class="text-red-500 mr-1">*</span>收款币种：
+                    </label>
+                    <div class="relative">
+                        <select class="w-full px-3 py-2 border border-gray-300 rounded-md appearance-none bg-white">
+                            <option value="">请选择收款币种</option>
+                        </select>
+                        <div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
+                            <i class="fas fa-chevron-down text-gray-400"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex flex-col">
+                    <label class="mb-1 text-sm text-gray-700 flex items-center">
+                        <span class="text-red-500 mr-1">*</span>银行所在地：
+                    </label>
+                    <div class="relative">
+                        <select class="w-full px-3 py-2 border border-gray-300 rounded-md appearance-none bg-white">
+                            <option value="">请选择银行所在地</option>
+                        </select>
+                        <div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
+                            <i class="fas fa-chevron-down text-gray-400"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex flex-col">
+                    <label class="mb-1 text-sm text-gray-700 flex items-center">
+                        <span class="text-red-500 mr-1">*</span>持有人名称：
+                    </label>
+                    <div class="flex items-center">
+                        <div class="relative flex-1">
+                            <select id="holderSelect" class="w-full px-3 py-2 border border-gray-300 rounded-md appearance-none bg-white" onchange="updateHolderDisplay()">
+                                <option value="">请选择持有人</option>
+                                <option value="ZHANG SHANSHAN">张珊珊</option>
+                            </select>
+                            <div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
+                                <i class="fas fa-chevron-down text-gray-400"></i>
+                            </div>
+                        </div>
+                        <button style="color: #7D33FF; border: 1px solid #7D33FF" class="ml-2 text-sm px-3 py-1 rounded-md hover:bg-[#7D33FF] hover:text-white transition-colors">添加持有人</button>
+                    </div>
+                    <div id="selectedHolder" class="mt-2 text-sm hidden">
+                        <span style="color: #7D33FF">账户名称：<span class="font-medium"></span></span>
+                    </div>
+                    <div class="text-red-500 text-sm mt-2">
+                        需与平台登记内容保持一致，一般为英文，名称不一致可能会触发风控监管
+                    </div>
+                </div>
+
+                <div class="flex justify-end space-x-4 mt-6">
+                    <button onclick="closeAddAccountModal()" class="px-4 py-2 border border-gray-300 rounded-md text-sm">
+                        取消
+                    </button>
+                    <button style="color: #7D33FF; border: 1px solid #7D33FF" class="px-4 py-2 rounded-md text-sm hover:bg-[#7D33FF] hover:text-white transition-colors">
+                        确定申请
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
         // 编辑店铺别名
         function editShopAlias() {
@@ -641,6 +687,41 @@
             }).catch(err => {
                 console.error('复制失败:', err);
             });
+        }
+
+        // 添加收款账户模态窗
+        function showAddAccountModal() {
+            document.getElementById('addAccountModal').classList.add('active');
+        }
+
+        function closeAddAccountModal() {
+            document.getElementById('addAccountModal').classList.remove('active');
+        }
+
+        // 更新添加账户按钮的点击事件
+        document.querySelector('button[style*="border: 1px solid #7D33FF"]').addEventListener('click', function() {
+            showAddAccountModal();
+        });
+
+        // 点击模态窗口外部关闭
+        document.getElementById('addAccountModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeAddAccountModal();
+            }
+        });
+
+        // 更新持有人显示
+        function updateHolderDisplay() {
+            const select = document.getElementById('holderSelect');
+            const selectedHolder = document.getElementById('selectedHolder');
+            const holderNameSpan = selectedHolder.querySelector('span span');
+            
+            if (select.value) {
+                holderNameSpan.textContent = select.value;
+                selectedHolder.classList.remove('hidden');
+            } else {
+                selectedHolder.classList.add('hidden');
+            }
         }
     </script>
 </body>

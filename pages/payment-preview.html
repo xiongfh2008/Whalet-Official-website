@@ -48,10 +48,20 @@
             background-color: #f8f9fa;
         }
         .payment-option.selected {
-            background-color: #f8f9fa;
-            border: 1px solid #7D33FF;
-            border-radius: 4px;
+            background-color: #f0e7ff;
+            border: 2px solid #7D33FF;
+            border-radius: 8px;
             margin: 0.25rem 0;
+            position: relative;
+        }
+        
+        .payment-option.selected::after {
+            content: '\f00c';
+            font-family: 'Font Awesome 5 Free';
+            font-weight: 900;
+            position: absolute;
+            right: 1rem;
+            color: #7D33FF;
         }
         .payment-options-container {
             display: flex;
@@ -286,7 +296,7 @@
                             </div>
 
                             <!-- Mobile Money -->
-                            <div class="payment-option flex items-center justify-between" data-payment="mobile-money">
+                            <div class="payment-option flex items-center justify-between selected" data-payment="mobile-money">
                                 <div class="flex items-center">
                                     <div class="w-8 h-8 flex items-center justify-center">
                                         <i class="fas fa-wallet text-gray-600"></i>
@@ -340,7 +350,7 @@
                             </div>
 
                             <!-- Pagosnet -->
-                            <div class="payment-option flex items-center justify-between selected" data-payment="pagosnet">
+                            <div class="payment-option flex items-center justify-between" data-payment="pagosnet">
                                 <div class="flex items-center">
                                     <div class="w-8 h-8 flex items-center justify-center">
                                         <i class="fas fa-credit-card text-gray-600"></i>
@@ -397,7 +407,7 @@
             });
 
             // Set initial selected state
-            const defaultSelected = document.querySelector('[data-payment="pagosnet"]');
+            const defaultSelected = document.querySelector('[data-payment="mobile-money"]');
             if (defaultSelected) {
                 defaultSelected.classList.add('selected');
             }

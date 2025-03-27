@@ -66,6 +66,16 @@
 
             <!-- 表单内容 -->
             <div class="p-6">
+                <!-- 驳回原因 -->
+                <div class="mb-6 bg-red-50 border border-red-200 rounded-lg p-4">
+                    <h3 class="text-red-800 font-medium mb-2">驳回原因</h3>
+                    <p class="text-red-700 text-sm">您提交的持有人信息存在以下问题需要修改：</p>
+                    <ul class="list-disc list-inside text-red-700 text-sm mt-2">
+                        <li>身份证照片不清晰，请重新上传清晰的身份证正反面照片</li>
+                        <li>身份证地址信息与实际填写不符，请核实后重新填写</li>
+                    </ul>
+                </div>
+
                 <form id="addHolderForm" class="space-y-6">
                     <!-- 基本信息 -->
                     <div class="form-section">
@@ -76,10 +86,8 @@
                                 <label class="block text-sm font-medium text-gray-700 mb-2">
                                     <span class="text-red-500">*</span> 持有人类型
                                 </label>
-                                <select required class="form-select w-full p-2 border border-gray-300 rounded-md">
-                                    <option value="">请选择持有人类型</option>
-                                    <option value="personal">个人</option>
-                                    <option value="company">企业</option>
+                                <select disabled class="form-select w-full p-2 border border-gray-300 rounded-md bg-gray-100">
+                                    <option value="personal" selected>个人</option>
                                 </select>
                             </div>
 
@@ -291,10 +299,7 @@
                             返回
                         </a>
                         <button type="submit" class="submit-btn px-8 py-2 rounded-md text-sm font-medium">
-                            申请添加
-                        </button>
-                        <button type="button" id="submitAndContinue" class="submit-btn px-8 py-2 rounded-md text-sm font-medium">
-                            提交并继续添加
+                            确认更改
                         </button>
                     </div>
                 </form>
