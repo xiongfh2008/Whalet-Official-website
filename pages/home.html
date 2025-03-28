@@ -492,7 +492,15 @@
             <!-- 汇率波动图 -->
             <div class="bg-white rounded-xl shadow-sm p-5 lg:col-span-2">
                 <div class="flex justify-between items-center mb-4">
-                    <h3 class="text-lg font-medium text-gray-800">汇率波动</h3>
+                    <h3 class="text-lg font-medium text-gray-800">汇率波动
+                        <span class="inline-block ml-1 relative cursor-help" id="exchangeRateInfoIcon">
+                            <i class="fas fa-info-circle text-gray-400 hover:text-[#7D33FF]"></i>
+                            <div class="absolute bottom-full left-0 mb-2 w-64 px-3 py-2 bg-gray-800 text-xs text-white rounded shadow-lg z-10 opacity-0 invisible transition-opacity duration-200" id="exchangeRateTooltip">
+                                数据仅供参考，请以实际交易汇率为准，对于使用该汇率走势图所造成的影响，whalet不承担任何责任。
+                                <div class="absolute top-full left-4 w-0 h-0 border-x-4 border-x-transparent border-t-4 border-t-gray-800"></div>
+                            </div>
+                        </span>
+                    </h3>
                     <div class="flex items-center space-x-3">
                         <div class="flex rounded-lg border border-gray-200 p-0.5">
                             <button class="px-3 py-1 text-sm rounded-md timeRange active" data-range="today">今天</button>
@@ -1104,6 +1112,24 @@
             closeAdBtn.addEventListener('click', function() {
                 adBanner.style.display = 'none';
             });
+        });
+
+        // 添加汇率波动信息图标的工具提示
+        document.addEventListener('DOMContentLoaded', function() {
+            const infoIcon = document.getElementById('exchangeRateInfoIcon');
+            const tooltip = document.getElementById('exchangeRateTooltip');
+            
+            if (infoIcon && tooltip) {
+                infoIcon.addEventListener('mouseenter', function() {
+                    tooltip.classList.remove('opacity-0', 'invisible');
+                    tooltip.classList.add('opacity-100', 'visible');
+                });
+                
+                infoIcon.addEventListener('mouseleave', function() {
+                    tooltip.classList.remove('opacity-100', 'visible');
+                    tooltip.classList.add('opacity-0', 'invisible');
+                });
+            }
         });
 
         // 主题切换功能
