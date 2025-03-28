@@ -250,6 +250,10 @@
 
         .error-message {
             margin-top: 0.25rem;
+            white-space: nowrap;
+            font-size: 0.75rem;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
     </style>
 </head>
@@ -730,7 +734,8 @@
                 document.getElementById('paidAmount').textContent = orderData.paidAmount;
                 document.getElementById('refundableAmount').textContent = orderData.refundableAmount;
                 document.getElementById('refundFee').textContent = '0.30 USD';  // 示例固定手续费
-                document.getElementById('amountError').textContent = '账户余额不足，无法发起退款';
+                document.getElementById('amountError').textContent = '账户余额10USD，退款金额10.2USD（9.9USD+0.3USD），余额不足无法发起退款';
+                document.getElementById('amountError').classList.add('text-xs');
                 const modalBackdrop = document.getElementById('refundModal');
                 modalBackdrop.style.display = 'block';
                 // 重置表单
@@ -824,8 +829,10 @@
                 const totalDeduct = refundAmount + refundFee;
                 
                 if (totalDeduct > accountBalance) {
-                    document.getElementById('amountError').textContent = '账户余额不足，无法发起退款';
+                    document.getElementById('amountError').textContent = `账户余额10USD，退款金额${(refundAmount + refundFee).toFixed(2)}USD（${refundAmount.toFixed(2)}${currency}+${refundFee.toFixed(2)}USD），余额不足无法发起退款`;
                     document.getElementById('amountError').classList.add('text-red-600');
+                    document.getElementById('amountError').classList.add('text-xs');
+                    document.getElementById('amountError').classList.add('whitespace-nowrap');
                     return false;
                 } else {
                     document.getElementById('amountError').textContent = '';
