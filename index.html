@@ -6,6 +6,9 @@
     <title>Whalet - 全球支付解决方案</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles/header.css">
+    <link rel="stylesheet" href="styles/theme.css">
+    <script src="js/languages.js"></script>
     <style>
         body {
             font-family: 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
@@ -24,10 +27,12 @@
         }
         /* 内容区样式 */
         #content-area {
-            transition: margin-left 0.3s;
-            margin-left: 240px;
-            height: 100vh;
-            overflow-y: auto;
+            position: fixed;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 240px; /* 左侧菜单宽度 */
+            overflow: hidden;
         }
         #content-area.expanded {
             margin-left: 64px;
@@ -119,50 +124,160 @@
             width: 100%;
             height: 100%;
             border: none;
+            margin: 0;
+            padding: 0;
         }
         #logo {
             width: 100%;
             height: 100%;
         }
         /* 添加引导提示样式 */
-        .shepherd-button {
-            background: #4f46e5 !important;
-            color: white !important;
-            border-radius: 4px !important;
-            padding: 8px 16px !important;
-            margin: 4px !important;
+        .shepherd-element {
+            max-width: 400px !important;
+            z-index: 9999 !important;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !important;
+            border-radius: 8px !important;
+            background: white !important;
         }
-        .shepherd-text {
-            font-size: 14px !important;
-            line-height: 1.6 !important;
-            padding: 16px !important;
+        
+        .shepherd-arrow, .shepherd-arrow:before {
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            z-index: -1;
         }
-        .shepherd-header {
-            background: #4f46e5 !important;
-            padding: 8px 16px !important;
+        
+        .shepherd-arrow:before {
+            content: '';
+            transform: rotate(45deg);
+            background: white;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
+        
+        .shepherd-element[data-popper-placement^='top'] > .shepherd-arrow {
+            bottom: -8px;
+        }
+        
+        .shepherd-element[data-popper-placement^='bottom'] > .shepherd-arrow {
+            top: -8px;
+        }
+        
+        .shepherd-element[data-popper-placement^='left'] > .shepherd-arrow {
+            right: -8px;
+        }
+        
+        .shepherd-element[data-popper-placement^='right'] > .shepherd-arrow {
+            left: -8px;
+        }
+        
+        .shepherd-element[data-popper-placement^='top'] > .shepherd-arrow:before {
+            box-shadow: 1px 1px 0 rgba(0, 0, 0, 0.1);
+        }
+        
+        .shepherd-element[data-popper-placement^='bottom'] > .shepherd-arrow:before {
+            box-shadow: -1px -1px 0 rgba(0, 0, 0, 0.1);
+        }
+        
+        .shepherd-element[data-popper-placement^='left'] > .shepherd-arrow:before {
+            box-shadow: 1px -1px 0 rgba(0, 0, 0, 0.1);
+        }
+        
+        .shepherd-element[data-popper-placement^='right'] > .shepherd-arrow:before {
+            box-shadow: -1px 1px 0 rgba(0, 0, 0, 0.1);
+        }
+        
+        .shepherd-has-title .shepherd-content .shepherd-header {
+            background: #7D33FF !important;
+            padding: 12px 16px !important;
+            border-radius: 8px 8px 0 0 !important;
+        }
+        
         .shepherd-title {
             color: white !important;
             font-size: 16px !important;
+            font-weight: 600 !important;
+            line-height: 1.4 !important;
         }
-        .shepherd-content {
-            max-width: 400px !important;
+        
+        .shepherd-text {
+            color: #4b5563 !important;
+            padding: 16px !important;
+            font-size: 14px !important;
+            line-height: 1.6 !important;
         }
-        /* 添加帮助按钮样式 */
+        
+        .shepherd-text p {
+            margin-bottom: 8px !important;
+        }
+        
+        .shepherd-text strong {
+            color: #374151 !important;
+            font-weight: 600 !important;
+        }
+        
+        .shepherd-footer {
+            padding: 0 16px 16px !important;
+            display: flex !important;
+            justify-content: flex-end !important;
+            gap: 8px !important;
+        }
+        
+        .shepherd-button {
+            padding: 8px 16px !important;
+            border-radius: 4px !important;
+            font-size: 14px !important;
+            font-weight: 500 !important;
+            transition: all 0.2s !important;
+        }
+        
+        .shepherd-button-primary {
+            background: #7D33FF !important;
+            color: white !important;
+            border: none !important;
+        }
+        
+        .shepherd-button-secondary {
+            background: #6b7280 !important;
+            color: white !important;
+            border: none !important;
+        }
+        
+        .shepherd-button:hover {
+            opacity: 0.9 !important;
+        }
+        
+        .shepherd-modal-overlay-container {
+            z-index: 9998 !important;
+        }
+        
+        .shepherd-modal-overlay {
+            opacity: 0.5 !important;
+        }
+
+        /* 帮助按钮样式 */
         #help-button {
             position: fixed;
             bottom: 20px;
             right: 20px;
-            background: #4f46e5;
+            background: #7D33FF;
             color: white;
             padding: 12px 24px;
             border-radius: 8px;
             cursor: pointer;
-            z-index: 1000;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            z-index: 9997;
+            box-shadow: 0 2px 8px rgba(125, 51, 255, 0.25);
+            transition: all 0.2s;
+            border: none;
+            font-size: 14px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
         }
+        
         #help-button:hover {
-            background: #4338ca;
+            background: #6929D4;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(125, 51, 255, 0.3);
         }
         /* 引导提示遮罩和提示框 */
         .tour-overlay {
@@ -514,7 +629,7 @@
                 <li>
                     <div class="menu-item" data-page="home">
                         <i class="fas fa-home"></i>
-                        <span class="ml-3 menu-text">首页</span>
+                        <span class="ml-3 menu-text" data-i18n="menu_home">首页</span>
                     </div>
                 </li>
                 
@@ -522,7 +637,7 @@
                 <li>
                     <div class="menu-item" data-page="my-assets">
                         <i class="fas fa-wallet"></i>
-                        <span class="ml-3 menu-text">账户总览</span>
+                        <span class="ml-3 menu-text" data-i18n="menu_account_overview">账户总览</span>
                     </div>
                 </li>
                 
@@ -530,33 +645,33 @@
                 <li>
                     <div class="menu-item" data-toggle="submenu-collection">
                         <i class="fas fa-money-check-alt"></i>
-                        <span class="ml-3 menu-text">收款</span>
+                        <span class="ml-3 menu-text" data-i18n="menu_collection">收款</span>
                         <i class="fas fa-chevron-down ml-auto text-xs submenu-toggle"></i>
                     </div>
                     <ul class="submenu" id="submenu-collection">
                         <li>
                             <div class="menu-item" data-page="pages/platform-collection.html">
-                                <span class="menu-text">电商平台</span>
+                                <span class="menu-text" data-i18n="menu_platform">电商平台</span>
                             </div>
                         </li>
                         <li>
                             <div class="menu-item" data-page="pages/independent-site.html">
-                                <span class="menu-text">独立站</span>
+                                <span class="menu-text" data-i18n="menu_independent">独立站</span>
                             </div>
                         </li>
                         <li>
                             <div class="menu-item" data-page="pages/service-trade.html">
-                                <span class="menu-text">服务贸易</span>
+                                <span class="menu-text" data-i18n="menu_service_trade">服务贸易</span>
                             </div>
                         </li>
                         <li>
                             <div class="menu-item" data-page="pages/trade-collection-notice.html">
-                                <span class="menu-text">外贸收款</span>
+                                <span class="menu-text" data-i18n="menu_trade_collection">外贸收款</span>
                             </div>
                         </li>
                         <li>
                             <div class="menu-item" data-page="pages/holder-management.html">
-                                <span class="menu-text">持有人</span>
+                                <span class="menu-text" data-i18n="menu_holder">持有人</span>
                             </div>
                         </li>
                     </ul>
@@ -566,18 +681,18 @@
                 <li>
                     <div class="menu-item" data-page="acquiring-service" data-toggle="submenu-acquiring">
                         <i class="fas fa-receipt w-5 text-center"></i>
-                        <span class="ml-3 menu-text">收单</span>
+                        <span class="ml-3 menu-text" data-i18n="menu_acquiring">收单</span>
                         <i class="fas fa-chevron-down ml-auto text-xs submenu-toggle"></i>
                     </div>
                     <ul class="submenu" id="submenu-acquiring">
                         <li>
                             <div class="menu-item" data-page="bill-collection">
-                                <span class="menu-text">账单收款</span>
+                                <span class="menu-text" data-i18n="menu_bill_collection">账单收款</span>
                             </div>
                         </li>
                         <li>
                             <div class="menu-item" data-page="transaction-list">
-                                <span class="menu-text">交易清单</span>
+                                <span class="menu-text" data-i18n="menu_transaction_list">交易清单</span>
                             </div>
                         </li>
                     </ul>
@@ -587,7 +702,7 @@
                 <li>
                     <div class="menu-item" data-page="forex">
                         <i class="fas fa-exchange-alt w-5 text-center"></i>
-                        <span class="ml-3 menu-text">外汇兑换</span>
+                        <span class="ml-3 menu-text" data-i18n="menu_forex">外汇兑换</span>
                     </div>
                 </li>
                 
@@ -595,7 +710,7 @@
                 <li>
                     <div class="menu-item" data-page="business-card">
                         <i class="fas fa-credit-card w-5 text-center"></i>
-                        <span class="ml-3 menu-text">商务卡(鲸卡)</span>
+                        <span class="ml-3 menu-text" data-i18n="menu_business_card">商务卡(鲸卡)</span>
                     </div>
                 </li>
                 
@@ -603,18 +718,18 @@
                 <li>
                     <div class="menu-item" data-toggle="submenu-payment">
                         <i class="fas fa-wallet w-5 text-center"></i>
-                        <span class="ml-3 menu-text">提现付款</span>
+                        <span class="ml-3 menu-text" data-i18n="menu_withdrawal_payment">提现付款</span>
                         <i class="fas fa-chevron-down ml-auto text-xs submenu-toggle"></i>
                     </div>
                     <ul class="submenu" id="submenu-payment">
                         <li>
                             <div class="menu-item" data-page="withdrawal">
-                                <span class="menu-text">提现</span>
+                                <span class="menu-text" data-i18n="menu_withdrawal">提现</span>
                             </div>
                         </li>
                         <li>
                             <div class="menu-item" data-page="payment">
-                                <span class="menu-text">付款</span>
+                                <span class="menu-text" data-i18n="menu_payment">付款</span>
                             </div>
                         </li>
                     </ul>
@@ -624,7 +739,7 @@
                 <li>
                     <div class="menu-item" data-page="transactions">
                         <i class="fas fa-search w-5 text-center"></i>
-                        <span class="ml-3 menu-text">交易查询</span>
+                        <span class="ml-3 menu-text" data-i18n="menu_transaction_query">交易查询</span>
                     </div>
                 </li>
                 
@@ -632,7 +747,7 @@
                 <li>
                     <div class="menu-item" data-page="my-invitation">
                         <i class="fas fa-gift w-5 text-center"></i>
-                        <span class="ml-3 menu-text">推荐有礼</span>
+                        <span class="ml-3 menu-text" data-i18n="menu_referral">推荐有礼</span>
                     </div>
                 </li>
                 
@@ -640,28 +755,28 @@
                 <li>
                     <div class="menu-item" data-toggle="submenu-user">
                         <i class="fas fa-user-circle w-5 text-center"></i>
-                        <span class="ml-3 menu-text">用户中心</span>
+                        <span class="ml-3 menu-text" data-i18n="menu_user_center">用户中心</span>
                         <i class="fas fa-chevron-down ml-auto text-xs submenu-toggle"></i>
                     </div>
                     <ul class="submenu" id="submenu-user">
                         <li>
                             <div class="menu-item" data-page="security">
-                                <span class="menu-text">安全设置</span>
+                                <span class="menu-text" data-i18n="menu_security">安全设置</span>
                             </div>
                         </li>
                         <li>
                             <div class="menu-item" data-page="authentication-info">
-                                <span class="menu-text">认证信息</span>
+                                <span class="menu-text" data-i18n="menu_authentication">认证信息</span>
                             </div>
                         </li>
                         <li>
                             <div class="menu-item" data-page="fees">
-                                <span class="menu-text">费率查询</span>
+                                <span class="menu-text" data-i18n="menu_fees">费率查询</span>
                             </div>
                         </li>
                         <li>
                             <div class="menu-item" data-page="coupons">
-                                <span class="menu-text">我的优惠</span>
+                                <span class="menu-text" data-i18n="menu_coupons">我的优惠</span>
                             </div>
                         </li>
                     </ul>
@@ -672,7 +787,7 @@
     
     <!-- 内容区 -->
     <main id="content-area">
-        <iframe id="content-frame" src="pages/home.html" title="内容"></iframe>
+        <iframe id="content-frame" src="pages/home.html" title="内容" onload="console.log('iframe loaded:', this.src)"></iframe>
     </main>
     
     <!-- 活动弹框 -->
@@ -725,334 +840,341 @@
 
     <script src="https://cdn.jsdelivr.net/npm/shepherd.js@10.0.1/dist/js/shepherd.min.js"></script>
     <script>
-        // 存储当前活动页面
-        let currentPage = 'home';
-        // 添加收单服务开通状态标志
-        let isAcquiringServiceEnabled = false; // 默认未开通
-        // 获取内容框架元素
-        const mainContent = document.getElementById('content-frame');
-
-        // 页面URL映射
-        const pageUrls = {
-            'home': 'pages/home.html',
-            'my-assets': 'pages/my-assets.html',
-            'platform-collection': 'pages/platform-collection.html',
-            'independent-site': 'pages/independent-site.html',
-            'service-trade': 'pages/service-trade.html',
-            'trade-collection': 'pages/trade-collection.html',
-            'trade-collection-notice': 'pages/trade-collection-notice.html',
-            'holder-management': 'pages/holder-management.html',
-            'bill-collection': 'pages/bill-collection.html',
-            'transaction-list': 'pages/transaction-list.html',
-            'acquiring-service': 'pages/acquiring-service.html',
-            'forex': 'pages/forex.html',
-            'business-card': 'pages/business-card.html',
-            'cards': 'pages/cards.html',
-            'withdrawal': 'pages/withdrawal.html',
-            'payment': 'pages/payment.html',
-            'payee-management': 'pages/payee-management.html',
-            'transactions': 'pages/transactions.html',
-            'security': 'pages/security.html',
-            'authentication-info': 'pages/authentication-info.html',
-            'fees': 'pages/fees.html',
-            'coupons': 'pages/coupons.html',
-            'my-invitation': 'pages/my-invitation.html'
-        };
-
-        // 加载页面内容
+        // 加载页面
         function loadPage(page) {
-            if (!mainContent) {
-                console.error('Content frame not found');
-                return;
-            }
-
-            currentPage = page;
-            
-            // 如果是完整的页面路径，直接使用
-            let targetUrl;
-            if (page.endsWith('.html')) {
-                targetUrl = page;
-            } else if (pageUrls[page]) {
-                targetUrl = pageUrls[page];
-            }
-
-            if (targetUrl) {
-                console.log('Loading page:', targetUrl);
-                mainContent.src = targetUrl;
-                mainContent.onerror = function() {
-                    console.error('Failed to load page:', targetUrl);
-                };
-                mainContent.onload = function() {
-                    console.log('Page loaded successfully:', targetUrl);
-                };
-            } else {
-                console.error('Page URL not found for:', page);
-            }
-            
-            // 更新活动菜单状态
-            document.querySelectorAll('.menu-item').forEach(item => {
-                item.classList.remove('active');
-                if (item.getAttribute('data-page') === page) {
-                    item.classList.add('active');
-                    
-                    // 如果是子菜单项，展开父菜单
-                    const submenu = item.closest('.submenu');
-                    if (submenu) {
-                        submenu.classList.add('open');
-                        const parentMenuItem = submenu.previousElementSibling;
-                        if (parentMenuItem) {
-                            const chevron = parentMenuItem.querySelector('.submenu-toggle');
-                            if (chevron) {
-                                chevron.classList.replace('fa-chevron-down', 'fa-chevron-up');
-                            }
-                        }
+            const iframe = document.getElementById('content-frame');
+            if (iframe) {
+                // 处理页面路径
+                let pagePath = page;
+                if (typeof page === 'string') {
+                    // 如果是首页
+                    if (page === 'home') {
+                        pagePath = 'pages/home.html';
                     }
+                    // 如果已经包含.html后缀，直接使用
+                    else if (!page.endsWith('.html')) {
+                        pagePath = `pages/${page}.html`;
+                    }
+                }
+                console.log('Loading page:', pagePath);
+                iframe.src = pagePath;
+            }
+        }
+
+        // 获取当前语言
+        function getCurrentLanguage() {
+            return localStorage.getItem('language') || 'zh-CN';
+        }
+
+        // 设置语言
+        function setLanguage(lang) {
+            localStorage.setItem('language', lang);
+            document.documentElement.lang = lang;
+            updatePageContent();
+        }
+
+        // 更新页面内容
+        function updatePageContent() {
+            const currentLang = getCurrentLanguage();
+            const elements = document.querySelectorAll('[data-i18n]');
+            
+            elements.forEach(element => {
+                const key = element.getAttribute('data-i18n');
+                if (key.includes('.')) {
+                    // 处理嵌套的翻译键
+                    const [category, subKey] = key.split('.');
+                    if (translations[currentLang][category] && translations[currentLang][category][subKey]) {
+                        element.textContent = translations[currentLang][category][subKey];
+                    }
+                } else if (translations[currentLang] && translations[currentLang][key]) {
+                    element.textContent = translations[currentLang][key];
                 }
             });
         }
 
-        // 引导步骤配置
-        const tourSteps = [
-            {
-                element: '[data-page="my-assets"]',
-                title: '账户总览',
-                text: '在"我的资产"中查看可用/不可用余额；在"银行账户"中查看已开通的所有银行账户信息及进行相关操作'
-            },
-            {
-                element: '#submenu-collection .menu-item[data-page="pages/platform-collection.html"]',
-                title: '电商平台',
-                text: '点击进入后，可以：1. 申请电商平台收款账户；2. 管理电商平台店铺；3. 上传电商平台订单获取认证额度',
-                beforeShow: () => {
-                    const submenu = document.getElementById('submenu-collection');
-                    if (submenu) {
-                        submenu.classList.add('open');
-                    }
-                }
-            },
-            {
-                element: '#submenu-collection .menu-item[data-page="pages/independent-site.html"]',
-                title: '独立站',
-                text: '点击进入后，可以：1. 申请独立站收款账户；2. 管理独立站店铺；3. 上传独立站订单获取认证额度',
-                beforeShow: () => {
-                    const submenu = document.getElementById('submenu-collection');
-                    if (submenu) {
-                        submenu.classList.add('open');
-                    }
-                }
-            },
-            {
-                element: '#submenu-collection .menu-item[data-page="pages/service-trade.html"]',
-                title: '服务贸易',
-                text: '点击进入后，可以：1. 申请服务贸易收款账户；2. 管理服务贸易平台账户；3. 上传服务贸易订单获取认证额度',
-                beforeShow: () => {
-                    const submenu = document.getElementById('submenu-collection');
-                    if (submenu) {
-                        submenu.classList.add('open');
-                    }
-                }
-            },
-            {
-                element: '#submenu-collection .menu-item[data-page="pages/trade-collection-notice.html"]',
-                title: '外贸收款',
-                text: '点击进入后，可以：1. 查看外贸收款到账记录；2. 关联外贸订单；3. 上传和管理外贸订单',
-                beforeShow: () => {
-                    const submenu = document.getElementById('submenu-collection');
-                    if (submenu) {
-                        submenu.classList.add('open');
-                    }
-                }
-            },
-            {
-                element: '#submenu-collection .menu-item[data-page="pages/holder-management.html"]',
-                title: '持有人',
-                text: '点击进入后，可以管理申请收款账户时需要选择的持有人信息',
-                beforeShow: () => {
-                    const submenu = document.getElementById('submenu-collection');
-                    if (submenu) {
-                        submenu.classList.add('open');
-                    }
-                }
-            },
-            {
-                element: '#submenu-acquiring .menu-item[data-page="bill-collection"]',
-                title: '账单收款',
-                text: '点击进入后，可以创建支付链接，用于收款',
-                beforeShow: () => {
-                    const parentMenuItem = document.querySelector('[data-toggle="submenu-acquiring"]');
-                    if (parentMenuItem) {
-                        const submenu = document.getElementById('submenu-acquiring');
-                        if (submenu) {
-                            submenu.classList.add('open');
-                            const chevron = parentMenuItem.querySelector('.submenu-toggle');
-                            if (chevron) {
-                                chevron.classList.replace('fa-chevron-down', 'fa-chevron-up');
-                            }
-                        }
-                    }
-                }
-            },
-            {
-                element: '#submenu-acquiring .menu-item[data-page="transaction-list"]',
-                title: '交易清单',
-                text: '点击进入后，可以：1. 查看买家的支付记录；2. 查看商家发起的退款记录',
-                beforeShow: () => {
-                    const parentMenuItem = document.querySelector('[data-toggle="submenu-acquiring"]');
-                    if (parentMenuItem) {
-                        const submenu = document.getElementById('submenu-acquiring');
-                        if (submenu) {
-                            submenu.classList.add('open');
-                            const chevron = parentMenuItem.querySelector('.submenu-toggle');
-                            if (chevron) {
-                                chevron.classList.replace('fa-chevron-down', 'fa-chevron-up');
-                            }
-                        }
-                    }
-                }
-            },
-            {
-                element: '[data-page="forex"]',
-                title: '外汇兑换',
-                text: '点击进入后，可以发起不同币种之间的货币兑换'
-            },
-            {
-                element: '[data-page="business-card"]',
-                title: '商务卡（鲸卡）',
-                text: '点击进入后，可以使用原鲸卡服务的相关功能'
-            },
-            {
-                element: '#submenu-payment',
-                title: '提现付款',
-                text: '点击展开后，可以选择：1. 提现功能；2. 付款功能',
-                beforeShow: () => {
-                    const parentMenuItem = document.querySelector('[data-toggle="submenu-payment"]');
-                    if (parentMenuItem) {
-                        const submenu = document.getElementById('submenu-payment');
-                        if (submenu) {
-                            submenu.classList.add('open');
-                            const chevron = parentMenuItem.querySelector('.submenu-toggle');
-                            if (chevron) {
-                                chevron.classList.replace('fa-chevron-down', 'fa-chevron-up');
-                            }
-                        }
-                    }
-                }
+        // 监听来自iframe的消息
+        window.addEventListener('message', function(event) {
+            console.log('Received message in parent:', event.data);
+            if (event.data && event.data.type === 'languageChanged') {
+                const newLang = event.data.language;
+                console.log('Updating parent language to:', newLang);
+                localStorage.setItem('language', newLang);
+                document.documentElement.lang = newLang;
+                updatePageContent();
             }
-        ];
+        });
 
-        // 引导功能实现
+        // 初始化页面语言
+        document.addEventListener('DOMContentLoaded', () => {
+            const currentLang = getCurrentLanguage();
+            document.documentElement.lang = currentLang;
+            updatePageContent();
+        });
+
+        // 初始化引导功能
         function initTour() {
-            console.log('Initializing tour...');
-            let currentStep = 0;
-            const overlay = document.querySelector('.tour-overlay');
-            const tooltip = document.querySelector('.tour-tooltip');
-            const nextButton = tooltip.querySelector('.next-step');
-            const prevButton = tooltip.querySelector('.prev-step');
-            let currentHighlight = null;
-
-            function showStep(step) {
-                console.log('Showing step:', step);
-                const targetElement = document.querySelector(step.element);
-                if (!targetElement) {
-                    console.error('Target element not found:', step.element);
-                    return;
+            const tour = new Shepherd.Tour({
+                useModalOverlay: true,
+                defaultStepOptions: {
+                    classes: 'shepherd-theme-custom',
+                    scrollTo: false,
+                    cancelIcon: {
+                        enabled: false
+                    },
+                    arrow: true,
+                    modalOverlayOpeningPadding: 4,
+                    popperOptions: {
+                        modifiers: [
+                            {
+                                name: 'offset',
+                                options: {
+                                    offset: [0, 16]
+                                }
+                            },
+                            {
+                                name: 'arrow',
+                                options: {
+                                    element: '.shepherd-arrow',
+                                    padding: 8
+                                }
+                            },
+                            {
+                                name: 'preventOverflow',
+                                options: {
+                                    boundary: document.body,
+                                    padding: 16
+                                }
+                            }
+                        ]
+                    }
                 }
+            });
 
-                // 执行步骤前的准备工作
-                if (step.beforeShow) {
-                    step.beforeShow();
+            // 添加引导步骤
+            tour.addStep({
+                id: 'account-overview',
+                title: '账户总览',
+                text: `<div class="mb-4">
+                      <p class="mb-2"><strong>我的资产：</strong>查看我的可用/不可用余额</p>
+                      <p><strong>银行账户：</strong>汇总已经开通的所有银行账户信息，银行账户相关的操作都在此处</p>
+                      </div>`,
+                attachTo: {
+                    element: '.menu-item[data-page="my-assets"]',
+                    on: 'right'
+                },
+                buttons: [
+                    {
+                        text: '跳过',
+                        action: tour.complete,
+                        classes: 'shepherd-button-secondary'
+                    },
+                    {
+                        text: '下一步',
+                        action: tour.next,
+                        classes: 'shepherd-button-primary'
+                    }
+                ],
+                when: {
+                    show: () => {
+                        const element = document.querySelector('.menu-item[data-page="my-assets"]');
+                        if (element) {
+                            element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        }
+                    }
                 }
+            });
 
-                // 移除之前的高亮
-                if (currentHighlight) {
-                    currentHighlight.classList.remove('highlight-menu');
+            tour.addStep({
+                id: 'collection',
+                title: '收款',
+                text: `<div class="mb-4">
+                      <p class="mb-2"><strong>电商平台：</strong>电商平台申请收款账户，电商平台店铺管理，上传电商平台订单认证额度</p>
+                      <p class="mb-2"><strong>独立站：</strong>独立站申请收款账户，店铺管理，上传独立站订单认证额度</p>
+                      <p class="mb-2"><strong>服务贸易：</strong>服务贸易申请收款账户，服务贸易平台账户管理，上传服务贸易订单认证额度</p>
+                      <p class="mb-2"><strong>外贸收款：</strong>外贸收款到账记录和关联订单，外贸订单的上传和管理</p>
+                      <p><strong>持有人：</strong>申请收款账户选择的持有人管理</p>
+                      </div>`,
+                attachTo: {
+                    element: 'div[data-toggle="submenu-collection"]',
+                    on: 'right'
+                },
+                buttons: [
+                    {
+                        text: '上一步',
+                        action: tour.back,
+                        classes: 'shepherd-button-secondary'
+                    },
+                    {
+                        text: '下一步',
+                        action: tour.next
+                    }
+                ],
+                beforeShowPromise: function() {
+                    return new Promise(function(resolve) {
+                        // 关闭所有子菜单
+                        document.querySelectorAll('.submenu').forEach(submenu => {
+                            submenu.classList.remove('open');
+                            const toggle = submenu.previousElementSibling.querySelector('.submenu-toggle');
+                            if (toggle) {
+                                toggle.classList.replace('fa-chevron-up', 'fa-chevron-down');
+                            }
+                        });
+                        setTimeout(resolve, 100);
+                    });
                 }
+            });
 
-                // 设置新的高亮
-                targetElement.classList.add('highlight-menu');
-                currentHighlight = targetElement;
+            tour.addStep({
+                id: 'acquiring',
+                title: '收单',
+                text: `<div class="mb-4">
+                      <p class="mb-2"><strong>账单收款：</strong>创建支付链接进行收款</p>
+                      <p><strong>交易清单：</strong>买家的支付记录，商家发起的退款记录</p>
+                      </div>`,
+                attachTo: {
+                    element: '[data-toggle="submenu-acquiring"]',
+                    on: 'right'
+                },
+                buttons: [
+                    {
+                        text: '上一步',
+                        action: tour.back,
+                        classes: 'shepherd-button-secondary'
+                    },
+                    {
+                        text: '下一步',
+                        action: tour.next
+                    }
+                ]
+            });
 
-                // 显示遮罩和提示框
-                overlay.style.display = 'block';
-                tooltip.style.display = 'block';
+            tour.addStep({
+                id: 'forex',
+                title: '外汇兑换',
+                text: `<div class="mb-4">
+                      <p>发起货币兑换</p>
+                      </div>`,
+                attachTo: {
+                    element: '[data-page="forex"]',
+                    on: 'right'
+                },
+                buttons: [
+                    {
+                        text: '上一步',
+                        action: tour.back,
+                        classes: 'shepherd-button-secondary'
+                    },
+                    {
+                        text: '下一步',
+                        action: tour.next
+                    }
+                ]
+            });
 
-                // 更新提示内容
-                tooltip.querySelector('h3').textContent = step.title;
-                tooltip.querySelector('p').textContent = step.text;
+            tour.addStep({
+                id: 'business-card',
+                title: '商务卡（鲸卡）',
+                text: `<div class="mb-4">
+                      <p>原鲸卡服务相关的功能在此处</p>
+                      </div>`,
+                attachTo: {
+                    element: '[data-page="business-card"]',
+                    on: 'right'
+                },
+                buttons: [
+                    {
+                        text: '上一步',
+                        action: tour.back,
+                        classes: 'shepherd-button-secondary'
+                    },
+                    {
+                        text: '下一步',
+                        action: tour.next
+                    }
+                ]
+            });
 
-                // 更新按钮状态
-                prevButton.classList.toggle('hidden', currentStep === 0);
-                nextButton.textContent = currentStep === tourSteps.length - 1 ? '完成' : '下一步';
+            tour.addStep({
+                id: 'withdrawal-payment',
+                title: '提现付款',
+                text: `<div class="mb-4">
+                      <p>提现/付款相关功能在此处</p>
+                      </div>`,
+                attachTo: {
+                    element: '[data-toggle="submenu-payment"]',
+                    on: 'right'
+                },
+                buttons: [
+                    {
+                        text: '上一步',
+                        action: tour.back,
+                        classes: 'shepherd-button-secondary'
+                    },
+                    {
+                        text: '完成',
+                        action: tour.complete
+                    }
+                ]
+            });
 
-                // 计算提示框位置
-                const rect = targetElement.getBoundingClientRect();
-                const tooltipHeight = tooltip.offsetHeight;
-                
-                // 将提示框垂直居中对齐到目标元素
-                const targetMiddle = rect.top + rect.height / 2;
-                const tooltipTop = targetMiddle - tooltipHeight / 2;
-                
-                // 设置提示框位置，确保箭头指向目标元素的中间
-                tooltip.style.left = `${rect.right + 20}px`;
-                tooltip.style.top = `${tooltipTop}px`;
-
-                // 确保目标元素在视图中可见
-                targetElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            }
-
-            function nextStep() {
-                console.log('Moving to next step');
-                if (currentStep < tourSteps.length - 1) {
-                    currentStep++;
-                    showStep(tourSteps[currentStep]);
-                } else {
-                    endTour();
-                }
-            }
-
-            function prevStep() {
-                console.log('Moving to previous step');
-                if (currentStep > 0) {
-                    currentStep--;
-                    showStep(tourSteps[currentStep]);
-                }
-            }
-
-            function endTour() {
-                console.log('Ending tour');
-                overlay.style.display = 'none';
-                tooltip.style.display = 'none';
-                if (currentHighlight) {
-                    currentHighlight.classList.remove('highlight-menu');
-                }
-                localStorage.setItem('tourCompleted', 'true');
-            }
-
-            // 绑定事件
-            nextButton.addEventListener('click', nextStep);
-            prevButton.addEventListener('click', prevStep);
-            overlay.addEventListener('click', endTour);
-
-            // 添加帮助按钮点击事件
+            // 帮助按钮点击事件
             const helpButton = document.getElementById('help-button');
             if (helpButton) {
                 helpButton.addEventListener('click', () => {
-                    console.log('Help button clicked');
-                    currentStep = 0;
-                    showStep(tourSteps[0]);
+                    // 关闭所有子菜单
+                    document.querySelectorAll('.submenu').forEach(submenu => {
+                        submenu.classList.remove('open');
+                        const toggle = submenu.previousElementSibling.querySelector('.submenu-toggle');
+                        if (toggle) {
+                            toggle.classList.replace('fa-chevron-up', 'fa-chevron-down');
+                        }
+                    });
+                    
+                    // 确保侧边栏展开
+                    const sidebar = document.getElementById('sidebar');
+                    if (sidebar.classList.contains('collapsed')) {
+                        sidebar.classList.remove('collapsed');
+                        const toggleIcon = document.getElementById('toggle-icon');
+                        if (toggleIcon) {
+                            toggleIcon.classList.replace('fa-chevron-right', 'fa-chevron-left');
+                        }
+                    }
+                    
+                    // 启动引导
+                    setTimeout(() => {
+                    tour.start();
+                    }, 300);
                 });
-            }
-
-            // 如果是首次访问，自动开始引导
-            if (!localStorage.getItem('tourCompleted')) {
-                console.log('Starting tour automatically');
-                setTimeout(() => {
-                    showStep(tourSteps[0]);
-                }, 1000);
             }
         }
 
-        // 初始化事件监听
+        // 初始化语言设置
         document.addEventListener('DOMContentLoaded', () => {
+            // 初始化语言设置
+            const currentLang = localStorage.getItem('language') || 'zh-CN';
+            document.documentElement.lang = currentLang;
+            updatePageContent();
+
+            // 监听语言变化事件
+            window.addEventListener('languageChanged', () => {
+                updatePageContent();
+            });
+
+            // 添加语言切换按钮
+            const languageSwitch = document.createElement('div');
+            languageSwitch.className = 'language-switch';
+            languageSwitch.onclick = toggleLanguage;
+            languageSwitch.innerHTML = `
+                <span id="currentLanguage">${currentLang === 'zh-CN' ? '简体中文' : 'English'}</span>
+                <i class="fas fa-chevron-down"></i>
+            `;
+
+            // 将语言切换按钮添加到导航栏
+            const navRight = document.querySelector('.flex.items-center.space-x-6');
+            if (navRight) {
+                navRight.insertBefore(languageSwitch, navRight.firstChild);
+            }
+
             // 处理菜单项点击
             document.querySelectorAll('.menu-item').forEach(item => {
                 item.addEventListener('click', function(event) {
@@ -1103,109 +1225,38 @@
 
             // 初始化引导功能
             initTour();
-
-            // 问卷弹框相关代码
-            const modal = document.getElementById('activity-modal');
-            if (modal) {
-                // 检查是否已经显示过弹框
-                function checkCookie() {
-                    const cookies = document.cookie.split(';');
-                    for (let cookie of cookies) {
-                        cookie = cookie.trim();
-                        if (cookie.startsWith('surveyPromptShown=')) {
-                            return true;
-                        }
-                    }
-                    return false;
-                }
-
-                // 关闭弹框函数
-                function closeActivityModal() {
-                    modal.classList.add('hidden');
-                    // 设置cookie，24小时内不再显示
-                    document.cookie = "surveyPromptShown=true; max-age=86400; path=/";
-                }
-
-                // 如果已经显示过，就不再显示
-                if (!checkCookie()) {
-                    // 显示问卷调查弹框（页面加载0.5秒后）
-                    setTimeout(() => {
-                        modal.classList.remove('hidden');
-                        
-                        // 绑定关闭按钮事件
-                        const closeX = document.getElementById('activity-close-x');
-                        if (closeX) {
-                            closeX.addEventListener('click', function(e) {
-                                e.preventDefault();
-                                e.stopPropagation();
-                                closeActivityModal();
-                            });
-                        }
-                        
-                        // 绑定"稍后再说"按钮事件
-                        const closeBtn = document.getElementById('activity-close-btn');
-                        if (closeBtn) {
-                            closeBtn.addEventListener('click', closeActivityModal);
-                        }
-                        
-                        // 绑定参与问卷按钮事件
-                        const submitBtn = document.getElementById('submit-survey-btn');
-                        if (submitBtn) {
-                            submitBtn.addEventListener('click', function() {
-                                alert('即将跳转到问卷调查页面，感谢您的参与！');
-                                closeActivityModal();
-                            });
-                        }
-                        
-                        // 点击弹框外部区域关闭弹框
-                        modal.addEventListener('click', function(e) {
-                            if (e.target === modal) {
-                                closeActivityModal();
-                            }
-                        });
-                    }, 500);
-                }
-            }
         });
 
-        // 切换侧边栏
-        document.getElementById('toggle-sidebar').addEventListener('click', () => {
-            const sidebar = document.getElementById('sidebar');
-            const contentArea = document.getElementById('content-area');
-            const toggleIcon = document.getElementById('toggle-icon');
+        // 语言切换函数
+        function toggleLanguage() {
+            console.log('Language switch button clicked');
+            const currentLang = getCurrentLanguage();
+            const newLang = currentLang === 'zh-CN' ? 'en' : 'zh-CN';
+            console.log('Switching from', currentLang, 'to', newLang);
             
-            sidebar.classList.toggle('collapsed');
-            contentArea.classList.toggle('expanded');
+            // 设置新语言
+            localStorage.setItem('language', newLang);
+            document.documentElement.lang = newLang;
             
-            if (sidebar.classList.contains('collapsed')) {
-                toggleIcon.classList.replace('fa-chevron-left', 'fa-chevron-right');
-            } else {
-                toggleIcon.classList.replace('fa-chevron-right', 'fa-chevron-left');
+            // 更新语言切换按钮显示
+            const currentLanguageSpan = document.getElementById('currentLanguage');
+            if (currentLanguageSpan) {
+                currentLanguageSpan.textContent = newLang === 'zh-CN' ? '简体中文' : 'English';
             }
-        });
+            
+            // 更新页面内容
+            updatePageContent();
 
-        // 处理浏览器返回/前进按钮
-        window.addEventListener('popstate', event => {
-            if (event.state && event.state.page) {
-                loadPage(event.state.page);
+            // 通知iframe更新语言
+            const iframe = document.getElementById('content-frame');
+            if (iframe && iframe.contentWindow) {
+                console.log('Sending language update to iframe');
+                iframe.contentWindow.postMessage({
+                    type: 'languageChanged',
+                    language: newLang
+                }, '*');
             }
-        });
-
-        // 更新收单菜单显示状态
-        function updateAcquiringMenu() {
-            const menuItems = document.querySelectorAll('#submenu-acquiring .menu-item');
-            menuItems.forEach(item => {
-                // 移除所有服务状态相关的类和图标
-                item.classList.remove('service-not-enabled');
-                const statusIcon = item.querySelector('.service-status');
-                if (statusIcon) {
-                    statusIcon.remove();
-                }
-            });
         }
-
-        // 在页面加载时更新收单菜单状态
-        updateAcquiringMenu();
     </script>
 </body>
 </html> 

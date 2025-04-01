@@ -64,6 +64,32 @@
     color: var(--text-primary);
 }
 
+/* 语言切换按钮样式 */
+.language-switch {
+    display: flex;
+    align-items: center;
+    margin-left: 16px;
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: 4px;
+    transition: var(--transition);
+}
+
+.language-switch:hover {
+    background-color: rgba(0, 0, 0, 0.04);
+}
+
+.language-switch span {
+    font-size: 14px;
+    color: var(--text-secondary);
+    margin-right: 4px;
+}
+
+.language-switch i {
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
 /* Add padding to body to account for fixed header */
 body {
     padding-top: var(--header-height);
