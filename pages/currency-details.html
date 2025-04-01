@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>货币账户详情 - Whalet</title>
+    <!-- 引入 Tailwind CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <!-- 引入字体 -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- 引入图标 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Inter', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            background-color: #f9fafb;
+            min-height: 100vh;
+        }
+        .required::after {
+            content: '*';
+            color: #ef4444;
+            margin-left: 4px;
+        }
+        .form-input:focus, .form-select:focus {
+            border-color: #8b5cf6;
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.2);
+        }
+        /* Custom radio button styles */
+        .form-radio {
+            appearance: none;
+            -webkit-appearance: none;
+            width: 1rem;
+            height: 1rem;
+            border: 2px solid #d1d5db;
+            border-radius: 50%;
+            outline: none;
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+        }
+        .form-radio:checked {
+            border-color: #8b5cf6;
+            background-color: #8b5cf6;
+            box-shadow: inset 0 0 0 3px white;
+        }
+        .form-radio:hover {
+            border-color: #8b5cf6;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <div class="container mx-auto px-4 py-8">
+        <div class="max-w-6xl mx-auto bg-white rounded-lg shadow-sm">
+            <!-- 头部 -->
+            <div class="p-6 border-b border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center">
+                        <a href="javascript:history.back()" class="text-purple-600 hover:text-purple-700 mr-2">
+                            <i class="fas fa-arrow-left"></i>
+                        </a>
+                        <a href="javascript:history.back()" class="text-purple-600 hover:text-purple-700 mr-4">返回</a>
+                        <div>
+                            <h1 class="text-xl font-semibold text-gray-800">USD美元详情</h1>
+                        </div>
+                    </div>
+                    <a href="javascript:history.back()" class="text-gray-500 hover:text-gray-700">
+                        <i class="fas fa-times"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- 账户金额信息卡片 -->
+            <div class="px-6 py-4 grid grid-cols-4 gap-4">
+                <!-- 可用金额 -->
+                <div class="bg-purple-50 rounded-lg p-4 flex items-center">
+                    <div class="bg-purple-200 p-2 rounded-full mr-3">
+                        <i class="fas fa-heart text-purple-700"></i>
+                    </div>
+                    <div>
+                        <div class="text-lg font-semibold">$ 0.00</div>
+                        <div class="text-xs text-gray-600">可用金额</div>
+                    </div>
+                </div>
+                
+                <!-- 待结算金额 -->
+                <div class="bg-gray-50 rounded-lg p-4 flex items-center">
+                    <div class="bg-gray-200 p-2 rounded-full mr-3">
+                        <i class="fas fa-clock text-gray-700"></i>
+                    </div>
+                    <div>
+                        <div class="text-lg font-semibold">$ 0.00</div>
+                        <div class="text-xs text-gray-600">待入账</div>
+                    </div>
+                </div>
+                
+                <!-- 保证金金额 -->
+                <div class="bg-blue-50 rounded-lg p-4 flex items-center">
+                    <div class="bg-blue-200 p-2 rounded-full mr-3">
+                        <i class="fas fa-clock text-blue-700"></i>
+                    </div>
+                    <div>
+                        <div class="text-lg font-semibold">$ 0.00</div>
+                        <div class="text-xs text-gray-600">保证金金额</div>
+                    </div>
+                </div>
+                
+                <!-- 冻结金额 -->
+                <div class="bg-gray-50 rounded-lg p-4 flex items-center">
+                    <div class="bg-gray-200 p-2 rounded-full mr-3">
+                        <i class="fas fa-clock text-gray-700"></i>
+                    </div>
+                    <div>
+                        <div class="text-lg font-semibold">$ 0.00</div>
+                        <div class="text-xs text-gray-600">冻结金额</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 交易记录筛选和表格 -->
+            <div class="p-6">
+                <div class="flex items-center mb-4">
+                    <h2 class="text-lg font-semibold text-gray-800">待入账</h2>
+                </div>
+                <!-- 查询条件 -->
+                <div class="mb-6 bg-white rounded-lg">
+                    <div class="grid grid-cols-3 gap-4">
+                        <!-- 第一行 -->
+                        <div class="col-span-1">
+                            <label class="block text-sm text-gray-600 mb-1">流水号</label>
+                            <input type="text" class="w-full h-9 px-3 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-purple-500 focus:border-purple-500" placeholder="请输入流水号">
+                        </div>
+                        <div class="col-span-1">
+                            <label class="block text-sm text-gray-600 mb-1">平台名称</label>
+                            <select class="w-full h-9 px-3 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-purple-500 focus:border-purple-500">
+                                <option value="">请选择平台</option>
+                            </select>
+                        </div>
+                        <div class="col-span-1">
+                            <label class="block text-sm text-gray-600 mb-1">银行账号</label>
+                            <input type="text" class="w-full h-9 px-3 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-purple-500 focus:border-purple-500" placeholder="请输入银行账号">
+                        </div>
+                        <!-- 第二行 -->
+                        <div class="col-span-1">
+                            <label class="block text-sm text-gray-600 mb-1">状态</label>
+                            <select class="w-full h-9 px-3 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-purple-500 focus:border-purple-500">
+                                <option value="">请选择状态</option>
+                            </select>
+                        </div>
+                        <div class="col-span-1">
+                            <label class="block text-sm text-gray-600 mb-1">创建时间</label>
+                            <input type="date" class="w-full h-9 px-3 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-purple-500 focus:border-purple-500">
+                        </div>
+                        <div class="col-span-1 flex items-end space-x-4">
+                            <button class="px-4 h-9 text-sm text-gray-600 border border-gray-300 rounded-md hover:bg-gray-50">
+                                重置
+                            </button>
+                            <button class="px-4 h-9 text-sm text-white bg-purple-600 rounded-md hover:bg-purple-700">
+                                查询
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 表格 -->
+                <div class="overflow-x-auto">
+                    <table class="min-w-full">
+                        <thead>
+                            <tr class="bg-gray-50 text-left">
+                                <th class="px-4 py-3 text-sm font-medium text-gray-600">流水号</th>
+                                <th class="px-4 py-3 text-sm font-medium text-gray-600">平台名称</th>
+                                <th class="px-4 py-3 text-sm font-medium text-gray-600">银行账号</th>
+                                <th class="px-4 py-3 text-sm font-medium text-gray-600">币种</th>
+                                <th class="px-4 py-3 text-sm font-medium text-gray-600">收款金额</th>
+                                <th class="px-4 py-3 text-sm font-medium text-gray-600">汇款方</th>
+                                <th class="px-4 py-3 text-sm font-medium text-gray-600">状态</th>
+                                <th class="px-4 py-3 text-sm font-medium text-gray-600">创建时间</th>
+                                <th class="px-4 py-3 text-sm font-medium text-gray-600">操作</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- 暂无数据显示 -->
+                            <tr>
+                                <td colspan="9">
+                                    <div class="py-10 flex justify-center items-center text-gray-500">
+                                        <div class="text-center">
+                                            <i class="fas fa-inbox text-gray-300 text-5xl mb-4"></i>
+                                            <p class="text-gray-500">暂无数据</p>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 引入 Alpine.js -->
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+</body>
+</html> 

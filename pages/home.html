@@ -9,11 +9,14 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
     <link rel="stylesheet" href="../styles/custom.css">
     <link rel="stylesheet" href="../styles/theme.css">
+    <script src="../js/languages.js"></script>
     <style>
         body {
             background-color: #f9fafb;
             font-family: 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
             position: relative;
+            margin: 0;
+            padding: 0;
         }
         [data-theme="dark"] body {
             background-color: #1a1a1a;
@@ -112,6 +115,10 @@
             align-items: center;
             justify-content: center;
             z-index: 999999;
+        }
+        
+        #surveyModal.show {
+            display: flex !important;
         }
         
         #surveyModal .modal-content {
@@ -252,18 +259,30 @@
             outline-offset: 2px;
             box-shadow: 0 0 0 2px rgba(125, 51, 255, 0.2);
         }
+
+        .container {
+            padding: 0 1.25rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
     </style>
 </head>
 <body>
-    <div class="container mx-auto px-4 py-6">
+    <div class="container mx-auto px-4">
         <!-- 顶部导航 -->
-        <div class="flex justify-between mb-4">
+        <div class="flex justify-between py-4">
             <!-- 左侧按钮 -->
             <div>
             </div>
 
             <!-- 右侧按钮组 -->
             <div class="flex items-center space-x-6">
+                <!-- 语言切换按钮 -->
+                <div class="language-switch" onclick="toggleLanguage()">
+                    <span id="currentLanguage">简体中文</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                
                 <!-- 主题切换按钮 -->
                 <button id="themeToggle" class="theme-toggle">
                     <i class="fas fa-sun"></i>
@@ -280,7 +299,7 @@
                 </div>
                 
                 <!-- 帮助中心 -->
-                <a href="#" class="text-gray-600 nav-link-hover text-sm">帮助</a>
+                <a href="#" class="text-gray-600 nav-link-hover text-sm" data-i18n="help">帮助</a>
                 
                 <!-- 用户中心 -->
                 <div class="relative">
@@ -292,7 +311,7 @@
                         <div class="px-4 pb-3 border-b border-gray-100">
                             <div class="flex items-center justify-between mb-2">
                                 <div class="font-medium text-gray-900">张三</div>
-                                <a href="personal-upgrading-enterprise.html" target="_blank" class="text-xs enterprise-link">升级为企业</a>
+                                <a href="personal-upgrading-enterprise.html" target="_blank" class="text-xs enterprise-link" data-i18n="upgrade">升级为企业</a>
                             </div>
                             <div class="flex items-center justify-between mb-2">
                                 <div class="text-sm text-gray-600">
@@ -313,28 +332,28 @@
                         <div class="px-4">
                             <a href="security.html" class="flex items-center py-2 text-sm text-gray-700 nav-link-hover">
                                 <i class="fas fa-shield-alt w-5 text-center"></i>
-                                <span class="ml-2">安全设置</span>
+                                <span class="ml-2" data-i18n="security">安全设置</span>
                             </a>
                             <a href="authentication-info.html" class="flex items-center py-2 text-sm text-gray-700 nav-link-hover">
                                 <i class="fas fa-id-card w-5 text-center"></i>
-                                <span class="ml-2">认证信息</span>
+                                <span class="ml-2" data-i18n="authentication">认证信息</span>
                             </a>
                             <a href="fees.html" class="flex items-center py-2 text-sm text-gray-700 nav-link-hover">
                                 <i class="fas fa-dollar-sign w-5 text-center"></i>
-                                <span class="ml-2">费率查询</span>
+                                <span class="ml-2" data-i18n="fees">费率查询</span>
                             </a>
                             <a href="coupons.html" class="flex items-center py-2 text-sm text-gray-700 nav-link-hover">
                                 <i class="fas fa-ticket-alt w-5 text-center"></i>
-                                <span class="ml-2">我的优惠</span>
+                                <span class="ml-2" data-i18n="coupons">我的优惠</span>
                             </a>
                             <a href="my-invitation.html" class="flex items-center py-2 text-sm text-gray-700 nav-link-hover">
                                 <i class="fas fa-user-plus w-5 text-center"></i>
-                                <span class="ml-2">我的邀请</span>
+                                <span class="ml-2" data-i18n="invitation">我的邀请</span>
                             </a>
                             <div class="border-t border-gray-100 my-1"></div>
                             <a href="logout.html" class="flex items-center py-2 text-sm text-red-600 hover:text-red-700">
                                 <i class="fas fa-sign-out-alt w-5 text-center"></i>
-                                <span class="ml-2">退出</span>
+                                <span class="ml-2" data-i18n="logout">退出</span>
                             </a>
                         </div>
                     </div>
@@ -352,13 +371,13 @@
                         </span>
                         <div class="ml-2 flex-1">
                             <div class="flex items-center">
-                                <span class="text-xs px-1.5 py-0.5 rounded" style="background-color: rgba(125, 51, 255, 0.1); color: #7D33FF">最新公告</span>
+                                <span class="text-xs px-1.5 py-0.5 rounded" style="background-color: rgba(125, 51, 255, 0.1); color: #7D33FF" data-i18n="announcement">最新公告</span>
                                 <p class="ml-2 text-gray-600 text-sm">关于2024年春节期间收付款服务安排的通知</p>
                             </div>
                         </div>
                     </div>
                     <a href="announcement-detail.html" style="color: #7D33FF" class="hover:bg-[#7D33FF]/10 px-2 py-1 rounded text-sm font-medium flex items-center whitespace-nowrap">
-                        查看详情
+                        <span data-i18n="viewDetails">查看详情</span>
                         <i class="fas fa-chevron-right ml-1 text-xs"></i>
                     </a>
                 </div>
@@ -376,22 +395,22 @@
                                 <img src="https://cdn-icons-png.flaticon.com/512/2489/2489756.png" alt="Global Payment" class="w-12 h-12 object-contain">
                             </div>
                             <div>
-                                <h3 class="text-white text-lg font-semibold leading-tight mb-1">全球收款解决方案</h3>
-                                <p class="text-purple-100 text-sm">支持200+国家地区 | 实时汇率 | 0手续费</p>
+                                <h3 class="text-white text-lg font-semibold leading-tight mb-1" data-i18n="globalPayment">全球收款解决方案</h3>
+                                <p class="text-purple-100 text-sm" data-i18n="paymentFeatures">支持200+国家地区 | 实时汇率 | 0手续费</p>
                             </div>
                             <button class="bg-white hover:bg-opacity-95 text-purple-600 px-5 py-2 rounded-full text-sm font-medium transition-colors whitespace-nowrap flex items-center space-x-2">
-                                <span>立即开通</span>
+                                <span data-i18n="activateNow">立即开通</span>
                                 <i class="fas fa-arrow-right"></i>
                             </button>
                         </div>
                         <div class="hidden md:flex items-center space-x-4 pl-6 border-l border-white/20">
                             <div class="text-center">
                                 <div class="text-white text-2xl font-bold">200+</div>
-                                <div class="text-purple-100 text-xs">支持国家</div>
+                                <div class="text-purple-100 text-xs" data-i18n="supportedCountries">支持国家</div>
                             </div>
                             <div class="text-center">
                                 <div class="text-white text-2xl font-bold">T+0</div>
-                                <div class="text-purple-100 text-xs">极速到账</div>
+                                <div class="text-purple-100 text-xs" data-i18n="fastSettlement">极速到账</div>
                             </div>
                         </div>
                     </div>
@@ -408,15 +427,15 @@
                     </div>
                     <div class="flex-1">
                         <div class="flex items-center mb-1">
-                            <h3 class="text-xl font-medium text-gray-900 cursor-default">完成whalet易鲸账户实名认证解锁更多功能</h3>
-                            <span class="ml-3 px-2 py-1 rounded-full text-xs font-medium" style="color: #7D33FF !important; background-color: rgba(125, 51, 255, 0.05)">未完成</span>
+                            <h3 class="text-xl font-medium text-gray-900 cursor-default" data-i18n="completeVerification">完成whalet易鲸账户实名认证解锁更多功能</h3>
+                            <span class="ml-3 px-2 py-1 rounded-full text-xs font-medium" style="color: #7D33FF !important; background-color: rgba(125, 51, 255, 0.05)" data-i18n="uncompleted">未完成</span>
                         </div>
-                        <p class="text-gray-600 cursor-default">填写您的实名认证资料以解锁账户功能，我们会自动保存您的进度，方便您随时继续。</p>
+                        <p class="text-gray-600 cursor-default" data-i18n="verificationDesc">填写您的实名认证资料以解锁账户功能，我们会自动保存您的进度，方便您随时继续。</p>
                     </div>
                 </div>
                 <div class="ml-6">
                     <button class="auth-button px-6 py-2.5 text-white rounded-lg font-medium flex items-center" onclick="window.open('./real-name-verification.html', '_blank')">
-                        <span>立即认证</span>
+                        <span data-i18n="verifyNow">立即认证</span>
                         <i class="fas fa-arrow-right ml-2"></i>
                     </button>
                 </div>
@@ -428,9 +447,9 @@
             <!-- 快速导航 -->
             <div class="lg:col-span-2 bg-white rounded-xl shadow-sm p-4">
                 <div class="flex justify-between items-center mb-3">
-                    <h3 class="text-lg font-medium text-gray-800">快速导航</h3>
+                    <h3 class="text-lg font-medium text-gray-800" data-i18n="quickNav">快速导航</h3>
                     <button id="manageQuickNav" style="color: #7D33FF" class="hover:bg-[#7D33FF]/10 px-2 py-1 rounded text-sm font-medium flex items-center">
-                        <i class="fas fa-cog mr-1"></i> 管理
+                        <i class="fas fa-cog mr-1"></i> <span data-i18n="manage">管理</span>
                     </button>
                 </div>
                 <div id="quickNavGrid" class="grid grid-cols-3 sm:grid-cols-5 gap-2">
@@ -442,18 +461,18 @@
             <div class="bg-white rounded-xl shadow-sm p-4">
                 <div class="flex justify-between items-center mb-3">
                     <div class="flex items-center">
-                        <h3 class="text-lg font-medium text-gray-800">待办事项</h3>
+                        <h3 class="text-lg font-medium text-gray-800" data-i18n="todo">待办事项</h3>
                         <span class="ml-2 px-2.5 py-1 text-white rounded-full text-xs font-bold animate-pulse shadow-sm" style="background-color: #FF4D4F;">5</span>
                     </div>
                     <a href="todo.html" style="color: #7D33FF" class="hover:bg-[#7D33FF]/10 px-2 py-1 rounded text-sm font-medium flex items-center">
-                        查看全部 <i class="fas fa-chevron-right ml-1 text-xs"></i>
+                        <span data-i18n="viewAll">查看全部</span> <i class="fas fa-chevron-right ml-1 text-xs"></i>
                     </a>
                 </div>
                 <div class="space-y-2">
                     <!-- 显示两条待办事项 -->
                     <a href="supplement-info.html?type=income&id=202312191459018819418001" class="flex items-center justify-between border border-gray-200 rounded-lg p-2 hover:bg-gray-50 cursor-pointer">
                         <div class="flex-1 min-w-0">
-                            <h4 class="text-sm font-medium text-gray-800 truncate">收款账号尾号1234有一笔入账需要补充资料</h4>
+                            <h4 class="text-sm font-medium text-gray-800 truncate" data-i18n="supplementInfo">收款账号尾号1234有一笔入账需要补充资料</h4>
                         </div>
                         <div class="text-[#7D33FF] flex-shrink-0 ml-2">
                             <i class="fas fa-chevron-right text-xs"></i>
@@ -462,7 +481,7 @@
                     
                     <a href="supplement-info.html?type=withdraw" class="flex items-center justify-between border border-gray-200 rounded-lg p-2 hover:bg-gray-50 cursor-pointer">
                         <div class="flex-1 min-w-0">
-                            <h4 class="text-sm font-medium text-gray-800 truncate">提现付款到尾号1234需要补充资料</h4>
+                            <h4 class="text-sm font-medium text-gray-800 truncate" data-i18n="withdrawInfo">提现付款到尾号1234需要补充资料</h4>
                         </div>
                         <div class="text-[#7D33FF] flex-shrink-0 ml-2">
                             <i class="fas fa-chevron-right text-xs"></i>
@@ -479,9 +498,9 @@
                 <div class="relative z-10 h-full flex flex-col justify-between">
                     <div class="flex justify-between items-start">
                         <div>
-                            <h3 class="text-lg font-bold text-white mb-2 text-shadow">推荐有礼</h3>
+                            <h3 class="text-lg font-bold text-white mb-2 text-shadow" data-i18n="recommend">推荐有礼</h3>
                         </div>
-                        <span class="bg-white/20 backdrop-blur-sm text-white px-2 py-1 rounded text-sm">邀请好友注册</span>
+                        <span class="bg-white/20 backdrop-blur-sm text-white px-2 py-1 rounded text-sm" data-i18n="inviteFriends">邀请好友注册</span>
                     </div>
                 </div>
             </div>
@@ -492,26 +511,25 @@
             <!-- 汇率波动图 -->
             <div class="bg-white rounded-xl shadow-sm p-5 lg:col-span-2">
                 <div class="flex justify-between items-center mb-4">
-                    <h3 class="text-lg font-medium text-gray-800">汇率波动
+                    <h3 class="text-lg font-medium text-gray-800" data-i18n="exchangeRateTitle">汇率波动
                         <span class="inline-block ml-1 relative cursor-help" id="exchangeRateInfoIcon">
                             <i class="fas fa-info-circle text-gray-400 hover:text-[#7D33FF]"></i>
-                            <div class="absolute bottom-full left-0 mb-2 w-64 px-3 py-2 bg-gray-800 text-xs text-white rounded shadow-lg z-10 opacity-0 invisible transition-opacity duration-200" id="exchangeRateTooltip">
+                            <div class="absolute bottom-full left-0 mb-2 w-64 px-3 py-2 bg-gray-800 text-xs text-white rounded shadow-lg z-10 opacity-0 invisible transition-opacity duration-200" id="exchangeRateTooltip" data-i18n="exchangeRateInfo">
                                 数据仅供参考，请以实际交易汇率为准，对于使用该汇率走势图所造成的影响，whalet不承担任何责任。
-                                <div class="absolute top-full left-4 w-0 h-0 border-x-4 border-x-transparent border-t-4 border-t-gray-800"></div>
                             </div>
                         </span>
                     </h3>
                     <div class="flex items-center space-x-3">
                         <div class="flex rounded-lg border border-gray-200 p-0.5">
-                            <button class="px-3 py-1 text-sm rounded-md timeRange active" data-range="today">今天</button>
-                            <button class="px-3 py-1 text-sm rounded-md timeRange" data-range="7days">近7天</button>
-                            <button class="px-3 py-1 text-sm rounded-md timeRange" data-range="30days">近30天</button>
+                            <button class="px-3 py-1 text-sm rounded-md timeRange active" data-range="today" data-i18n="today">今天</button>
+                            <button class="px-3 py-1 text-sm rounded-md timeRange" data-range="7days" data-i18n="last7Days">近7天</button>
+                            <button class="px-3 py-1 text-sm rounded-md timeRange" data-range="30days" data-i18n="last30Days">近30天</button>
                         </div>
                         <select id="currencySelect" class="text-sm border-gray-300 rounded shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
-                            <option value="USD">USD/CNY</option>
-                            <option value="EUR">EUR/CNY</option>
-                            <option value="GBP">GBP/CNY</option>
-                            <option value="JPY">JPY/CNY</option>
+                            <option value="USD" data-i18n="currencies.USD">USD/CNY</option>
+                            <option value="EUR" data-i18n="currencies.EUR">EUR/CNY</option>
+                            <option value="GBP" data-i18n="currencies.GBP">GBP/CNY</option>
+                            <option value="JPY" data-i18n="currencies.JPY">JPY/CNY</option>
                         </select>
                     </div>
                 </div>
@@ -523,7 +541,7 @@
             <!-- 银行假期日历 -->
             <div class="bg-white rounded-xl shadow-sm p-5 lg:col-span-1">
                 <div class="flex justify-between items-center mb-4">
-                    <h3 class="text-lg font-medium text-gray-800">银行假期日历</h3>
+                    <h3 class="text-lg font-medium text-gray-800" data-i18n="bankHolidayTitle">银行假期日历</h3>
                     <select id="calendarMonthSelect" class="text-sm border-gray-300 rounded shadow-sm focus:border-[#7D33FF] focus:ring focus:ring-[#7D33FF]/20 focus:ring-opacity-50">
                         <!-- 月份选项将通过JavaScript动态生成 -->
                     </select>
@@ -531,13 +549,13 @@
                 
                 <!-- 日历星期头 -->
                 <div class="grid grid-cols-7 mb-2 text-center">
-                    <div class="text-sm font-medium text-gray-500">一</div>
-                    <div class="text-sm font-medium text-gray-500">二</div>
-                    <div class="text-sm font-medium text-gray-500">三</div>
-                    <div class="text-sm font-medium text-gray-500">四</div>
-                    <div class="text-sm font-medium text-gray-500">五</div>
-                    <div class="text-sm font-medium text-gray-500">六</div>
-                    <div class="text-sm font-medium text-gray-500">日</div>
+                    <div class="text-sm font-medium text-gray-500 calendar-weekday">一</div>
+                    <div class="text-sm font-medium text-gray-500 calendar-weekday">二</div>
+                    <div class="text-sm font-medium text-gray-500 calendar-weekday">三</div>
+                    <div class="text-sm font-medium text-gray-500 calendar-weekday">四</div>
+                    <div class="text-sm font-medium text-gray-500 calendar-weekday">五</div>
+                    <div class="text-sm font-medium text-gray-500 calendar-weekday">六</div>
+                    <div class="text-sm font-medium text-gray-500 calendar-weekday">日</div>
                 </div>
                 
                 <!-- 日历日期 -->
@@ -584,26 +602,49 @@
                 
                 <!-- 假日图例 -->
                 <div class="border-t border-gray-200 pt-3">
-                    <h4 class="text-sm font-medium text-gray-700 mb-2">近期银行假期</h4>
+                    <h4 class="text-sm font-medium text-gray-700 mb-2" data-i18n="holidayLegend">近期银行假期</h4>
                     <div class="space-y-2">
                         <div class="flex items-center">
                             <span class="inline-block w-3 h-3 bg-red-500 rounded-full mr-2"></span>
-                            <span class="text-xs text-gray-600">12月12日 - USD (美元) - 美国纪念日</span>
+                            <span class="text-xs text-gray-600" data-i18n="holidayUSD">12月12日 - USD (美元) - 美国纪念日</span>
                         </div>
                         <div class="flex items-center">
                             <span class="inline-block w-3 h-3 bg-red-500 rounded-full mr-2"></span>
-                            <span class="text-xs text-gray-600">12月19日 - GBP (英镑) - 英国银行假期</span>
+                            <span class="text-xs text-gray-600" data-i18n="holidayGBP">12月19日 - GBP (英镑) - 英国银行假期</span>
                         </div>
                         <div class="flex items-center">
                             <span class="inline-block w-3 h-3 bg-red-500 rounded-full mr-2"></span>
-                            <span class="text-xs text-gray-600">12月25日 - EUR (欧元) - 圣诞节</span>
+                            <span class="text-xs text-gray-600" data-i18n="holidayEUR">12月25日 - EUR (欧元) - 圣诞节</span>
                         </div>
                         <div class="flex items-center">
                             <span class="inline-block w-3 h-3 bg-red-500 rounded-full mr-2"></span>
-                            <span class="text-xs text-gray-600">12月26日 - USD, GBP, EUR - 多区域假期</span>
+                            <span class="text-xs text-gray-600" data-i18n="holidayMulti">12月26日 - USD, GBP, EUR - 多区域假期</span>
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 问卷调查弹框 -->
+    <div id="surveyModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center">
+        <div class="modal-content p-6 relative">
+            <button id="closeSurveyModal" class="absolute right-4 top-4 text-gray-400 hover:text-gray-600">
+                <i class="fas fa-times"></i>
+            </button>
+            <div class="text-center mb-6">
+                <img src="https://cdn-icons-png.flaticon.com/512/3273/3273666.png" alt="Survey" class="w-16 h-16 mx-auto mb-4">
+                <h3 class="text-xl font-semibold text-gray-900 mb-2" data-i18n="surveyTitle">问卷调查</h3>
+                <p class="text-gray-600 text-sm" data-i18n="surveyDesc">您的反馈对我们很重要，请花几分钟完成这份问卷</p>
+            </div>
+            <div class="space-y-4">
+                <button onclick="window.open('survey.html', '_blank')" class="w-full bg-[#7D33FF] text-white py-3 rounded-lg hover:bg-opacity-90 transition-colors flex items-center justify-center">
+                    <span data-i18n="startSurvey">开始问卷</span>
+                    <i class="fas fa-arrow-right ml-2"></i>
+                </button>
+                <button id="skipSurvey" class="w-full text-gray-600 hover:text-gray-800 py-2">
+                    <span data-i18n="skipSurvey">暂时跳过</span>
+                </button>
             </div>
         </div>
     </div>
@@ -613,24 +654,24 @@
         <div class="bg-white rounded-xl shadow-lg w-full max-w-lg mx-4">
             <div class="p-5 border-b border-gray-200">
                 <div class="flex justify-between items-center">
-                    <h3 class="text-lg font-medium text-gray-800">管理快速导航</h3>
+                    <h3 class="text-lg font-medium text-gray-800" data-i18n="manageQuickNav">管理快速导航</h3>
                     <button id="closeQuickNavModal" class="text-gray-400 hover:text-gray-600">
                         <i class="fas fa-times"></i>
                     </button>
                 </div>
             </div>
             <div class="p-5">
-                <p class="text-sm text-gray-600 mb-4">请选择要显示的快速导航入口（最多5个）</p>
+                <p class="text-sm text-gray-600 mb-4" data-i18n="selectQuickNav">请选择要显示的快速导航入口（最多5个）</p>
                 <div class="space-y-3" id="quickNavOptions">
                     <!-- Options will be dynamically populated by JavaScript -->
                 </div>
-                <p id="quickNavError" class="text-red-500 text-sm mt-2 hidden">最多只能选择5个快速导航入口</p>
+                <p id="quickNavError" class="text-red-500 text-sm mt-2 hidden" data-i18n="maxQuickNavError">最多只能选择5个快速导航入口</p>
             </div>
             <div class="p-5 border-t border-gray-200 flex justify-end space-x-3">
-                <button id="cancelQuickNav" class="px-4 py-2 text-sm text-gray-600 hover:text-gray-800">
+                <button id="cancelQuickNav" class="px-4 py-2 text-sm text-gray-600 hover:text-gray-800" data-i18n="cancel">
                     取消
                 </button>
-                <button id="saveQuickNav" class="px-4 py-2 text-sm text-white rounded hover:opacity-90" style="background-color: #7D33FF">
+                <button id="saveQuickNav" class="px-4 py-2 text-sm text-white rounded hover:opacity-90" style="background-color: #7D33FF" data-i18n="save">
                     保存
                 </button>
             </div>
@@ -638,22 +679,246 @@
     </div>
 
     <script>
+        // 快速导航项配置
+        const quickNavItems = [
+            {
+                id: 'platformCollection',
+                icon: 'fa-store',
+                text: 'platformCollection',
+                link: 'platform-collection.html'
+            },
+            {
+                id: 'tradeCollection',
+                icon: 'fa-globe',
+                text: 'tradeCollection',
+                link: 'trade-collection.html'
+            },
+            {
+                id: 'independentSite',
+                icon: 'fa-shopping-cart',
+                text: 'independentSite',
+                link: 'independent-site.html'
+            },
+            {
+                id: 'serviceTrade',
+                icon: 'fa-handshake',
+                text: 'serviceTrade',
+                link: 'service-trade.html'
+            },
+            {
+                id: 'withdrawal',
+                icon: 'fa-money-bill-wave',
+                text: 'withdrawal',
+                link: 'withdrawal.html'
+            },
+            {
+                id: 'payment',
+                icon: 'fa-credit-card',
+                text: 'payment',
+                link: 'payment.html'
+            },
+            {
+                id: 'forex',
+                icon: 'fa-exchange-alt',
+                text: 'forex',
+                link: 'forex.html'
+            },
+            {
+                id: 'cards',
+                icon: 'fa-id-card',
+                text: 'cards',
+                link: 'cards.html'
+            },
+            {
+                id: 'acquiring',
+                icon: 'fa-file-invoice',
+                text: 'acquiring',
+                link: 'acquiring-service.html'
+            }
+        ];
+
+        // 初始化快速导航
+        function initQuickNav() {
+            const quickNavGrid = document.getElementById('quickNavGrid');
+            if (!quickNavGrid) return;
+
+            // 从localStorage获取已选择的导航项
+            const selectedItems = JSON.parse(localStorage.getItem('selectedQuickNavItems')) || 
+                quickNavItems.slice(0, 5).map(item => item.id); // 默认显示前5个
+
+            // 清空现有内容
+            quickNavGrid.innerHTML = '';
+
+            // 添加选中的导航项
+            selectedItems.forEach(itemId => {
+                const item = quickNavItems.find(i => i.id === itemId);
+                if (item) {
+                    const navItem = document.createElement('a');
+                    navItem.href = item.link;
+                    navItem.className = 'quick-nav-hover flex flex-col items-center justify-center p-3 rounded-lg border border-gray-200 hover:border-[#7D33FF] transition-colors';
+                    navItem.innerHTML = `
+                        <div class="quick-nav-icon w-10 h-10 rounded-lg flex items-center justify-center mb-2">
+                            <i class="fas ${item.icon}"></i>
+                        </div>
+                        <span class="text-sm text-gray-600 text-center w-full" data-i18n="${item.text}"></span>
+                    `;
+                    quickNavGrid.appendChild(navItem);
+                }
+            });
+
+            // 更新翻译
+            updatePageContent();
+        }
+
+        // 初始化快速导航管理弹窗
+        function initQuickNavModal() {
+            const modal = document.getElementById('quickNavModal');
+            const optionsContainer = document.getElementById('quickNavOptions');
+            const errorText = document.getElementById('quickNavError');
+            const saveBtn = document.getElementById('saveQuickNav');
+            const cancelBtn = document.getElementById('cancelQuickNav');
+            const closeBtn = document.getElementById('closeQuickNavModal');
+            const manageBtn = document.getElementById('manageQuickNav');
+
+            if (!modal || !optionsContainer || !manageBtn) return;
+
+            // 获取已选择的项
+            const selectedItems = JSON.parse(localStorage.getItem('selectedQuickNavItems')) || 
+                quickNavItems.slice(0, 5).map(item => item.id);
+
+            // 添加选项
+            quickNavItems.forEach(item => {
+                const option = document.createElement('div');
+                option.className = 'flex items-center';
+                option.innerHTML = `
+                    <input type="checkbox" id="${item.id}" 
+                           class="quick-nav-checkbox w-4 h-4 rounded"
+                           ${selectedItems.includes(item.id) ? 'checked' : ''}>
+                    <label for="${item.id}" class="ml-3 text-sm text-gray-700 flex items-center">
+                        <i class="fas ${item.icon} mr-2"></i>
+                        <span data-i18n="${item.text}"></span>
+                    </label>
+                `;
+                optionsContainer.appendChild(option);
+            });
+
+            // 更新翻译
+            updatePageContent();
+
+            // 管理按钮点击事件
+            manageBtn.addEventListener('click', () => {
+                modal.classList.remove('hidden');
+            });
+
+            // 关闭按钮事件
+            [closeBtn, cancelBtn].forEach(btn => {
+                if (btn) {
+                    btn.addEventListener('click', () => {
+                        modal.classList.add('hidden');
+                    });
+                }
+            });
+
+            // 保存按钮事件
+            if (saveBtn) {
+                saveBtn.addEventListener('click', () => {
+                    const checkboxes = optionsContainer.querySelectorAll('input[type="checkbox"]');
+                    const selectedItems = Array.from(checkboxes)
+                        .filter(cb => cb.checked)
+                        .map(cb => cb.id);
+
+                    if (selectedItems.length > 5) {
+                        errorText.classList.remove('hidden');
+                        return;
+                    }
+
+                    errorText.classList.add('hidden');
+                    localStorage.setItem('selectedQuickNavItems', JSON.stringify(selectedItems));
+                    initQuickNav();
+                    modal.classList.add('hidden');
+                });
+            }
+
+            // 复选框change事件
+            optionsContainer.addEventListener('change', () => {
+                const checkedCount = optionsContainer.querySelectorAll('input[type="checkbox"]:checked').length;
+                if (checkedCount > 5) {
+                    errorText.classList.remove('hidden');
+                } else {
+                    errorText.classList.add('hidden');
+                }
+            });
+        }
+
+        // 初始化问卷调查弹框
+        function initSurveyModal() {
+            const surveyModal = document.getElementById('surveyModal');
+            const closeSurveyModal = document.getElementById('closeSurveyModal');
+            const skipSurvey = document.getElementById('skipSurvey');
+            
+            // 检查是否已经显示过问卷
+            const hasShownSurvey = localStorage.getItem('hasShownSurvey');
+            
+            if (!hasShownSurvey) {
+                // 延迟5秒显示问卷
+                setTimeout(() => {
+                    surveyModal.classList.add('show');
+                }, 5000);
+            }
+            
+            // 关闭按钮事件
+            closeSurveyModal.addEventListener('click', () => {
+                surveyModal.classList.remove('show');
+                localStorage.setItem('hasShownSurvey', 'true');
+            });
+            
+            // 跳过按钮事件
+            skipSurvey.addEventListener('click', () => {
+                surveyModal.classList.remove('show');
+                localStorage.setItem('hasShownSurvey', 'true');
+            });
+
+            // 点击遮罩层关闭
+            surveyModal.addEventListener('click', (e) => {
+                if (e.target === surveyModal) {
+                    surveyModal.classList.remove('show');
+                    localStorage.setItem('hasShownSurvey', 'true');
+                }
+            });
+        }
+
+        // 在DOM加载完成后初始化
+        document.addEventListener('DOMContentLoaded', () => {
+            initQuickNav();
+            initQuickNavModal();
+            initSurveyModal();
+        });
+
         // 用户中心下拉菜单点击切换显示
-        document.getElementById('userCenterBtn').addEventListener('click', function(e) {
+        document.addEventListener('DOMContentLoaded', function() {
+            const userCenterBtn = document.getElementById('userCenterBtn');
+            const userCenterDropdown = document.getElementById('userCenterDropdown');
+            
+            if (userCenterBtn && userCenterDropdown) {
+                userCenterBtn.addEventListener('click', function(e) {
             e.preventDefault();
-            document.getElementById('userCenterDropdown').classList.toggle('hidden');
+                    userCenterDropdown.classList.toggle('hidden');
         });
         
         // 点击页面其他区域关闭下拉菜单
         document.addEventListener('click', function(e) {
-            if (!document.getElementById('userCenterBtn').contains(e.target) && 
-                !document.getElementById('userCenterDropdown').contains(e.target)) {
-                document.getElementById('userCenterDropdown').classList.add('hidden');
+                    if (!userCenterBtn.contains(e.target) && 
+                        !userCenterDropdown.contains(e.target)) {
+                        userCenterDropdown.classList.add('hidden');
+                    }
+                });
             }
         });
         
         // 汇率波动图表初始化
         document.addEventListener('DOMContentLoaded', function() {
+            const ctx = document.getElementById('exchangeRateChart');
+            if (ctx) {
             // 生成时间标签
             function generateTimeLabels(range) {
                 const labels = [];
@@ -661,13 +926,11 @@
                 
                 switch(range) {
                     case 'today':
-                        // 生成当天的小时标签 (每2小时一个点)
                         for(let i = 0; i <= 23; i += 2) {
                             labels.push(`${i}:00`);
                         }
                         break;
                     case '7days':
-                        // 生成近7天的日期标签
                         for(let i = 6; i >= 0; i--) {
                             const date = new Date(now);
                             date.setDate(date.getDate() - i);
@@ -675,7 +938,6 @@
                         }
                         break;
                     case '30days':
-                        // 生成近30天的日期标签 (每3天一个点)
                         for(let i = 29; i >= 0; i -= 3) {
                             const date = new Date(now);
                             date.setDate(date.getDate() - i);
@@ -689,17 +951,17 @@
             // 生成模拟数据
             function generateData(range, baseValue) {
                 const data = [];
-                const volatility = 0.002; // 波动率
-                
-                const pointCount = range === 'today' ? 12 : // 每2小时一个点
-                                  range === '7days' ? 7 :    // 每天一个点
-                                  11;                        // 每3天一个点 (30天)
+                    const volatility = 0.002;
+                    
+                    const pointCount = range === 'today' ? 12 :
+                                      range === '7days' ? 7 :
+                                      11;
                 
                 for(let i = 0; i < pointCount; i++) {
                     const change = (Math.random() - 0.5) * volatility;
                     const newValue = baseValue * (1 + change);
                     data.push(Number(newValue.toFixed(4)));
-                    baseValue = newValue; // 使用新值作为下一个点的基准
+                        baseValue = newValue;
                 }
                 return data;
             }
@@ -708,27 +970,21 @@
             const exchangeRateData = {
                 USD: {
                     baseValue: 7.20,
-                    color: '#7D33FF' // 紫色
+                        color: '#7D33FF'
                 },
                 EUR: {
                     baseValue: 7.88,
-                    color: '#7D33FF' // 紫色
+                        color: '#7D33FF'
                 },
                 GBP: {
                     baseValue: 9.11,
-                    color: '#7D33FF' // 紫色
+                        color: '#7D33FF'
                 },
                 JPY: {
                     baseValue: 0.052,
-                    color: '#7D33FF' // 紫色
-                }
-            };
-
-            const ctx = document.getElementById('exchangeRateChart');
-            if (!ctx) {
-                console.error('Cannot find exchangeRateChart canvas element');
-                return;
-            }
+                        color: '#7D33FF'
+                    }
+                };
 
             let currentRange = 'today';
             let currentCurrency = 'USD';
@@ -824,7 +1080,6 @@
                     this.classList.add('bg-[#7D33FF]');
                     this.classList.add('text-white');
                     
-                    // 更新图表数据
                     currentRange = this.dataset.range;
                     updateChartData();
                 });
@@ -852,310 +1107,77 @@
                 
                 exchangeRateChart.update();
             }
-        });
-
-        // 设置银行假期日历的当前月份
-        document.addEventListener('DOMContentLoaded', function() {
-            const monthSelect = document.getElementById('calendarMonthSelect');
-            const currentDate = new Date();
-            const currentYear = currentDate.getFullYear();
-            const currentMonth = currentDate.getMonth();
-            
-            // 生成当前月份前后共6个月的选项
-            for (let i = -2; i <= 3; i++) {
-                let date = new Date(currentYear, currentMonth + i, 1);
-                let year = date.getFullYear();
-                let month = date.getMonth() + 1; // JavaScript月份从0开始
-                
-                let option = document.createElement('option');
-                option.value = `${year}-${month}`;
-                option.textContent = `${year}年${month}月`;
-                
-                // 设置当前月份为默认选中
-                if (i === 0) {
-                    option.selected = true;
-                }
-                
-                monthSelect.appendChild(option);
             }
         });
 
-        document.addEventListener('DOMContentLoaded', function() {
-            const toggleButton = document.getElementById('toggleMoreCurrencies');
-            const moreCurrencies = document.getElementById('moreCurrencies');
-            const showMoreElements = document.querySelectorAll('.show-more');
-            const showLessElements = document.querySelectorAll('.show-less');
+        // 初始化语言设置
+        const currentLang = getCurrentLanguage();
+        document.documentElement.lang = currentLang;
+        updatePageContent();
 
-            toggleButton.addEventListener('click', function() {
-                moreCurrencies.classList.toggle('hidden');
-                showMoreElements.forEach(el => el.classList.toggle('hidden'));
-                showLessElements.forEach(el => el.classList.toggle('hidden'));
-            });
+        // 监听语言变化事件
+        window.addEventListener('languageChanged', () => {
+            updatePageContent();
         });
 
-        // 快速导航配置
-        const quickNavItems = {
-            'platform-collection': {
-                title: '电商平台',
-                icon: 'fa-store',
-                bgColor: 'bg-[#7D33FF]/10',
-                textColor: 'text-[#7D33FF]',
-                link: 'platform-collection.html'
-            },
-            'trade-collection': {
-                title: '外贸收款',
-                icon: 'fa-globe',
-                bgColor: 'bg-[#7D33FF]/10',
-                textColor: 'text-[#7D33FF]',
-                link: 'trade-collection.html'
-            },
-            'independent-site': {
-                title: '独立站',
-                icon: 'fa-shopping-cart',
-                bgColor: 'bg-[#7D33FF]/10',
-                textColor: 'text-[#7D33FF]',
-                link: 'independent-site.html'
-            },
-            'service-trade': {
-                title: '服务贸易',
-                icon: 'fa-handshake',
-                bgColor: 'bg-[#7D33FF]/10',
-                textColor: 'text-[#7D33FF]',
-                link: 'service-trade.html'
-            },
-            'withdrawal': {
-                title: '提现',
-                icon: 'fa-wallet',
-                bgColor: 'bg-[#7D33FF]/10',
-                textColor: 'text-[#7D33FF]',
-                link: 'withdrawal.html'
-            },
-            'payment': {
-                title: '付款',
-                icon: 'fa-paper-plane',
-                bgColor: 'bg-[#7D33FF]/10',
-                textColor: 'text-[#7D33FF]',
-                link: 'payment.html'
-            },
-            'forex': {
-                title: '外汇兑换',
-                icon: 'fa-exchange-alt',
-                bgColor: 'bg-[#7D33FF]/10',
-                textColor: 'text-[#7D33FF]',
-                link: 'forex.html'
-            },
-            'cards': {
-                title: '商务卡',
-                icon: 'fa-credit-card',
-                bgColor: 'bg-[#7D33FF]/10',
-                textColor: 'text-[#7D33FF]',
-                link: 'cards.html'
-            },
-            'acquiring': {
-                title: '账单收款',
-                icon: 'fa-receipt',
-                bgColor: 'bg-[#7D33FF]/10',
-                textColor: 'text-[#7D33FF]',
-                link: 'bill-collection.html'
+        // 监听来自父窗口的消息
+        window.addEventListener('message', function(event) {
+            console.log('Received message in iframe:', event.data);
+            if (event.data && event.data.type === 'languageChanged') {
+                const newLang = event.data.language;
+                console.log('Updating iframe language to:', newLang);
+                localStorage.setItem('language', newLang);
+                document.documentElement.lang = newLang;
+                updatePageContent();
+                
+                // 通知父窗口语言已更新
+                window.parent.postMessage({
+                    type: 'languageChanged',
+                    language: newLang
+                }, '*');
             }
-        };
+        });
 
-        // 默认显示的快速导航项
-        let selectedQuickNavItems = [
-            'platform-collection',
-            'trade-collection',
-            'acquiring',
-            'cards',
-            'payment'
-        ];
-
-        // 渲染快速导航网格
-        function renderQuickNavGrid() {
-            const grid = document.getElementById('quickNavGrid');
-            grid.innerHTML = '';
+        // 语言切换功能
+        function toggleLanguage() {
+            const currentLang = getCurrentLanguage();
+            const newLang = currentLang === 'zh-CN' ? 'en' : 'zh-CN';
+            setLanguage(newLang);
             
-            selectedQuickNavItems.forEach(key => {
-                const item = quickNavItems[key];
-                const card = document.createElement('div');
-                card.className = 'card bg-white border border-gray-200 rounded-lg p-2 text-center cursor-pointer';
-                card.style.transition = 'all 0.3s ease';
-                card.onclick = () => window.location.href = item.link;
-                
-                const iconDiv = document.createElement('div');
-                iconDiv.className = 'rounded-full w-8 h-8 flex items-center justify-center mx-auto mb-1';
-                iconDiv.style.backgroundColor = 'rgba(125, 51, 255, 0.1)';
-                iconDiv.style.color = '#7D33FF';
-                
-                const icon = document.createElement('i');
-                icon.className = `fas ${item.icon}`;
-                iconDiv.appendChild(icon);
-                
-                const title = document.createElement('h4');
-                title.className = 'text-xs font-medium text-gray-800';
-                title.textContent = item.title;
-                
-                card.appendChild(iconDiv);
-                card.appendChild(title);
-                
-                card.addEventListener('mouseover', () => {
-                    card.style.borderColor = '#7D33FF';
-                    card.style.transform = 'translateY(-5px)';
-                });
-                
-                card.addEventListener('mouseout', () => {
-                    card.style.borderColor = '#e5e7eb';
-                    card.style.transform = 'translateY(0)';
-                });
-                
-                grid.appendChild(card);
-            });
+            // 更新语言切换按钮显示
+            const currentLanguageSpan = document.getElementById('currentLanguage');
+            if (currentLanguageSpan) {
+                currentLanguageSpan.textContent = newLang === 'zh-CN' ? '简体中文' : 'English';
+            }
+            
+            // 触发语言变化事件
+            window.dispatchEvent(new Event('languageChanged'));
+
+            // 通知父窗口更新语言
+            window.parent.postMessage({
+                type: 'languageChanged',
+                language: newLang
+            }, '*');
         }
 
-        // 渲染快速导航选项
-        function renderQuickNavOptions() {
-            const optionsContainer = document.getElementById('quickNavOptions');
-            optionsContainer.innerHTML = '';
+        // 更新页面内容
+        function updatePageContent() {
+            const currentLang = getCurrentLanguage();
+            const elements = document.querySelectorAll('[data-i18n]');
             
-            Object.entries(quickNavItems).forEach(([key, item]) => {
-                const option = document.createElement('div');
-                option.className = 'flex items-center space-x-3';
-                
-                const isSelected = selectedQuickNavItems.includes(key);
-                
-                option.innerHTML = `
-                    <label class="flex items-center cursor-pointer w-full">
-                        <input type="checkbox" class="quick-nav-checkbox h-5 w-5 rounded border-gray-300"
-                               style="accent-color: #7D33FF; border-color: #7D33FF;"
-                               value="${key}" ${isSelected ? 'checked' : ''}>
-                        <div class="ml-3 flex items-center">
-                            <div class="w-8 h-8 flex items-center justify-center mr-3 rounded-full" style="background-color: rgba(125, 51, 255, 0.1)">
-                                <i class="fas ${item.icon}" style="color: #7D33FF"></i>
-                            </div>
-                            <span class="text-sm text-gray-700">${item.title}</span>
-                        </div>
-                    </label>
-                `;
-                
-                optionsContainer.appendChild(option);
-            });
-            
-            // 添加复选框事件监听
-            document.querySelectorAll('.quick-nav-checkbox').forEach(checkbox => {
-                checkbox.addEventListener('change', function() {
-                    const selectedCount = document.querySelectorAll('.quick-nav-checkbox:checked').length;
-                    const errorMessage = document.getElementById('quickNavError');
-                    
-                    if (selectedCount > 5) {
-                        this.checked = false;
-                        errorMessage.classList.remove('hidden');
-                        errorMessage.classList.add('animate-shake');
-                        setTimeout(() => {
-                            errorMessage.classList.remove('animate-shake');
-                        }, 500);
-                    } else {
-                        errorMessage.classList.add('hidden');
+            elements.forEach(element => {
+                const key = element.getAttribute('data-i18n');
+                if (key.includes('.')) {
+                    // 处理嵌套的翻译键
+                    const [category, subKey] = key.split('.');
+                    if (translations[currentLang][category] && translations[currentLang][category][subKey]) {
+                        element.textContent = translations[currentLang][category][subKey];
                     }
-                });
+                } else if (translations[currentLang] && translations[currentLang][key]) {
+                    element.textContent = translations[currentLang][key];
+                }
             });
         }
-
-        // 初始化快速导航管理
-        document.addEventListener('DOMContentLoaded', function() {
-            const modal = document.getElementById('quickNavModal');
-            const manageBtn = document.getElementById('manageQuickNav');
-            const closeBtn = document.getElementById('closeQuickNavModal');
-            const cancelBtn = document.getElementById('cancelQuickNav');
-            const saveBtn = document.getElementById('saveQuickNav');
-            
-            // 立即渲染初始快速导航
-            renderQuickNavGrid();
-            
-            // 打开管理弹窗
-            manageBtn.addEventListener('click', () => {
-                renderQuickNavOptions();
-                modal.classList.remove('hidden');
-            });
-            
-            // 关闭管理弹窗
-            [closeBtn, cancelBtn].forEach(btn => {
-                btn.addEventListener('click', () => {
-                    modal.classList.add('hidden');
-                });
-            });
-            
-            // 保存设置
-            saveBtn.addEventListener('click', () => {
-                const selectedCheckboxes = document.querySelectorAll('.quick-nav-checkbox:checked');
-                if (selectedCheckboxes.length > 5) {
-                    alert('最多只能选择5个快速导航入口');
-                    return;
-                }
-                
-                selectedQuickNavItems = Array.from(selectedCheckboxes).map(cb => cb.value);
-                renderQuickNavGrid(); // 重新渲染导航网格
-                modal.classList.add('hidden');
-            });
-            
-            // 点击弹窗外部关闭
-            modal.addEventListener('click', (e) => {
-                if (e.target === modal) {
-                    modal.classList.add('hidden');
-                }
-            });
-        });
-
-        // 广告横幅关闭功能
-        document.addEventListener('DOMContentLoaded', function() {
-            const closeAdBtn = document.getElementById('closeAdBanner');
-            const adBanner = document.getElementById('adBanner');
-            
-            closeAdBtn.addEventListener('click', function() {
-                adBanner.style.display = 'none';
-            });
-        });
-
-        // 添加汇率波动信息图标的工具提示
-        document.addEventListener('DOMContentLoaded', function() {
-            const infoIcon = document.getElementById('exchangeRateInfoIcon');
-            const tooltip = document.getElementById('exchangeRateTooltip');
-            
-            if (infoIcon && tooltip) {
-                infoIcon.addEventListener('mouseenter', function() {
-                    tooltip.classList.remove('opacity-0', 'invisible');
-                    tooltip.classList.add('opacity-100', 'visible');
-                });
-                
-                infoIcon.addEventListener('mouseleave', function() {
-                    tooltip.classList.remove('opacity-100', 'visible');
-                    tooltip.classList.add('opacity-0', 'invisible');
-                });
-            }
-        });
-
-        // 主题切换功能
-        document.addEventListener('DOMContentLoaded', function() {
-            const themeToggle = document.getElementById('themeToggle');
-            const html = document.documentElement;
-            const themeIcon = themeToggle.querySelector('i');
-            
-            // 从本地存储中获取主题设置
-            const savedTheme = localStorage.getItem('theme') || 'light';
-            html.setAttribute('data-theme', savedTheme);
-            updateThemeIcon(savedTheme);
-            
-            themeToggle.addEventListener('click', function() {
-                const currentTheme = html.getAttribute('data-theme');
-                const newTheme = currentTheme === 'light' ? 'dark' : 'light';
-                
-                html.setAttribute('data-theme', newTheme);
-                localStorage.setItem('theme', newTheme);
-                updateThemeIcon(newTheme);
-            });
-            
-            function updateThemeIcon(theme) {
-                themeIcon.className = theme === 'light' ? 'fas fa-sun' : 'fas fa-moon';
-            }
-        });
     </script>
 </body>
 </html> 
