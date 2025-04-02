@@ -1622,6 +1622,335 @@
                 });
             });
         });
+
+        // 显示银行卡详情
+        function showCardDetails(card) {
+            const currency = card.querySelector('.currency-tag').textContent;
+            if (currency === 'CNY') {
+                document.getElementById('bankCardDetailsModal').showModal();
+            } else if (currency === 'USD') {
+                document.getElementById('usdBankCardDetailsModal').showModal();
+            }
+        }
     </script>
+
+    <!-- 银行卡详情弹框 -->
+    <dialog id="bankCardDetailsModal" class="rounded-lg shadow-xl p-0 w-full max-w-2xl">
+        <div class="bg-white rounded-lg overflow-hidden">
+            <!-- 弹框标题 -->
+            <div class="px-5 py-3 bg-gradient-to-r from-gray-50 to-white border-b border-gray-200">
+                <div class="flex items-center justify-between">
+                    <h3 class="text-base font-medium text-gray-900">银行卡信息</h3>
+                    <button onclick="document.getElementById('bankCardDetailsModal').close()" class="text-gray-400 hover:text-gray-600">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- 弹框内容 -->
+            <div class="p-5">
+                <div class="space-y-4">
+                    <!-- 基本信息 -->
+                    <div class="flex items-start space-x-3">
+                        <img src="https://cdn.jsdelivr.net/gh/lipis/flag-icons/flags/4x3/cn.svg" alt="CNY" class="w-10 h-10 object-contain p-1.5 border border-gray-200 rounded-lg">
+                        <div class="flex-1">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <h4 class="text-base font-medium">中国工商银行</h4>
+                                    <p class="text-sm text-gray-500">名称：娃哈哈集团重庆第三分公司</p>
+                                </div>
+                                <span class="status-badge success text-xs">正常</span>
+                            </div>
+                            <div class="mt-1.5 flex items-center space-x-2">
+                                <span class="text-sm text-gray-600">卡号：**** **** **** 4321</span>
+                                <button @click="$refs.viewCardNumberModal.showModal()" class="text-xs text-[#7D33FF] hover:text-[#6929CC]">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 账户信息 -->
+                    <div class="grid grid-cols-2 gap-3 mt-3">
+                        <div class="flex justify-between py-2 border-b border-gray-100">
+                            <span class="text-sm text-gray-600">开户行</span>
+                            <span class="text-sm font-medium">重庆 重庆市渝北区</span>
+                        </div>
+                        <div class="flex justify-between py-2 border-b border-gray-100">
+                            <span class="text-sm text-gray-600">支行名称</span>
+                            <span class="text-sm font-medium">重庆渝北支行</span>
+                        </div>
+                        <div class="flex justify-between py-2 border-b border-gray-100">
+                            <span class="text-sm text-gray-600">银行地址</span>
+                            <span class="text-sm font-medium">重庆市渝北区新南路166号</span>
+                        </div>
+                        <div class="flex justify-between py-2 border-b border-gray-100">
+                            <span class="text-sm text-gray-600">账户类型</span>
+                            <span class="text-sm font-medium">企业账户</span>
+                        </div>
+                        <div class="flex justify-between py-2 border-b border-gray-100">
+                            <span class="text-sm text-gray-600">币种</span>
+                            <span class="text-sm font-medium">人民币 (CNY)</span>
+                        </div>
+                        <div class="flex justify-between py-2 border-b border-gray-100">
+                            <span class="text-sm text-gray-600">预留手机号</span>
+                            <span class="text-sm font-medium">159****4259</span>
+                        </div>
+                        <div class="flex justify-between py-2 col-span-2">
+                            <span class="text-sm text-gray-600">企业银行开户信息</span>
+                            <button class="text-xs text-[#7D33FF] hover:text-[#6929CC]">
+                                <i class="fas fa-image mr-1"></i>
+                                查看
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- 操作按钮 -->
+                    <div class="flex justify-end space-x-3 pt-3 mt-3 border-t border-gray-200">
+                        <button class="px-3 py-1.5 text-sm text-gray-700 hover:text-gray-900">
+                            <i class="fas fa-trash-alt mr-1.5"></i>
+                            删除
+                        </button>
+                        <button class="px-3 py-1.5 text-sm text-[#7D33FF] hover:text-[#6929CC]">
+                            <i class="fas fa-star mr-1.5"></i>
+                            设为默认
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </dialog>
+
+    <!-- 查看卡号弹框 -->
+    <dialog id="viewCardNumberModal" x-ref="viewCardNumberModal" class="rounded-lg shadow-xl p-0 w-full max-w-sm">
+        <div class="bg-white rounded-lg overflow-hidden">
+            <!-- 弹框标题 -->
+            <div class="px-5 py-3 bg-gradient-to-r from-gray-50 to-white border-b border-gray-200">
+                <div class="flex items-center justify-between">
+                    <h3 class="text-base font-medium text-gray-900">查看银行卡号</h3>
+                    <button @click="$refs.viewCardNumberModal.close()" class="text-gray-400 hover:text-gray-600">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- 弹框内容 -->
+            <div class="p-5" x-data="{ password: '', errorMsg: '', cardNumber: '', showNumber: false }">
+                <div class="space-y-4">
+                    <div class="text-sm text-gray-500">
+                        请输入交易密码验证身份
+                    </div>
+                    
+                    <!-- 密码输入框 -->
+                    <div class="relative">
+                        <input 
+                            type="password" 
+                            x-model="password"
+                            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7D33FF] focus:border-[#7D33FF] focus:ring-opacity-50 transition-colors text-sm"
+                            placeholder="请输入交易密码"
+                        >
+                        <p x-show="errorMsg" x-text="errorMsg" class="mt-1 text-xs text-red-500"></p>
+                    </div>
+
+                    <!-- 按钮 -->
+                    <div class="flex justify-end space-x-3 pt-3">
+                        <button 
+                            @click="$refs.viewCardNumberModal.close()" 
+                            class="px-3 py-1.5 text-sm text-gray-700 hover:text-gray-900"
+                        >
+                            取消
+                        </button>
+                        <button 
+                            @click="
+                                if (password === '123456') {  // 这里替换为实际的密码验证逻辑
+                                    cardNumber = '6222 0000 1234 5678';
+                                    showNumber = true;
+                                    errorMsg = '';
+                                } else {
+                                    errorMsg = '交易密码错误，请重新输入';
+                                    password = '';
+                                }
+                            "
+                            class="px-3 py-1.5 text-sm text-white bg-[#7D33FF] hover:bg-[#6929CC] rounded-lg transition-colors"
+                        >
+                            确认
+                        </button>
+                    </div>
+
+                    <!-- 显示卡号 -->
+                    <div x-show="showNumber" class="pt-3 border-t border-gray-200">
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-600">银行卡号</span>
+                            <span class="text-sm font-medium" x-text="cardNumber"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </dialog>
+
+    <!-- 美元账户银行卡详情弹框 -->
+    <dialog id="usdBankCardDetailsModal" class="rounded-lg shadow-xl p-0 w-full max-w-2xl">
+        <div class="bg-white rounded-lg overflow-hidden">
+            <!-- 弹框标题 -->
+            <div class="px-5 py-3 bg-gradient-to-r from-gray-50 to-white border-b border-gray-200">
+                <div class="flex items-center justify-between">
+                    <h3 class="text-base font-medium text-gray-900">银行卡信息</h3>
+                    <button onclick="document.getElementById('usdBankCardDetailsModal').close()" class="text-gray-400 hover:text-gray-600">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- 弹框内容 -->
+            <div class="p-5">
+                <div class="space-y-4">
+                    <!-- 基本信息 -->
+                    <div class="flex items-start space-x-3 mb-3">
+                        <img src="https://cdn.jsdelivr.net/gh/lipis/flag-icons/flags/4x3/us.svg" alt="USD" class="w-8 h-8 object-contain p-1.5 border border-gray-200 rounded-lg">
+                        <div class="flex-1">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <h4 class="text-base font-medium">123456</h4>
+                                    <p class="text-sm text-gray-500">名称：Wahaha Group Chongqing second branch company</p>
+                                </div>
+                                <span class="status-badge success text-xs">正常</span>
+                            </div>
+                            <div class="mt-1 flex items-center space-x-2">
+                                <span class="text-sm text-gray-600">卡号：**** **** **** 4463</span>
+                                <button @click="$refs.viewUsdCardNumberModal.showModal()" class="text-xs text-[#7D33FF] hover:text-[#6929CC]">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 账户信息 -->
+                    <div class="grid grid-cols-2 gap-x-6 gap-y-2">
+                        <div class="flex justify-between py-2 border-b border-gray-100">
+                            <span class="text-sm text-gray-600">账户类型</span>
+                            <span class="text-sm font-medium">企业账户</span>
+                        </div>
+                        <div class="flex justify-between py-2 border-b border-gray-100">
+                            <span class="text-sm text-gray-600">币种</span>
+                            <span class="text-sm font-medium">美元 USD</span>
+                        </div>
+                        <div class="flex justify-between py-2 border-b border-gray-100">
+                            <span class="text-sm text-gray-600">银行名称</span>
+                            <span class="text-sm font-medium">123456</span>
+                        </div>
+                        <div class="flex justify-between py-2 border-b border-gray-100">
+                            <span class="text-sm text-gray-600">银行SwiftCode</span>
+                            <span class="text-sm font-medium">12345678XXX</span>
+                        </div>
+                        <div class="flex justify-between py-2 border-b border-gray-100">
+                            <span class="text-sm text-gray-600">银行地址</span>
+                            <span class="text-sm font-medium">123456</span>
+                        </div>
+                        <div class="flex justify-between py-2 border-b border-gray-100">
+                            <span class="text-sm text-gray-600">routingNumber</span>
+                            <span class="text-sm font-medium">--</span>
+                        </div>
+                        <div class="flex justify-between py-2 border-b border-gray-100">
+                            <span class="text-sm text-gray-600">收款人地址</span>
+                            <span class="text-sm font-medium">123456 US</span>
+                        </div>
+                        <div class="flex justify-between py-2 border-b border-gray-100">
+                            <span class="text-sm text-gray-600">收款人邮编</span>
+                            <span class="text-sm font-medium">--</span>
+                        </div>
+                        <div class="flex justify-between py-2 border-b border-gray-100">
+                            <span class="text-sm text-gray-600">联系电话</span>
+                            <span class="text-sm font-medium">--</span>
+                        </div>
+                        <div class="flex justify-between py-2 border-b border-gray-100">
+                            <span class="text-sm text-gray-600">邮箱</span>
+                            <span class="text-sm font-medium">--</span>
+                        </div>
+                    </div>
+
+                    <!-- 操作按钮 -->
+                    <div class="flex justify-end space-x-3 pt-3 mt-3 border-t border-gray-200">
+                        <button class="px-3 py-1.5 text-sm text-gray-700 hover:text-gray-900">
+                            <i class="fas fa-trash-alt mr-1.5"></i>
+                            删除
+                        </button>
+                        <button class="px-3 py-1.5 text-sm text-[#7D33FF] hover:text-[#6929CC]">
+                            <i class="fas fa-star mr-1.5"></i>
+                            设为默认
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </dialog>
+
+    <!-- 查看美元账户卡号弹框 -->
+    <dialog id="viewUsdCardNumberModal" x-ref="viewUsdCardNumberModal" class="rounded-lg shadow-xl p-0 w-full max-w-sm">
+        <div class="bg-white rounded-lg overflow-hidden">
+            <!-- 弹框标题 -->
+            <div class="px-5 py-3 bg-gradient-to-r from-gray-50 to-white border-b border-gray-200">
+                <div class="flex items-center justify-between">
+                    <h3 class="text-base font-medium text-gray-900">查看银行卡号</h3>
+                    <button @click="$refs.viewUsdCardNumberModal.close()" class="text-gray-400 hover:text-gray-600">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- 弹框内容 -->
+            <div class="p-5" x-data="{ password: '', errorMsg: '', cardNumber: '', showNumber: false }">
+                <div class="space-y-4">
+                    <div class="text-sm text-gray-500">
+                        请输入交易密码验证身份
+                    </div>
+                    
+                    <!-- 密码输入框 -->
+                    <div class="relative">
+                        <input 
+                            type="password" 
+                            x-model="password"
+                            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7D33FF] focus:border-[#7D33FF] focus:ring-opacity-50 transition-colors text-sm"
+                            placeholder="请输入交易密码"
+                        >
+                        <p x-show="errorMsg" x-text="errorMsg" class="mt-1 text-xs text-red-500"></p>
+                    </div>
+
+                    <!-- 按钮 -->
+                    <div class="flex justify-end space-x-3 pt-3">
+                        <button 
+                            @click="$refs.viewUsdCardNumberModal.close()" 
+                            class="px-3 py-1.5 text-sm text-gray-700 hover:text-gray-900"
+                        >
+                            取消
+                        </button>
+                        <button 
+                            @click="
+                                if (password === '123456') {
+                                    cardNumber = '**** **** **** 4463';
+                                    showNumber = true;
+                                    errorMsg = '';
+                                } else {
+                                    errorMsg = '交易密码错误，请重新输入';
+                                    password = '';
+                                }
+                            "
+                            class="px-3 py-1.5 text-sm text-white bg-[#7D33FF] hover:bg-[#6929CC] rounded-lg transition-colors"
+                        >
+                            确认
+                        </button>
+                    </div>
+
+                    <!-- 显示卡号 -->
+                    <div x-show="showNumber" class="pt-3 border-t border-gray-200">
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-600">银行卡号</span>
+                            <span class="text-sm font-medium" x-text="cardNumber"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </dialog>
 </body>
 </html> 

@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>添加收款人 - Whalet</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            background-color: #f9fafb;
+            font-family: 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+        }
+        .form-input {
+            height: 40px;
+            padding: 8px 12px;
+            font-size: 14px;
+            width: 100%;
+            border: 1px solid #E5E7EB;
+            border-radius: 8px;
+            background-color: #fff;
+        }
+        .form-input:focus {
+            outline: none;
+            border-color: #7C3AED;
+            box-shadow: 0 0 0 1px #7C3AED;
+        }
+        .form-select {
+            height: 40px;
+            padding: 8px 12px;
+            font-size: 14px;
+            width: 100%;
+            border: 1px solid #E5E7EB;
+            border-radius: 8px;
+            background-color: #fff;
+            appearance: none;
+            padding-right: 36px;
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+            background-position: right 0.5rem center;
+            background-repeat: no-repeat;
+            background-size: 1.5em 1.5em;
+        }
+        .form-select:focus {
+            outline: none;
+            border-color: #7C3AED;
+            box-shadow: 0 0 0 1px #7C3AED;
+        }
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            color: #374151;
+        }
+        .required::after {
+            content: '*';
+            color: #EF4444;
+            margin-left: 4px;
+        }
+        .file-upload {
+            border: 2px dashed #E5E7EB;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .file-upload:hover {
+            border-color: #7C3AED;
+            background-color: #F9FAFB;
+        }
+        .alert-info {
+            background-color: #F3E8FF;
+            border: 1px solid #E9D8FD;
+            border-radius: 8px;
+            padding: 12px 16px;
+            margin-bottom: 24px;
+            color: #6B21A8;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <div class="container mx-auto px-4 py-8">
+        <div class="max-w-6xl mx-auto bg-white rounded-lg shadow-sm">
+            <!-- 头部 -->
+            <div class="p-6 border-b border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center">
+                        <a href="javascript:history.back()" class="text-purple-600 hover:text-purple-700 mr-2">
+                            <i class="fas fa-arrow-left"></i>
+                        </a>
+                        <a href="javascript:history.back()" class="text-purple-600 hover:text-purple-700 mr-4">返回</a>
+                        <h1 class="text-xl font-semibold text-gray-800">信息确认</h1>
+                    </div>
+                    <a href="payment.html" class="text-gray-500 hover:text-gray-700">
+                        <i class="fas fa-times"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- 主要内容 -->
+            <div class="p-6">
+                <!-- 提示信息 -->
+                <div class="alert-info mb-6">
+                    <i class="fas fa-info-circle mr-2"></i>
+                    请仔细核对收款账户信息，银行账户信息错误或数字不匹配，资金会被收款行退回，提现手续费和银行手续费不会退回！
+                </div>
+
+                <div class="space-y-6">
+                    <!-- 确认信息展示 -->
+                    <div class="grid grid-cols-2 gap-x-8 gap-y-4">
+                        <div class="flex items-start">
+                            <span class="text-gray-500 w-32">供应商类型</span>
+                            <span class="text-gray-900">供应商</span>
+                        </div>
+                        <div class="flex items-start">
+                            <span class="text-gray-500 w-32">供应商地区</span>
+                            <span class="text-gray-900">美国</span>
+                        </div>
+                        <div class="flex items-start">
+                            <span class="text-gray-500 w-32">供应商名称</span>
+                            <span class="text-gray-900">FuqingKangmao Technology Co., Ltd.</span>
+                        </div>
+                        <div class="flex items-start">
+                            <span class="text-gray-500 w-32">备注名称</span>
+                            <span class="text-gray-900">--</span>
+                        </div>
+                        <div class="flex items-start">
+                            <span class="text-gray-500 w-32">是否长期合作</span>
+                            <span class="text-gray-900">是</span>
+                        </div>
+                        <div class="flex items-start">
+                            <span class="text-gray-500 w-32">贸易关系</span>
+                            <span class="text-gray-900">--</span>
+                        </div>
+                        <div class="flex items-start">
+                            <span class="text-gray-500 w-32">备注</span>
+                            <span class="text-gray-900">--</span>
+                        </div>
+                        <div class="flex items-start">
+                            <span class="text-gray-500 w-32">收款币种</span>
+                            <span class="text-gray-900">美元 USD</span>
+                        </div>
+                        <div class="flex items-start">
+                            <span class="text-gray-500 w-32">收款人名称<br/>Beneficiary's Name</span>
+                            <span class="text-gray-900">asdfasdfa</span>
+                        </div>
+                        <div class="flex items-start">
+                            <span class="text-gray-500 w-32">银行名称<br/>Beneficiary's Bank</span>
+                            <span class="text-gray-900">asdfasdf</span>
+                        </div>
+                        <div class="flex items-start">
+                            <span class="text-gray-500 w-32">银行账号<br/>Beneficiary's A/C No.</span>
+                            <span class="text-gray-900">25458548545254525</span>
+                        </div>
+                        <div class="flex items-start">
+                            <span class="text-gray-500 w-32">银行SwiftCode<br/>Beneficiary's Swift Code</span>
+                            <span class="text-gray-900">EWBKUS66XXX</span>
+                        </div>
+                        <div class="flex items-start">
+                            <span class="text-gray-500 w-32">银行地址<br/>Beneficiary's Bank Address</span>
+                            <span class="text-gray-900">asdfasdf</span>
+                        </div>
+                        <div class="flex items-start">
+                            <span class="text-gray-500 w-32">routingNumber<br/>Beneficiary's Routing Number</span>
+                            <span class="text-gray-900">123456789</span>
+                        </div>
+                        <div class="flex items-start">
+                            <span class="text-gray-500 w-32">收款人地址<br/>Beneficiary's Address</span>
+                            <span class="text-gray-900">asdfasf PUEBLO Alabama US</span>
+                        </div>
+                        <div class="flex items-start">
+                            <span class="text-gray-500 w-32">收款人邮政编码<br/>Beneficiary's PostalCode</span>
+                            <span class="text-gray-900">--</span>
+                        </div>
+                        <div class="flex items-start">
+                            <span class="text-gray-500 w-32">联系电话<br/>Beneficiary's Mobile</span>
+                            <span class="text-gray-900">--</span>
+                        </div>
+                        <div class="flex items-start">
+                            <span class="text-gray-500 w-32">邮箱<br/>Beneficiary's Email</span>
+                            <span class="text-gray-900">--</span>
+                        </div>
+                        <div class="flex items-start">
+                            <span class="text-gray-500 w-32">授权</span>
+                            <span class="text-gray-900">--</span>
+                        </div>
+                    </div>
+
+                    <div class="mt-8">
+                        <div class="mb-4">
+                            <label class="text-gray-700 text-sm required">交易密码</label>
+                            <div class="flex items-center mt-1">
+                                <input type="password" class="form-input mr-2" placeholder="请输入交易密码" required>
+                                <a href="#" class="text-purple-600 text-sm hover:text-purple-700 whitespace-nowrap">忘记交易密码？</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 按钮组 -->
+                    <div class="flex justify-center space-x-4">
+                        <button onclick="history.back()" class="px-8 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50">
+                            上一步
+                        </button>
+                        <button type="submit" class="px-8 py-2 bg-purple-600 text-white rounded-md text-sm font-medium hover:bg-purple-700">
+                            提 交
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 处理所有返回链接
+            document.querySelectorAll('a[href="payment.html"]').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    // 设置返回到收款人管理tab
+                    localStorage.setItem('returnToPaymentTab', 'payee-management');
+                    window.location.href = 'payment.html';
+                });
+            });
+
+            // 文件上传处理
+            const fileUpload = document.querySelector('.file-upload');
+            const fileInput = fileUpload.querySelector('input[type="file"]');
+            
+            fileUpload.addEventListener('click', () => {
+                fileInput.click();
+            });
+
+            fileInput.addEventListener('change', (e) => {
+                if (e.target.files.length > 0) {
+                    const file = e.target.files[0];
+                    const fileSize = file.size / 1024 / 1024; // Convert to MB
+                    if (fileSize > 15) {
+                        alert('文件大小不能超过15M');
+                        return;
+                    }
+                    const fileName = file.name;
+                    fileUpload.querySelector('.text-sm').textContent = fileName;
+                }
+            });
+        });
+    </script>
+</body>
+</html> 

@@ -745,26 +745,15 @@
                         </div>
                     </div>
 
-                    <!-- 预计汇出时间 -->
-                    <div class="bg-gray-50 rounded-lg p-4">
-                        <div class="flex items-start">
-                            <i class="fas fa-clock text-gray-400 mt-1 mr-2"></i>
-                            <div>
-                                <p class="text-sm font-medium text-gray-700">预计汇出时间</p>
-                                <p class="text-sm text-gray-500 mt-1">T+1 （非工作时间以银行实际处理为准）</p>
-                            </div>
-                        </div>
+                    <!-- 表单控制按钮 -->
+                    <div class="flex justify-start space-x-4 pt-6 mt-8 border-t border-gray-100">
+                        <button id="backToStep1Btn" class="px-6 py-2 border border-gray-300 text-gray-700 rounded-lg text-sm font-medium hover:bg-gray-50">
+                            上一步
+                        </button>
+                        <button id="nextToStep3" class="px-6 py-2 btn-primary text-white rounded-lg text-sm font-medium">
+                            下一步
+                        </button>
                     </div>
-                </div>
-
-                <!-- 表单控制按钮 -->
-                <div class="flex justify-start space-x-4 pt-6 mt-8 border-t border-gray-100">
-                    <button id="backToStep1Btn" class="px-6 py-2 border border-gray-300 text-gray-700 rounded-lg text-sm font-medium hover:bg-gray-50">
-                        上一步
-                    </button>
-                    <button id="nextToStep3" class="px-6 py-2 btn-primary text-white rounded-lg text-sm font-medium">
-                        下一步
-                    </button>
                 </div>
             </div>
 
@@ -830,10 +819,6 @@
                         <div class="flex justify-between items-center">
                             <span class="text-sm text-gray-600">汇率</span>
                             <span class="text-base">USD/EUR = 0.9852</span>
-                        </div>
-                        <div class="flex justify-between items-center">
-                            <span class="text-sm text-gray-600">汇出时间</span>
-                            <span class="text-base">预计T+1日之内汇出</span>
                         </div>
                         <div class="flex justify-between items-center">
                             <span class="text-sm text-gray-600">汇出金额</span>
@@ -910,7 +895,7 @@
                         <div class="flex items-center p-3 border border-gray-200 rounded-lg hover:border-blue-500 cursor-pointer transition-colors relative" onclick="selectFrequentPayee('payee1', 'American Supplier Inc.', 'bank', 'Bank of America', 'USD')">
                             <!-- Account type indicator in upper right corner -->
                             <div class="absolute top-2 right-2">
-                                <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium" style="background-color: rgba(125, 51, 255, 0.1); color: #7D33FF;">银行账户</span>
+                                <span class="inline-flex items-center px-2 py-0.5 rounded-md text-sm font-medium bg-[#7D33FF]/10 text-[#7D33FF]">银行账户</span>
                             </div>
                             <div class="ml-3 flex-1">
                                 <h4 class="text-sm font-medium text-gray-900">American Supplier Inc. <span class="text-gray-500">(美国供应商)</span></h4>
@@ -920,7 +905,7 @@
                         <div class="flex items-center p-3 border border-gray-200 rounded-lg hover:border-blue-500 cursor-pointer transition-colors relative" onclick="selectFrequentPayee('payee2', 'European Trading Ltd.', 'bank', 'Deutsche Bank', 'EUR')">
                             <!-- Account type indicator in upper right corner -->
                             <div class="absolute top-2 right-2">
-                                <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium" style="background-color: rgba(125, 51, 255, 0.1); color: #7D33FF;">银行账户</span>
+                                <span class="inline-flex items-center px-2 py-0.5 rounded-md text-sm font-medium bg-[#7D33FF]/10 text-[#7D33FF]">银行账户</span>
                             </div>
                             <div class="ml-3 flex-1">
                                 <h4 class="text-sm font-medium text-gray-900">European Trading Ltd. <span class="text-gray-500">(欧洲贸易)</span></h4>
@@ -930,7 +915,7 @@
                         <div class="flex items-center p-3 border border-gray-200 rounded-lg hover:border-blue-500 cursor-pointer transition-colors relative" onclick="selectFrequentPayee('payee3', 'Asia Tech Co., Ltd.', 'wallet', 'DBS Bank', 'SGD')">
                             <!-- Account type indicator in upper right corner -->
                             <div class="absolute top-2 right-2">
-                                <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium" style="background-color: rgba(125, 51, 255, 0.1); color: #7D33FF;">电子钱包</span>
+                                <span class="inline-flex items-center px-2 py-0.5 rounded-md text-sm font-medium bg-[#7D33FF]/10 text-[#7D33FF]">电子钱包</span>
                             </div>
                             <div class="ml-3 flex-1">
                                 <h4 class="text-sm font-medium text-gray-900">Asia Tech Co., Ltd. <span class="text-gray-500">(亚洲科技)</span></h4>
@@ -1054,7 +1039,7 @@
                                         <span class="inline-flex items-center px-2.5 py-0.5 rounded-md text-sm font-medium bg-green-100 text-green-800">正常</span>
                                     </td>
                                     <td class="px-4 py-4 text-sm">
-                                        <a href="#" class="text-[#7D33FF] hover:text-[#6929CC] mr-3">详情</a>
+                                        <a href="payee-details.html" style="color: #7D33FF;" class="mr-3">详情</a>
                                         <a href="#" class="text-red-600 hover:text-red-700">删除</a>
                                     </td>
                                 </tr>
@@ -1083,7 +1068,7 @@
                                         <span class="inline-flex items-center px-2.5 py-0.5 rounded-md text-sm font-medium bg-yellow-100 text-yellow-800">审核中</span>
                                     </td>
                                     <td class="px-4 py-4 text-sm">
-                                        <a href="#" class="text-[#7D33FF] hover:text-[#6929CC] mr-3">详情</a>
+                                        <a href="payee-details.html" style="color: #7D33FF;" class="mr-3">详情</a>
                                         <a href="#" class="text-red-600 hover:text-red-700">删除</a>
                                     </td>
                                 </tr>
@@ -1092,7 +1077,7 @@
                                         <input type="checkbox" class="rounded border-gray-300 text-[#7D33FF] focus:ring-[#7D33FF]">
                                     </td>
                                     <td class="px-4 py-4">
-                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-md text-sm font-medium bg-purple-100 text-purple-800">个人</span>
+                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-md text-sm font-medium bg-[#7D33FF]/10 text-[#7D33FF]">个人</span>
                                     </td>
                                     <td class="px-4 py-4 text-sm text-gray-900">自由职业者</td>
                                     <td class="px-4 py-4 text-sm text-gray-900">John Smith</td>
@@ -1112,7 +1097,7 @@
                                         <span class="inline-flex items-center px-2.5 py-0.5 rounded-md text-sm font-medium bg-red-100 text-red-800">审核拒绝</span>
                                     </td>
                                     <td class="px-4 py-4 text-sm">
-                                        <a href="#" class="text-[#7D33FF] hover:text-[#6929CC] mr-3">详情</a>
+                                        <a href="payee-details.html" style="color: #7D33FF;" class="mr-3">详情</a>
                                         <a href="#" class="text-red-600 hover:text-red-700">删除</a>
                                     </td>
                                 </tr>
@@ -1400,7 +1385,7 @@
                                     <span class="inline-flex items-center px-2.5 py-0.5 rounded-md text-sm font-medium bg-green-100 text-green-800">正常</span>
                                 </td>
                                 <td class="px-4 py-4 text-sm">
-                                    <a href="#" class="text-[#7D33FF] hover:text-[#6929CC] mr-3">详情</a>
+                                    <a href="payee-details.html" style="color: #7D33FF;" class="mr-3">详情</a>
                                     <a href="#" class="text-red-600 hover:text-red-700">删除</a>
                                 </td>
                             </tr>
@@ -1429,7 +1414,7 @@
                                     <span class="inline-flex items-center px-2.5 py-0.5 rounded-md text-sm font-medium bg-yellow-100 text-yellow-800">审核中</span>
                                 </td>
                                 <td class="px-4 py-4 text-sm">
-                                    <a href="#" class="text-[#7D33FF] hover:text-[#6929CC] mr-3">详情</a>
+                                    <a href="payee-details.html" style="color: #7D33FF;" class="mr-3">详情</a>
                                     <a href="#" class="text-red-600 hover:text-red-700">删除</a>
                                 </td>
                             </tr>
@@ -1438,11 +1423,18 @@
                                     <input type="checkbox" class="rounded border-gray-300 text-[#7D33FF] focus:ring-[#7D33FF]">
                                 </td>
                                 <td class="px-4 py-4">
-                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-md text-sm font-medium bg-purple-100 text-purple-800">个人</span>
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-md text-sm font-medium bg-[#7D33FF]/10 text-[#7D33FF]">个人</span>
                                 </td>
                                 <td class="px-4 py-4 text-sm text-gray-900">自由职业者</td>
                                 <td class="px-4 py-4 text-sm text-gray-900">John Smith</td>
-                                <td class="px-4 py-4 text-sm text-gray-900">设计师John</td>
+                                <td class="px-4 py-4 text-sm">
+                                    <div class="flex items-center">
+                                        <span class="text-gray-900" id="remark-3">设计师John</span>
+                                        <button onclick="editRemark(3)" class="ml-2 text-gray-400 hover:text-[#7D33FF]">
+                                            <i class="fas fa-edit text-xs"></i>
+                                        </button>
+                                    </div>
+                                </td>
                                 <td class="px-4 py-4 text-sm text-gray-900">个人账户</td>
                                 <td class="px-4 py-4 text-sm text-gray-900">Barclays</td>
                                 <td class="px-4 py-4 text-sm text-gray-900">****7890</td>
@@ -1451,7 +1443,7 @@
                                     <span class="inline-flex items-center px-2.5 py-0.5 rounded-md text-sm font-medium bg-red-100 text-red-800">审核拒绝</span>
                                 </td>
                                 <td class="px-4 py-4 text-sm">
-                                    <a href="#" class="text-[#7D33FF] hover:text-[#6929CC] mr-3">详情</a>
+                                    <a href="payee-details.html" style="color: #7D33FF;" class="mr-3">详情</a>
                                     <a href="#" class="text-red-600 hover:text-red-700">删除</a>
                                 </td>
                             </tr>

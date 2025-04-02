@@ -89,11 +89,11 @@
             <div class="px-6 py-4 border-b border-gray-200">
                 <div class="flex items-center justify-between">
                     <div class="flex items-center">
-                        <a href="withdrawal.html?return_tab=bank-cards" class="text-purple-600 hover:text-purple-700 mr-2">
+                        <a href="javascript:void(0)" onclick="window.history.back()" class="text-purple-600 hover:text-purple-700 mr-2">
                             <i class="fas fa-arrow-left"></i>
                         </a>
-                        <a href="withdrawal.html?return_tab=bank-cards" class="text-purple-600 hover:text-purple-700 mr-4">返回</a>
-                        <h1 class="text-lg font-medium text-gray-800">添加银行卡</h1>
+                        <a href="javascript:void(0)" onclick="window.history.back()" class="text-purple-600 hover:text-purple-700 mr-4">返回</a>
+                        <h1 class="text-lg font-medium text-gray-800">信息确认</h1>
                     </div>
                     <a href="withdrawal.html?return_tab=bank-cards" class="text-gray-500 hover:text-gray-700">
                         <i class="fas fa-times"></i>
@@ -105,124 +105,156 @@
             <div class="p-6">
                 <form class="space-y-5">
                     <div class="form-grid">
-                        <!-- 选择账户币种 -->
+                        <!-- 账户类型 -->
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-1.5">
-                                <span class="text-red-500">*</span> 选择账户币种
+                                账户类型
+                                <span class="text-xs text-gray-500 ml-1">Account Type</span>
                             </label>
-                            <select class="form-select">
-                                <option value="CNY">人民币 (CNY)</option>
-                            </select>
+                            <div class="form-input bg-gray-50">企业账户</div>
+                        </div>
+
+                        <!-- 账户币种 -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1.5">
+                                账户币种
+                                <span class="text-xs text-gray-500 ml-1">Currency</span>
+                            </label>
+                            <div class="form-input bg-gray-50">美元 USD</div>
                         </div>
 
                         <!-- 国家地区 -->
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-1.5">
-                                <span class="text-red-500">*</span> 国家地区
+                                国家地区
+                                <span class="text-xs text-gray-500 ml-1">Country/Region</span>
                             </label>
-                            <select class="form-select">
-                                <option value="CN">中国（大陆）(CN)</option>
-                            </select>
+                            <div class="form-input bg-gray-50">美国</div>
                         </div>
 
                         <!-- 收款人名称 -->
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-1.5">
-                                <span class="text-red-500">*</span> 收款人名称
+                                收款人名称
+                                <span class="text-xs text-gray-500 ml-1">Beneficiary's Name</span>
                             </label>
-                            <select class="form-select">
-                                <option value="">请选择收款人</option>
-                                <option value="1">鲸鱼测试有限公司</option>
-                                <option value="2">车代方</option>
-                            </select>
-                        </div>
-
-                        <!-- 银行卡号 -->
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1.5">
-                                <span class="text-red-500">*</span> 银行卡号
-                            </label>
-                            <input type="text" placeholder="请输入银行账号" class="form-input">
+                            <div class="form-input bg-gray-50">Wahaha Group (Cecond branch company</div>
                         </div>
 
                         <!-- 银行名称 -->
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-1.5">
-                                <span class="text-red-500">*</span> 银行名称
+                                银行名称
+                                <span class="text-xs text-gray-500 ml-1">Beneficiary's Bank</span>
                             </label>
-                            <select class="form-select">
-                                <option value="">请选择银行名称</option>
-                            </select>
+                            <div class="form-input bg-gray-50">Community Federal Savings Bank</div>
                         </div>
 
-                        <!-- 预留手机号 -->
+                        <!-- 银行账号 -->
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1.5">预留手机号</label>
-                            <input type="text" placeholder="请输入预留手机号" class="form-input">
-                        </div>
-
-                        <!-- 开户行所在地 -->
-                        <div class="form-grid-full">
                             <label class="block text-sm font-medium text-gray-700 mb-1.5">
-                                <span class="text-red-500">*</span> 开户行所在地
+                                银行账号
+                                <span class="text-xs text-gray-500 ml-1">Beneficiary's A/C No.</span>
                             </label>
-                            <div class="location-selects">
-                                <select class="form-select" placeholder="省/直辖市">
-                                    <option value="">省/直辖市</option>
-                                </select>
-                                <select class="form-select" placeholder="市">
-                                    <option value="">市</option>
-                                </select>
-                                <select class="form-select" placeholder="区">
-                                    <option value="">区</option>
-                                </select>
-                            </div>
+                            <div class="form-input bg-gray-50">12345678555555</div>
                         </div>
 
-                        <!-- 开户银行支行名称 -->
-                        <div class="form-grid-full">
+                        <!-- 银行SwiftCode -->
+                        <div>
                             <label class="block text-sm font-medium text-gray-700 mb-1.5">
-                                <span class="text-red-500">*</span> 开户银行支行名称
+                                银行SwiftCode
+                                <span class="text-xs text-gray-500 ml-1">Beneficiary's Swift Code</span>
                             </label>
-                            <input type="text" placeholder="请输入开户银行支行名称" class="form-input">
+                            <div class="form-input bg-gray-50">CITIHKHXXXX</div>
                         </div>
 
-                        <!-- 企业银行开户信息 -->
-                        <div class="form-grid-full">
-                            <div class="flex items-center justify-between mb-1.5">
-                                <label class="block text-sm font-medium text-gray-700">
-                                    <span class="text-red-500">*</span> 企业银行开户信息
-                                </label>
-                                <a href="#" class="text-purple-600 hover:text-purple-700 text-xs">查看示例</a>
-                            </div>
-                            <div class="file-upload-area">
-                                <div class="flex flex-col items-center">
-                                    <i class="fas fa-plus text-gray-400 text-lg mb-1"></i>
-                                    <span class="text-gray-500 text-sm">上传附件</span>
-                                </div>
-                                <input type="file" class="hidden" accept=".jpg,.jpeg,.png,.pdf">
-                            </div>
-                            <p class="mt-1.5 text-xs text-gray-500">请上传企业开户信息凭证,支持JPG、JPEG、PNG、PDF四种格式，文件不超过15M</p>
+                        <!-- routingNumber -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1.5">
+                                routingNumber
+                                <span class="text-xs text-gray-500 ml-1">Beneficiary's Routing Number</span>
+                            </label>
+                            <div class="form-input bg-gray-50">123456789</div>
+                        </div>
+
+                        <!-- 银行地址 -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1.5">
+                                银行地址
+                                <span class="text-xs text-gray-500 ml-1">Beneficiary's Bank Address</span>
+                            </label>
+                            <div class="form-input bg-gray-50">89-16 Jamaica Ave Woodhaven, NY</div>
+                        </div>
+
+                        <!-- 收款人地址 -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1.5">
+                                收款人地址
+                                <span class="text-xs text-gray-500 ml-1">Beneficiary's Address</span>
+                            </label>
+                            <div class="form-input bg-gray-50">ASDFASDF asd Alabama US</div>
+                        </div>
+
+                        <!-- 收款人邮政编码 -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1.5">
+                                收款人邮政编码
+                                <span class="text-xs text-gray-500 ml-1">Beneficiary's PostalCode</span>
+                            </label>
+                            <div class="form-input bg-gray-50">--</div>
+                        </div>
+
+                        <!-- 联系电话 -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1.5">
+                                联系电话
+                                <span class="text-xs text-gray-500 ml-1">Beneficiary's Mobile</span>
+                            </label>
+                            <div class="form-input bg-gray-50">--</div>
+                        </div>
+
+                        <!-- 邮箱 -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1.5">
+                                邮箱
+                                <span class="text-xs text-gray-500 ml-1">Beneficiary's Email</span>
+                            </label>
+                            <div class="form-input bg-gray-50">--</div>
                         </div>
                     </div>
 
-                    <!-- 协议同意 -->
+                    <!-- 提示信息 -->
+                    <div class="bg-yellow-50 p-4 rounded-md mt-6 border border-yellow-200">
+                        <div class="flex">
+                            <div class="flex-shrink-0">
+                                <i class="fas fa-exclamation-triangle text-yellow-400"></i>
+                            </div>
+                            <div class="ml-3">
+                                <p class="text-sm text-yellow-700">请仔细核对收款账户信息，银行账户信息错误将导致付款不成功，资金会被收款行退回，提现手续费将不予退回！</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 交易密码 -->
                     <div class="pt-4">
-                        <div class="flex items-center">
-                            <input type="checkbox" required class="h-4 w-4 text-purple-600 rounded border-gray-300">
-                            <label class="ml-2 text-sm text-gray-600">
-                                本人已阅读、知晓并同意 <a href="#" class="text-purple-600 hover:text-purple-800">《承诺函》</a> 条款
-                            </label>
+                        <div class="flex items-center space-x-4">
+                            <div class="flex-grow">
+                                <label class="block text-sm font-medium text-gray-700 mb-1.5">
+                                    <span class="text-red-500">*</span> 交易密码
+                                </label>
+                                <input type="password" placeholder="请输入交易密码" class="form-input" required>
+                            </div>
+                            <a href="#" class="text-purple-600 hover:text-purple-700 text-sm whitespace-nowrap">忘记交易密码？</a>
                         </div>
                     </div>
 
                     <!-- 提交按钮 -->
                     <div class="flex justify-center space-x-4 pt-4">
-                        <a href="withdrawal.html?return_tab=bank-cards" class="px-8 py-2.5 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors">
-                            返回
-                        </a>
+                        <button type="button" onclick="window.history.back()" class="px-8 py-2.5 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors">
+                            上一步
+                        </button>
                         <button type="submit" class="px-8 py-2.5 bg-purple-600 text-white rounded-md text-sm font-medium hover:bg-purple-700 transition-colors">
-                            下一步
+                            确认
                         </button>
                     </div>
                 </form>
@@ -238,8 +270,8 @@
                 // 这里添加表单验证和提交逻辑
                 // ...
                 
-                // 提交成功后跳转到信息确认页面
-                window.location.href = 'add-bank-card-confirm.html';
+                // 提交成功后返回到提现页面的银行卡tab
+                window.location.href = 'withdrawal.html?return_tab=bank-cards';
             });
 
             // 文件上传区域点击处理
