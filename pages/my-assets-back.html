@@ -6,7 +6,7 @@
     <meta name="theme-color" content="#0078d4">
     <title>账户总览 - Whalet</title>
     <!-- 引入 Alpine.js -->
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <!-- 引入 Tailwind CSS -->
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <!-- 引入字体 -->
@@ -232,11 +232,14 @@
             <div class="border-b border-gray-200">
                 <div class="flex justify-between items-center">
                     <nav class="flex justify-start -mb-px pl-6">
-                        <button class="tab-btn active whitespace-nowrap py-4 px-8 border-b-2 text-center text-sm font-medium" data-tab="assets">
+                        <button class="tab-btn active whitespace-nowrap py-4 px-8 border-b-2 border-[#7D33FF] text-[#7D33FF] text-center text-sm font-medium" data-tab="assets">
                             我的资产
                         </button>
-                        <button class="tab-btn whitespace-nowrap py-4 px-8 border-b-2 text-center text-sm font-medium" data-tab="bank-accounts">
+                        <button class="tab-btn whitespace-nowrap py-4 px-8 border-b-2 border-transparent text-gray-500 text-center text-sm font-medium" data-tab="bank-accounts">
                             银行账户
+                        </button>
+                        <button class="tab-btn whitespace-nowrap py-4 px-8 border-b-2 border-transparent text-gray-500 text-center text-sm font-medium" data-tab="pending-entries">
+                            待入账
                         </button>
                     </nav>
                     <div class="flex items-center space-x-6 pr-6">
@@ -1054,6 +1057,147 @@
                 </div>
             </section>
         </div>
+
+        <!-- 待入账内容 -->
+        <div id="pending-entries-content" class="grid grid-cols-1 lg:grid-cols-12 gap-6 hidden">
+            <!-- 查询条件 -->
+            <section class="lg:col-span-12 bg-white rounded-xl shadow-sm p-5">
+                <div class="flex items-center justify-between mb-6">
+                    <div class="flex items-center gap-3">
+                        <div class="p-2 rounded-lg" style="background-color: rgba(125, 51, 255, 0.1);">
+                            <i class="fas fa-search" style="color: #7D33FF;"></i>
+                        </div>
+                        <h2 class="text-lg font-semibold text-gray-800">查询条件</h2>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <button id="resetSearchBtn" class="inline-flex items-center px-4 py-2 text-sm text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors duration-200">
+                            <i class="fas fa-redo-alt mr-2"></i>
+                            重置
+                        </button>
+                        <button id="searchBtn" class="inline-flex items-center px-4 py-2 text-sm text-white bg-[#7D33FF] hover:bg-[#6827cc] rounded-lg transition-colors duration-200">
+                            <i class="fas fa-search mr-2"></i>
+                            查询
+                        </button>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <!-- 创建时间 -->
+                    <div class="flex flex-col">
+                        <label class="text-sm text-gray-600 mb-2">创建时间</label>
+                        <div class="flex items-center space-x-2">
+                            <input type="date" class="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent text-sm" id="startDate">
+                            <span class="text-gray-500">至</span>
+                            <input type="date" class="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent text-sm" id="endDate">
+                        </div>
+                    </div>
+                    
+                    <!-- 流水号 -->
+                    <div class="flex flex-col">
+                        <label class="text-sm text-gray-600 mb-2">流水号</label>
+                        <input type="text" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent text-sm" id="transactionId" placeholder="请输入流水号">
+                    </div>
+                    
+                    <!-- 平台名称 -->
+                    <div class="flex flex-col">
+                        <label class="text-sm text-gray-600 mb-2">平台名称</label>
+                        <input type="text" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent text-sm" id="platformName" placeholder="请输入平台名称">
+                    </div>
+                </div>
+            </section>
+
+            <!-- 待入账列表 -->
+            <section class="lg:col-span-12 bg-white rounded-xl shadow-sm overflow-hidden">
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th scope="col" class="px-5 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">流水号</th>
+                                <th scope="col" class="px-5 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">创建时间</th>
+                                <th scope="col" class="px-5 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">平台名称</th>
+                                <th scope="col" class="px-5 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">收款账户</th>
+                                <th scope="col" class="px-5 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">收款金额丨币种</th>
+                                <th scope="col" class="px-5 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">到账金额丨币种</th>
+                                <th scope="col" class="px-5 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">状态</th>
+                                <th scope="col" class="px-5 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">操作</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">
+                            <!-- 示例数据 -->
+                            <tr>
+                                <td class="px-5 py-4 text-sm text-gray-600">TX202306150001</td>
+                                <td class="px-5 py-4 text-sm text-gray-600">2023-06-15 10:30:45</td>
+                                <td class="px-5 py-4 text-sm text-gray-600">亚马逊</td>
+                                <td class="px-5 py-4 text-sm text-gray-600">****3456</td>
+                                <td class="px-5 py-4 text-sm text-gray-600">1,000.00 USD</td>
+                                <td class="px-5 py-4 text-sm text-gray-600">980.00 USD</td>
+                                <td class="px-5 py-4 text-center">
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
+                                        待入账
+                                    </span>
+                                </td>
+                                <td class="px-5 py-4 text-center">
+                                    <a href="#" class="text-sm text-purple-600 hover:text-purple-800">详情</a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="px-5 py-4 text-sm text-gray-600">TX202306140002</td>
+                                <td class="px-5 py-4 text-sm text-gray-600">2023-06-14 15:22:18</td>
+                                <td class="px-5 py-4 text-sm text-gray-600">eBay</td>
+                                <td class="px-5 py-4 text-sm text-gray-600">****7890</td>
+                                <td class="px-5 py-4 text-sm text-gray-600">2,500.00 USD</td>
+                                <td class="px-5 py-4 text-sm text-gray-600">2,450.00 USD</td>
+                                <td class="px-5 py-4 text-center">
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
+                                        待入账
+                                    </span>
+                                </td>
+                                <td class="px-5 py-4 text-center">
+                                    <a href="#" class="text-sm text-purple-600 hover:text-purple-800">详情</a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <!-- 分页 -->
+                <div class="bg-white px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6">
+                    <div class="flex-1 flex justify-between sm:hidden">
+                        <a href="#" class="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+                            上一页
+                        </a>
+                        <a href="#" class="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+                            下一页
+                        </a>
+                    </div>
+                    <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
+                        <div>
+                            <p class="text-sm text-gray-700">
+                                显示第 <span class="font-medium">1</span> 至 <span class="font-medium">10</span> 条，共 <span class="font-medium">20</span> 条记录
+                            </p>
+                        </div>
+                        <div>
+                            <nav class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
+                                <a href="#" class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+                                    <span class="sr-only">上一页</span>
+                                    <i class="fas fa-chevron-left"></i>
+                                </a>
+                                <a href="#" aria-current="page" class="z-10 bg-purple-50 border-purple-500 text-purple-600 relative inline-flex items-center px-4 py-2 border text-sm font-medium">
+                                    1
+                                </a>
+                                <a href="#" class="bg-white border-gray-300 text-gray-500 hover:bg-gray-50 relative inline-flex items-center px-4 py-2 border text-sm font-medium">
+                                    2
+                                </a>
+                                <a href="#" class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+                                    <span class="sr-only">下一页</span>
+                                    <i class="fas fa-chevron-right"></i>
+                                </a>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
     </div>
 
     <!-- 银行开卡统计弹框 -->
@@ -1662,8 +1806,6 @@
 
     <!-- 引入 Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
-    <!-- 引入 Alpine.js -->
-    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <!-- 引入 Tippy.js 和 Popper.js -->
     <script src="https://unpkg.com/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
     <script src="https://unpkg.com/tippy.js@6.3.7/dist/tippy-bundle.umd.min.js"></script>
@@ -1671,21 +1813,24 @@
     
     <!-- 用户中心下拉菜单脚本 -->
     <script>
-        // 用户中心下拉菜单
-        document.addEventListener('DOMContentLoaded', function() {
+        // 等待DOM和Alpine.js完全加载
+        window.addEventListener('alpine:init', () => {
+            // 用户中心下拉菜单
             const userCenterBtn = document.getElementById('userCenterBtn');
             const userCenterDropdown = document.getElementById('userCenterDropdown');
             
-            userCenterBtn.addEventListener('click', function(e) {
-                e.stopPropagation();
-                userCenterDropdown.classList.toggle('hidden');
-            });
-            
-            document.addEventListener('click', function(e) {
-                if (!userCenterDropdown.contains(e.target) && e.target !== userCenterBtn) {
-                    userCenterDropdown.classList.add('hidden');
-                }
-            });
+            if (userCenterBtn && userCenterDropdown) {
+                userCenterBtn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    userCenterDropdown.classList.toggle('hidden');
+                });
+                
+                document.addEventListener('click', function(e) {
+                    if (!userCenterDropdown.contains(e.target) && e.target !== userCenterBtn) {
+                        userCenterDropdown.classList.add('hidden');
+                    }
+                });
+            }
         });
     </script>
     
@@ -1698,102 +1843,72 @@
             const tabs = document.querySelectorAll('.tab-btn');
             const assetsContent = document.getElementById('assets-content');
             const bankAccountsContent = document.getElementById('bank-accounts-content');
+            const pendingEntriesContent = document.getElementById('pending-entries-content');
 
-            // Function to activate a specific tab
+            // 检查必要的DOM元素
+            if (!tabs.length) {
+                console.error('找不到标签页按钮');
+                return;
+            }
+
+            // 激活标签页的函数
             function activateTab(tabName) {
-                // Remove active class from all tabs
-                tabs.forEach(t => t.classList.remove('active'));
-                
-                // Add active class to the target tab
-                const targetTab = Array.from(tabs).find(tab => tab.dataset.tab === tabName);
-                if (targetTab) {
-                    targetTab.classList.add('active');
+                // 移除所有标签页的激活状态
+                tabs.forEach(tab => {
+                    tab.classList.remove('active');
+                    tab.classList.remove('border-[#7D33FF]');
+                    tab.classList.remove('text-[#7D33FF]');
+                    tab.classList.add('border-transparent');
+                    tab.classList.add('text-gray-500');
+                });
+
+                // 激活当前标签页
+                const activeTab = Array.from(tabs).find(tab => tab.dataset.tab === tabName);
+                if (activeTab) {
+                    activeTab.classList.add('active');
+                    activeTab.classList.add('border-[#7D33FF]');
+                    activeTab.classList.add('text-[#7D33FF]');
+                    activeTab.classList.remove('border-transparent');
+                    activeTab.classList.remove('text-gray-500');
                 }
 
-                // Show/hide content based on selected tab
-                if (tabName === 'assets') {
-                    assetsContent.classList.remove('hidden');
-                    bankAccountsContent.classList.add('hidden');
-                } else if (tabName === 'bank-accounts') {
-                    assetsContent.classList.add('hidden');
-                    bankAccountsContent.classList.remove('hidden');
+                // 隐藏所有内容
+                [assetsContent, bankAccountsContent, pendingEntriesContent].forEach(content => {
+                    if (content) {
+                        content.classList.add('hidden');
+                    }
+                });
+
+                // 显示对应内容
+                switch(tabName) {
+                    case 'assets':
+                        if (assetsContent) assetsContent.classList.remove('hidden');
+                        break;
+                    case 'bank-accounts':
+                        if (bankAccountsContent) bankAccountsContent.classList.remove('hidden');
+                        break;
+                    case 'pending-entries':
+                        if (pendingEntriesContent) pendingEntriesContent.classList.remove('hidden');
+                        break;
                 }
             }
 
-            // Check URL hash on page load
-            if (window.location.hash === '#bank-accounts') {
-                activateTab('bank-accounts');
-            }
-
-            // Tab切换逻辑
+            // 为每个标签页添加点击事件
             tabs.forEach(tab => {
                 tab.addEventListener('click', () => {
                     const tabName = tab.dataset.tab;
                     activateTab(tabName);
-                    // Update URL hash when tab is clicked
-                    if (tabName === 'bank-accounts') {
-                        window.location.hash = '#bank-accounts';
-                    } else {
-                        window.location.hash = '';
-                    }
                 });
             });
 
-            // 银行开卡统计弹框
-            const bankStatsBtn = document.querySelector('[data-modal="bankStats"]');
-            const bankStatsModal = document.getElementById('bankStatsModal');
-            
-            if (bankStatsBtn) {
-                bankStatsBtn.addEventListener('click', () => {
-                    bankStatsModal.classList.remove('hidden');
-                });
+            // 根据URL hash初始化标签页
+            const hash = window.location.hash.replace('#', '');
+            if (hash && ['bank-accounts', 'pending-entries'].includes(hash)) {
+                activateTab(hash);
+            } else {
+                // 默认激活第一个标签页
+                activateTab('assets');
             }
-
-            // 持有人开卡统计弹框
-            const holderStatsBtn = document.querySelector('[data-modal="holderStats"]');
-            const holderStatsModal = document.getElementById('holderStatsModal');
-            
-            if (holderStatsBtn) {
-                holderStatsBtn.addEventListener('click', () => {
-                    holderStatsModal.classList.remove('hidden');
-                });
-            }
-
-            // 批量延长弹框
-            const batchExtendBtn = document.getElementById('batchExtendBtn');
-            const batchExtendModal = document.getElementById('batchExtendModal');
-            
-            if (batchExtendBtn) {
-                batchExtendBtn.addEventListener('click', () => {
-                    batchExtendModal.classList.remove('hidden');
-                });
-            }
-
-            // 批量注销弹框
-            const batchCancelBtn = document.getElementById('batchCancelBtn');
-            const batchCancelModal = document.getElementById('batchCancelModal');
-            
-            if (batchCancelBtn) {
-                batchCancelBtn.addEventListener('click', () => {
-                    batchCancelModal.classList.remove('hidden');
-                });
-            }
-
-            // 点击弹框外部关闭弹框
-            window.addEventListener('click', (e) => {
-                if (e.target === bankStatsModal) {
-                    bankStatsModal.classList.add('hidden');
-                }
-                if (e.target === holderStatsModal) {
-                    holderStatsModal.classList.add('hidden');
-                }
-                if (e.target === batchExtendModal) {
-                    batchExtendModal.classList.add('hidden');
-                }
-                if (e.target === batchCancelModal) {
-                    batchCancelModal.classList.add('hidden');
-                }
-            });
         });
     </script>
 

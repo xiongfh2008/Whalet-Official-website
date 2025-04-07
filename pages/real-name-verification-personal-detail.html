@@ -128,7 +128,8 @@
             color: white;
         }
 
-        .step.completed .step-number {
+        .step.completed .step-number,
+        .step:nth-child(2).completed .step-number {
             background-color: var(--primary-color);
             border-color: var(--primary-color);
             color: white;
@@ -151,9 +152,20 @@
             font-weight: 600;
         }
 
-        .step.completed .step-title {
+        .step.completed .step-title,
+        .step:nth-child(2).completed .step-title {
             color: var(--primary-color);
             font-weight: 600;
+        }
+
+        .step.active .step-desc {
+            color: var(--text-secondary);
+        }
+
+        .step.completed .step-desc,
+        .step:nth-child(2).completed .step-desc {
+            color: var(--primary-color);
+            opacity: 0.8;
         }
 
         .step-desc {
@@ -652,6 +664,22 @@
             margin-left: calc(-1 * var(--spacing-sm));
             box-sizing: border-box;
         }
+
+        .progress-steps .step:nth-child(2) .step-number {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+            color: white;
+        }
+
+        .progress-steps .step:nth-child(2) .step-title {
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        .progress-steps .step:nth-child(2) .step-desc {
+            color: var(--text-secondary);
+            font-weight: normal;
+        }
     </style>
 </head>
 <body>
@@ -688,285 +716,86 @@
             <!-- 右侧表单 -->
             <div class="form-container">
                 <h2 class="form-title">个人信息</h2>
-                <form id="verificationForm">
-                    <!-- 证件类型 -->
-                    <div class="form-row">
-                        <div class="form-col">
-                            <div class="form-group">
-                                <label class="form-label required">证件类型</label>
-                                <select class="form-select" disabled>
-                                    <option value="mainland_id" selected>中国大陆第二代身份证</option>
-                                </select>
-                            </div>
+                <div class="info-content">
+                    <div class="info-row">
+                        <div class="info-label">姓名</div>
+                        <div class="info-value">张珊珊</div>
+                    </div>
+                    <div class="info-row">
+                        <div class="info-label">英文名称</div>
+                        <div class="info-value">ZHANG SHAN SHAN</div>
+                    </div>
+                    <div class="info-row">
+                        <div class="info-label">身份证号</div>
+                        <div class="info-value">500112199010018926</div>
+                    </div>
+                    <div class="info-row">
+                        <div class="info-label">身份证有效期</div>
+                        <div class="info-value">2025-03-05 — 长期有效</div>
+                    </div>
+                    <div class="info-row">
+                        <div class="info-label">出生日期</div>
+                        <div class="info-value">1990-10-01</div>
+                    </div>
+                    <div class="info-row">
+                        <div class="info-label">证件地址</div>
+                        <div class="info-value">河北省 石家庄市 桥西区 河南省上蔡县杨集镇后常营村3号</div>
+                    </div>
+                    <div class="info-row">
+                        <div class="info-label">居住地址</div>
+                        <div class="info-value">河北省 石家庄市 桥西区 河南省上蔡县杨集镇后常营村3号</div>
+                    </div>
+                    <div class="info-row">
+                        <div class="info-label">身份证正面</div>
+                        <div class="info-value">
+                            <div class="id-card-image"></div>
                         </div>
                     </div>
-
-                    <!-- 证件照片 -->
-                    <div class="form-row">
-                        <div class="form-col-half">
-                            <div class="form-group">
-                                <label class="form-label required">证件照片</label>
-                                <div class="upload-area" onclick="uploadImage('front')">
-                                    <i class="fas fa-upload"></i>
-                                    <p>上传身份证人像面</p>
-                                    <p style="font-size: 12px; color: var(--text-secondary); margin-top: 4px;">点击或拖拽上传</p>
-                                </div>
-                                <div id="frontUploadAlert" class="upload-alert" style="display: none;">
-                                    <i class="fas fa-info-circle" style="color: var(--primary-color);"></i>
-                                    <span>上传证件照后自动识别信息，如有错误请调整修改</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-col-half">
-                            <div class="form-group">
-                                <label class="form-label">&nbsp;</label>
-                                <div class="upload-area" onclick="uploadImage('back')">
-                                    <i class="fas fa-upload"></i>
-                                    <p>上传身份证国徽面</p>
-                                    <p style="font-size: 12px; color: var(--text-secondary); margin-top: 4px;">点击或拖拽上传</p>
-                                </div>
-                                <div id="backUploadAlert" class="upload-alert" style="display: none;">
-                                    <i class="fas fa-info-circle" style="color: var(--primary-color);"></i>
-                                    <span>上传证件照后自动识别信息，如有错误请调整修改</span>
-                                </div>
-                            </div>
+                    <div class="info-row">
+                        <div class="info-label">身份证背面</div>
+                        <div class="info-value">
+                            <div class="id-card-image"></div>
                         </div>
                     </div>
-                    <div class="form-row" style="margin-top: -8px;">
-                        <div class="form-col">
-                            <div class="form-tip" style="display: flex; align-items: center; gap: var(--spacing-sm);">
-                                <span>请确认信息无误，证件图片清晰可见，图片支持jpg、png、jpeg、bmp，文件不超过5M</span>
-                                <span style="color: var(--text-secondary);">|</span>
-                                <a href="#" onclick="showExample()" style="color: var(--primary-color); text-decoration: none;">查看示例</a>
-                            </div>
+                    <div class="info-row">
+                        <div class="info-label">手持身份证</div>
+                        <div class="info-value">
+                            <div class="id-card-image"></div>
                         </div>
                     </div>
-
-                    <!-- 姓名 -->
-                    <div class="form-row">
-                        <div class="form-col-half">
-                            <div class="form-group">
-                                <label class="form-label required">真实姓名</label>
-                                <div class="input-group">
-                                    <div class="form-group">
-                                        <input type="text" class="form-input" placeholder="姓氏" id="lastName">
-                                    </div>
-                                    <div class="form-group">
-                                        <input type="text" class="form-input" placeholder="名字" id="firstName">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-col-half">
-                            <div class="form-group">
-                                <label class="form-label required">英文名称</label>
-                                <input type="text" class="form-input" id="englishName" readonly>
-                                <div class="form-tip">英文名将作为收款账户名称</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- 证件号码 -->
-                    <div class="form-row">
-                        <div class="form-col">
-                            <div class="form-group">
-                                <label class="form-label required">证件号码</label>
-                                <input type="text" class="form-input" placeholder="请输入18位身份证号码">
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- 证件有效期 -->
-                    <div class="form-row">
-                        <div class="form-col">
-                            <div class="form-group">
-                                <label class="form-label required">证件有效期</label>
-                                <div class="input-group">
-                                    <div class="form-group">
-                                        <input type="date" class="form-input" placeholder="开始日期">
-                                    </div>
-                                    <div class="form-group">
-                                        <input type="date" class="form-input" placeholder="结束日期">
-                                    </div>
-                                    <div class="form-col-auto">
-                                        <div class="checkbox-group">
-                                            <input type="checkbox" id="longTerm" onchange="toggleEndDate()">
-                                            <label for="longTerm">长期</label>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- 性别和出生日期 -->
-                    <div class="form-row">
-                        <div class="form-col-half">
-                            <div class="form-group">
-                                <label class="form-label required">性别</label>
-                                <div class="radio-group">
-                                    <label class="radio-option">
-                                        <input type="radio" name="gender" value="male">
-                                        <span>男</span>
-                                    </label>
-                                    <label class="radio-option">
-                                        <input type="radio" name="gender" value="female">
-                                        <span>女</span>
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-col-half">
-                            <div class="form-group">
-                                <label class="form-label required">出生日期</label>
-                                <input type="date" class="form-input">
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- 身份证地址 -->
-                    <div class="form-row">
-                        <div class="form-col">
-                            <div class="form-group">
-                                <label class="form-label required">身份证地址</label>
-                                <div class="address-selectors">
-                                    <div class="input-group">
-                                        <div class="form-group">
-                                            <select class="form-select" id="idCardProvince" onchange="handleProvinceChange('idCard')">
-                                                <option value="">选择省份</option>
-                                            </select>
-                                        </div>
-                                        <div class="form-group">
-                                            <select class="form-select" id="idCardCity" onchange="handleCityChange('idCard')">
-                                                <option value="">选择城市</option>
-                                            </select>
-                                        </div>
-                                        <div class="form-group">
-                                            <select class="form-select" id="idCardDistrict">
-                                                <option value="">选择区县</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="form-group" style="margin-top: var(--spacing-md);">
-                                        <input type="text" class="form-input" id="idCardDetailAddress" placeholder="请输入详细地址（街道、门牌号等）">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- 居住地址 -->
-                    <div class="form-row">
-                        <div class="form-col">
-                            <div class="form-group">
-                                <label class="form-label required">居住地址</label>
-                                <div class="radio-group">
-                                    <label class="radio-option">
-                                        <input type="radio" name="addressType" value="same" onchange="toggleAddress('same')" checked>
-                                        <span>与证件地址相同</span>
-                                    </label>
-                                    <label class="radio-option">
-                                        <input type="radio" name="addressType" value="different" onchange="toggleAddress('different')">
-                                        <span>与证件地址不同</span>
-                                    </label>
-                                </div>
-                                <div class="address-input" id="differentAddress">
-                                    <div class="address-selectors">
-                                        <div class="input-group">
-                                            <div class="form-group">
-                                                <select class="form-select" id="residenceProvince" onchange="handleProvinceChange('residence')">
-                                                    <option value="">选择省份</option>
-                                                </select>
-                                            </div>
-                                            <div class="form-group">
-                                                <select class="form-select" id="residenceCity" onchange="handleCityChange('residence')">
-                                                    <option value="">选择城市</option>
-                                                </select>
-                                            </div>
-                                            <div class="form-group">
-                                                <select class="form-select" id="residenceDistrict">
-                                                    <option value="">选择区县</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="form-group" style="margin-top: var(--spacing-md);">
-                                            <input type="text" class="form-input" id="residenceDetailAddress" placeholder="请输入详细地址（街道、门牌号等）">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- 验证方式 -->
-                    <div class="form-row">
-                        <div class="form-col">
-                            <div class="form-group">
-                                <label class="form-label required">验证方式</label>
-                                <div class="radio-group">
-                                    <label class="radio-option">
-                                        <input type="radio" name="verifyMethod" value="photo" onchange="toggleVerifyMethod('photo')">
-                                        <span>手持拍照</span>
-                                    </label>
-                                    <label class="radio-option">
-                                        <input type="radio" name="verifyMethod" value="face" onchange="toggleVerifyMethod('face')">
-                                        <span>人脸识别</span>
-                                    </label>
-                                </div>
-                                
-                                <div class="verification-method" id="photoMethod">
-                                    <div class="upload-area">
-                                        <i class="fas fa-camera"></i>
-                                        <p>上传手持身份证照片</p>
-                                    </div>
-                                </div>
-                                
-                                <div class="verification-method" id="faceMethod">
-                                    <div class="qr-code">
-                                        <i class="fas fa-qrcode fa-3x"></i>
-                                    </div>
-                                    <p style="text-align: center; color: var(--text-secondary);">请使用手机扫描二维码进行人脸识别</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- 添加表单按钮 -->
-                    <div class="form-actions">
-                        <div class="form-actions-left">
-                            <button type="button" class="btn btn-secondary" id="prevButton" onclick="window.location.href='./real-name-verification.html?type=mainland-personal'">
-                                <i class="fas fa-arrow-left" style="margin-right: 8px;"></i>
-                                上一步
-                            </button>
-                        </div>
-                        <div class="form-actions-right">
-                            <button type="button" class="btn btn-secondary" id="saveButton">
-                                <i class="fas fa-save" style="margin-right: 8px;"></i>
-                                暂存
-                            </button>
-                            <button type="submit" class="btn btn-primary" id="submitButton">
-                                <i class="fas fa-check" style="margin-right: 8px;"></i>
-                                提交
-                            </button>
-                        </div>
-                    </div>
-                </form>
-
-                <!-- 第二步：审核中 -->
-                <div id="verificationStep2" style="display: none; text-align: center; padding: var(--spacing-xl) 0;">
-                    <div style="font-size: 24px; font-weight: 600; color: var(--text-primary); margin-bottom: var(--spacing-lg);">
-                        <i class="fas fa-clock" style="color: var(--primary-color); margin-right: var(--spacing-sm);"></i>
-                        认证提交成功，待审核
-                    </div>
-                    <p style="color: var(--text-secondary); font-size: 16px; margin-bottom: var(--spacing-lg);">
-                        我们会对您的资料进行审核，最快 1 小时完成，<br>
-                        请留意短信或邮件通知
-                    </p>
-                    <a href="./real-name-verification-personal-detail.html" style="color: var(--primary-color); text-decoration: none; display: inline-flex; align-items: center;">
-                        <i class="fas fa-eye" style="margin-right: 8px;"></i>
-                        查看已提交的认证资料
-                    </a>
                 </div>
+                <style>
+                    .info-content {
+                        padding: 20px 0;
+                    }
+                    .info-row {
+                        display: flex;
+                        padding: 16px 0;
+                        border-bottom: 1px solid var(--border-color);
+                    }
+                    .info-row:last-child {
+                        border-bottom: none;
+                    }
+                    .info-label {
+                        width: 120px;
+                        color: var(--text-secondary);
+                        font-size: 14px;
+                        flex-shrink: 0;
+                    }
+                    .info-value {
+                        flex: 1;
+                        color: var(--text-primary);
+                        font-size: 14px;
+                    }
+                    .id-card-image {
+                        width: 240px;
+                        height: 151px;
+                        background: #F5F5F5;
+                        border: 1px solid var(--border-color);
+                        border-radius: 4px;
+                        margin-top: 8px;
+                    }
+                </style>
             </div>
         </div>
     </div>
@@ -1186,7 +1015,8 @@
                 // 更新进度条状态
                 const steps = document.querySelectorAll('.progress-steps .step');
                 steps[0].classList.remove('active');
-                steps[0].classList.add('completed');  // 将第1步标记为completed
+                steps[0].classList.add('completed');
+                steps[1].classList.remove('completed');
                 steps[1].classList.add('active');
                 
                 // 隐藏表单标题和返回按钮

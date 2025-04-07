@@ -343,6 +343,14 @@
             background: linear-gradient(145deg, #dcfce7, #bbf7d0);
             color: #15803d;
         }
+        .status-badge.processing {
+            background: linear-gradient(145deg, #fef3c7, #fef2c1);
+            color: #a16207;
+        }
+        .status-badge.failed {
+            background: linear-gradient(145deg, #fef2f2, #fef2f2);
+            color: #b91c1c;
+        }
         .rate-info-text {
             pointer-events: none;
             user-select: none;
@@ -740,9 +748,9 @@
                                 <div class="text-sm font-medium text-gray-900">2023年5月10日</div>
                                 <span class="status-badge success">
                                     <i class="fas fa-check-circle"></i>
-                                    已完成
+                                    交易成功
                                 </span>
-            </div>
+                            </div>
                             <div class="flex items-center mb-2">
                                 <div class="flex items-center">
                                     <img src="https://flagcdn.com/w40/us.png" alt="USD" class="currency-flag mr-2">
@@ -763,9 +771,9 @@
                         <div class="history-item rounded-xl">
                             <div class="flex justify-between items-center mb-3">
                                 <div class="text-sm font-medium text-gray-900">2023年5月5日</div>
-                                <span class="status-badge success">
-                                    <i class="fas fa-check-circle"></i>
-                                    已完成
+                                <span class="status-badge processing">
+                                    <i class="fas fa-clock"></i>
+                                    处理中
                                 </span>
                             </div>
                             <div class="flex items-center mb-2">
@@ -788,9 +796,9 @@
                         <div class="history-item rounded-xl">
                             <div class="flex justify-between items-center mb-3">
                                 <div class="text-sm font-medium text-gray-900">2023年4月28日</div>
-                                <span class="status-badge success">
-                                    <i class="fas fa-check-circle"></i>
-                                    已完成
+                                <span class="status-badge failed">
+                                    <i class="fas fa-times-circle"></i>
+                                    交易失败
                                 </span>
                             </div>
                             <div class="flex items-center mb-2">
@@ -810,13 +818,12 @@
                             </div>
                         </div>
                         
-                        <!-- 可以添加更多历史记录 -->
                         <div class="history-item rounded-xl">
                             <div class="flex justify-between items-center mb-3">
                                 <div class="text-sm font-medium text-gray-900">2023年4月15日</div>
                                 <span class="status-badge success">
                                     <i class="fas fa-check-circle"></i>
-                                    已完成
+                                    交易成功
                                 </span>
                             </div>
                             <div class="flex items-center mb-2">
