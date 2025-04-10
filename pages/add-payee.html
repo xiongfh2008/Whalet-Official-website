@@ -101,6 +101,25 @@
 
             <!-- 主要内容 -->
             <div class="p-6">
+                <!-- 驳回原因提示 -->
+                <div class="bg-red-50 border border-red-200 rounded-lg p-4 mb-6">
+                    <div class="flex items-start">
+                        <div class="flex-shrink-0">
+                            <i class="fas fa-exclamation-circle text-red-500"></i>
+                        </div>
+                        <div class="ml-3">
+                            <h3 class="text-sm font-medium text-red-800">驳回原因</h3>
+                            <div class="mt-2 text-sm text-red-700">
+                                <p>您的收款人信息审核未通过，请根据以下原因进行修改：</p>
+                                <ul class="list-disc list-inside mt-2">
+                                    <li>银行账号格式不正确</li>
+                                    <li>SwiftCode 信息有误</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- 提示信息 -->
                 <div class="alert-info mb-6">
                     <i class="fas fa-info-circle mr-2"></i>

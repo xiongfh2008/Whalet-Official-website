@@ -1573,6 +1573,60 @@
                                 <p class="text-xs text-gray-500">**** **** **** 1234</p>
                             </div>
                         </div>
+
+                        <!-- 审核中的银行卡 -->
+                        <div class="bank-card cursor-pointer hover:shadow-md transition-shadow" onclick="showCardDetails(this)">
+                            <div class="flex justify-between items-start mb-2">
+                                <div class="flex items-center space-x-1.5">
+                                    <img src="https://cdn.jsdelivr.net/gh/lipis/flag-icons/flags/4x3/eu.svg" alt="EUR" class="bank-logo">
+                                    <span class="status-badge pending">审核中</span>
+                                </div>
+                                <div class="flex items-center space-x-1">
+                                    <span class="currency-tag">EUR</span>
+                                    <button class="text-gray-400 hover:text-red-500 text-xs" onclick="event.stopPropagation()">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="space-y-0.5 mt-auto">
+                                <h3 class="font-medium text-sm">Deutsche Bank</h3>
+                                <p class="text-xs text-gray-600">ZHANG SAN</p>
+                                <p class="text-xs text-gray-500">**** **** **** 5678</p>
+                                <div class="flex items-center mt-1">
+                                    <span class="text-xs text-yellow-600 bg-yellow-50 px-1.5 py-0.5 rounded-full">预计1-3个工作日完成审核</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 被驳回的银行卡 -->
+                        <div class="bank-card cursor-pointer hover:shadow-md transition-shadow" onclick="showCardDetails(this)">
+                            <div class="flex justify-between items-start mb-2">
+                                <div class="flex items-center space-x-1.5">
+                                    <img src="https://cdn.jsdelivr.net/gh/lipis/flag-icons/flags/4x3/gb.svg" alt="GBP" class="bank-logo">
+                                    <span class="status-badge rejected">被驳回</span>
+                                </div>
+                                <div class="flex items-center space-x-1">
+                                    <span class="currency-tag">GBP</span>
+                                    <button class="text-gray-400 hover:text-red-500 text-xs" onclick="event.stopPropagation()">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="space-y-0.5 mt-auto">
+                                <h3 class="font-medium text-sm">Barclays Bank</h3>
+                                <p class="text-xs text-gray-600">ZHANG SAN</p>
+                                <p class="text-xs text-gray-500">**** **** **** 9012</p>
+                                <div class="flex items-center mt-1">
+                                    <span class="text-xs text-red-600 bg-red-50 px-1.5 py-0.5 rounded-full">请修改后重新提交</span>
+                                </div>
+                                <div class="flex justify-end mt-2">
+                                    <button onclick="event.stopPropagation(); window.location.href='add-bank-card.html?edit=1&id=9012'" class="text-xs text-[#7D33FF] hover:text-[#6929CC] flex items-center">
+                                        <i class="fas fa-redo-alt mr-1"></i>
+                                        重新提交
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
