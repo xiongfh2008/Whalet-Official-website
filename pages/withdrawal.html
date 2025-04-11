@@ -480,8 +480,11 @@
             <div class="border-b border-gray-200">
                 <div class="flex justify-between items-center">
                     <nav class="flex justify-start -mb-px pl-6">
-                        <button class="tab-btn active whitespace-nowrap py-4 px-8 border-b-2 text-center text-sm font-medium">
+                        <button class="tab-btn whitespace-nowrap py-4 px-8 border-b-2 text-center text-sm font-medium">
                             提现
+                        </button>
+                        <button class="tab-btn active whitespace-nowrap py-4 px-8 border-b-2 text-center text-sm font-medium">
+                            Ezymoney余额提现
                         </button>
                         <button class="tab-btn whitespace-nowrap py-4 px-8 border-b-2 text-center text-sm font-medium">
                             我的银行卡
@@ -1511,6 +1514,92 @@
                 </div>
             </div>
 
+            <!-- Ezymoney余额提现 Tab -->
+            <div id="ezymoney-withdrawal-tab" class="tab-content active">
+                <div class="grid grid-cols-12 gap-6">
+                    <div class="col-span-12 lg:col-span-8">
+                        <div class="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
+                            <div class="px-6 py-4 bg-gradient-to-r from-blue-50 to-white border-b border-gray-200">
+                                <div class="flex items-center space-x-3">
+                                    <div class="w-7 h-7 bg-blue-100 rounded-lg flex items-center justify-center">
+                                        <i class="fas fa-wallet text-blue-600"></i>
+                                    </div>
+                                    <h3 class="text-base font-medium text-gray-800">发起提现</h3>
+                                </div>
+                            </div>
+
+                            <div class="p-6">
+                                <div class="space-y-6">
+                                    <!-- 提现银行卡 -->
+                                    <div class="form-group">
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">提现银行卡</label>
+                                        <div class="bg-white border border-gray-200 rounded-lg p-3">
+                                            <div class="flex items-center justify-between">
+                                                <div class="flex items-center space-x-3">
+                                                    <div class="w-8 h-8 bg-white rounded-lg flex items-center justify-center border border-gray-200 overflow-hidden">
+                                                        <img src="https://cdn.jsdelivr.net/gh/lipis/flag-icons/flags/4x3/cn.svg" alt="CNY" class="w-6 h-6 object-contain">
+                                                    </div>
+                                                    <div class="flex items-center space-x-2">
+                                                        <span class="text-sm font-medium">中国建设银行</span>
+                                                        <span class="text-sm text-gray-500">(5343)</span>
+                                                        <span class="text-xs px-1.5 py-0.5 bg-gray-100 text-gray-600 rounded-full">CNY</span>
+                                                    </div>
+                                                </div>
+                                                <div class="flex items-center space-x-4">
+                                                    <button class="text-[#7D33FF] hover:text-[#6929CC] text-sm">设为默认</button>
+                                                    <button class="text-[#7D33FF] hover:text-[#6929CC] text-sm flex items-center">
+                                                        更换账户
+                                                        <i class="fas fa-chevron-right ml-1 text-xs"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- 提现金额 -->
+                                    <div class="form-group">
+                                        <div class="bg-gray-50 border border-gray-200 rounded-lg p-3">
+                                            <div class="flex items-center justify-between">
+                                                <span class="text-sm font-medium text-gray-700">提现金额</span>
+                                                <div class="text-lg font-medium text-gray-600">¥15258</div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- 手续费 -->
+                                    <div class="form-group">
+                                        <div class="bg-gray-50 border border-gray-200 rounded-lg p-3">
+                                            <div class="flex items-center justify-between">
+                                                <span class="text-sm font-medium text-gray-700">手续费</span>
+                                                <div class="text-lg font-medium text-gray-600">¥0.00</div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- 交易密码 -->
+                                    <div class="form-group">
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">交易密码</label>
+                                        <div class="relative">
+                                            <input type="password" placeholder="请输入交易密码" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#7D33FF] focus:border-[#7D33FF] focus:ring-opacity-50 transition-colors">
+                                            <a href="#" class="absolute right-3 top-1/2 -translate-y-1/2 text-[#7D33FF] hover:text-[#6929CC] text-sm">忘记交易密码？</a>
+                                        </div>
+                                    </div>
+
+                                    <!-- 申请提现按钮 -->
+                                    <div class="form-group pt-6 mt-6 border-t border-gray-200">
+                                        <div class="flex justify-center">
+                                            <button class="w-48 bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors text-base font-medium">
+                                                申请提现
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <!-- 我的银行卡 Tab -->
             <div id="bank-cards-tab" class="tab-content" x-show="currentTab === 'bank-cards'" x-cloak>
                 <div class="bg-white rounded-xl shadow-sm p-6">
@@ -1635,21 +1724,6 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // User menu functionality
-            const userBtn = document.getElementById('userCenterBtn');
-            const dropdownMenu = document.getElementById('userCenterDropdown');
-            
-            userBtn.addEventListener('click', function(e) {
-                e.stopPropagation();
-                dropdownMenu.classList.toggle('hidden');
-            });
-            
-            document.addEventListener('click', function(e) {
-                if (!userBtn.contains(e.target) && !dropdownMenu.contains(e.target)) {
-                    dropdownMenu.classList.add('hidden');
-                }
-            });
-
             // Tab switching functionality
             const tabs = document.querySelectorAll('.tab-btn');
             const tabContents = document.querySelectorAll('.tab-content');
@@ -1657,16 +1731,13 @@
             // Function to switch tabs
             function switchTab(tabIndex) {
                 tabs.forEach(t => t.classList.remove('active'));
-                tabContents.forEach(c => c.classList.remove('active'));
+                tabContents.forEach(c => {
+                    c.classList.remove('active');
+                    c.style.display = 'none';
+                });
                 tabs[tabIndex].classList.add('active');
                 tabContents[tabIndex].classList.add('active');
-            }
-
-            // Check URL parameters for tab selection
-            const urlParams = new URLSearchParams(window.location.search);
-            const returnTab = urlParams.get('return_tab');
-            if (returnTab === 'bank-cards') {
-                switchTab(1); // Switch to bank cards tab
+                tabContents[tabIndex].style.display = 'block';
             }
 
             // Add click event listeners to tabs
@@ -1675,6 +1746,9 @@
                     switchTab(index);
                 });
             });
+
+            // Initialize with Ezymoney tab active
+            switchTab(1);
         });
 
         // 显示银行卡详情
