@@ -323,6 +323,23 @@
             margin-left: var(--spacing-xs);
         }
 
+        .form-label-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 4px;
+        }
+
+        .help-link {
+            color: var(--primary-color);
+            font-size: 13px;
+            text-decoration: none;
+        }
+
+        .help-link:hover {
+            text-decoration: underline;
+        }
+
         .form-input {
             width: 100%;
             padding: 8px var(--spacing-md);
@@ -856,6 +873,63 @@
             color: var(--primary-color);
             max-width: 300px;
         }
+
+        /* 系统推荐弹框样式 */
+        #recommendationModal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            pointer-events: none;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 8px;
+            padding: 24px;
+            width: 320px;
+            position: relative;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+            pointer-events: auto;
+        }
+
+        .modal-arrow {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            background: white;
+            transform: rotate(45deg);
+            top: -6px;
+            left: 50%;
+            margin-left: -6px;
+            box-shadow: -2px -2px 3px rgba(0, 0, 0, 0.05);
+        }
+
+        .modal-body {
+            margin-bottom: 24px;
+        }
+
+        .recommendation-text {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin: 0 0 12px 0;
+        }
+
+        .recommendation-name {
+            font-size: 14px;
+            color: var(--text-primary);
+            margin: 0;
+            font-weight: 500;
+        }
+
+        .modal-actions {
+            display: flex;
+            justify-content: flex-start;
+            gap: 12px;
+        }
+
+        .modal-actions .btn {
+            min-width: 80px;
+        }
     </style>
 </head>
 <body>
@@ -952,7 +1026,10 @@
                         </div>
                         <div class="form-col-half">
                             <div class="form-group">
-                                <label class="form-label required">企业英文名</label>
+                                <div class="form-label-wrapper">
+                                    <label class="form-label required">企业英文名</label>
+                                    <a class="help-link">如何填写？</a>
+                                </div>
                                 <div class="form-input-wrapper">
                                     <input type="text" class="form-input" required>
                                     <a href="#" class="recommend-link" onclick="showRecommendation()">系统推荐</a>
@@ -1190,6 +1267,21 @@
         </div>
     </div>
 
+    <!-- 添加系统推荐弹框 -->
+    <div id="recommendationModal">
+        <div class="modal-content">
+            <div class="modal-body">
+                <p class="recommendation-text">生成参考英文名称，可填充后修改：</p>
+                <p class="recommendation-name">Chongqing Commercial Technology Co., Ltd</p>
+            </div>
+            <div class="modal-actions">
+                <button onclick="closeRecommendation()" class="btn btn-secondary">忽略</button>
+                <button onclick="applyRecommendation()" class="btn btn-primary">填充</button>
+            </div>
+            <div class="modal-arrow"></div>
+        </div>
+    </div>
+
     <script>
         function goBack() {
             // 返回实名认证主页面并选中大陆企业选项
@@ -1230,8 +1322,44 @@
         }
 
         function showRecommendation() {
-            // 实现系统推荐企业英文名的逻辑
-            alert('系统推荐功能开发中...');
+            const modal = document.getElementById('recommendationModal');
+            const recommendLink = event.target;
+            const rect = recommendLink.getBoundingClientRect();
+            
+            // 计算弹框位置
+            const modalWidth = 320;
+            const modalLeft = rect.left + (rect.width / 2) - (modalWidth / 2);
+            const modalTop = rect.bottom + 15; // 15px 间距
+            
+            // 设置弹框位置
+            modal.style.left = modalLeft + 'px';
+            modal.style.top = modalTop + 'px';
+            modal.style.display = 'block';
+
+            // 添加点击外部关闭功能
+            document.addEventListener('click', closeOnClickOutside);
+        }
+
+        function closeOnClickOutside(event) {
+            const modal = document.getElementById('recommendationModal');
+            const modalContent = modal.querySelector('.modal-content');
+            
+            if (!modalContent.contains(event.target) && !event.target.classList.contains('recommend-link')) {
+                closeRecommendation();
+            }
+        }
+
+        function closeRecommendation() {
+            const modal = document.getElementById('recommendationModal');
+            modal.style.display = 'none';
+            document.removeEventListener('click', closeOnClickOutside);
+        }
+
+        function applyRecommendation() {
+            // 将推荐的英文名填入输入框
+            const englishNameInput = document.querySelector('.form-input-wrapper input[type="text"]');
+            englishNameInput.value = 'Chongqing Commercial Technology Co., Ltd';
+            closeRecommendation();
         }
 
         function showExample(type) {
