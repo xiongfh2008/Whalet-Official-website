@@ -131,234 +131,6 @@
             width: 100%;
             height: 100%;
         }
-        /* 添加引导提示样式 */
-        .shepherd-element {
-            max-width: 400px !important;
-            z-index: 9999 !important;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !important;
-            border-radius: 8px !important;
-            background: white !important;
-        }
-        
-        .shepherd-arrow, .shepherd-arrow:before {
-            position: absolute;
-            width: 16px;
-            height: 16px;
-            z-index: -1;
-        }
-        
-        .shepherd-arrow:before {
-            content: '';
-            transform: rotate(45deg);
-            background: white;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-        
-        .shepherd-element[data-popper-placement^='top'] > .shepherd-arrow {
-            bottom: -8px;
-        }
-        
-        .shepherd-element[data-popper-placement^='bottom'] > .shepherd-arrow {
-            top: -8px;
-        }
-        
-        .shepherd-element[data-popper-placement^='left'] > .shepherd-arrow {
-            right: -8px;
-        }
-        
-        .shepherd-element[data-popper-placement^='right'] > .shepherd-arrow {
-            left: -8px;
-        }
-        
-        .shepherd-element[data-popper-placement^='top'] > .shepherd-arrow:before {
-            box-shadow: 1px 1px 0 rgba(0, 0, 0, 0.1);
-        }
-        
-        .shepherd-element[data-popper-placement^='bottom'] > .shepherd-arrow:before {
-            box-shadow: -1px -1px 0 rgba(0, 0, 0, 0.1);
-        }
-        
-        .shepherd-element[data-popper-placement^='left'] > .shepherd-arrow:before {
-            box-shadow: 1px -1px 0 rgba(0, 0, 0, 0.1);
-        }
-        
-        .shepherd-element[data-popper-placement^='right'] > .shepherd-arrow:before {
-            box-shadow: -1px 1px 0 rgba(0, 0, 0, 0.1);
-        }
-        
-        .shepherd-has-title .shepherd-content .shepherd-header {
-            background: #7D33FF !important;
-            padding: 12px 16px !important;
-            border-radius: 8px 8px 0 0 !important;
-        }
-        
-        .shepherd-title {
-            color: white !important;
-            font-size: 16px !important;
-            font-weight: 600 !important;
-            line-height: 1.4 !important;
-        }
-        
-        .shepherd-text {
-            color: #4b5563 !important;
-            padding: 16px !important;
-            font-size: 14px !important;
-            line-height: 1.6 !important;
-        }
-        
-        .shepherd-text p {
-            margin-bottom: 8px !important;
-        }
-        
-        .shepherd-text strong {
-            color: #374151 !important;
-            font-weight: 600 !important;
-        }
-        
-        .shepherd-footer {
-            padding: 0 16px 16px !important;
-            display: flex !important;
-            justify-content: flex-end !important;
-            gap: 8px !important;
-        }
-        
-        .shepherd-button {
-            padding: 8px 16px !important;
-            border-radius: 4px !important;
-            font-size: 14px !important;
-            font-weight: 500 !important;
-            transition: all 0.2s !important;
-        }
-        
-        .shepherd-button-primary {
-            background: #7D33FF !important;
-            color: white !important;
-            border: none !important;
-        }
-        
-        .shepherd-button-secondary {
-            background: #6b7280 !important;
-            color: white !important;
-            border: none !important;
-        }
-        
-        .shepherd-button:hover {
-            opacity: 0.9 !important;
-        }
-        
-        .shepherd-modal-overlay-container {
-            z-index: 9998 !important;
-        }
-        
-        .shepherd-modal-overlay {
-            opacity: 0.5 !important;
-        }
-
-        /* 帮助按钮样式 */
-        #help-button {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: #7D33FF;
-            color: white;
-            padding: 12px 24px;
-            border-radius: 8px;
-            cursor: pointer;
-            z-index: 9997;
-            box-shadow: 0 2px 8px rgba(125, 51, 255, 0.25);
-            transition: all 0.2s;
-            border: none;
-            font-size: 14px;
-            font-weight: 500;
-            display: flex;
-            align-items: center;
-        }
-        
-        #help-button:hover {
-            background: #6929D4;
-            transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(125, 51, 255, 0.3);
-        }
-        /* 引导提示遮罩和提示框 */
-        .tour-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            z-index: 1000;
-            display: none;
-        }
-        .tour-tooltip {
-            position: fixed;
-            background: white;
-            padding: 16px;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            max-width: 400px;
-            z-index: 1001;
-            display: none;
-        }
-        .tour-tooltip::before {
-            content: '';
-            position: absolute;
-            left: -10px;
-            top: 20px;
-            border-style: solid;
-            border-width: 10px 10px 10px 0;
-            border-color: transparent white transparent transparent;
-            width: 0;
-            height: 0;
-        }
-        .tour-tooltip h3 {
-            color: #7D33FF;
-            font-size: 16px;
-            margin-bottom: 8px;
-            font-weight: 600;
-        }
-        .tour-tooltip p {
-            color: #4b5563;
-            font-size: 14px;
-            line-height: 1.6;
-            margin-bottom: 16px;
-        }
-        .tour-buttons {
-            display: flex;
-            gap: 10px;
-            justify-content: flex-end;
-        }
-        .tour-tooltip button {
-            background: #7D33FF;
-            color: white;
-            padding: 8px 16px;
-            border-radius: 4px;
-            border: none;
-            cursor: pointer;
-            font-weight: 500;
-            transition: all 0.2s;
-        }
-        .tour-tooltip button:hover {
-            background: #6929D4;
-        }
-        .tour-tooltip .prev-step {
-            background: #6b7280;
-        }
-        .tour-tooltip .prev-step:hover {
-            background: #4b5563;
-        }
-        .tour-tooltip .prev-step.hidden {
-            display: none;
-        }
-        /* 高亮菜单项样式 */
-        .highlight-menu {
-            position: relative;
-            z-index: 1002;
-            background: white !important;
-            box-shadow: 0 0 0 2px #7D33FF !important;
-            border-radius: 8px !important;
-        }
-        
         /* 活动弹框样式 */
         #activity-modal {
             position: fixed;
@@ -605,6 +377,50 @@
         .text-orange-500 {
             color: #7D33FF !important;
         }
+        /* 在线客服样式 */
+        .online-service {
+            position: fixed;
+            right: 20px;
+            bottom: 20px;
+            z-index: 1000;
+            cursor: pointer;
+        }
+        .service-icon {
+            width: 50px;
+            height: 50px;
+            background-color: #7D33FF;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+        .service-icon:hover {
+            transform: scale(1.1);
+            background-color: #6929D4;
+        }
+        .service-icon i {
+            color: white;
+            font-size: 24px;
+        }
+        .service-text {
+            position: absolute;
+            right: -80px;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: white;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 12px;
+            color: #7D33FF;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .service-icon:hover + .service-text {
+            opacity: 1;
+        }
     </style>
 </head>
 <body class="bg-gray-50 text-gray-800">
@@ -822,24 +638,67 @@
         </div>
     </div>
 
-    <!-- 添加帮助按钮 -->
-    <button id="help-button">
-        <i class="fas fa-question-circle mr-2"></i>功能引导
-    </button>
-
-    <!-- 引导提示遮罩和提示框 -->
-    <div class="tour-overlay"></div>
-    <div class="tour-tooltip">
-        <h3></h3>
-        <p></p>
-        <div class="tour-buttons">
-            <button class="prev-step">上一步</button>
-            <button class="next-step">下一步</button>
-        </div>
-    </div>
-
     <script src="https://cdn.jsdelivr.net/npm/shepherd.js@10.0.1/dist/js/shepherd.min.js"></script>
     <script>
+        // 获取IP地址并判断地区
+        async function getIPLocation() {
+            try {
+                // 使用 ipify.org 服务获取IP
+                const ipResponse = await fetch('https://api.ipify.org?format=json');
+                const ipData = await ipResponse.json();
+                console.log('获取到的IP地址:', ipData.ip);
+                
+                // 使用 ip-api.com 服务获取IP地理位置信息
+                const locationResponse = await fetch(`http://ip-api.com/json/${ipData.ip}`);
+                const locationData = await locationResponse.json();
+                console.log('IP地理位置信息:', locationData);
+                
+                // 检查是否是中国IP
+                const isChineseIP = locationData.countryCode === 'CN';
+                console.log('是否中国IP:', isChineseIP);
+                
+                return isChineseIP ? 'zh-CN' : 'en';
+            } catch (error) {
+                console.error('获取IP地址失败:', error);
+                return 'en';
+            }
+        }
+
+        // 更新语言切换按钮
+        function updateLanguageSwitch(lang) {
+            const languageSwitch = document.querySelector('.language-switch');
+            if (languageSwitch) {
+                const currentLanguageSpan = languageSwitch.querySelector('#currentLanguage');
+                if (currentLanguageSpan) {
+                    currentLanguageSpan.textContent = lang === 'zh-CN' ? '简体中文' : 'English';
+                }
+            }
+        }
+
+        // 设置语言
+        function setLanguage(lang) {
+            console.log('开始设置语言:', lang);
+            document.documentElement.lang = lang;
+            
+            // 更新所有翻译文本
+            updatePageContent();
+            
+            // 更新语言切换按钮
+            updateLanguageSwitch(lang);
+            
+            // 通知iframe更新语言
+            const iframe = document.getElementById('content-frame');
+            if (iframe && iframe.contentWindow) {
+                console.log('通知iframe更新语言:', lang);
+                iframe.contentWindow.postMessage({
+                    type: 'languageChanged',
+                    language: lang
+                }, '*');
+            }
+            
+            console.log('语言设置完成:', lang);
+        }
+
         // 加载页面
         function loadPage(page) {
             const iframe = document.getElementById('content-frame');
@@ -864,13 +723,6 @@
         // 获取当前语言
         function getCurrentLanguage() {
             return localStorage.getItem('language') || 'zh-CN';
-        }
-
-        // 设置语言
-        function setLanguage(lang) {
-            localStorage.setItem('language', lang);
-            document.documentElement.lang = lang;
-            updatePageContent();
         }
 
         // 更新页面内容
@@ -898,283 +750,56 @@
             if (event.data && event.data.type === 'languageChanged') {
                 const newLang = event.data.language;
                 console.log('Updating parent language to:', newLang);
-                localStorage.setItem('language', newLang);
                 document.documentElement.lang = newLang;
                 updatePageContent();
+                updateLanguageSwitch(newLang);
             }
         });
 
+        // 语言切换函数
+        function toggleLanguage() {
+            console.log('切换语言按钮被点击');
+            const currentLang = document.documentElement.lang;
+            const newLang = currentLang === 'zh-CN' ? 'en' : 'zh-CN';
+            console.log('从', currentLang, '切换到', newLang);
+            
+            setLanguage(newLang);
+        }
+
         // 初始化页面语言
-        document.addEventListener('DOMContentLoaded', () => {
-            const currentLang = getCurrentLanguage();
-            document.documentElement.lang = currentLang;
-            updatePageContent();
-        });
+        async function initializeLanguage() {
+            console.log('开始初始化语言...');
+            try {
+                const detectedLang = await getIPLocation();
+                console.log('IP检测结果语言:', detectedLang);
+                
+                // 创建语言切换按钮
+                const languageSwitch = document.createElement('div');
+                languageSwitch.className = 'language-switch';
+                languageSwitch.onclick = toggleLanguage;
+                languageSwitch.innerHTML = `
+                    <span id="currentLanguage">${detectedLang === 'zh-CN' ? '简体中文' : 'English'}</span>
+                    <i class="fas fa-chevron-down"></i>
+                `;
 
-        // 初始化引导功能
-        function initTour() {
-            const tour = new Shepherd.Tour({
-                useModalOverlay: true,
-                defaultStepOptions: {
-                    classes: 'shepherd-theme-custom',
-                    scrollTo: false,
-                    cancelIcon: {
-                        enabled: false
-                    },
-                    arrow: true,
-                    modalOverlayOpeningPadding: 4,
-                    popperOptions: {
-                        modifiers: [
-                            {
-                                name: 'offset',
-                                options: {
-                                    offset: [0, 16]
-                                }
-                            },
-                            {
-                                name: 'arrow',
-                                options: {
-                                    element: '.shepherd-arrow',
-                                    padding: 8
-                                }
-                            },
-                            {
-                                name: 'preventOverflow',
-                                options: {
-                                    boundary: document.body,
-                                    padding: 16
-                                }
-                            }
-                        ]
-                    }
+                // 将语言切换按钮添加到导航栏
+                const navRight = document.querySelector('.flex.items-center.space-x-6');
+                if (navRight) {
+                    navRight.insertBefore(languageSwitch, navRight.firstChild);
                 }
-            });
-
-            // 添加引导步骤
-            tour.addStep({
-                id: 'account-overview',
-                title: '账户总览',
-                text: `<div class="mb-4">
-                      <p class="mb-2"><strong>我的资产：</strong>查看我的可用/不可用余额</p>
-                      <p><strong>银行账户：</strong>汇总已经开通的所有银行账户信息，银行账户相关的操作都在此处</p>
-                      </div>`,
-                attachTo: {
-                    element: '.menu-item[data-page="my-assets"]',
-                    on: 'right'
-                },
-                buttons: [
-                    {
-                        text: '跳过',
-                        action: tour.complete,
-                        classes: 'shepherd-button-secondary'
-                    },
-                    {
-                        text: '下一步',
-                        action: tour.next,
-                        classes: 'shepherd-button-primary'
-                    }
-                ],
-                when: {
-                    show: () => {
-                        const element = document.querySelector('.menu-item[data-page="my-assets"]');
-                        if (element) {
-                            element.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                        }
-                    }
-                }
-            });
-
-            tour.addStep({
-                id: 'collection',
-                title: '收款',
-                text: `<div class="mb-4">
-                      <p class="mb-2"><strong>电商平台：</strong>电商平台申请收款账户，电商平台店铺管理，上传电商平台订单认证额度</p>
-                      <p class="mb-2"><strong>独立站：</strong>独立站申请收款账户，店铺管理，上传独立站订单认证额度</p>
-                      <p class="mb-2"><strong>服务贸易：</strong>服务贸易申请收款账户，服务贸易平台账户管理，上传服务贸易订单认证额度</p>
-                      <p class="mb-2"><strong>外贸收款：</strong>外贸收款到账记录和关联订单，外贸订单的上传和管理</p>
-                      <p><strong>持有人：</strong>申请收款账户选择的持有人管理</p>
-                      </div>`,
-                attachTo: {
-                    element: 'div[data-toggle="submenu-collection"]',
-                    on: 'right'
-                },
-                buttons: [
-                    {
-                        text: '上一步',
-                        action: tour.back,
-                        classes: 'shepherd-button-secondary'
-                    },
-                    {
-                        text: '下一步',
-                        action: tour.next
-                    }
-                ],
-                beforeShowPromise: function() {
-                    return new Promise(function(resolve) {
-                        // 关闭所有子菜单
-                        document.querySelectorAll('.submenu').forEach(submenu => {
-                            submenu.classList.remove('open');
-                            const toggle = submenu.previousElementSibling.querySelector('.submenu-toggle');
-                            if (toggle) {
-                                toggle.classList.replace('fa-chevron-up', 'fa-chevron-down');
-                            }
-                        });
-                        setTimeout(resolve, 100);
-                    });
-                }
-            });
-
-            tour.addStep({
-                id: 'acquiring',
-                title: '收单',
-                text: `<div class="mb-4">
-                      <p class="mb-2"><strong>账单收款：</strong>创建支付链接进行收款</p>
-                      <p><strong>交易清单：</strong>买家的支付记录，商家发起的退款记录</p>
-                      </div>`,
-                attachTo: {
-                    element: '[data-toggle="submenu-acquiring"]',
-                    on: 'right'
-                },
-                buttons: [
-                    {
-                        text: '上一步',
-                        action: tour.back,
-                        classes: 'shepherd-button-secondary'
-                    },
-                    {
-                        text: '下一步',
-                        action: tour.next
-                    }
-                ]
-            });
-
-            tour.addStep({
-                id: 'forex',
-                title: '外汇兑换',
-                text: `<div class="mb-4">
-                      <p>发起货币兑换</p>
-                      </div>`,
-                attachTo: {
-                    element: '[data-page="forex"]',
-                    on: 'right'
-                },
-                buttons: [
-                    {
-                        text: '上一步',
-                        action: tour.back,
-                        classes: 'shepherd-button-secondary'
-                    },
-                    {
-                        text: '下一步',
-                        action: tour.next
-                    }
-                ]
-            });
-
-            tour.addStep({
-                id: 'business-card',
-                title: '商务卡（鲸卡）',
-                text: `<div class="mb-4">
-                      <p>原鲸卡服务相关的功能在此处</p>
-                      </div>`,
-                attachTo: {
-                    element: '[data-page="business-card"]',
-                    on: 'right'
-                },
-                buttons: [
-                    {
-                        text: '上一步',
-                        action: tour.back,
-                        classes: 'shepherd-button-secondary'
-                    },
-                    {
-                        text: '下一步',
-                        action: tour.next
-                    }
-                ]
-            });
-
-            tour.addStep({
-                id: 'withdrawal-payment',
-                title: '提现付款',
-                text: `<div class="mb-4">
-                      <p>提现：发起提现；我的银行卡：提现银行卡的添加和管理；<br>
-                      付款：发起付款；收款人管理：收款人的添加和管理；</p>
-                      </div>`,
-                attachTo: {
-                    element: '[data-toggle="submenu-payment"]',
-                    on: 'right'
-                },
-                buttons: [
-                    {
-                        text: '上一步',
-                        action: tour.back,
-                        classes: 'shepherd-button-secondary'
-                    },
-                    {
-                        text: '完成',
-                        action: tour.complete
-                    }
-                ]
-            });
-
-            // 帮助按钮点击事件
-            const helpButton = document.getElementById('help-button');
-            if (helpButton) {
-                helpButton.addEventListener('click', () => {
-                    // 关闭所有子菜单
-                    document.querySelectorAll('.submenu').forEach(submenu => {
-                        submenu.classList.remove('open');
-                        const toggle = submenu.previousElementSibling.querySelector('.submenu-toggle');
-                        if (toggle) {
-                            toggle.classList.replace('fa-chevron-up', 'fa-chevron-down');
-                        }
-                    });
-                    
-                    // 确保侧边栏展开
-                    const sidebar = document.getElementById('sidebar');
-                    if (sidebar.classList.contains('collapsed')) {
-                        sidebar.classList.remove('collapsed');
-                        const toggleIcon = document.getElementById('toggle-icon');
-                        if (toggleIcon) {
-                            toggleIcon.classList.replace('fa-chevron-right', 'fa-chevron-left');
-                        }
-                    }
-                    
-                    // 启动引导
-                    setTimeout(() => {
-                    tour.start();
-                    }, 300);
-                });
+                
+                // 设置语言
+                setLanguage(detectedLang);
+            } catch (error) {
+                console.error('语言初始化失败:', error);
+                setLanguage('en');
             }
         }
 
-        // 初始化语言设置
+        // 页面加载完成后初始化
         document.addEventListener('DOMContentLoaded', () => {
-            // 初始化语言设置
-            const currentLang = localStorage.getItem('language') || 'zh-CN';
-            document.documentElement.lang = currentLang;
-            updatePageContent();
-
-            // 监听语言变化事件
-            window.addEventListener('languageChanged', () => {
-                updatePageContent();
-            });
-
-            // 添加语言切换按钮
-            const languageSwitch = document.createElement('div');
-            languageSwitch.className = 'language-switch';
-            languageSwitch.onclick = toggleLanguage;
-            languageSwitch.innerHTML = `
-                <span id="currentLanguage">${currentLang === 'zh-CN' ? '简体中文' : 'English'}</span>
-                <i class="fas fa-chevron-down"></i>
-            `;
-
-            // 将语言切换按钮添加到导航栏
-            const navRight = document.querySelector('.flex.items-center.space-x-6');
-            if (navRight) {
-                navRight.insertBefore(languageSwitch, navRight.firstChild);
-            }
+            // 初始化语言
+            initializeLanguage();
 
             // 处理菜单项点击
             document.querySelectorAll('.menu-item').forEach(item => {
@@ -1185,11 +810,9 @@
                     const page = this.getAttribute('data-page');
                     const toggleId = this.getAttribute('data-toggle');
                     
-                    // 如果有子菜单，处理子菜单的展开/折叠
                     if (toggleId) {
                         const submenu = document.getElementById(toggleId);
                         if (submenu) {
-                            // 关闭其他所有子菜单
                             document.querySelectorAll('.submenu').forEach(menu => {
                                 if (menu !== submenu) {
                                     menu.classList.remove('open');
@@ -1200,7 +823,6 @@
                                 }
                             });
 
-                            // 切换当前子菜单
                             submenu.classList.toggle('open');
                             const chevron = this.querySelector('.submenu-toggle');
                             if (chevron) {
@@ -1213,7 +835,6 @@
                         }
                     }
                     
-                    // 如果有页面链接，加载页面
                     if (page) {
                         loadPage(page);
                     }
@@ -1223,41 +844,8 @@
             // 初始化页面
             const initialPage = window.location.hash.slice(1) || 'home';
             loadPage(initialPage);
-
-            // 初始化引导功能
-            initTour();
         });
-
-        // 语言切换函数
-        function toggleLanguage() {
-            console.log('Language switch button clicked');
-            const currentLang = getCurrentLanguage();
-            const newLang = currentLang === 'zh-CN' ? 'en' : 'zh-CN';
-            console.log('Switching from', currentLang, 'to', newLang);
-            
-            // 设置新语言
-            localStorage.setItem('language', newLang);
-            document.documentElement.lang = newLang;
-            
-            // 更新语言切换按钮显示
-            const currentLanguageSpan = document.getElementById('currentLanguage');
-            if (currentLanguageSpan) {
-                currentLanguageSpan.textContent = newLang === 'zh-CN' ? '简体中文' : 'English';
-            }
-            
-            // 更新页面内容
-            updatePageContent();
-
-            // 通知iframe更新语言
-            const iframe = document.getElementById('content-frame');
-            if (iframe && iframe.contentWindow) {
-                console.log('Sending language update to iframe');
-                iframe.contentWindow.postMessage({
-                    type: 'languageChanged',
-                    language: newLang
-                }, '*');
-            }
-        }
     </script>
+
 </body>
 </html> 
