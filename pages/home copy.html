@@ -57,6 +57,50 @@
             border-radius: 2px;
             box-shadow: 0 1px 2px rgba(0,0,0,0.1);
         }
+        /* 在线客服样式 */
+        .online-service {
+            position: fixed;
+            right: 20px;
+            bottom: 20px;
+            z-index: 1000;
+            cursor: pointer;
+        }
+        .service-icon {
+            width: 50px;
+            height: 50px;
+            background-color: #4f46e5;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+        .service-icon:hover {
+            transform: scale(1.1);
+            background-color: #4338ca;
+        }
+        .service-icon i {
+            color: white;
+            font-size: 24px;
+        }
+        .service-text {
+            position: absolute;
+            right: -80px;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: white;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 12px;
+            color: #4f46e5;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .service-icon:hover + .service-text {
+            opacity: 1;
+        }
     </style>
 </head>
 <body>
@@ -779,6 +823,18 @@
         </div>
     </div>
 
+    <!-- 在线客服 -->
+    <div class="online-service" id="onlineService">
+        <div class="service-icon">
+            <i class="fas fa-headset"></i>
+        </div>
+        <div class="service-text">在线客服</div>
+    </div>
+
+    <!-- 在线客服代码 -->
+    <script src='https://w128.ttkefu.com/k/?fid=8H7DA7' charset=utf-8></script>
+    <div style='display:none;'><a href='https://www.ttkefu.com'>在线客服系统</a></div>
+
     <script>
         // 用户中心下拉菜单点击切换显示
         document.getElementById('userCenterBtn').addEventListener('click', function(e) {
@@ -1009,6 +1065,16 @@
             closeAdBtn.addEventListener('click', function() {
                 adBanner.style.display = 'none';
             });
+        });
+
+        // 在线客服点击事件
+        document.getElementById('onlineService').addEventListener('click', function() {
+            // 触发在线客服的显示
+            if (typeof TTKF_SET_PARAM === 'function') {
+                TTKF_SET_PARAM({
+                    'cmd': 'show'
+                });
+            }
         });
     </script>
 </body>
