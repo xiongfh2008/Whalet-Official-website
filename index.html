@@ -421,6 +421,116 @@
         .service-icon:hover + .service-text {
             opacity: 1;
         }
+
+        /* 功能引导按钮样式 */
+        .guide-btn {
+            position: fixed;
+            right: 20px;
+            bottom: 20px;
+            background-color: #7D33FF;
+            color: white;
+            border-radius: 30px;
+            padding: 10px 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+        
+        .guide-btn:hover {
+            transform: scale(1.05);
+            background-color: #6929D4;
+        }
+        
+        .guide-btn i {
+            margin-right: 8px;
+        }
+
+        /* 功能引导弹窗样式 */
+        .guide-popup {
+            position: absolute;
+            background-color: white;
+            border-radius: 8px;
+            padding: 16px;
+            width: 320px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            z-index: 1001;
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        .guide-popup.show {
+            display: block;
+        }
+        
+        .guide-popup::before {
+            content: '';
+            position: absolute;
+            width: 15px;
+            height: 15px;
+            background-color: white;
+            transform: rotate(45deg);
+        }
+        
+        .guide-popup.left::before {
+            left: -7px;
+            top: 20px;
+        }
+        
+        .guide-popup-title {
+            font-weight: 600;
+            font-size: 16px;
+            color: #111827;
+            margin-bottom: 8px;
+        }
+        
+        .guide-popup-content {
+            color: #4b5563;
+            font-size: 14px;
+            line-height: 1.5;
+            margin-bottom: 16px;
+        }
+        
+        .guide-popup-btn {
+            background-color: #7D33FF;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            padding: 8px 16px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .guide-popup-btn:hover {
+            background-color: #6929D4;
+        }
+
+        /* 遮罩层样式 */
+        .guide-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            display: none;
+        }
+        
+        .guide-overlay.show {
+            display: block;
+        }
+
+        /* 引导目标高亮样式 */
+        .guide-highlight {
+            position: relative;
+            z-index: 1002 !important;
+        }
     </style>
 </head>
 <body class="bg-gray-50 text-gray-800">
@@ -795,6 +905,114 @@
                 setLanguage('en');
             }
         }
+        
+        // 功能引导相关功能
+        const guideData = [
+            {
+                id: 'account-overview',
+                target: '.menu-item[data-page="my-assets"]',
+                title: '账户总览',
+                content: '我的资产：查看账户中的可用余额和不可用余额，全面了解资金情况。<br>银行账户：查看并管理已开通的银行账户，所有与银行账户相关的操作均可在此处完成。'
+            },
+            {
+                id: 'collection',
+                target: '.menu-item[data-toggle="submenu-collection"]',
+                title: '收款',
+                content: '电商平台：申请电商平台收款账户，管理电商店铺，上传订单用于认证收款额度。<br>独立站：申请独立站收款账户，管理独立站店铺，上传订单进行额度认证。<br>服务贸易：申请服务贸易收款账户，管理服务平台账户，上传相关订单进行额度认证。<br>外贸收款：查看外贸收款记录及其关联订单，支持上传和管理外贸订单。<br>持有人管理：管理收款账户的持有人信息，适用于账户申请时选择的持有人对象。'
+            },
+            {
+                id: 'acquiring',
+                target: '.menu-item[data-toggle="submenu-acquiring"]',
+                title: '收单',
+                content: '账单收款：创建支付链接，便捷收取买家付款。<br>交易清单：查看买家付款记录及商家发起的退款记录，掌握每一笔交易详情。'
+            },
+            {
+                id: 'forex',
+                target: '.menu-item[data-page="forex"]',
+                title: '外汇兑换',
+                content: '货币兑换：发起不同币种间的兑换操作，满足跨境资金需求。'
+            },
+            {
+                id: 'business-card',
+                target: '.menu-item[data-page="business-card"]',
+                title: '商务卡（鲸卡）',
+                content: '鲸卡服务：原"鲸卡"相关功能已集中至此，支持商务消费相关操作。'
+            },
+            {
+                id: 'withdrawal-payment',
+                target: '.menu-item[data-toggle="submenu-payment"]',
+                title: '提现付款',
+                content: '提现/付款：进行账户资金的提现及向外付款操作。'
+            }
+        ];
+        
+        let currentGuideIndex = 0;
+        
+        // 功能引导初始化
+        function initGuide() {
+            currentGuideIndex = 0;
+            showGuideStep(currentGuideIndex);
+        }
+        
+        // 显示引导步骤
+        function showGuideStep(index) {
+            if (index >= guideData.length) {
+                endGuide();
+                return;
+            }
+            
+            const guide = guideData[index];
+            const target = document.querySelector(guide.target);
+            
+            if (!target) {
+                currentGuideIndex++;
+                showGuideStep(currentGuideIndex);
+                return;
+            }
+            
+            // 清除其他高亮
+            document.querySelectorAll('.guide-highlight').forEach(el => {
+                el.classList.remove('guide-highlight');
+            });
+            
+            // 添加高亮
+            target.classList.add('guide-highlight');
+            
+            // 创建或更新弹窗
+            const popup = document.getElementById('guide-popup');
+            popup.querySelector('.guide-popup-title').textContent = guide.title;
+            popup.querySelector('.guide-popup-content').innerHTML = guide.content;
+            
+            // 更新按钮文本
+            const nextBtn = popup.querySelector('.guide-popup-btn');
+            nextBtn.textContent = index === guideData.length - 1 ? '完成' : '下一步';
+            
+            // 定位弹窗
+            const targetRect = target.getBoundingClientRect();
+            popup.style.top = `${targetRect.top}px`;
+            popup.style.left = `${targetRect.right + 15}px`;
+            
+            // 显示遮罩和弹窗
+            document.getElementById('guide-overlay').classList.add('show');
+            popup.classList.add('show');
+            popup.classList.add('left');
+        }
+        
+        // 下一步
+        function nextGuideStep() {
+            currentGuideIndex++;
+            showGuideStep(currentGuideIndex);
+        }
+        
+        // 结束引导
+        function endGuide() {
+            document.getElementById('guide-overlay').classList.remove('show');
+            document.getElementById('guide-popup').classList.remove('show');
+            
+            document.querySelectorAll('.guide-highlight').forEach(el => {
+                el.classList.remove('guide-highlight');
+            });
+        }
 
         // 页面加载完成后初始化
         document.addEventListener('DOMContentLoaded', () => {
@@ -840,6 +1058,24 @@
                     }
                 });
             });
+            
+            // 初始化功能引导按钮
+            const guideBtn = document.getElementById('guide-btn');
+            if (guideBtn) {
+                guideBtn.addEventListener('click', initGuide);
+            }
+            
+            // 初始化功能引导弹窗按钮
+            const guidePopupBtn = document.getElementById('guide-popup-btn');
+            if (guidePopupBtn) {
+                guidePopupBtn.addEventListener('click', nextGuideStep);
+            }
+            
+            // 初始化关闭引导区域点击
+            const guideOverlay = document.getElementById('guide-overlay');
+            if (guideOverlay) {
+                guideOverlay.addEventListener('click', endGuide);
+            }
 
             // 初始化页面
             const initialPage = window.location.hash.slice(1) || 'home';
@@ -847,5 +1083,20 @@
         });
     </script>
 
+    <!-- 功能引导按钮 -->
+    <div class="guide-btn" id="guide-btn">
+        <i class="fas fa-question-circle"></i>
+        <span>功能引导</span>
+    </div>
+    
+    <!-- 功能引导遮罩 -->
+    <div class="guide-overlay" id="guide-overlay"></div>
+    
+    <!-- 功能引导弹窗 -->
+    <div class="guide-popup" id="guide-popup">
+        <div class="guide-popup-title"></div>
+        <div class="guide-popup-content"></div>
+        <button class="guide-popup-btn" id="guide-popup-btn">下一步</button>
+    </div>
 </body>
 </html> 
