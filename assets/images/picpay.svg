@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="34px" height="22px" viewBox="0 0 34 22" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 58 (84663) - https://sketch.com -->
+    <title>picpay-icon</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <rect id="path-1" x="0" y="0" width="32" height="20" rx="2"></rect>
+        <polygon id="path-3" points="4.41539579e-05 0.2258776 9.66976093 0.2258776 9.66976093 12.1925134 4.41539579e-05 12.1925134"></polygon>
+        <polygon id="path-5" points="0 14.9019608 16.4252723 14.9019608 16.4252723 0.316102198 0 0.316102198"></polygon>
+    </defs>
+    <g id="BR---Payment-Page" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Layout/Ewallet/Brazil/Desktop/01-Payment-Method-Selection_Alternative" transform="translate(-169.000000, -932.000000)">
+            <g id="Group-2" transform="translate(112.000000, 41.000000)">
+                <g id="Group-3-Copy" transform="translate(32.000000, 892.000000)">
+                    <g id="payment-method-icon" transform="translate(26.000000, 0.000000)">
+                        <g id="boleto-icon">
+                            <mask id="mask-2" fill="white">
+                                <use xlink:href="#path-1"></use>
+                            </mask>
+                            <rect stroke="#E1E1E1" x="-0.5" y="-0.5" width="33" height="21" rx="2"></rect>
+                            <g id="picpay-icon/standard" mask="url(#mask-2)">
+                                <rect id="Rectangle-2" fill="#FFFFFF" fill-rule="nonzero" x="0" y="0" width="32" height="20"></rect>
+                                <g id="Group-8" stroke-width="1" fill-rule="evenodd" transform="translate(8.444444, 1.818182)">
+                                    <polygon id="Fill-1" fill="#21C25E" points="12.9812636 3.97385621 14.703268 3.97385621 14.703268 2.21271539 12.9812636 2.21271539"></polygon>
+                                    <g id="Group-7" transform="translate(0.000000, 0.135472)">
+                                        <g id="Group-4" transform="translate(0.000000, 2.709447)">
+                                            <mask id="mask-4" fill="white">
+                                                <use xlink:href="#path-3"></use>
+                                            </mask>
+                                            <g id="Clip-3"></g>
+                                            <path d="M5.03359535,0.2258776 L2.56097371,0.2258776 L2.56097371,2.43859299 L4.85697952,2.43859299 C6.31406013,2.43859299 7.15298533,3.1611123 7.15298533,4.51583601 C7.15298533,5.87055971 6.31406013,6.63823648 4.85697952,6.63823648 L2.56097371,6.63823648 L2.56097371,2.48375045 L4.41539579e-05,2.48375045 L4.41539579e-05,12.1926037 L2.56097371,12.1926037 L2.56097371,8.85095187 L4.98944139,8.85095187 C7.94775657,8.85095187 9.66976093,7.22528342 9.66976093,4.42552109 C9.66976093,1.80638859 7.99191053,0.2258776 5.03359535,0.2258776" id="Fill-2" fill="#21C25E" mask="url(#mask-4)"></path>
+                                        </g>
+                                        <mask id="mask-6" fill="white">
+                                            <use xlink:href="#path-5"></use>
+                                        </mask>
+                                        <g id="Clip-6"></g>
+                                        <path d="M12.1423384,4.69637552 L15.5863471,4.69637552 L15.5863471,1.17409388 L12.1423384,1.17409388 L12.1423384,4.69637552 Z M11.2592593,5.59952466 L16.4252723,5.59952466 L16.4252723,0.316102198 L11.2592593,0.316102198 L11.2592593,5.59952466 Z" id="Fill-5" fill="#21C25E" mask="url(#mask-6)"></path>
+                                    </g>
+                                </g>
+                            </g>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
